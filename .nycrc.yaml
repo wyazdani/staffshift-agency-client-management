@@ -1,0 +1,9 @@
+lines: 90
+statements: 90
+functions: 90
+branches: 90
+check-coverage: true
+per-file: true
+exclude: []
+reporter: ["lcov","text-summary"]
+all: true

@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  staffshift-portfolios:
+    image: staffshift-portfolios
+    container_name: staffshift-portfolios
+    ports:
+    - "3370:3370"
+    command: 'sh -c "npm run test && npm run lint"'
+    environment:
+    - NODE_ENV=ci
+    depends_on:
+    - mountebank
+    - database
+  mountebank:
+    container_name: mountebank
+    hostname: mountebank
+    image: mountebank
+    ports:
+    - "2525:2525"
+    - "4000:4000"
+  database:
+    container_name: database
+    hostname: database
+    image: database
+    ports:
+    - "27017:27017"
