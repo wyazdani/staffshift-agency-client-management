@@ -64,7 +64,7 @@
     "enhanced_mongodb_reporting": false
   },
   "graceful_shutdown": {
-    "signals": ["SIGINT", "SIGTERM"],
+    "signals": ["SIGTERM"],
     "http": {
       "delay": 10000,
       "server_close_timeout": 5000
