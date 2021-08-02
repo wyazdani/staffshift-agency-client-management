@@ -1,6 +1,7 @@
 {
   "server": {
-    "port": 3370
+    "port": 3370,
+    "timeout": 15000
   },
   "client_errors": {
     "400": {
@@ -61,5 +62,12 @@
   "tracing": {
     "key_file": "",
     "enhanced_mongodb_reporting": false
+  },
+  "graceful_shutdown": {
+    "signals": ["SIGINT", "SIGTERM"],
+    "http": {
+      "delay": 10000,
+      "server_close_timeout": 5000
+    }
   }
 }

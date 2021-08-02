@@ -21,6 +21,7 @@ mongoose.Promise = global.Promise;
 const {MessagePublisher} = require('a24-node-pubsub');
 const JWTSecurityHelper = require('./helpers/JWTSecurityHelper');
 const {Auditor} = require('a24-node-octophant-utils');
+const {createHttpTerminator} = require('http-terminator');
 const pubsubAuditConfig = {
   env: process.env.NODE_ENV || 'development',
   auth: config.get('octophant_audit.pubsub_project'),
@@ -136,10 +137,44 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
   });
 
   // Start the server
-  http.createServer(app).listen(serverPort, function createFunc() {
+  const server = http.createServer(app);
+  server.setTimeout(config.get('server.timeout'));
+  server.listen(serverPort, function createFunc() {
     // eslint-disable-next-line no-console
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     // eslint-disable-next-line no-console
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+    console.log('Swagger-ui is available on http://localhost:%d/v1/docs', serverPort);
   });
+
+  const httpTerminator = createHttpTerminator({
+    server,
+    gracefulTerminationTimeout: config.get('graceful_shutdown.http.server_close_timeout')
+  });
+  const logger = Logger.getContext();
+  async function shutdown() {
+    logger.log('info', 'starting graceful shutdown process');
+    //This delay is to make sure k8s iptables are updated and no new request is established.
+    //more info: https://blog.laputa.io/graceful-shutdown-in-kubernetes-85f1c8d586da
+    await new Promise((resolve) => setTimeout(resolve, config.get('graceful_shutdown.http.delay')));
+    logger.log('info', 'delay finished, closing the server');
+    try {
+      await httpTerminator.terminate();
+      logger.log('info', 'server stopped gracefully');
+      await Logger.close();
+      const used = process.memoryUsage();
+      let memoryLog = 'Memory Usage: ';
+      for (const key in used) {
+        memoryLog += ` ${key}: ${Math.round(used[key] / 1024 / 1024 * 100) / 100}MB`;
+      }
+      console.log(memoryLog);
+      process.exit(0);
+    } catch (err) {
+      logger.log('error', 'could not do graceful shutdown in the specified time, exiting forcefully', err);
+      await Logger.close();
+      process.exit(1);
+    }
+  }
+  for (const signal of config.get('graceful_shutdown.signals')) {
+    process.on(signal, shutdown);
+  }
 });

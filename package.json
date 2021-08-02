@@ -37,6 +37,7 @@
     "async": "3.2.0",
     "url": "0.11.0",
     "mongoose": "^5.13.5",
+    "http-terminator": "^3.0.0",
     "mongration": "^1.0.1",
     "a24-node-pubsub": "git+ssh://git@github.com:A24Group/a24-node-pubsub.git#v4.5.0",
     "a24-node-octophant-utils": "git+ssh://git@github.com:A24Group/a24-node-octophant-utils.git#v1.4.0",
