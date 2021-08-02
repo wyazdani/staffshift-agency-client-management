@@ -143,7 +143,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
     // eslint-disable-next-line no-console
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     // eslint-disable-next-line no-console
-    console.log('Swagger-ui is available on http://localhost:%d/v1/docs', serverPort);
+    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
   });
 
   const httpTerminator = createHttpTerminator({
