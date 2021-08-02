@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node_modules/.bin/swagger-tools validate api/swagger.yaml && sleep 2 && ./node_modules/.bin/nyc node_modules/.bin/mocha testfile.js",
+    "test": "node testfile-drop-database && npm run migrate && ./node_modules/.bin/nyc node testfile.js",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore . *.js",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js"
   },
