@@ -57,5 +57,9 @@
       }
     ]
   },
-  "api_token": "SomeSecret"
+  "api_token": "SomeSecret",
+  "tracing": {
+    "key_file": "",
+    "enhanced_mongodb_reporting": false
+  }
 }
