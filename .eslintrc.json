@@ -6,6 +6,12 @@
     "es6": true
   },
   "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": ["error", "always"],
