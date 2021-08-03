@@ -1,0 +1,13 @@
+FROM node:erbium-alpine
+# Create the directory for our application
+RUN mkdir -p /usr/src/app
+# Set the current working directory
+WORKDIR /usr/src/app
+
+# Install mountbank
+RUN npm install -g "mountebank@1.*"
+
+EXPOSE 2525
+EXPOSE 4000
+
+CMD ["mb", "--mock"]

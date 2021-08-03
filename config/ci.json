@@ -1,0 +1,25 @@
+{
+  "mocha": {
+    "reporter": "spec"
+  },
+  "logger": {
+    "stack": {
+      "app": "staffshift-portfolios"
+    },
+    "level": "none"
+  },
+  "mongo": {
+    "database_host": "mongodb://database:27017/staffshiftportfoliosCI"
+  },
+  "mounteBank": {
+    "host": "mountebank",
+    "port": 2525,
+    "http_verb": {
+      "post": "POST",
+      "delete": "DELETE",
+      "head": "HEAD",
+      "put": "PUT",
+      "get": "GET"
+    }
+  }
+}

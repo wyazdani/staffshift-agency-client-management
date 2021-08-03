@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd "$(git rev-parse --show-toplevel)"
+
+# Get the staged files(Excluding everything not `.js` and not inside the ember package
+STAGED_FILES=($(git diff --cached --name-only --diff-filter=ACMR | grep ".js$" | grep -v "ember" ))
+
+# If there are no stage files just exit
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+# Run eslint for all staged files
+./node_modules/eslint/bin/eslint.js "${STAGED_FILES[@]}"
+
+# Exit value of last executed command.
+exit $?

@@ -1,0 +1,17 @@
+{
+  "generator-a-24-node-swagger": {
+    "promptValues": {
+      "project_name": "staffshift-portfolios",
+      "project_description": "Staffshift portfolios",
+      "project_port": "3370",
+      "has_db": true,
+      "requires_staffshift_audits": true,
+      "has_pubsub": false,
+      "requires_mountebank": true,
+      "requires_cors": false,
+      "generate_ansible": false,
+      "generate_staffshift_authorization": false,
+      "requires_jwt_verification": true
+    }
+  }
+}

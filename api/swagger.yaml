@@ -1,0 +1,68 @@
+swagger: "2.0"
+info:
+  description: "Staffshift Portfolios API"
+  version: "1.0.0"
+  title: "Staffshift Portfolios Service"
+  termsOfService: "https://www.staffshift.com/#terms-and-conditions"
+  contact:
+    name: "Staffshift team"
+    url: "http://www.staffshift.com"
+    email: "info@staffshift.com"
+host: "localhost:3370"
+basePath: "/v1"
+schemes:
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+tags:
+- name: Status
+  description: "Status of this web service"
+paths:
+  /status:
+    get:
+      x-public-operation: true
+      x-swagger-router-controller: "StatusDetails"
+      operationId: "getSystemStatus"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "The server status will be returned"
+          schema:
+            $ref: "#/definitions/server_status_response"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/server_error_model"
+      tags:
+        - "Status"
+      summary: "Gets the status of the service"
+definitions:
+  server_status_response:
+    type: "object"
+    required:
+    - up_time
+    properties:
+      up_time:
+        type: integer
+  server_error_model:
+    type: object
+    required:
+    - code
+    - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      stack:
+        type: string
+securityDefinitions:
+  jwt:
+    type: apiKey
+    name: x-request-jwt
+    in: header

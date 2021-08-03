@@ -1,0 +1,73 @@
+{
+  "server": {
+    "port": 3370,
+    "timeout": 15000
+  },
+  "client_errors": {
+    "400": {
+      "error_code": null,
+      "log_level": "notice"
+    },
+    "401": {
+      "error_code": "UNAUTHORIZED",
+      "log_level": "notice"
+    },
+    "404": {
+      "error_code": "RESOURCE_NOT_FOUND",
+      "log_level": "notice"
+    },
+    "405": {
+      "error_code": "METHOD_NOT_SUPPORTED",
+      "log_level": "notice"
+    },
+    "406": {
+      "error_code": "CONTENT_TYPE_NOT_SUPPORTED",
+      "log_level": "notice"
+    }
+  },
+  "server_errors": [
+    500
+  ],
+  "logger": {
+    "stack": {
+      "app": "staffshift-portfolios"
+    },
+    "level": "info"
+  },
+  "bDebug": false,
+  "mongo": {
+    "database_host": "mongodb://localhost:27017/staffshiftportfoliosDev",
+    "options": {
+      "poolSize": 10,
+      "useNewUrlParser": true,
+      "useFindAndModify": false,
+      "useUnifiedTopology": true,
+      "useCreateIndex": true,
+      "readPreference": "secondaryPreferred"
+    }
+  },
+  "octophant_audit": {
+    "service_identifier": "402e8078-428f-103a-b7c0-0050569a0010",
+    "pubsub_project": {
+      "projectId": "staffshift-dev-env"
+    },
+    "pubsub_topics": [
+      {
+        "name": "staffshift.audit",
+        "subscribers": []
+      }
+    ]
+  },
+  "api_token": "SomeSecret",
+  "tracing": {
+    "key_file": "",
+    "enhanced_mongodb_reporting": false
+  },
+  "graceful_shutdown": {
+    "signals": ["SIGTERM"],
+    "http": {
+      "delay": 10000,
+      "server_close_timeout": 5000
+    }
+  }
+}
