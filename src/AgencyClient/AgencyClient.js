@@ -14,9 +14,12 @@ class AgencyClient {
   }
 
   async apply(command) {
+    if (!this.projection) {
+      this.project();
+    }
     let events = await this.store.find({'data.agency_id': this.agency_id, 'data.client_id': this.client_id}).sort({chrono_id: 1}).lean();
     this.projection = _.reduce(events, event_applier, {});
-    console.log('events and projection complete');
+
 
     if (!cmds[command.type]) {
       throw new Error(`Command type:${command.type} is not supported`);
@@ -27,7 +30,7 @@ class AgencyClient {
     await this.store.insertMany(new_events, {lean: true});
   }
 
-  assignClientConsultant(consultant) {
+  addClientConsultant(consultant) {
     // Only a single portfolio consultant allowed
     if (
         consultant.consultant_type == 'portfolio' &&
@@ -35,6 +38,18 @@ class AgencyClient {
     ) {
       throw new Error('TOO MANY PORTFOLIO CONSULTANTS');
     }
+  }
+
+  removeClientConsultant(consultant) {
+    // prevent us from deleting something that does not exist
+    if (_.find(this.projection.consultants, {_id: consultant._id}) === undefined) {
+      throw new Error('CONSULTANT NOT FOUND');
+    }
+  }
+
+  async project() {
+    let events = await this.store.find({'data.agency_id': this.agency_id, 'data.client_id': this.client_id}).sort({chrono_id: 1}).lean();
+    return _.reduce(events, event_applier, {});
   }
 }
 

@@ -41,6 +41,28 @@ paths:
       tags:
         - "Status"
       summary: "Gets the status of the service"
+  /agency/{agency_id}/client/{client_id}:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    get:
+      x-swagger-router-controller: "AgencyClient"
+      x-octophant-event: "getClient"
+      operationId: "getClient"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Gets a Agency Client Consultant"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Assigns an Agency Client Consultant"
+      tags:
+        - "Agency Client Consultants"
   /agency/{agency_id}/client/{client_id}/consultant:
     parameters:
       - $ref: "#/parameters/x_request_id"
@@ -49,15 +71,38 @@ paths:
       - $ref: "#/parameters/client_id"
     post:
       x-swagger-router-controller: "AgencyClient"
-      x-octophant-event: "assignClientConsultant"
-      operationId: "assignClientConsultant"
+      x-octophant-event: "addClientConsultant"
+      operationId: "addClientConsultant"
       security:
         - jwt: []
       parameters:
         - $ref: "#/parameters/assign_client_consultant_payload"
       responses:
-        201:
-          description: "Assign an Agency Client Consultant"
+        200:
+          description: "Adds a Agency Client Consultant"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Assigns an Agency Client Consultant"
+      tags:
+        - "Agency Client Consultants"
+  /agency/{agency_id}/client/{client_id}/consultant/{consultant_id}:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+      - $ref: "#/parameters/consultant_id"
+    delete:
+      x-swagger-router-controller: "AgencyClient"
+      x-octophant-event: "removeClientConsultant"
+      operationId: "removeClientConsultant"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Removes a Agency Client Consultant"
           schema:
             $ref: "#/definitions/assign_client_consultant_payload_def"
         default:
@@ -97,6 +142,13 @@ parameters:
     required: true
     pattern: ^[0-9a-fA-F]{24}$
     description: "Client id"
+    type: string
+  consultant_id:
+    name: consultant_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Consultant Id"
     type: string
 definitions:
   assign_client_consultant_payload_def:

@@ -13,7 +13,6 @@ const projections = {
   },
   'ClientConsultantAdded': (aggregate, event) => {
     console.log('ClientConsultantAdded');
-    console.log(aggregate, event);
     let consultant = {};
     consultant._id = event.data._id;
     consultant.consultant_type = event.data.consultant_type;
@@ -26,7 +25,7 @@ const projections = {
   'ClientConsultantRemoved': (aggregate, event) => {
     console.log('ClientConsultantRemoved');
     aggregate.consultants = _.differenceWith(aggregate.consultants, [event.data], function(value, other) {
-      return ((value.consultant_type == other.consultant_type) && (value.consultant_id == other.consultant_id))
+      return ((value._id == other._id))
     });
     return {...aggregate, last_chrono_id: event.chrono_id};
   }
