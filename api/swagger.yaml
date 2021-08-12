@@ -41,7 +41,90 @@ paths:
       tags:
         - "Status"
       summary: "Gets the status of the service"
+  /agency/{agency_id}/client/{client_id}/consultant:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "AgencyClient"
+      x-octophant-event: "assignClientConsultant"
+      operationId: "assignClientConsultant"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/assign_client_consultant_payload"
+      responses:
+        201:
+          description: "Assign an Agency Client Consultant"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Assigns an Agency Client Consultant"
+      tags:
+        - "Agency Client Consultants"
+parameters:
+  assign_client_consultant_payload:
+    name: assign_client_consultant_payload
+    in: body
+    required: true
+    description: "The payload used to create a tag resource"
+    schema:
+      $ref: "#/definitions/assign_client_consultant_payload_def"
+  x_request_id:
+    name: X-Request-Id
+    in: header
+    description: "The request Id for the incoming request"
+    type: string
+  x_request_jwt:
+    name: x-request-jwt
+    in: header
+    required: true
+    type: string
+    description: "The JWT Token"
+  agency_id:
+    name: agency_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Agency id"
+    type: string
+  client_id:
+    name: client_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Client id"
+    type: string
 definitions:
+  assign_client_consultant_payload_def:
+    type: object
+    required:
+      - consultant_type
+      - consultant_id
+    properties:
+      consultant_type:
+        type: string
+        enum:
+          - portfolio
+      consultant_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+    additionalProperties: false
+  server_error_def:
+    type: "object"
+    required:
+    - code
+    - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      stack:
+        type: string
   server_status_response:
     type: "object"
     required:
@@ -61,6 +144,11 @@ definitions:
         type: string
       stack:
         type: string
+responses:
+  server_error_model:
+    description: "Server error occurred"
+    schema:
+      $ref: "#/definitions/server_error_def"
 securityDefinitions:
   jwt:
     type: apiKey
