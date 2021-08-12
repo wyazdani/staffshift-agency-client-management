@@ -7,7 +7,8 @@
       "client_type": "site",
       "name": "St Johns",
       "linked": true
-    }
+    },
+    "chrono_id": 1
   },
   {
     "type": "ClientUnLinked",
@@ -15,7 +16,8 @@
       "agency_id": "61140ec7a66b8c03ab6151b3",
       "client_id": "61140ecd252eea6a1224662d",
       "linked": false
-    }
+    },
+    "chrono_id": 2
   },
   {
     "type": "ClientConsultantAdded",
@@ -25,7 +27,8 @@
       "consultant_type": "portfolio",
       "consultant_id": "61141299e1b692246aacd177",
       "effective_from": 1628705647
-    }
+    },
+    "chrono_id": 3
   },
   {
     "type": "ClientConsultantAdded",
@@ -35,7 +38,8 @@
       "consultant_type": "relations_manager",
       "consultant_id": "6114150c56796c0baa492502",
       "effective_from": 1628705647
-    }
+    },
+    "chrono_id": 4
   },
   {
     "type": "ClientConsultantRemoved",
@@ -44,6 +48,7 @@
       "client_id": "61140ecd252eea6a1224662d",
       "consultant_type": "relations_manager",
       "consultant_id": "6114150c56796c0baa492502"
-    }
+    },
+    "chrono_id": 5
   }
 ]
