@@ -14,11 +14,22 @@ const eventStoreSchema = new Schema(
       type: String,
       required: true,
       description: 'The event type aka the event name'
+    },
+    data: {
+      type: Object,
+      required: true
+    },
+    chrono_id: {
+      type: Number,
+      required: true,
+      description: 'The event type aka the event name'
     }
   },
   {
+    versionKey: false,
     timestamps: {
-      createdAt: 'created_at'
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
     },
     collection: 'EventStore',
     _id: false

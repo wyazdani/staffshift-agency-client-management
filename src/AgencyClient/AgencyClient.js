@@ -1,6 +1,7 @@
 'use strict';
 const _ = require('lodash');
 const agg_projection = require('../AgencyClient/projections/aggregrate');
+const cmds = require('../AgencyClient/commands/aggregate');
 
 class AgencyClient {
   constructor(agency_id, client_id) {
@@ -13,29 +14,27 @@ class AgencyClient {
   }
 
   async apply(command) {
-    console.log('apply');
     let events = await this.store.find({'data.agency_id': this.agency_id, 'data.client_id': this.client_id}).sort({chrono_id: 1}).lean();
-    console.log(events);
     this.projection = _.reduce(events, event_applier, {});
     console.log('events and projection complete');
-    switch(command.type) {
-      case 'assignClientConsultant': this.assignConsultant(command.data);
-      break;
-      default:
-        throw new Error(`Command type:${command.type} is not supported`);
+
+    if (!cmds[command.type]) {
+      throw new Error(`Command type:${command.type} is not supported`);
     }
+    let new_events = await cmds[command.type](this, command.data, this.projection.last_chrono_id || 0);
+
+    // Does not belong here
+    await this.store.insertMany(new_events, {lean: true});
   }
 
-  assignConsultant(consultant) {
-    if (_.find(this.projection.consultants, {consultant_type: 'portfolio'}) !== undefined) {
+  assignClientConsultant(consultant) {
+    // Only a single portfolio consultant allowed
+    if (
+        consultant.consultant_type == 'portfolio' &&
+        _.find(this.projection.consultants, {consultant_type: 'portfolio'}) !== undefined
+    ) {
       throw new Error('TOO MANY PORTFOLIO CONSULTANTS');
     }
-    console.log('assignConsultant');
-  }
-
-  // Does not belong here
-  storeEvents() {
-
   }
 }
 

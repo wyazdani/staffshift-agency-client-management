@@ -15,6 +15,7 @@ const projections = {
     console.log('ClientConsultantAdded');
     console.log(aggregate, event);
     let consultant = {};
+    consultant._id = event.data._id;
     consultant.consultant_type = event.data.consultant_type;
     consultant.consultant_id = event.data.consultant_id;
     (aggregate.consultants) ?
