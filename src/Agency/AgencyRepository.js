@@ -1,6 +1,6 @@
 'use strict';
 const _ = require('lodash');
-const agg_projection = require('../AgencyClient/projections/aggregrate');
+const agg_projection = require('./AgencyWriteProjection');
 const {AgencyAggregate} = require('./AgencyAggregate');
 
 class AgencyRepository {

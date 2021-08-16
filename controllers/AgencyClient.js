@@ -93,7 +93,7 @@ module.exports.addClientConsultant = async (req, res, next) => {
   // Consider using a builder | respository pattern
   let repository = new AgencyClientRepository(EventStore);
   try {
-    let aggregate = await repository.getAgencyClient(agency_id, client_id);
+    let aggregate = await repository.getAggregate(agency_id, client_id);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

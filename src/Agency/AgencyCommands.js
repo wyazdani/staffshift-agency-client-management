@@ -17,6 +17,18 @@ const AgencyCommands = {
       },
       chrono_id: ++event_id
     }
+  },
+  'removeAgencyConsultantRole': async (aggregate, command) => {
+    let event_id = aggregate.getLastEventId();
+    console.log('removeAgencyConsultantRole');
+    return {
+      type: 'AgencyConsultantRoleRemoved',
+      aggregate_id: aggregate.getId(),
+      data: {
+        _id: command._id
+      },
+      chrono_id: ++event_id
+    }
   }
 }
 

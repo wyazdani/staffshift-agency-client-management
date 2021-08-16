@@ -110,7 +110,7 @@ paths:
       summary: "Assigns an Agency Client Consultant"
       tags:
         - "Agency Client Consultants"
-  /agency/{agency_id}/consultant-role:
+  /agency/{agency_id}/consultant-roles:
     parameters:
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
@@ -131,6 +131,44 @@ paths:
         default:
           $ref: "#/responses/server_error_model"
       summary: "Creates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+    get:
+      x-swagger-router-controller: "Agency"
+      x-octophant-event: "getAgencyConsultantRoles"
+      operationId: "getAgencyConsultantRoles"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "List Agency Consultant Roles"
+          schema:
+            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "List Agency Consultant Roles"
+      tags:
+        - "Agency Consultant Roles"
+  /agency/{agency_id}/consultant-roles/{consultant_role_id}:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/consultant_role_id"
+    delete:
+      x-swagger-router-controller: "Agency"
+      x-octophant-event: "removeAgencyConsultantRole"
+      operationId: "removeAgencyConsultantRole"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Removes an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Removes an Agency Consultant Role"
       tags:
         - "Agency Consultant Roles"
 parameters:
@@ -164,21 +202,28 @@ parameters:
     in: path
     required: true
     pattern: ^[0-9a-fA-F]{24}$
-    description: "Agency id"
+    description: "Agency ID"
     type: string
   client_id:
     name: client_id
     in: path
     required: true
     pattern: ^[0-9a-fA-F]{24}$
-    description: "Client id"
+    description: "Client ID"
     type: string
   consultant_id:
     name: consultant_id
     in: path
     required: true
     pattern: ^[0-9a-fA-F]{24}$
-    description: "Consultant Id"
+    description: "Consultant ID"
+    type: string
+  consultant_role_id:
+    name: consultant_role_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Consultant Role ID"
     type: string
 definitions:
   add_agency_consultant_role_payload_def:

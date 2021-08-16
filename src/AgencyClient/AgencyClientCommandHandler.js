@@ -8,7 +8,7 @@ class AgencyClientCommandHandler {
   }
 
   async apply(agency_id, client_id, command) {
-    let aggregate = await this._repository.getAgencyClient(agency_id, client_id);
+    let aggregate = await this._repository.getAggregate(agency_id, client_id);
 
     if (!cmds[command.type]) {
       throw new Error(`Command type:${command.type} is not supported`);
