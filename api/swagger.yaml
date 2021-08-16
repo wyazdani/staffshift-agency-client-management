@@ -110,7 +110,37 @@ paths:
       summary: "Assigns an Agency Client Consultant"
       tags:
         - "Agency Client Consultants"
+  /agency/{agency_id}/consultant-role:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+    post:
+      x-swagger-router-controller: "Agency"
+      x-octophant-event: "addAgencyConsultantRole"
+      operationId: "addAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/add_agency_consultant_role_payload"
+      responses:
+        200:
+          description: "Creates an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Creates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
 parameters:
+  add_agency_consultant_role_payload:
+    name: add_agency_consultant_role_payload
+    in: body
+    required: true
+    description: "The payload used to create a tag resource"
+    schema:
+      $ref: "#/definitions/add_agency_consultant_role_payload_def"
   assign_client_consultant_payload:
     name: assign_client_consultant_payload
     in: body
@@ -151,6 +181,21 @@ parameters:
     description: "Consultant Id"
     type: string
 definitions:
+  add_agency_consultant_role_payload_def:
+    type: object
+    required:
+      - name
+      - description
+      - max_consultants
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      max_consultants:
+        type: integer
+        minimum: 1
+    additionalProperties: false
   assign_client_consultant_payload_def:
     type: object
     required:
