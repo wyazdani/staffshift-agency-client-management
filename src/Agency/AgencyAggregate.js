@@ -9,6 +9,11 @@ class AgencyAggregate {
     this._aggregate = aggregate;
   }
 
+  getMaxAllowedConsultants(consultant_role_id) {
+    const role = _.find(this._aggregate.consultant_roles, {_id: consultant_role_id});
+    return (role) ? role.max_consultants : 0;
+  }
+
   getId() {
     return this._id;
   }

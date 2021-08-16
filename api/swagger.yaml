@@ -244,14 +244,12 @@ definitions:
   assign_client_consultant_payload_def:
     type: object
     required:
-      - consultant_type
+      - consultant_role_id
       - consultant_id
     properties:
-      consultant_type:
+      consultant_role_id:
         type: string
-        enum:
-          - portfolio
-          - relations_manager
+        pattern: ^[0-9a-fA-F]{24}$
       consultant_id:
         type: string
         pattern: ^[0-9a-fA-F]{24}$
