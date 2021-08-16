@@ -31,16 +31,6 @@ class AgencyClientAggregate {
     return this._id;
   }
 
-  // This method does not seem correct
-  getClientId() {
-    return this._aggregate.client_id;
-  }
-
-  // This method does not seem correct
-  getAgencyId() {
-    return this._aggregate.agency_id;
-  }
-
   getLastEventId() {
     return this._aggregate.last_chrono_id;
   }
