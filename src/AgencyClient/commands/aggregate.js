@@ -9,10 +9,9 @@ const projections = {
     console.log('addClientConsultant');
     return {
       type: 'ClientConsultantAdded',
+      aggregate_id: aggregate.getId(),
       data: {
         _id: (new ObjectID).toString(),
-        agency_id: aggregate.getAgencyId(),
-        client_id: aggregate.getClientId(),
         consultant_type: command.consultant_type,
         consultant_id: command.consultant_id
       },
@@ -25,10 +24,9 @@ const projections = {
     console.log('removeClientConsultant');
     return {
       type: 'ClientConsultantRemoved',
+      aggregate_id: aggregate.getId(),
       data: {
-        _id: command._id,
-        agency_id: aggregate.getAgencyId(),
-        client_id: aggregate.getClientId()
+        _id: command._id
       },
       chrono_id: ++event_id
     }

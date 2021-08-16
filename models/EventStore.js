@@ -15,6 +15,10 @@ const eventStoreSchema = new Schema(
       required: true,
       description: 'The event type aka the event name'
     },
+    aggregate_id: {
+      type: Object,
+      required: true
+    },
     data: {
       type: Object,
       required: true

@@ -10,8 +10,11 @@ class AgencyClientRepository {
   }
 
   async getAgencyClient(agency_id, client_id) {
-    let events = await this._store.find({'data.agency_id': agency_id, 'data.client_id': client_id}).sort({chrono_id: 1}).lean();
-    return new AgencyClientAggregate(_.reduce(events, event_applier, {}));
+    let events = await this._store.find({aggregate_id: {agency_id, client_id}}).sort({chrono_id: 1}).lean();
+    return new AgencyClientAggregate(
+      {agency_id, client_id},
+      _.reduce(events, event_applier, {last_chrono_id: 0})
+    );
   }
 
   async save(events) {

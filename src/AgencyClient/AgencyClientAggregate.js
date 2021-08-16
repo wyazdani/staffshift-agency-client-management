@@ -4,7 +4,8 @@ const _ = require('lodash');
 class AgencyClientAggregate {
 
   // Should we rather have all the events here?
-  constructor(aggregate) {
+  constructor(id, aggregate) {
+    this._id = id;
     this._aggregate = aggregate;
   }
 
@@ -24,6 +25,10 @@ class AgencyClientAggregate {
     if (_.find(this._aggregate.consultants, {_id: consultant._id}) === undefined) {
       throw new Error('CONSULTANT NOT FOUND');
     }
+  }
+
+  getId() {
+    return this._id;
   }
 
   // This method does not seem correct
