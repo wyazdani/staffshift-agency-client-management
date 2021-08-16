@@ -1,5 +1,6 @@
 'use strict';
-const AgencyClient = require('../src/AgencyClient/AgencyClient');
+const {AgencyClientRepository} = require('../src/AgencyClient/AgencyClientRepository');
+const {AgencyClientCommandHandler} = require('../src/AgencyClient/AgencyClientCommandHandler');
 const {get} = require('lodash');
 const {EventStore} = require('../models');
 
@@ -16,19 +17,18 @@ module.exports.addClientConsultant = async (req, res, next) => {
   const client_id = get(req, 'swagger.params.client_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
+  let repository = new AgencyClientRepository(EventStore);
+  let handler = new AgencyClientCommandHandler(repository);
+
   // Decide how auth / audit data gets from here to the event in the event store.
   let command = {
     type: command_type,
     data: payload
   }
-  // Consider using a builder | respository pattern
-  let agg = new AgencyClient(agency_id, client_id);
-
-  // Should this be part of the aggregate already?
-  agg.setEventStore(EventStore);
 
   try {
-    await agg.apply(command)
+    // Passing in the agency and client ids here feels strange
+    await handler.apply(agency_id, client_id, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -55,19 +55,17 @@ module.exports.addClientConsultant = async (req, res, next) => {
   const consultant_id = get(req, 'swagger.params.consultant_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
+  let repository = new AgencyClientRepository(EventStore);
+  let handler = new AgencyClientCommandHandler(repository);
+
   // Decide how auth / audit data gets from here to the event in the event store.
   let command = {
     type: command_type,
     data: {_id: consultant_id}
   }
-  // Consider using a builder | respository pattern
-  let agg = new AgencyClient(agency_id, client_id);
-
-  // Should this be part of the aggregate already?
-  agg.setEventStore(EventStore);
 
   try {
-    await agg.apply(command)
+    await handler.apply(agency_id, client_id, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -93,17 +91,13 @@ module.exports.addClientConsultant = async (req, res, next) => {
   const client_id = get(req, 'swagger.params.client_id.value', '');
 
   // Consider using a builder | respository pattern
-  let agg = new AgencyClient(agency_id, client_id);
-
-  // Should this be part of the aggregate already?
-  agg.setEventStore(EventStore);
-
+  let repository = new AgencyClientRepository(EventStore);
   try {
-    let data = await agg.project()
+    let aggregate = await repository.getAgencyClient(agency_id, client_id);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(data));
+    res.end(JSON.stringify(aggregate));
   } catch (err) {
     // This needs to be centralised and done better
     console.log('ERR THERE WAS', err);
