@@ -71,8 +71,8 @@ paths:
       - $ref: "#/parameters/client_id"
     post:
       x-swagger-router-controller: "AgencyClient"
-      x-octophant-event: "addClientConsultant"
-      operationId: "addClientConsultant"
+      x-octophant-event: "addAgencyClientConsultant"
+      operationId: "addAgencyClientConsultant"
       security:
         - jwt: []
       parameters:
@@ -96,8 +96,8 @@ paths:
       - $ref: "#/parameters/consultant_id"
     delete:
       x-swagger-router-controller: "AgencyClient"
-      x-octophant-event: "removeClientConsultant"
-      operationId: "removeClientConsultant"
+      x-octophant-event: "removeAgencyClientConsultant"
+      operationId: "removeAgencyClientConsultant"
       security:
         - jwt: []
       responses:

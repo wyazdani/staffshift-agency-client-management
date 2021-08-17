@@ -5,13 +5,13 @@ const {get} = require('lodash');
 const {EventStore} = require('../models');
 
 /**
- * Gets the status of the service
+ * Add Agency Client Consultant
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
-module.exports.addClientConsultant = async (req, res, next) => {
+module.exports.addAgencyClientConsultant = async (req, res, next) => {
   const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
   const client_id = get(req, 'swagger.params.client_id.value', '');
@@ -43,13 +43,13 @@ module.exports.addClientConsultant = async (req, res, next) => {
 };
 
 /**
- * Gets the status of the service
+ * Remove Agency Client Consultant
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.removeClientConsultant = async (req, res, next) => {
+ module.exports.removeAgencyClientConsultant = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
   const client_id = get(req, 'swagger.params.client_id.value', '');
   const consultant_id = get(req, 'swagger.params.consultant_id.value', '');

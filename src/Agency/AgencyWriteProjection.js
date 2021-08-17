@@ -12,14 +12,14 @@ const projections = {
     (aggregate.consultant_roles) ?
       aggregate.consultant_roles.push(consultant_role) :
       aggregate.consultant_roles = [consultant_role];
-    return {...aggregate, last_chrono_id: event.chrono_id};
+    return {...aggregate, last_sequence_id: event.sequence_id};
   },
   'AgencyConsultantRoleRemoved': (aggregate, event) => {
     console.log('AgencyConsultantRoleRemoved');
     aggregate.consultant_roles = _.differenceWith(aggregate.consultant_roles, [event.data], function(value, other) {
       return ((value._id == other._id))
     });
-    return {...aggregate, last_chrono_id: event.chrono_id};
+    return {...aggregate, last_sequence_id: event.sequence_id};
   }
 }
 

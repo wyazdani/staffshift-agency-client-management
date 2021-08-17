@@ -1,6 +1,6 @@
 [
   {
-    "type": "ClientLinkCreated",
+    "type": "AgencyClientLinkCreated",
     "aggregate_id" : {
       "agency_id" : "61140ec7a66b8c03ab6151b3",
       "client_id" : "61140ecd252eea6a1224662d"
@@ -10,10 +10,10 @@
       "name": "St Johns",
       "linked": true
     },
-    "chrono_id": 1
+    "sequence_id": 1
   },
   {
-    "type": "ClientUnLinked",
+    "type": "AgencyClientUnLinked",
     "aggregate_id" : {
       "agency_id" : "61140ec7a66b8c03ab6151b3",
       "client_id" : "61140ecd252eea6a1224662d"
@@ -21,36 +21,36 @@
     "data": {
       "linked": false
     },
-    "chrono_id": 2
+    "sequence_id": 2
   },
   {
-    "type": "ClientConsultantAdded",
+    "type": "AgencyClientConsultantAdded",
     "aggregate_id" : {
       "agency_id" : "61140ec7a66b8c03ab6151b3",
       "client_id" : "61140ecd252eea6a1224662d"
     },
     "data": {
       "_id": "611abff1cd34213d57ee8bc1",
-      "consultant_type": "portfolio",
+      "consultant_role_id": "611b79b66b822586e7e22c6a",
       "consultant_id": "61141299e1b692246aacd177"
     },
-    "chrono_id": 3
+    "sequence_id": 3
   },
   {
-    "type": "ClientConsultantAdded",
+    "type": "AgencyClientConsultantAdded",
     "aggregate_id" : {
       "agency_id" : "61140ec7a66b8c03ab6151b3",
       "client_id" : "61140ecd252eea6a1224662d"
     },
     "data": {
       "_id": "611abff1cd34213d57ee8bc0",
-      "consultant_type": "relations_manager",
+      "consultant_role_id": "611b79a8588cfd1c89ddcda0",
       "consultant_id": "6114150c56796c0baa492502"
     },
-    "chrono_id": 4
+    "sequence_id": 4
   },
   {
-    "type": "ClientConsultantRemoved",
+    "type": "AgencyClientConsultantRemoved",
     "aggregate_id" : {
       "agency_id" : "61140ec7a66b8c03ab6151b3",
       "client_id" : "61140ecd252eea6a1224662d"
@@ -58,6 +58,6 @@
     "data": {
       "_id": "611abff1cd34213d57ee8bc0"
     },
-    "chrono_id": 5
+    "sequence_id": 5
   }
 ]

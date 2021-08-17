@@ -3,32 +3,30 @@ const _ = require('lodash');
 const ObjectID = require('mongodb').ObjectID;
 
 const projections = {
-  'addClientConsultant': async (aggregate, command) => {
+  'addAgencyClientConsultant': async (aggregate, command) => {
     await aggregate.addClientConsultant(command);
     let event_id = aggregate.getLastEventId();
-    console.log('addClientConsultant');
     return {
-      type: 'ClientConsultantAdded',
+      type: 'AgencyClientConsultantAdded',
       aggregate_id: aggregate.getId(),
       data: {
         _id: (new ObjectID).toString(),
         consultant_role_id: command.consultant_role_id,
         consultant_id: command.consultant_id
       },
-      chrono_id: ++event_id
+      sequence_id: ++event_id
     }
   },
-  'removeClientConsultant': async (aggregate, command) => {
+  'removeAgencyClientConsultant': async (aggregate, command) => {
     await aggregate.removeClientConsultant(command);
     let event_id = aggregate.getLastEventId();
-    console.log('removeClientConsultant');
     return {
-      type: 'ClientConsultantRemoved',
+      type: 'AgencyClientConsultantRemoved',
       aggregate_id: aggregate.getId(),
       data: {
         _id: command._id
       },
-      chrono_id: ++event_id
+      sequence_id: ++event_id
     }
   }
 }

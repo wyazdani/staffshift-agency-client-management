@@ -37,7 +37,7 @@ class AgencyClientAggregate {
   }
 
   getLastEventId() {
-    return this._aggregate.last_chrono_id;
+    return this._aggregate.last_sequence_id;
   }
 
   // Base class method for all aggregates

@@ -10,10 +10,10 @@ class AgencyRepository {
   }
 
   async getAggregate(agency_id) {
-    let events = await this._store.find({aggregate_id: {agency_id}}).sort({chrono_id: 1}).lean();
+    let events = await this._store.find({aggregate_id: {agency_id}}).sort({sequence_id: 1}).lean();
     return new AgencyAggregate(
       {agency_id},
-      _.reduce(events, event_applier, {last_chrono_id: 0})
+      _.reduce(events, event_applier, {last_sequence_id: 0})
     );
   }
 

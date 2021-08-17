@@ -5,7 +5,7 @@ const {get} = require('lodash');
 const {EventStore} = require('../models');
 
 /**
- * Gets the status of the service
+ * Add Agency Consultant Role
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
@@ -42,7 +42,7 @@ module.exports.addAgencyConsultantRole = async (req, res, next) => {
 };
 
 /**
- * Gets the status of the service
+ * Remove Agency Consultant Role
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
@@ -79,7 +79,7 @@ module.exports.addAgencyConsultantRole = async (req, res, next) => {
 };
 
 /**
- * Gets the status of the service
+ * Get Agency Consultant Role
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object

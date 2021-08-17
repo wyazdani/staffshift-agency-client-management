@@ -23,10 +23,10 @@ const eventStoreSchema = new Schema(
       type: Object,
       required: true
     },
-    chrono_id: {
+    sequence_id: {
       type: Number,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'An artificial sequencer reduce aggregate level concurrency'
     }
   },
   {

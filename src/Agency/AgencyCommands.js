@@ -5,7 +5,6 @@ const ObjectID = require('mongodb').ObjectID;
 const AgencyCommands = {
   'addAgencyConsultantRole': async (aggregate, command) => {
     let event_id = aggregate.getLastEventId();
-    console.log('addAgencyConsultantRole');
     return {
       type: 'AgencyConsultantRoleAdded',
       aggregate_id: aggregate.getId(),
@@ -15,19 +14,18 @@ const AgencyCommands = {
         description: command.description,
         max_consultants: command.max_consultants
       },
-      chrono_id: ++event_id
+      sequence_id: ++event_id
     }
   },
   'removeAgencyConsultantRole': async (aggregate, command) => {
     let event_id = aggregate.getLastEventId();
-    console.log('removeAgencyConsultantRole');
     return {
       type: 'AgencyConsultantRoleRemoved',
       aggregate_id: aggregate.getId(),
       data: {
         _id: command._id
       },
-      chrono_id: ++event_id
+      sequence_id: ++event_id
     }
   }
 }
