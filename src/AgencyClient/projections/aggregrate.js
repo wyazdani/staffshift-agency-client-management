@@ -2,32 +2,28 @@
 const _ = require('lodash');
 
 const projections = {
-  'ClientLinkCreated': (aggregate, event) => {
-    console.log('ClientLinkCreated');
-    return {...event.data, last_chrono_id: event.chrono_id};
+  'AgencyClientLinkCreated': (aggregate, event) => {
+    return {...event.data, last_sequence_id: event.sequence_id};
   },
-  'ClientUnLinked': (aggregate, event) => {
-    console.log('ClientUnLinked');
+  'AgencyClientUnLinked': (aggregate, event) => {
     aggregate.linked = false
-    return {...aggregate, last_chrono_id: event.chrono_id};
+    return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  'ClientConsultantAdded': (aggregate, event) => {
-    console.log('ClientConsultantAdded');
+  'AgencyClientConsultantAdded': (aggregate, event) => {
     let consultant = {};
     consultant._id = event.data._id;
-    consultant.consultant_type = event.data.consultant_type;
+    consultant.consultant_role_id = event.data.consultant_role_id;
     consultant.consultant_id = event.data.consultant_id;
     (aggregate.consultants) ?
       aggregate.consultants.push(consultant) :
       aggregate.consultants = [consultant];
-    return {...aggregate, last_chrono_id: event.chrono_id};
+    return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  'ClientConsultantRemoved': (aggregate, event) => {
-    console.log('ClientConsultantRemoved');
+  'AgencyClientConsultantRemoved': (aggregate, event) => {
     aggregate.consultants = _.differenceWith(aggregate.consultants, [event.data], function(value, other) {
       return ((value._id == other._id))
     });
-    return {...aggregate, last_chrono_id: event.chrono_id};
+    return {...aggregate, last_sequence_id: event.sequence_id};
   }
 }
 

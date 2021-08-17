@@ -15,14 +15,18 @@ const eventStoreSchema = new Schema(
       required: true,
       description: 'The event type aka the event name'
     },
+    aggregate_id: {
+      type: Object,
+      required: true
+    },
     data: {
       type: Object,
       required: true
     },
-    chrono_id: {
+    sequence_id: {
       type: Number,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'An artificial sequencer reduce aggregate level concurrency'
     }
   },
   {

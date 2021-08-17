@@ -1,14 +1,14 @@
 'use strict';
 const _ = require('lodash');
-const cmds = require('../AgencyClient/commands/aggregate');
+const cmds = require('./AgencyCommands');
 
-class AgencyClientCommandHandler {
+class AgencyCommandHandler {
   constructor(repository) {
     this._repository = repository;
   }
 
-  async apply(agency_id, client_id, command) {
-    let aggregate = await this._repository.getAggregate(agency_id, client_id);
+  async apply(agency_id, command) {
+    let aggregate = await this._repository.getAggregate(agency_id);
 
     if (!cmds[command.type]) {
       throw new Error(`Command type:${command.type} is not supported`);
@@ -19,4 +19,4 @@ class AgencyClientCommandHandler {
   }
 }
 
-module.exports = {AgencyClientCommandHandler}
+module.exports = {AgencyCommandHandler}

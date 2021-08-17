@@ -2,6 +2,7 @@
 const _ = require('lodash');
 const agg_projection = require('../AgencyClient/projections/aggregrate');
 const {AgencyClientAggregate} = require('./AgencyClientAggregate');
+const {AgencyRepository} = require('../Agency/AgencyRepository');
 
 class AgencyClientRepository {
 
@@ -9,9 +10,14 @@ class AgencyClientRepository {
     this._store = store;
   }
 
-  async getAgencyClient(agency_id, client_id) {
-    let events = await this._store.find({'data.agency_id': agency_id, 'data.client_id': client_id}).sort({chrono_id: 1}).lean();
-    return new AgencyClientAggregate(_.reduce(events, event_applier, {}));
+  async getAggregate(agency_id, client_id) {
+    let events = await this._store.find({aggregate_id: {agency_id, client_id}}).sort({sequence_id: 1}).lean();
+
+    return new AgencyClientAggregate(
+      {agency_id, client_id},
+      _.reduce(events, event_applier, {last_sequence_id: 0}),
+      new AgencyRepository(this._store)
+    );
   }
 
   async save(events) {

@@ -2,26 +2,25 @@
 const _ = require('lodash');
 const ObjectID = require('mongodb').ObjectID;
 
-const projections = {
-  'addAgencyClientConsultant': async (aggregate, command) => {
-    await aggregate.addClientConsultant(command);
+const AgencyCommands = {
+  'addAgencyConsultantRole': async (aggregate, command) => {
     let event_id = aggregate.getLastEventId();
     return {
-      type: 'AgencyClientConsultantAdded',
+      type: 'AgencyConsultantRoleAdded',
       aggregate_id: aggregate.getId(),
       data: {
         _id: (new ObjectID).toString(),
-        consultant_role_id: command.consultant_role_id,
-        consultant_id: command.consultant_id
+        name: command.name,
+        description: command.description,
+        max_consultants: command.max_consultants
       },
       sequence_id: ++event_id
     }
   },
-  'removeAgencyClientConsultant': async (aggregate, command) => {
-    await aggregate.removeClientConsultant(command);
+  'removeAgencyConsultantRole': async (aggregate, command) => {
     let event_id = aggregate.getLastEventId();
     return {
-      type: 'AgencyClientConsultantRemoved',
+      type: 'AgencyConsultantRoleRemoved',
       aggregate_id: aggregate.getId(),
       data: {
         _id: command._id
@@ -31,4 +30,4 @@ const projections = {
   }
 }
 
-module.exports = projections
+module.exports = AgencyCommands

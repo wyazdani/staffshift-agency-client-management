@@ -1,24 +1,23 @@
 'use strict';
-const {AgencyClientRepository} = require('../src/AgencyClient/AgencyClientRepository');
-const {AgencyClientCommandHandler} = require('../src/AgencyClient/AgencyClientCommandHandler');
+const {AgencyRepository} = require('../src/Agency/AgencyRepository');
+const {AgencyCommandHandler} = require('../src/Agency/AgencyCommandHandler');
 const {get} = require('lodash');
 const {EventStore} = require('../models');
 
 /**
- * Add Agency Client Consultant
+ * Add Agency Consultant Role
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
-module.exports.addAgencyClientConsultant = async (req, res, next) => {
-  const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
+module.exports.addAgencyConsultantRole = async (req, res, next) => {
+  const payload = get(req, 'swagger.params.add_agency_consultant_role_payload.value', {});
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
-  const client_id = get(req, 'swagger.params.client_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
-  let repository = new AgencyClientRepository(EventStore);
-  let handler = new AgencyClientCommandHandler(repository);
+  let repository = new AgencyRepository(EventStore);
+  let handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
   let command = {
@@ -27,8 +26,8 @@ module.exports.addAgencyClientConsultant = async (req, res, next) => {
   }
 
   try {
-    // Passing in the agency and client ids here feels strange
-    await handler.apply(agency_id, client_id, command);
+    // Passing in the agency id here feels strange
+    await handler.apply(agency_id, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -43,29 +42,29 @@ module.exports.addAgencyClientConsultant = async (req, res, next) => {
 };
 
 /**
- * Remove Agency Client Consultant
+ * Remove Agency Consultant Role
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.removeAgencyClientConsultant = async (req, res, next) => {
+ module.exports.removeAgencyConsultantRole = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
-  const client_id = get(req, 'swagger.params.client_id.value', '');
-  const consultant_id = get(req, 'swagger.params.consultant_id.value', '');
+  const consultant_role_id = get(req, 'swagger.params.consultant_role_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
-  let repository = new AgencyClientRepository(EventStore);
-  let handler = new AgencyClientCommandHandler(repository);
+  let repository = new AgencyRepository(EventStore);
+  let handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
   let command = {
     type: command_type,
-    data: {_id: consultant_id}
+    data: {_id: consultant_role_id}
   }
 
   try {
-    await handler.apply(agency_id, client_id, command);
+    // Passing in the agency id here feels strange
+    await handler.apply(agency_id, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -80,20 +79,21 @@ module.exports.addAgencyClientConsultant = async (req, res, next) => {
 };
 
 /**
- * Gets the status of the service
+ * Get Agency Consultant Role
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.getClient = async (req, res, next) => {
+ module.exports.getAgencyConsultantRoles = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
-  const client_id = get(req, 'swagger.params.client_id.value', '');
 
   // Consider using a builder | respository pattern
-  let repository = new AgencyClientRepository(EventStore);
+  let repository = new AgencyRepository(EventStore);
+
   try {
-    let aggregate = await repository.getAggregate(agency_id, client_id);
+    // This will most likely need to project only the section we are working with based on the route
+    let aggregate = await repository.getAggregate(agency_id);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
