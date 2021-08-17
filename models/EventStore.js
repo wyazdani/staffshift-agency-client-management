@@ -5,11 +5,6 @@ const Schema = mongoose.Schema;
 
 const eventStoreSchema = new Schema(
   {
-    _id: {
-      type: String,
-      required: true,
-      description: 'The unique identifier'
-    },
     type: {
       type: String,
       required: true,
@@ -26,7 +21,7 @@ const eventStoreSchema = new Schema(
     sequence_id: {
       type: Number,
       required: true,
-      description: 'An artificial sequencer reduce aggregate level concurrency'
+      description: 'An artificial sequencer to reduce aggregate level concurrency'
     }
   },
   {

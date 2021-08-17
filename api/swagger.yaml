@@ -49,18 +49,18 @@ paths:
       - $ref: "#/parameters/client_id"
     get:
       x-swagger-router-controller: "AgencyClient"
-      x-octophant-event: "getClient"
-      operationId: "getClient"
+      x-octophant-event: "getAgencyClient"
+      operationId: "getAgencyClient"
       security:
         - jwt: []
       responses:
         200:
-          description: "Gets a Agency Client Consultant"
+          description: "Gets an Agency Client"
           schema:
             $ref: "#/definitions/assign_client_consultant_payload_def"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Assigns an Agency Client Consultant"
+      summary: "Gets an Agency Client"
       tags:
         - "Agency Client Consultants"
   /agency/{agency_id}/client/{client_id}/consultant:
@@ -79,12 +79,12 @@ paths:
         - $ref: "#/parameters/assign_client_consultant_payload"
       responses:
         200:
-          description: "Adds a Agency Client Consultant"
+          description: "Adds an Agency Client Consultant"
           schema:
             $ref: "#/definitions/assign_client_consultant_payload_def"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Assigns an Agency Client Consultant"
+      summary: "Adds an Agency Client Consultant"
       tags:
         - "Agency Client Consultants"
   /agency/{agency_id}/client/{client_id}/consultant/{consultant_id}:
@@ -102,12 +102,12 @@ paths:
         - jwt: []
       responses:
         200:
-          description: "Removes a Agency Client Consultant"
+          description: "Removes an Agency Client Consultant"
           schema:
             $ref: "#/definitions/assign_client_consultant_payload_def"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Assigns an Agency Client Consultant"
+      summary: "Removes an Agency Client Consultant"
       tags:
         - "Agency Client Consultants"
   /agency/{agency_id}/consultant-roles:
@@ -176,14 +176,14 @@ parameters:
     name: add_agency_consultant_role_payload
     in: body
     required: true
-    description: "The payload used to create a tag resource"
+    description: "The payload used to create an agency consultant role"
     schema:
       $ref: "#/definitions/add_agency_consultant_role_payload_def"
   assign_client_consultant_payload:
     name: assign_client_consultant_payload
     in: body
     required: true
-    description: "The payload used to create a tag resource"
+    description: "The payload used to create an agency client consultant"
     schema:
       $ref: "#/definitions/assign_client_consultant_payload_def"
   x_request_id:

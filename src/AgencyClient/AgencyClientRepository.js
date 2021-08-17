@@ -1,6 +1,6 @@
 'use strict';
 const _ = require('lodash');
-const agg_projection = require('../AgencyClient/projections/aggregrate');
+const aggregateProjection = require('../AgencyClient/projections/aggregrate');
 const {AgencyClientAggregate} = require('./AgencyClientAggregate');
 const {AgencyRepository} = require('../Agency/AgencyRepository');
 
@@ -15,21 +15,19 @@ class AgencyClientRepository {
 
     return new AgencyClientAggregate(
       {agency_id, client_id},
-      _.reduce(events, event_applier, {last_sequence_id: 0}),
+      _.reduce(events, eventApplier, {last_sequence_id: 0}),
       new AgencyRepository(this._store)
     );
   }
 
   async save(events) {
-    console.log(events);
-    // Does not belong here
     await this._store.insertMany(events, {lean: true});
   }
 
 }
 
-const event_applier = (aggregate, event) => {
-  return agg_projection[event.type](aggregate, event);
+const eventApplier = (aggregate, event) => {
+  return aggregateProjection[event.type](aggregate, event);
 }
 
 module.exports = {AgencyClientRepository};

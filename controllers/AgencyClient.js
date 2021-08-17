@@ -86,7 +86,7 @@ module.exports.addAgencyClientConsultant = async (req, res, next) => {
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.getClient = async (req, res, next) => {
+ module.exports.getAgencyClient = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
   const client_id = get(req, 'swagger.params.client_id.value', '');
 

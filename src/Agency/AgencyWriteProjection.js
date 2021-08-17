@@ -1,9 +1,12 @@
 'use strict';
 const _ = require('lodash');
+const {
+  AGENCY_CONSULTANT_ROLE_ADDED,
+  AGENCY_CONSULTANT_ROLE_REMOVED
+} = require('../Events');
 
 const projections = {
-  'AgencyConsultantRoleAdded': (aggregate, event) => {
-    console.log('AgencyConsultantRoleAdded');
+  [AGENCY_CONSULTANT_ROLE_ADDED]: (aggregate, event) => {
     let consultant_role = {};
     consultant_role._id = event.data._id;
     consultant_role.name = event.data.name;
@@ -14,8 +17,7 @@ const projections = {
       aggregate.consultant_roles = [consultant_role];
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  'AgencyConsultantRoleRemoved': (aggregate, event) => {
-    console.log('AgencyConsultantRoleRemoved');
+  [AGENCY_CONSULTANT_ROLE_REMOVED]: (aggregate, event) => {
     aggregate.consultant_roles = _.differenceWith(aggregate.consultant_roles, [event.data], function(value, other) {
       return ((value._id == other._id))
     });
