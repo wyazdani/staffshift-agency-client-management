@@ -1,7 +1,7 @@
 {
-  "name": "staffshift-portfolios",
+  "name": "staffshift-agency-client-management",
   "version": "1.0.1",
-  "description": "Staffshift portfolios",
+  "description": "Micro service for managing staffshift agency clients",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
