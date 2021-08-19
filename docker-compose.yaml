@@ -1,8 +1,8 @@
 version: '3.3'
 services:
-  staffshift-portfolios:
-    image: staffshift-portfolios
-    container_name: staffshift-portfolios
+  staffshift-agency-client-management:
+    image: staffshift-agency-client-management
+    container_name: staffshift-agency-client-management
     ports:
     - "3370:3370"
     command: 'sh -c "npm run test && npm run lint"'

@@ -30,13 +30,13 @@
   ],
   "logger": {
     "stack": {
-      "app": "staffshift-portfolios"
+      "app": "staffshift-agency-client-management"
     },
     "level": "info"
   },
   "bDebug": false,
   "mongo": {
-    "database_host": "mongodb://localhost:27017/staffshiftportfoliosDev",
+    "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementDev",
     "options": {
       "poolSize": 10,
       "useNewUrlParser": true,
