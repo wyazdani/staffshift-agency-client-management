@@ -4,12 +4,12 @@
   },
   "logger": {
     "stack": {
-      "app": "staffshift-portfolios"
+      "app": "staffshift-agency-client-management"
     },
     "level": "none"
   },
   "mongo": {
-    "database_host": "mongodb://database:27017/staffshiftportfoliosCI"
+    "database_host": "mongodb://database:27017/staffshiftagencyclientmanagementCI"
   },
   "mounteBank": {
     "host": "mountebank",

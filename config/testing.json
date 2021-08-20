@@ -4,7 +4,7 @@
   },
   "logger": {
     "stack": {
-      "app": "staffshift-portfolios"
+      "app": "staffshift-agency-client-management"
     },
     "level": "none"
   },
@@ -15,7 +15,7 @@
     "version": "v1"
   },
   "mongo": {
-    "database_host": "mongodb://localhost:27017/staffshiftportfoliosTesting"
+    "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementTesting"
   },
   "mounteBank": {
     "host": "127.0.0.1",

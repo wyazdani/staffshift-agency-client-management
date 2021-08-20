@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Staffshift Portfolios API"
+  description: "Staffshift Agency Client Management API"
   version: "1.0.0"
-  title: "Staffshift Portfolios Service"
+  title: "Staffshift Agency Client Management Service"
   termsOfService: "https://www.staffshift.com/#terms-and-conditions"
   contact:
     name: "Staffshift team"

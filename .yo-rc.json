@@ -1,8 +1,8 @@
 {
   "generator-a-24-node-swagger": {
     "promptValues": {
-      "project_name": "staffshift-portfolios",
-      "project_description": "Staffshift portfolios",
+      "project_name": "staffshift-agency-client-management",
+      "project_description": "Staffshift Agency Client Management",
       "project_port": "3370",
       "has_db": true,
       "requires_staffshift_audits": true,
