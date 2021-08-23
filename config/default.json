@@ -36,7 +36,7 @@
   },
   "bDebug": false,
   "mongo": {
-    "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementDev",
+    "database_host": "mongodb://localhost:27017/staffshiftclientmanagementDev",
     "options": {
       "poolSize": 10,
       "useNewUrlParser": true,
@@ -69,5 +69,53 @@
       "delay": 10000,
       "server_close_timeout": 5000
     }
+  },
+  "pubSubAuth": {
+    "projectId": "staffshift-dev-env",
+    "credentials": {}
+  },
+  "pubsub_log_level": "notice",
+  "app_domain": "ss",
+  "app_name": "agency-client-management",
+  "ss_domain_event": {
+    "app": "agency-client-management",
+    "jwt_secret": "SomeSecret",
+    "pod_id": 234,
+    "strict_mode": true,
+    "ss_domain_event_topics": [
+      {
+        "name": "ss.global.agency.organisation.link",
+        "subscribers": [
+          {
+            "name": "subscriber.agency-client-management-organisation",
+            "processor": "./domain-events-processors/Consumer",
+            "maxPullMessages": 4,
+            "maxConcurrentMessages": 2
+          }
+        ]
+      },
+      {
+        "name": "ss.global.agency.organisation.site.link",
+        "subscribers": [
+          {
+            "name": "subscriber.agency-client-management-site",
+            "processor": "./domain-events-processors/Consumer",
+            "maxPullMessages": 4,
+            "maxConcurrentMessages": 2
+          }
+        ]
+      },
+      {
+        "name": "ss.global.agency.organisation.site.ward.link",
+        "subscribers": [
+          {
+            "name": "subscriber.agency-client-management-ward",
+            "processor": "./domain-events-processors/Consumer",
+            "maxPullMessages": 4,
+            "maxConcurrentMessages": 2
+          }
+        ]
+      }
+    ]
   }
 }

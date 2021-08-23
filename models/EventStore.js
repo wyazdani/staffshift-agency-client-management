@@ -30,8 +30,7 @@ const eventStoreSchema = new Schema(
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     },
-    collection: 'EventStore',
-    _id: false
+    collection: 'EventStore'
   }
 );
 

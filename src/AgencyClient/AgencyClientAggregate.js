@@ -10,6 +10,10 @@ class AgencyClientAggregate {
     this._agency_repository = agency_repository;
   }
 
+  isLinked() {
+    return !!this._aggregate.linked;
+  }
+
   // Business Logic that should be applied
   async addClientConsultant(consultant) {
     const agencyAggregate = await this._agency_repository.getAggregate(this._id.agency_id);

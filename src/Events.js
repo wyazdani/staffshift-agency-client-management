@@ -11,14 +11,6 @@ const events = {
     name: 'AgencyConsultantRoleRemoved',
     description: 'The Agency Consultant Role has been removed'
   },
-  AGENCY_CLIENT_LINK_CREATED: {
-    name: 'AgencyClientLinkCreated',
-    description: 'The Agency Client Link has been created'
-  },
-  AGENCY_CLIENT_UNLINKED: {
-    name: 'AgencyClientUnLinked',
-    description: 'The Agency Client Link has been removed'
-  },
   AGENCY_CLIENT_CONSULTANT_ADDED: {
     name: 'AgencyClientConsultantAdded',
     description: 'The Agency Client Consultant has been added'
@@ -26,6 +18,14 @@ const events = {
   AGENCY_CLIENT_CONSULTANT_REMOVED: {
     name: 'AgencyClientConsultantRemoved',
     description: 'The Agency Client Consultant has been removed'
+  },
+  AGENCY_CLIENT_LINKED: {
+    name: 'AgencyClientLinked',
+    description: 'The Agency Client was linked'
+  },
+  AGENCY_CLIENT_UNLINKED: {
+    name: 'AgencyClientUnLinked',
+    description: 'The Agency Client was unlinked, does not indicate a deletion'
   }
 }
 

@@ -1,18 +1,20 @@
 'use strict';
 const _ = require('lodash');
 const {
-  AGENCY_CLIENT_LINK_CREATED,
+  AGENCY_CLIENT_LINKED,
   AGENCY_CLIENT_UNLINKED,
   AGENCY_CLIENT_CONSULTANT_ADDED,
   AGENCY_CLIENT_CONSULTANT_REMOVED
 } = require('../../Events');
 
 const projections = {
-  [AGENCY_CLIENT_LINK_CREATED]: (aggregate, event) => {
-    return {...event.data, last_sequence_id: event.sequence_id};
+  [AGENCY_CLIENT_LINKED]: (aggregate, event) => {
+    aggregate.linked = true;
+    aggregate.client_type = event.data.client_type;
+    return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AGENCY_CLIENT_UNLINKED]: (aggregate, event) => {
-    aggregate.linked = false
+    aggregate.linked = false;
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AGENCY_CLIENT_CONSULTANT_ADDED]: (aggregate, event) => {

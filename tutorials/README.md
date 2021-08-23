@@ -1,5 +1,8 @@
 # Staffshift Agency Client Management
 
+
+## Bounded Contexts
+
 ## Aggregate Roots
 These are the current aggregate roots we have defined. For more detailed information on aggregate roots see [here]()
 
