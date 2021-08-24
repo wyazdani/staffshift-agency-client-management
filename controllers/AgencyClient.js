@@ -49,7 +49,7 @@ module.exports.addAgencyClientConsultant = async (req, res, next) => {
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.removeAgencyClientConsultant = async (req, res, next) => {
+module.exports.removeAgencyClientConsultant = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
   const client_id = get(req, 'swagger.params.client_id.value', '');
   const consultant_id = get(req, 'swagger.params.consultant_id.value', '');

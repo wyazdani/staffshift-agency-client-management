@@ -2,8 +2,10 @@
 
 const EventStore = require('./EventStore');
 const IncomingDomainEvents = require('./IncomingDomainEvents');
+const AgencyClientConsultants = require('./AgencyClientConsultants');
 
 module.exports = {
   EventStore,
-  IncomingDomainEvents
+  IncomingDomainEvents,
+  AgencyClientConsultants
 };

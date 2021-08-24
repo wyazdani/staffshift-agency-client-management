@@ -14,6 +14,10 @@ class AgencyAggregate {
     return (role) ? role.max_consultants : 0;
   }
 
+  getConsultantRole(consultant_role_id) {
+    return _.find(this._aggregate.consultant_roles, {_id: consultant_role_id});
+  }
+
   getId() {
     return this._id;
   }
