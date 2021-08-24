@@ -36,6 +36,10 @@ class AgencyClientAggregate {
     }
   }
 
+  getConsultants() {
+    return this._aggregate.consultants;
+  }
+
   getId() {
     return this._id;
   }

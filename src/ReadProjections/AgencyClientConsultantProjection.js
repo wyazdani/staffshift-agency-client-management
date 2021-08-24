@@ -7,7 +7,7 @@ const {AgencyRepository} = require('../../src/Agency/AgencyRepository');
 const {
   AGENCY_CLIENT_CONSULTANT_ADDED,
   AGENCY_CLIENT_CONSULTANT_REMOVED
-} = require('../../Events');
+} = require('../Events');
 
 const events = [
   AGENCY_CLIENT_CONSULTANT_ADDED, AGENCY_CLIENT_CONSULTANT_REMOVED

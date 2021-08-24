@@ -10,8 +10,12 @@ class AgencyClientRepository {
     this._store = store;
   }
 
-  async getAggregate(agency_id, client_id) {
-    let events = await this._store.find({aggregate_id: {agency_id, client_id}}).sort({sequence_id: 1}).lean();
+  async getAggregate(agency_id, client_id, sequence_id = undefined) {
+    let query = {aggregate_id: {agency_id, client_id}};
+    if (sequence_id) {
+      query['sequence_id'] = {$lte: sequence_id};
+    }
+    let events = await this._store.find(query).sort({sequence_id: 1}).lean();
 
     return new AgencyClientAggregate(
       {agency_id, client_id},

@@ -9,8 +9,12 @@ class AgencyRepository {
     this._store = store;
   }
 
-  async getAggregate(agency_id) {
-    let events = await this._store.find({aggregate_id: {agency_id}}).sort({sequence_id: 1}).lean();
+  async getAggregate(agency_id, sequence_id = undefined) {
+    let query = {aggregate_id: {agency_id}};
+    if (sequence_id) {
+      query['sequence_id'] = {$lte: sequence_id};
+    }
+    let events = await this._store.find(query).sort({sequence_id: 1}).lean();
     return new AgencyAggregate(
       {agency_id},
       _.reduce(events, eventApplier, {last_sequence_id: 0})
