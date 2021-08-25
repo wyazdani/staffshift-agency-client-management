@@ -8,30 +8,33 @@ const agencyClientEventLog = new Schema(
     agency_id: {
       type: String,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'The agency id'
     },
     client_id: {
       type: String,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'The client id'
     },
-    event: {
+    event_type: {
       type: String,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'The event type / name'
     },
     snapshot: {
       type: Object,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'The snapshot of the datapoint up to the event sequence_id'
     },
     evented_at: {
       type: Date,
-      required: true
+      required: true,
+      description: 'Indicates the time the event took place, not related to this collection'
     }
   },
   // What does created_at AND updated_at represent?
+  // This is a projection, does it indicate when the entries where added / updated on the projection?
   {
+    // We will most likely need to keep the version key to apply optimistic locks
     versionKey: false,
     timestamps: {
       createdAt: 'created_at',
@@ -42,6 +45,6 @@ const agencyClientEventLog = new Schema(
 );
 
 /**
- * Defines the model for the Event Store
+ * Defines the model for the AgencyClientEventLog Read Projection
  */
 module.exports = mongoose.model('AgencyClientEventLog', agencyClientEventLog);

@@ -16,7 +16,8 @@ const eventStoreSchema = new Schema(
     },
     data: {
       type: Object,
-      required: true
+      required: true,
+      description: 'Free-form defined by the actual type'
     },
     sequence_id: {
       type: Number,

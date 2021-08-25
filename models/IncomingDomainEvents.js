@@ -30,6 +30,7 @@ const incomingDomainEventsSchema = new Schema(
 );
 
 /**
- * Defines the model for the Event Store
+ * Defines the model for the IncomingDomainEvents, stored merely for debugging historical scenarios
+ * We are never going to use this collection to populate / process within this service
  */
 module.exports = mongoose.model('IncomingDomainEvents', incomingDomainEventsSchema);
