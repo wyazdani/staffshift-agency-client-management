@@ -6,6 +6,8 @@ const Logger = require('a24-logzio-winston');
 
 const AgencyClientConsultantProjection =  require('./src/ReadProjections/AgencyClientConsultantProjection');
 const AgencyClientEventLogProjection =  require('./src/ReadProjections/AgencyClientEventLogProjection');
+const AgencyClientProjection =  require('./src/ReadProjections/AgencyClientProjection');
+
 const EventStoreTransformer =  require('./src/ReadProjections/EventStoreTransformer');
 
 // Setup logger
@@ -37,10 +39,11 @@ async function watch() {
   // Do we have 1 pipe or many pipes?
   // This approach means that each "step" could be applied more than once if the subsequent steps fail.
   // const clientConsultantProjection = new AgencyClientConsultantProjection();
-  const agencyClientEventLogProjection = new AgencyClientEventLogProjection();
+  // const agencyClientEventLogProjection = new AgencyClientEventLogProjection();
+  const projection = new AgencyClientProjection();
   watchStream
     .pipe(eventStoreTransformer)
-    .pipe(agencyClientEventLogProjection);
+    .pipe(projection);
 }
 
 

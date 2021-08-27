@@ -37,33 +37,15 @@ class AgencyClientLinkStatus {
 
     // Need to have a try catch to wrap all the awaits
     try {
-      // if (eventName == 'agency_organisation_site_link_created') {
-      //   const isLinked = await _isLinked(this._logger, data);
-      //   conversionData.command = {
-      //     type: 'addAgencyClient', data: {linked: isLinked, client_type: 'site'}
-      //   };
-      //   conversionData.client_id = data.site_id;
-      //   return conversionData;
-      // }
-
-      // if (eventName == 'agency_organisation_site_ward_link_created') {
-      //   const isLinked = await _isLinked(this._logger, data);
-      //   conversionData.command = {
-      //     type: 'addAgencyClient', data: {linked: isLinked, client_type: 'ward'}
-      //   };
-      //   conversionData.client_id = data.ward_id;
-      //   return conversionData;
-      // }
-
       if (eventName == 'agency_organisation_site_link_deleted') {
-        conversionData.command = {type: 'unlinkAgencyClient'};
+        conversionData.command = {type: 'unlinkAgencyClient', data: {organisation_id: data.organisation_id, client_type: 'site'}};
         conversionData.client_id = data.site_id;
         return conversionData;
       }
 
       // Handle the Ward Delete
       if (eventName == 'agency_organisation_site_ward_link_deleted') {
-        conversionData.command = {type: 'unlinkAgencyClient'};
+        conversionData.command = {type: 'unlinkAgencyClient', data: {organisation_id: data.organisation_id, client_type: 'ward'}};
         conversionData.client_id = data.ward_id;
         return conversionData;
       }
@@ -71,14 +53,14 @@ class AgencyClientLinkStatus {
       // It changed lets figure out if is a link or unlink
       if (eventName == 'agency_organisation_site_link_status_changed' || eventName == 'agency_organisation_site_link_created') {
         const command = await _getCommand(this._logger, data);
-        conversionData.command = {type: command, data: {client_type: 'site'}};
+        conversionData.command = {type: command, data: {organisation_id: data.organisation_id, client_type: 'site'}};
         conversionData.client_id = data.site_id;
       }
 
       // It changed lets figure out if is a link or unlink
       if (eventName == 'agency_organisation_site_ward_link_status_changed' || eventName == 'agency_organisation_site_ward_link_created') {
         const command = await _getCommand(this._logger, data);
-        conversionData.command = {type: command, data: {client_type: 'ward'}};
+        conversionData.command = {type: command, data: {organisation_id: data.organisation_id, client_type: 'ward'}};
         conversionData.client_id = data.ward_id;
       }
 
@@ -112,28 +94,6 @@ async function _getCommand(logger, data) {
       command = (response[0].agency_linked) ? 'linkAgencyClient' : 'unlinkAgencyClient';
   }
   return command
-}
-
-/**
- * Uses the Triage Domain Event Data to determine the appropriate command
- * Makes a call to the staffshift-facade service as the event does not have all the required data for the decision
- *
- * @param {Object} logger - The logger object
- * @param {Object} data - The Triage Domain Event data that should be used for the command
- *
- * @returns {String} - The command that should be applied
- */
-async function _isLinked(logger, data) {
-  const client = new FacadeClientHelper(logger);
-  // Need try catch
-  let response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id);
-  if (response.length > 1) {
-    throw new Error('We are only expecting a single agency client entry to be returned');
-  }
-  if (response) {
-    return response[0].agency_linked;
-  }
-  return false;
 }
 
 module.exports = {AgencyClientLinkStatus};

@@ -41,14 +41,37 @@ paths:
       tags:
         - "Status"
       summary: "Gets the status of the service"
-  /agency/{agency_id}/client/{client_id}:
+  /agency/{agency_id}/clients:
+    parameters:
+      - $ref: "#/parameters/page_filter"
+      - $ref: "#/parameters/items_per_page_filter"
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+    get:
+      x-swagger-router-controller: "AgencyClients"
+      x-octophant-event: "listAgencyClients"
+      operationId: "listAgencyClients"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Gets an Agency Client"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Gets an Agency Client"
+      tags:
+        - "Agency Client"
+  /agency/{agency_id}/clients/{client_id}:
     parameters:
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
     get:
-      x-swagger-router-controller: "AgencyClient"
+      x-swagger-router-controller: "AgencyClients"
       x-octophant-event: "getAgencyClient"
       operationId: "getAgencyClient"
       security:
@@ -62,15 +85,15 @@ paths:
           $ref: "#/responses/server_error_model"
       summary: "Gets an Agency Client"
       tags:
-        - "Agency Client Consultants"
-  /agency/{agency_id}/client/{client_id}/consultants:
+        - "Agency Client"
+  /agency/{agency_id}/clients/{client_id}/consultants:
     parameters:
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
     post:
-      x-swagger-router-controller: "AgencyClient"
+      x-swagger-router-controller: "AgencyClients"
       x-octophant-event: "addAgencyClientConsultant"
       operationId: "addAgencyClientConsultant"
       security:
@@ -103,7 +126,7 @@ paths:
       summary: "List Agency Client Consultants"
       tags:
         - "Agency Client Consultants"
-  /agency/{agency_id}/client/{client_id}/consultant/{consultant_id}:
+  /agency/{agency_id}/clients/{client_id}/consultant/{consultant_id}:
     parameters:
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
@@ -241,6 +264,22 @@ parameters:
     pattern: ^[0-9a-fA-F]{24}$
     description: "Consultant Role ID"
     type: string
+  page_filter:
+    name: page
+    in: query
+    description: "The page number to be displayed"
+    required: false
+    type: integer
+    default: 1
+    minimum: 1
+  items_per_page_filter:
+    name: "items_per_page"
+    in: "query"
+    description: "The items per page to be displayed"
+    required: false
+    type: integer
+    default: 25
+    minimum: 1
 definitions:
   list_agency_client_consultant_response_def:
     type: object

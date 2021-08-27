@@ -12,6 +12,7 @@ const projections = {
         type: 'AgencyClientLinked',
         aggregate_id: aggregate.getId(),
         data: {
+          organisation_id: command.organisation_id,
           client_type: command.client_type
         },
         sequence_id: ++event_id
@@ -29,7 +30,9 @@ const projections = {
       return {
         type: 'AgencyClientUnLinked',
         aggregate_id: aggregate.getId(),
-        data: {},
+        data: {
+          organisation_id: command.organisation_id
+        },
         sequence_id: ++event_id
       }
     }
