@@ -14,11 +14,11 @@ const _ = require('lodash');
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.addAgencyClientConsultant = async (req, res, next) => {
-  const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
-  const agency_id = get(req, 'swagger.params.agency_id.value', '');
-  const client_id = get(req, 'swagger.params.client_id.value', '');
-  const command_type = get(req, 'swagger.operation.x-octophant-event', '');
+module.exports.addAgencyClientConsultant = async (req, res, next) => {
+  const payload = _.get(req, 'swagger.params.assign_client_consultant_payload.value', {});
+  const agency_id = _.get(req, 'swagger.params.agency_id.value', '');
+  const client_id = _.get(req, 'swagger.params.client_id.value', '');
+  const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
 
   let repository = new AgencyClientRepository(EventStore);
   let handler = new AgencyClientCommandHandler(repository);
@@ -53,10 +53,10 @@ const _ = require('lodash');
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
 module.exports.removeAgencyClientConsultant = async (req, res, next) => {
-  const agency_id = get(req, 'swagger.params.agency_id.value', '');
-  const client_id = get(req, 'swagger.params.client_id.value', '');
-  const consultant_id = get(req, 'swagger.params.consultant_id.value', '');
-  const command_type = get(req, 'swagger.operation.x-octophant-event', '');
+  const agency_id = _.get(req, 'swagger.params.agency_id.value', '');
+  const client_id = _.get(req, 'swagger.params.client_id.value', '');
+  const consultant_id = _.get(req, 'swagger.params.consultant_id.value', '');
+  const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
 
   let repository = new AgencyClientRepository(EventStore);
   let handler = new AgencyClientCommandHandler(repository);
