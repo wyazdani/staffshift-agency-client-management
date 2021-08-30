@@ -1,7 +1,6 @@
 'use strict';
 
 const {Transform} = require('stream');
-const _ = require('lodash');
 const {AgencyClientConsultants, EventStore} = require('../../models');
 const {AgencyRepository} = require('../../src/Agency/AgencyRepository');
 const {
@@ -11,7 +10,7 @@ const {
 
 const events = [
   AGENCY_CLIENT_CONSULTANT_ADDED, AGENCY_CLIENT_CONSULTANT_REMOVED
-]
+];
 
 /**
  * Convert a standard delta change stream event into an upsert structure that can be used
@@ -26,10 +25,8 @@ class AgencyClientConsultantProjection extends Transform {
 
   _transform(data, encoding, callback) {
     if (!events.includes(data.event.type)) {
-      console.log('SKIPPING THINGS HERE NOW');
       return callback(null, data);
     }
-    console.log(data);
     const event = data.event;
     if (AGENCY_CLIENT_CONSULTANT_ADDED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
@@ -48,23 +45,21 @@ class AgencyClientConsultantProjection extends Transform {
           });
           agencyClientConsultant.save((err) => {
             if (err) {
-              console.log(err);
+              return callback(err);
             }
-            console.log('ADD COMPELTED');
             return callback(null, data);
-          })
+          });
         })
         .catch((err) => {
           return callback(err);
-        })
+        });
     } else if (AGENCY_CLIENT_CONSULTANT_REMOVED === data.event.type) {
       AgencyClientConsultants.remove({_id: event.data._id}, (err) => {
         if (err) {
-          console.log(err);
+          return callback(err);
         }
-        console.log('REMOVE COMPELTED');
         return callback(null, data);
-      })
+      });
     }
     // Should we be adding something here since this is a possible "hanging" issue
   }

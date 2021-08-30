@@ -4,10 +4,10 @@ const _ = require('lodash');
 class AgencyClientAggregate {
 
   // Should we rather have all the events here?
-  constructor(id, aggregate, agency_repository) {
+  constructor(id, aggregate, agencyRepository) {
     this._id = id;
     this._aggregate = aggregate;
-    this._agency_repository = agency_repository;
+    this._agency_repository = agencyRepository;
   }
 
   isLinked() {
@@ -17,10 +17,10 @@ class AgencyClientAggregate {
   // Business Logic that should be applied
   async addClientConsultant(consultant) {
     const agencyAggregate = await this._agency_repository.getAggregate(this._id.agency_id);
-    const maxConsultants = agencyAggregate.getMaxAllowedConsultants(consultant.consultant_role_id)
+    const maxConsultants = agencyAggregate.getMaxAllowedConsultants(consultant.consultant_role_id);
     const currentCount = _.countBy(this._aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
 
-    if (maxConsultants === 0 ) {
+    if (maxConsultants === 0) {
       throw new Error(`CONSULTANT ROLE ${consultant.consultant_role_id} NOT DEFINED`);
     }
 
@@ -54,4 +54,4 @@ class AgencyClientAggregate {
   }
 }
 
-module.exports = {AgencyClientAggregate}
+module.exports = {AgencyClientAggregate};

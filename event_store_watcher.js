@@ -26,7 +26,7 @@ mongoose.connection.on(
 );
 
 async function watch() {
-  const client = new MongoClient(config.get(`mongo.database_host`), {poolSize: 5});
+  const client = new MongoClient(config.get('mongo.database_host'), {poolSize: 5});
   // Connect the client to the server
   await client.connect();
   // Establish and verify connection
@@ -46,7 +46,6 @@ async function watch() {
     .pipe(projection);
 }
 
-
 watch()
   .then(() => {
     loggerContext.info('Watcher process has been initialised');
@@ -54,4 +53,4 @@ watch()
   .catch((err) => {
     loggerContext.error('There was an error while watching the event store', err);
     process.exit(1);
-  })
+  });

@@ -27,12 +27,12 @@ const events = {
     name: 'AgencyClientUnLinked',
     description: 'The Agency Client was unlinked, does not indicate a deletion'
   }
-}
+};
 
 // Simple event K=V to use within the code base
 const  reducedEvents = _.reduce(events, (result, value, key) => {
   result[key] = value.name;
   return result;
-}, {})
+}, {});
 
 module.exports = reducedEvents;

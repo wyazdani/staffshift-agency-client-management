@@ -4,7 +4,7 @@ const {AgencyClientCommandHandler} = require('../src/AgencyClient/AgencyClientCo
 const {get} = require('lodash');
 const _ = require('lodash');
 const {EventStore} = require('../models');
-const {QueryHelper, LinkHeaderHelper} = require('a24-node-query-utils');
+const {QueryHelper} = require('a24-node-query-utils');
 const {AgencyClientsService} = require('../services/AgencyClientsService');
 const {PaginationHelper} = require('../helpers/PaginationHelper');
 
@@ -28,7 +28,7 @@ module.exports.addAgencyClientConsultant = async (req, res, next) => {
   let command = {
     type: command_type,
     data: payload
-  }
+  };
 
   try {
     // Passing in the agency and client ids here feels strange
@@ -66,7 +66,7 @@ module.exports.removeAgencyClientConsultant = async (req, res, next) => {
   let command = {
     type: command_type,
     data: {_id: consultant_id}
-  }
+  };
 
   try {
     await handler.apply(agency_id, client_id, command);
@@ -84,13 +84,13 @@ module.exports.removeAgencyClientConsultant = async (req, res, next) => {
 };
 
 /**
- * Gets the status of the service
+ * Gets a single agency client
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.getAgencyClient = async (req, res, next) => {
+module.exports.getAgencyClient = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
   const client_id = get(req, 'swagger.params.client_id.value', '');
 
@@ -111,16 +111,15 @@ module.exports.removeAgencyClientConsultant = async (req, res, next) => {
   }
 };
 
-
 /**
- * Retrieves tags list
+ * Retrieves agency client listing
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  * @param {Function} next - The callback used to pass control to the next middleware
  *
  */
- module.exports.listAgencyClients = async (req, res, next) => {
+module.exports.listAgencyClients = async (req, res, next) => {
   const swaggerParams = req.swagger.params || {};
   const logger = req.Logger;
 

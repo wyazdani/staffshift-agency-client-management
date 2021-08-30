@@ -9,14 +9,14 @@ class AgencyRepository {
     this._store = store;
   }
 
-  async getAggregate(agency_id, sequence_id = undefined) {
-    let query = {aggregate_id: {agency_id}};
-    if (sequence_id) {
-      query['sequence_id'] = {$lte: sequence_id};
+  async getAggregate(agencyId, sequenceId = undefined) {
+    let query = {aggregate_id: {agency_id: agencyId}};
+    if (sequenceId) {
+      query['sequence_id'] = {$lte: sequenceId};
     }
     let events = await this._store.find(query).sort({sequence_id: 1}).lean();
     return new AgencyAggregate(
-      {agency_id},
+      {agency_id: agencyId},
       _.reduce(events, eventApplier, {last_sequence_id: 0})
     );
   }
@@ -24,11 +24,10 @@ class AgencyRepository {
   async save(events) {
     await this._store.insertMany(events, {lean: true});
   }
-
 }
 
 const eventApplier = (aggregate, event) => {
   return aggregateProjection[event.type](aggregate, event);
-}
+};
 
 module.exports = {AgencyRepository};

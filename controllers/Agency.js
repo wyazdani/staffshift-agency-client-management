@@ -23,7 +23,7 @@ module.exports.addAgencyConsultantRole = async (req, res, next) => {
   let command = {
     type: command_type,
     data: payload
-  }
+  };
 
   try {
     // Passing in the agency id here feels strange
@@ -48,7 +48,7 @@ module.exports.addAgencyConsultantRole = async (req, res, next) => {
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.removeAgencyConsultantRole = async (req, res, next) => {
+module.exports.removeAgencyConsultantRole = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
   const consultant_role_id = get(req, 'swagger.params.consultant_role_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
@@ -60,7 +60,7 @@ module.exports.addAgencyConsultantRole = async (req, res, next) => {
   let command = {
     type: command_type,
     data: {_id: consultant_role_id}
-  }
+  };
 
   try {
     // Passing in the agency id here feels strange
@@ -85,7 +85,7 @@ module.exports.addAgencyConsultantRole = async (req, res, next) => {
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
- module.exports.getAgencyConsultantRoles = async (req, res, next) => {
+module.exports.getAgencyConsultantRoles = async (req, res, next) => {
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
 
   // Consider using a builder | respository pattern

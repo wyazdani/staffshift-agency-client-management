@@ -1,9 +1,7 @@
 'use strict';
 
 const {Transform} = require('stream');
-const _ = require('lodash');
 const {AgencyClients} = require('../../models');
-const {AgencyClientRepository} = require('../AgencyClient/AgencyClientRepository');
 const {
   AGENCY_CLIENT_LINKED,
   AGENCY_CLIENT_UNLINKED
@@ -11,7 +9,7 @@ const {
 
 const events = [
   AGENCY_CLIENT_LINKED, AGENCY_CLIENT_UNLINKED
-]
+];
 
 /**
  * Convert an event store entry into the Agency Client Read Projection
@@ -26,10 +24,8 @@ class AgencyClientProjection extends Transform {
 
   _transform(data, encoding, callback) {
     if (!events.includes(data.event.type)) {
-      console.log('SKIPPING THINGS HERE NOW');
       return callback(null, data);
     }
-    console.log(data);
     const event = data.event;
 
     if (AGENCY_CLIENT_LINKED === data.event.type) {
@@ -47,7 +43,7 @@ class AgencyClientProjection extends Transform {
         (err) => {
           return callback(err);
         }
-      )
+      );
     } else if (AGENCY_CLIENT_UNLINKED === data.event.type) {
       AgencyClients.findOneAndUpdate(
         {
@@ -62,7 +58,7 @@ class AgencyClientProjection extends Transform {
         (err) => {
           return callback(err);
         }
-      )
+      );
     }
 
     // Should we be adding something here since this is a possible "hanging" issue

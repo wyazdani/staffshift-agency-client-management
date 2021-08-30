@@ -90,10 +90,10 @@ async function _getCommand(logger, data) {
   }
   // Default to unlinked, we only need to now assert if a response was returned
   let command = 'unlinkAgencyClient';
-    if (response) {
-      command = (response[0].agency_linked) ? 'linkAgencyClient' : 'unlinkAgencyClient';
+  if (response) {
+    command = (response[0].agency_linked) ? 'linkAgencyClient' : 'unlinkAgencyClient';
   }
-  return command
+  return command;
 }
 
 module.exports = {AgencyClientLinkStatus};

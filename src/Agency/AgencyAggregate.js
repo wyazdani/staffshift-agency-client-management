@@ -9,13 +9,13 @@ class AgencyAggregate {
     this._aggregate = aggregate;
   }
 
-  getMaxAllowedConsultants(consultant_role_id) {
-    const role = _.find(this._aggregate.consultant_roles, {_id: consultant_role_id});
+  getMaxAllowedConsultants(consultantRoleId) {
+    const role = _.find(this._aggregate.consultant_roles, {_id: consultantRoleId});
     return (role) ? role.max_consultants : 0;
   }
 
-  getConsultantRole(consultant_role_id) {
-    return _.find(this._aggregate.consultant_roles, {_id: consultant_role_id});
+  getConsultantRole(consultantRoleId) {
+    return _.find(this._aggregate.consultant_roles, {_id: consultantRoleId});
   }
 
   getId() {
@@ -32,4 +32,4 @@ class AgencyAggregate {
   }
 }
 
-module.exports = {AgencyAggregate}
+module.exports = {AgencyAggregate};

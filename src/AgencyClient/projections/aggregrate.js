@@ -28,11 +28,11 @@ const projections = {
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AGENCY_CLIENT_CONSULTANT_REMOVED]: (aggregate, event) => {
-    aggregate.consultants = _.differenceWith(aggregate.consultants, [event.data], function(value, other) {
-      return ((value._id == other._id))
+    aggregate.consultants = _.differenceWith(aggregate.consultants, [event.data], function agencyClientConsultantRemove(value, other) {
+      return ((value._id == other._id));
     });
     return {...aggregate, last_sequence_id: event.sequence_id};
   }
-}
+};
 
-module.exports = projections
+module.exports = projections;

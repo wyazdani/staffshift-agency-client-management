@@ -1,10 +1,6 @@
 'use strict';
-const _ = require('lodash');
 const {AgencyClients} = require('../models');
-const {
-  RuntimeError, ConflictError, ValidationError, ResourceNotFoundError, PermissionDenied
-} = require('a24-node-error-utils');
-
+const {RuntimeError} = require('a24-node-error-utils');
 
 /**
  * AgencyClientsService
@@ -12,10 +8,11 @@ const {
 class AgencyClientsService {
   constructor(logger) {
     this.logger = logger;
-    this._store = AgencyClients
+    this._store = AgencyClients;
   }
+
   /**
-   * Retrieves a list of all tag records
+   * Retrieves a list of all records for the given params
    *
    * @param {Object} query - The query object to retrieve list of tags
    * @param {Number} limit - The item per page value
@@ -73,7 +70,7 @@ async function _getCount(store, query) {
  *
  * @return Promise<Array<Object>>
  */
- async function _getListing(store, query, skip, limit, sortBy) {
+async function _getListing(store, query, skip, limit, sortBy) {
   try {
     const list = await store.find(query)
       .skip(skip)
@@ -86,7 +83,6 @@ async function _getCount(store, query) {
     throw new RuntimeError(`An error occurred while listing the records for ${store.modelName}`, {dbError});
   }
 }
-
 
 module.exports = {
   AgencyClientsService

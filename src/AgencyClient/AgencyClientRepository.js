@@ -10,15 +10,15 @@ class AgencyClientRepository {
     this._store = store;
   }
 
-  async getAggregate(agency_id, client_id, sequence_id = undefined) {
-    let query = {aggregate_id: {agency_id, client_id}};
-    if (sequence_id) {
-      query['sequence_id'] = {$lte: sequence_id};
+  async getAggregate(agencyId, clientId, sequenceId = undefined) {
+    let query = {aggregate_id: {agency_id: agencyId, client_id: clientId}};
+    if (sequenceId) {
+      query['sequence_id'] = {$lte: sequenceId};
     }
     let events = await this._store.find(query).sort({sequence_id: 1}).lean();
 
     return new AgencyClientAggregate(
-      {agency_id, client_id},
+      {agency_id: agencyId, client_id: clientId},
       _.reduce(events, eventApplier, {last_sequence_id: 0}),
       new AgencyRepository(this._store)
     );
@@ -32,6 +32,6 @@ class AgencyClientRepository {
 
 const eventApplier = (aggregate, event) => {
   return aggregateProjection[event.type](aggregate, event);
-}
+};
 
 module.exports = {AgencyClientRepository};

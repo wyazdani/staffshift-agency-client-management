@@ -1,5 +1,4 @@
 'use strict';
-const _ = require('lodash');
 const ObjectID = require('mongodb').ObjectID;
 
 const projections = {
@@ -7,7 +6,7 @@ const projections = {
   'linkAgencyClient': async (aggregate, command) => {
     const isLinked = aggregate.isLinked();
     if (!isLinked) {
-      let event_id = aggregate.getLastEventId();
+      let eventId = aggregate.getLastEventId();
       return {
         type: 'AgencyClientLinked',
         aggregate_id: aggregate.getId(),
@@ -15,8 +14,8 @@ const projections = {
           organisation_id: command.organisation_id,
           client_type: command.client_type
         },
-        sequence_id: ++event_id
-      }
+        sequence_id: ++eventId
+      };
     }
     // If we are already linked there is no need to create another link event
     return [];
@@ -26,22 +25,23 @@ const projections = {
     const isLinked = aggregate.isLinked();
     // If linked OR this is the first time we are dealing with this aggregate
     if (isLinked || aggregate.getLastEventId() == 0) {
-      let event_id = aggregate.getLastEventId();
+      let eventId = aggregate.getLastEventId();
       return {
         type: 'AgencyClientUnLinked',
         aggregate_id: aggregate.getId(),
         data: {
           organisation_id: command.organisation_id
         },
-        sequence_id: ++event_id
-      }
+        sequence_id: ++eventId
+      };
     }
     // If we are not linked there is no need to create another unlink event
     return [];
   },
   'addAgencyClientConsultant': async (aggregate, command) => {
+    // Need to do a try catch here
     await aggregate.addClientConsultant(command);
-    let event_id = aggregate.getLastEventId();
+    let eventId = aggregate.getLastEventId();
     return {
       type: 'AgencyClientConsultantAdded',
       aggregate_id: aggregate.getId(),
@@ -50,21 +50,22 @@ const projections = {
         consultant_role_id: command.consultant_role_id,
         consultant_id: command.consultant_id
       },
-      sequence_id: ++event_id
-    }
+      sequence_id: ++eventId
+    };
   },
   'removeAgencyClientConsultant': async (aggregate, command) => {
+    // Need to do a try catch here
     await aggregate.removeClientConsultant(command);
-    let event_id = aggregate.getLastEventId();
+    let eventId = aggregate.getLastEventId();
     return {
       type: 'AgencyClientConsultantRemoved',
       aggregate_id: aggregate.getId(),
       data: {
         _id: command._id
       },
-      sequence_id: ++event_id
-    }
+      sequence_id: ++eventId
+    };
   }
-}
+};
 
-module.exports = projections
+module.exports = projections;

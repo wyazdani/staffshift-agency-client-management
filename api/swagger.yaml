@@ -64,6 +64,30 @@ paths:
       summary: "Gets an Agency Client"
       tags:
         - "Agency Client"
+/agency/{agency_id}/clients/{client_id}/events:
+    parameters:
+      - $ref: "#/parameters/page_filter"
+      - $ref: "#/parameters/items_per_page_filter"
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    get:
+      x-swagger-router-controller: "AgencyClients"
+      x-octophant-event: "listAgencyClientEvents"
+      operationId: "listAgencyClientEvents"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Gets an Agency Client Event Listing"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Gets an Agency Client Event Listing"
+      tags:
+        - "Agency Client"
   /agency/{agency_id}/clients/{client_id}:
     parameters:
       - $ref: "#/parameters/x_request_id"

@@ -23,9 +23,10 @@ async function process(logger, message) {
     case 'agency_organisation_site_link_status_changed':
     case 'agency_organisation_site_ward_link_created':
     case 'agency_organisation_site_ward_link_deleted':
-    case 'agency_organisation_site_ward_link_status_changed':
+    case 'agency_organisation_site_ward_link_status_changed': {
       const handler = new AgencyClientLinkStatus(logger);
       return handler.apply(message);
+    }
     default:
       console.log({event_name: message.event.name});
       logger.info('UnHandled Agency Client Event', {event_name: message.event.name});

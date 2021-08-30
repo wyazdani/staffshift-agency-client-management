@@ -94,7 +94,7 @@ class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-    async getAgencyClientDetails(agencyId, organisationId, siteId, wardId, options) {
+  async getAgencyClientDetails(agencyId, organisationId, siteId, wardId, options) {
     if (!options) {
       options = {
         'xRequestId': this.logger.requestId,
