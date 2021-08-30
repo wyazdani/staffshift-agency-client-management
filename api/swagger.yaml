@@ -120,7 +120,7 @@ paths:
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
     post:
-      x-swagger-router-controller: "AgencyClients"
+      x-swagger-router-controller: "AgencyClientConsultants"
       x-octophant-event: "addAgencyClientConsultant"
       operationId: "addAgencyClientConsultant"
       security:
@@ -143,6 +143,10 @@ paths:
       operationId: "listAgencyClientConsultants"
       security:
         - jwt: []
+      parameters:
+        - $ref: "#/parameters/page_filter"
+        - $ref: "#/parameters/items_per_page_filter"
+        - $ref: "#/parameters/query_consultant_role_id"
       responses:
         200:
           description: "List Agency Client Consultants"
@@ -250,6 +254,12 @@ parameters:
     in: query
     description: "Indicates if the client is linked or not"
     type: boolean
+  query_consultant_role_id:
+    name: consultant_role_id
+    in: query
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "The consultant role id"
+    type: string
  # Route PARAMS
   add_agency_consultant_role_payload:
     name: add_agency_consultant_role_payload
