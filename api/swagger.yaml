@@ -43,8 +43,6 @@ paths:
       summary: "Gets the status of the service"
   /agency/{agency_id}/clients:
     parameters:
-      - $ref: "#/parameters/page_filter"
-      - $ref: "#/parameters/items_per_page_filter"
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
@@ -54,6 +52,11 @@ paths:
       operationId: "listAgencyClients"
       security:
         - jwt: []
+      parameters:
+        - $ref: "#/parameters/page_filter"
+        - $ref: "#/parameters/items_per_page_filter"
+        - $ref: "#/parameters/query_client_id"
+        - $ref: "#/parameters/query_linked"
       responses:
         200:
           description: "Gets an Agency Client"
@@ -235,6 +238,19 @@ paths:
       tags:
         - "Agency Consultant Roles"
 parameters:
+ # Query PARAMS
+  query_client_id:
+    name: client_id
+    in: query
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Client ID"
+    type: string
+  query_linked:
+    name: linked
+    in: query
+    description: "Indicates if the client is linked or not"
+    type: boolean
+ # Route PARAMS
   add_agency_consultant_role_payload:
     name: add_agency_consultant_role_payload
     in: body
