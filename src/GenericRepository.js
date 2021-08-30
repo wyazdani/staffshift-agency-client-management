@@ -2,9 +2,10 @@
 const {RuntimeError} = require('a24-node-error-utils');
 
 /**
- * AgencyClientsService
- *  Most likely meant to be part of Repository / Aggregate code.
+ * GenericRepository
  *  Based on the new implementation details the service layer no longer exists.
+ *  Should this be injected into the well defined aggregates rather?
+ *  IE a mixin concept / parasitic inheritance / Based on interfaces?
  */
 class GenericRepository {
   constructor(logger, collection) {
