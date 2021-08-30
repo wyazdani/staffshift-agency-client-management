@@ -69,18 +69,20 @@ paths:
         - "Agency Client"
   /agency/{agency_id}/clients/{client_id}/events:
     parameters:
-      - $ref: "#/parameters/page_filter"
-      - $ref: "#/parameters/items_per_page_filter"
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
     get:
-      x-swagger-router-controller: "AgencyClients"
-      x-octophant-event: "listAgencyClientEvents"
-      operationId: "listAgencyClientEvents"
+      x-swagger-router-controller: "AgencyClientEventLogs"
+      x-octophant-event: "listAgencyClientEventLogs"
+      operationId: "listAgencyClientEventLogs"
       security:
         - jwt: []
+      parameters:
+        - $ref: "#/parameters/page_filter"
+        - $ref: "#/parameters/items_per_page_filter"
+        - $ref: "#/parameters/query_event"
       responses:
         200:
           description: "Gets an Agency Client Event Listing"
@@ -157,7 +159,7 @@ paths:
       summary: "List Agency Client Consultants"
       tags:
         - "Agency Client Consultants"
-  /agency/{agency_id}/clients/{client_id}/consultant/{consultant_id}:
+  /agency/{agency_id}/clients/{client_id}/consultants/{consultant_id}:
     parameters:
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
@@ -259,6 +261,11 @@ parameters:
     in: query
     pattern: ^[0-9a-fA-F]{24}$
     description: "The consultant role id"
+    type: string
+  query_event:
+    name: event
+    in: query
+    description: "The event that should be filtered on"
     type: string
  # Route PARAMS
   add_agency_consultant_role_payload:
