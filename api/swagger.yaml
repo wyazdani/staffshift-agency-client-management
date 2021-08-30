@@ -64,7 +64,7 @@ paths:
       summary: "Gets an Agency Client"
       tags:
         - "Agency Client"
-/agency/{agency_id}/clients/{client_id}/events:
+  /agency/{agency_id}/clients/{client_id}/events:
     parameters:
       - $ref: "#/parameters/page_filter"
       - $ref: "#/parameters/items_per_page_filter"
