@@ -1,11 +1,10 @@
 'use strict';
 
 const {Transform} = require('stream');
-const {AgencyClients} = require('../../models');
 const {
   AGENCY_CLIENT_LINKED,
   AGENCY_CLIENT_UNLINKED
-} = require('../Events');
+} = require('../../../src/Events');
 
 const events = [
   AGENCY_CLIENT_LINKED, AGENCY_CLIENT_UNLINKED
@@ -20,6 +19,10 @@ class AgencyClientProjection extends Transform {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
+    this.eventstore = opts.eventstore;
+    this.model = opts.model;
+    this.pipeline = opts.pipeline;
+    this.logger = opts.logger;
   }
 
   _transform(data, encoding, callback) {
@@ -29,7 +32,7 @@ class AgencyClientProjection extends Transform {
     const event = data.event;
 
     if (AGENCY_CLIENT_LINKED === data.event.type) {
-      AgencyClients.findOneAndUpdate(
+      this.model.findOneAndUpdate(
         {
           agency_id: event.aggregate_id.agency_id,
           client_id: event.aggregate_id.client_id,
@@ -41,11 +44,11 @@ class AgencyClientProjection extends Transform {
         },
         {upsert: true},
         (err) => {
-          return callback(err);
+          return callback(err, data);
         }
       );
     } else if (AGENCY_CLIENT_UNLINKED === data.event.type) {
-      AgencyClients.findOneAndUpdate(
+      this.model.findOneAndUpdate(
         {
           agency_id: event.aggregate_id.agency_id,
           client_id: event.aggregate_id.client_id,
@@ -56,11 +59,10 @@ class AgencyClientProjection extends Transform {
         },
         {upsert: true},
         (err) => {
-          return callback(err);
+          return callback(err, data);
         }
       );
     }
-
     // Should we be adding something here since this is a possible "hanging" issue
   }
 }

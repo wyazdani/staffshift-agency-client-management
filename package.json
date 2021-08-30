@@ -8,7 +8,10 @@
     "start-tracing": "node -r ./tracing.js index.js",
     "test": "node testfile-drop-database && npm run migrate && ./node_modules/.bin/nyc node testfile.js",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore . *.js",
-    "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js"
+    "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
+    "start-streaming-application-core-agency-client-consultants": "node StreamingApplication.js --type=core --name=AgencyClientConsultant",
+    "start-streaming-application-core-agency-client": "node StreamingApplication.js --type=core --name=AgencyClientProjection",
+    "start-streaming-application-core-agency-client-event-log": "node StreamingApplication.js --type=core --name=AgencyClientEventLogProjection"
   },
   "keywords": [
     "swagger"
@@ -30,8 +33,9 @@
     "a24-node-octophant-utils": "git+ssh://git@github.com:A24Group/a24-node-octophant-utils.git#v1.4.0",
     "a24-node-pubsub": "git+ssh://git@github.com:A24Group/a24-node-pubsub.git#v4.5.0",
     "a24-node-query-utils": "git+ssh://git@github.com:A24Group/a24-node-query-utils.git#v1.8.0",
-    "a24-node-timezone-utils": "git+ssh://git@github.com/A24Group/a24-node-timezone-utils.git#v1.8.0",
     "a24-node-staffshift-facade-client": "git@github.com:A24Group/a24-node-staffshift-facade-client.git#v1.27.0",
+    "a24-node-timezone-utils": "git+ssh://git@github.com/A24Group/a24-node-timezone-utils.git#v1.8.0",
+    "arg": "^5.0.1",
     "async": "3.2.0",
     "config": "^3.3.6",
     "connect": "3.7.0",

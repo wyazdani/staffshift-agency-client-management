@@ -22,19 +22,14 @@ class EventStoreTransformer extends Transform {
    * @returns {Object} - The transformed event in the format
    * {
    *  _id: <change stream identifier>,
-   *  operationType: <ChangeStreamEvents Enum>
-   *  documentKey: <document identifier>
-   *  updates: {
-   *   $set: {},
-   *   $unset: {}
-   *  }
+   *  event: <full document>
    * }
    */
   _transform(data, encoding, callback) {
     // What should we do if we get a non-insert operation type
     // data.operationType !== 'insert'
     let newData = {
-      token: data._id,
+      _id: data._id,
       event: data.fullDocument
     };
     callback(null, newData);

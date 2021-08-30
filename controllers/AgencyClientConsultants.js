@@ -9,7 +9,7 @@ const {get} = require('lodash');
  * @param {IncomingMessage} res - The http response object
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
-module.exports.listAgencyClientConsultant = async (req, res, next) => {
+module.exports.listAgencyClientConsultants = async (req, res, next) => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const clientId = get(req, 'swagger.params.client_id.value', '');
 

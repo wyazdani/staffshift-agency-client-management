@@ -1,12 +1,11 @@
 'use strict';
 
 const {Transform} = require('stream');
-const {AgencyClientConsultants, EventStore} = require('../../models');
-const {AgencyRepository} = require('../../src/Agency/AgencyRepository');
+const {AgencyRepository} = require('../../../src/Agency/AgencyRepository');
 const {
   AGENCY_CLIENT_CONSULTANT_ADDED,
   AGENCY_CLIENT_CONSULTANT_REMOVED
-} = require('../Events');
+} = require('../../../src/Events');
 
 const events = [
   AGENCY_CLIENT_CONSULTANT_ADDED, AGENCY_CLIENT_CONSULTANT_REMOVED
@@ -21,6 +20,10 @@ class AgencyClientConsultantProjection extends Transform {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
+    this.eventstore = opts.eventstore;
+    this.model = opts.model;
+    this.pipeline = opts.pipeline;
+    this.logger = opts.logger;
   }
 
   _transform(data, encoding, callback) {
@@ -31,11 +34,11 @@ class AgencyClientConsultantProjection extends Transform {
     if (AGENCY_CLIENT_CONSULTANT_ADDED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
       // NOR do we care about any updates to the actual name
-      let repository = new AgencyRepository(EventStore);
+      let repository = new AgencyRepository(this.eventstore);
       repository.getAggregate(event.aggregate_id.agency_id)
         .then((agencyAggregate) => {
           let role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
-          const agencyClientConsultant = new AgencyClientConsultants({
+          const agencyClientConsultant = new this.model({
             _id: event.data._id,
             agency_id: event.aggregate_id.agency_id,
             client_id: event.aggregate_id.client_id,
@@ -44,21 +47,15 @@ class AgencyClientConsultantProjection extends Transform {
             consultant_id: event.data.consultant_id
           });
           agencyClientConsultant.save((err) => {
-            if (err) {
-              return callback(err);
-            }
-            return callback(null, data);
+            return callback(err, data);
           });
         })
         .catch((err) => {
           return callback(err);
         });
     } else if (AGENCY_CLIENT_CONSULTANT_REMOVED === data.event.type) {
-      AgencyClientConsultants.remove({_id: event.data._id}, (err) => {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, data);
+      this.model.remove({_id: event.data._id}, (err) => {
+        return callback(err, data);
       });
     }
     // Should we be adding something here since this is a possible "hanging" issue

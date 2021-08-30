@@ -136,8 +136,8 @@ paths:
         - "Agency Client Consultants"
     get:
       x-swagger-router-controller: "AgencyClientConsultants"
-      x-octophant-event: "listAgencyClientConsultant"
-      operationId: "listAgencyClientConsultant"
+      x-octophant-event: "listAgencyClientConsultants"
+      operationId: "listAgencyClientConsultants"
       security:
         - jwt: []
       responses:

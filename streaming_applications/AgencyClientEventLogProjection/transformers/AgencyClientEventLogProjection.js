@@ -1,12 +1,11 @@
 'use strict';
 
 const {Transform} = require('stream');
-const {AgencyClientEventLog, EventStore} = require('../../models');
-const {AgencyClientRepository} = require('../AgencyClient/AgencyClientRepository');
+const {AgencyClientRepository} = require('../../../src/AgencyClient/AgencyClientRepository');
 const {
   AGENCY_CLIENT_CONSULTANT_ADDED,
   AGENCY_CLIENT_CONSULTANT_REMOVED
-} = require('../Events');
+} = require('../../../src/Events');
 
 const events = [
   AGENCY_CLIENT_CONSULTANT_ADDED, AGENCY_CLIENT_CONSULTANT_REMOVED
@@ -21,6 +20,10 @@ class AgencyClientEventLogProjection extends Transform {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
+    this.eventstore = opts.eventstore;
+    this.model = opts.model;
+    this.pipeline = opts.pipeline;
+    this.logger = opts.logger;
   }
 
   _transform(data, encoding, callback) {
@@ -28,10 +31,10 @@ class AgencyClientEventLogProjection extends Transform {
       return callback(null, data);
     }
     const event = data.event;
-    let repository = new AgencyClientRepository(EventStore);
+    let repository = new AgencyClientRepository(this.eventstore);
     repository.getAggregate(event.aggregate_id.agency_id, event.aggregate_id.client_id, event.sequence_id)
       .then((aggregate) => {
-        const agencyClientEvent = new AgencyClientEventLog({
+        const agencyClientEvent = new this.model({
           agency_id: event.aggregate_id.agency_id,
           client_id: event.aggregate_id.client_id,
           event: event.type,
