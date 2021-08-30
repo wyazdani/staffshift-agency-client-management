@@ -4,6 +4,8 @@ const {RuntimeError} = require('a24-node-error-utils');
 
 /**
  * AgencyClientsService
+ *  Most likely meant to be part of Repository / Aggregate code.
+ *  Based on the new implementation details the service layer no longer exists.
  */
 class AgencyClientsService {
   constructor(logger) {
