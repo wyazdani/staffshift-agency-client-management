@@ -18,6 +18,10 @@ class AgencyAggregate {
     return _.find(this._aggregate.consultant_roles, {_id: consultantRoleId});
   }
 
+  getConsultantRoles() {
+    return this._aggregate.consultant_roles;
+  }
+
   getId() {
     return this._id;
   }

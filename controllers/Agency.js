@@ -94,10 +94,17 @@ module.exports.getAgencyConsultantRoles = async (req, res, next) => {
   try {
     // This will most likely need to project only the section we are working with based on the route
     let aggregate = await repository.getAggregate(agency_id);
+    let consultantRoles = aggregate.getConsultantRoles();
+
     // This needs to be centralised and done better
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(aggregate));
+    if (consultantRoles && consultantRoles.length > 0) {
+      res.statusCode = 200;
+      res.setHeader('x-result-count', consultantRoles.length);
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(consultantRoles));
+    }
+    res.statusCode = 204;
+    res.end();
   } catch (err) {
     // This needs to be centralised and done better
     console.log('ERR THERE WAS', err);

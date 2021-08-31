@@ -214,8 +214,17 @@ paths:
       responses:
         200:
           description: "List Agency Consultant Roles"
+          headers:
+            link:
+              type: string
+            x-result-count:
+              type: integer
           schema:
-            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+            type: array
+            items:
+              $ref: "#/definitions/agency_consultant_role_item_def"
+        204:
+          $ref: "#/responses/no_content"
         default:
           $ref: "#/responses/server_error_model"
       summary: "List Agency Consultant Roles"
@@ -382,6 +391,21 @@ definitions:
         type: integer
         minimum: 1
     additionalProperties: false
+  agency_consultant_role_item_def:
+    type: object
+    required:
+      - name
+      - description
+      - max_consultants
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      max_consultants:
+        type: integer
+        minimum: 1
+    additionalProperties: false
   assign_client_consultant_payload_def:
     type: object
     required:
@@ -426,7 +450,26 @@ definitions:
         type: string
       stack:
         type: string
+  resource_not_found:
+    description: "No resource found"
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - RESOURCE_NOT_FOUND
+      message:
+        type: string
 responses:
+  no_content:
+    description: "No Content. There were no records to return based on your query."
+  resource_not_found:
+    description: "Resource not found"
+    schema:
+      $ref: "#/definitions/resource_not_found"
   server_error_model:
     description: "Server error occurred"
     schema:
