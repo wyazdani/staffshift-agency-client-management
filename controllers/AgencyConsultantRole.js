@@ -43,7 +43,7 @@ module.exports.addAgencyConsultantRole = async (req, res, next) => {
 };
 
 /**
- * Disable Agency Consultant Role
+ * Changes the status of the Agency Consultant Role
  *
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object

@@ -2,7 +2,6 @@
 const _ = require('lodash');
 const {
   AGENCY_CONSULTANT_ROLE_ADDED,
-  AGENCY_CONSULTANT_ROLE_REMOVED,
   AGENCY_CONSULTANT_ROLE_ENABLED,
   AGENCY_CONSULTANT_ROLE_DISABLED
 } = require('../Events');
@@ -17,12 +16,6 @@ const projections = {
     (aggregate.consultant_roles) ?
       aggregate.consultant_roles.push(consultantRole) :
       aggregate.consultant_roles = [consultantRole];
-    return {...aggregate, last_sequence_id: event.sequence_id};
-  },
-  [AGENCY_CONSULTANT_ROLE_REMOVED]: (aggregate, event) => {
-    aggregate.consultant_roles = _.differenceWith(aggregate.consultant_roles, [event.data], function differenceWith(value, other) {
-      return ((value._id == other._id));
-    });
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AGENCY_CONSULTANT_ROLE_ENABLED]: (aggregate, event) => {

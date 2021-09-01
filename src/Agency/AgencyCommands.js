@@ -52,17 +52,6 @@ const AgencyCommands = {
       },
       sequence_id: ++eventId
     };
-  },
-  'removeAgencyConsultantRole': async (aggregate, command) => {
-    let eventId = aggregate.getLastEventId();
-    return {
-      type: 'AgencyConsultantRoleRemoved',
-      aggregate_id: aggregate.getId(),
-      data: {
-        _id: command._id
-      },
-      sequence_id: ++eventId
-    };
   }
 };
 
