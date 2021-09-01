@@ -4,11 +4,14 @@ const {Transform} = require('stream');
 const {AgencyRepository} = require('../../../src/Agency/AgencyRepository');
 const {
   AGENCY_CLIENT_CONSULTANT_ASSIGNED,
-  AGENCY_CLIENT_CONSULTANT_UNASSIGNED
+  AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
+  AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
 } = require('../../../src/Events');
 
 const events = [
-  AGENCY_CLIENT_CONSULTANT_ASSIGNED, AGENCY_CLIENT_CONSULTANT_UNASSIGNED
+  AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+  AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
+  AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
 ];
 
 /**
@@ -55,6 +58,10 @@ class AgencyClientConsultantProjection extends Transform {
         });
     } else if (AGENCY_CLIENT_CONSULTANT_UNASSIGNED === data.event.type) {
       this.model.remove({_id: event.data._id}, (err) => {
+        return callback(err, data);
+      });
+    } else if (AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED === data.event.type && event.data.name) {
+      this.model.updateMany({consultant_role_id: event.data._id}, {$set: {consultant_role_name: event.data.name}}, (err) => {
         return callback(err, data);
       });
     }
