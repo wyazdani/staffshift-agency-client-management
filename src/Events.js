@@ -7,9 +7,13 @@ const events = {
     name: 'AgencyConsultantRoleAdded',
     description: 'The Agency Consultant Role has been created'
   },
-  AGENCY_CONSULTANT_ROLE_REMOVED: {
-    name: 'AgencyConsultantRoleRemoved',
-    description: 'The Agency Consultant Role has been removed'
+  AGENCY_CONSULTANT_ROLE_ENABLED: {
+    name: 'AgencyConsultantRoleEnabled',
+    description: 'The Agency Consultant Role has been enabled'
+  },
+  AGENCY_CONSULTANT_ROLE_DISABLED: {
+    name: 'AgencyConsultantRoleDisabled',
+    description: 'The Agency Consultant Role has been disabled'
   },
   AGENCY_CLIENT_CONSULTANT_ADDED: {
     name: 'AgencyClientConsultantAdded',

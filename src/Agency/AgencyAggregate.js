@@ -22,6 +22,22 @@ class AgencyAggregate {
     return this._aggregate.consultant_roles;
   }
 
+  canEnableConsultantRole(consultantRoleId) {
+    let role =  _.find(this._aggregate.consultant_roles, {_id: consultantRoleId});
+    if (!role) {
+      throw new Error('BOOM, THERE IS NO MATCHING ROLE');
+    }
+    return role.status !== 'enabled';
+  }
+
+  canDisableConsultantRole(consultantRoleId) {
+    let role =  _.find(this._aggregate.consultant_roles, {_id: consultantRoleId});
+    if (!role) {
+      throw new Error('BOOM, THERE IS NO MATCHING ROLE');
+    }
+    return role.status !== 'disabled';
+  }
+
   getId() {
     return this._id;
   }

@@ -17,7 +17,7 @@ class AgencyClientLinkStatus {
    */
   async apply(message) {
     console.log(message.event.name);
-
+    // try catch to handle the await error
     let conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
     let repository = new AgencyClientRepository(EventStore);
     let handler = new AgencyClientCommandHandler(repository);

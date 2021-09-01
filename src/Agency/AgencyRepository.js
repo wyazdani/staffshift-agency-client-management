@@ -22,7 +22,7 @@ class AgencyRepository {
   }
 
   async save(events) {
-    await this._store.insertMany(events, {lean: true});
+    return this._store.insertMany(events, {lean: true});
   }
 }
 

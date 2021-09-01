@@ -17,15 +17,20 @@ class AgencyClientAggregate {
   // Business Logic that should be applied
   async addClientConsultant(consultant) {
     const agencyAggregate = await this._agency_repository.getAggregate(this._id.agency_id);
-    const maxConsultants = agencyAggregate.getMaxAllowedConsultants(consultant.consultant_role_id);
+    // Should this be another aggregate?
+    const consultantRole = agencyAggregate.getConsultantRole(consultant.consultant_role_id);
     const currentCount = _.countBy(this._aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
 
-    if (maxConsultants === 0) {
+    if (!consultantRole) {
       throw new Error(`CONSULTANT ROLE ${consultant.consultant_role_id} NOT DEFINED`);
     }
 
-    if ((currentCount + 1) > maxConsultants) {
+    if ((currentCount + 1) > consultantRole.max_consultants) {
       throw new Error(`TOO MANY CONSULTANTS FOR THE ROLE ${consultant.consultant_role_id}`);
+    }
+
+    if (consultantRole.status != 'enabled') {
+      throw new Error(`CONSULTANT ROLE ${consultant.consultant_role_id} IS NOT ENABLED`);
     }
   }
 

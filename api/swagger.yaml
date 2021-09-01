@@ -188,7 +188,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
     post:
-      x-swagger-router-controller: "Agency"
+      x-swagger-router-controller: "AgencyConsultantRole"
       x-octophant-event: "addAgencyConsultantRole"
       operationId: "addAgencyConsultantRole"
       security:
@@ -206,9 +206,9 @@ paths:
       tags:
         - "Agency Consultant Roles"
     get:
-      x-swagger-router-controller: "Agency"
-      x-octophant-event: "getAgencyConsultantRoles"
-      operationId: "getAgencyConsultantRoles"
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "listAgencyConsultantRoles"
+      operationId: "listAgencyConsultantRoles"
       security:
         - jwt: []
       responses:
@@ -236,20 +236,68 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/consultant_role_id"
-    delete:
-      x-swagger-router-controller: "Agency"
-      x-octophant-event: "removeAgencyConsultantRole"
-      operationId: "removeAgencyConsultantRole"
+    get:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "getAgencyConsultantRole"
+      operationId: "getAgencyConsultantRole"
       security:
         - jwt: []
       responses:
         200:
-          description: "Removes an Agency Consultant Role"
+          description: "Retrieves a single Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/agency_consultant_role_item_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Retrieves a single Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+  /agency/{agency_id}/consultant-roles/{consultant_role_id}/enable:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/consultant_role_id"
+    post:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "enableAgencyConsultantRole"
+      operationId: "changeStatusAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        200:
+          description: "Enables an Agency Consultant Role"
           schema:
             $ref: "#/definitions/add_agency_consultant_role_payload_def"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Removes an Agency Consultant Role"
+      summary: "Creates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+  /agency/{agency_id}/consultant-roles/{consultant_role_id}/disable:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/consultant_role_id"
+    post:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "disableAgencyConsultantRole"
+      operationId: "changeStatusAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        200:
+          description: "Disables an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Creates an Agency Consultant Role"
       tags:
         - "Agency Consultant Roles"
 parameters:
@@ -277,6 +325,13 @@ parameters:
     description: "The event that should be filtered on"
     type: string
  # Route PARAMS
+  empty_payload:
+    name: empty_payload
+    in: body
+    required: true
+    description: "Used when the payload is expected to be empty"
+    schema:
+      $ref: "#/definitions/empty_payload_def"
   add_agency_consultant_role_payload:
     name: add_agency_consultant_role_payload
     in: body
@@ -418,6 +473,9 @@ definitions:
       consultant_id:
         type: string
         pattern: ^[0-9a-fA-F]{24}$
+    additionalProperties: false
+  empty_payload_def:
+    type: object
     additionalProperties: false
   server_error_def:
     type: "object"
