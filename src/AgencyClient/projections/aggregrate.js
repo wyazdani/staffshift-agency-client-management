@@ -3,8 +3,8 @@ const _ = require('lodash');
 const {
   AGENCY_CLIENT_LINKED,
   AGENCY_CLIENT_UNLINKED,
-  AGENCY_CLIENT_CONSULTANT_ADDED,
-  AGENCY_CLIENT_CONSULTANT_REMOVED
+  AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+  AGENCY_CLIENT_CONSULTANT_UNASSIGNED
 } = require('../../Events');
 
 const projections = {
@@ -17,7 +17,7 @@ const projections = {
     aggregate.linked = false;
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  [AGENCY_CLIENT_CONSULTANT_ADDED]: (aggregate, event) => {
+  [AGENCY_CLIENT_CONSULTANT_ASSIGNED]: (aggregate, event) => {
     let consultant = {};
     consultant._id = event.data._id;
     consultant.consultant_role_id = event.data.consultant_role_id;
@@ -27,7 +27,7 @@ const projections = {
       aggregate.consultants = [consultant];
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  [AGENCY_CLIENT_CONSULTANT_REMOVED]: (aggregate, event) => {
+  [AGENCY_CLIENT_CONSULTANT_UNASSIGNED]: (aggregate, event) => {
     aggregate.consultants = _.differenceWith(aggregate.consultants, [event.data], function agencyClientConsultantRemove(value, other) {
       return ((value._id == other._id));
     });

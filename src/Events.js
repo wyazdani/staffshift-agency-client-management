@@ -15,13 +15,17 @@ const events = {
     name: 'AgencyConsultantRoleDisabled',
     description: 'The Agency Consultant Role has been disabled'
   },
-  AGENCY_CLIENT_CONSULTANT_ADDED: {
-    name: 'AgencyClientConsultantAdded',
-    description: 'The Agency Client Consultant has been added'
+  AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED: {
+    name: 'AgencyConsultantRoleDetailsUpdated',
+    description: 'The Agency Consultant Role has been updated'
   },
-  AGENCY_CLIENT_CONSULTANT_REMOVED: {
-    name: 'AgencyClientConsultantRemoved',
-    description: 'The Agency Client Consultant has been removed'
+  AGENCY_CLIENT_CONSULTANT_ASSIGNED: {
+    name: 'AgencyClientConsultantAssigned',
+    description: 'The Agency Client Consultant has been assigned'
+  },
+  AGENCY_CLIENT_CONSULTANT_UNASSIGNED: {
+    name: 'AgencyClientConsultantUnassigned',
+    description: 'The Agency Client Consultant has been unassigned'
   },
   AGENCY_CLIENT_LINKED: {
     name: 'AgencyClientLinked',

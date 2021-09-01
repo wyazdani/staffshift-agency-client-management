@@ -43,7 +43,7 @@ const projections = {
     await aggregate.addClientConsultant(command);
     let eventId = aggregate.getLastEventId();
     return {
-      type: 'AgencyClientConsultantAdded',
+      type: 'AgencyClientConsultantAssigned',
       aggregate_id: aggregate.getId(),
       data: {
         _id: (new ObjectID).toString(),
@@ -58,7 +58,7 @@ const projections = {
     await aggregate.removeClientConsultant(command);
     let eventId = aggregate.getLastEventId();
     return {
-      type: 'AgencyClientConsultantRemoved',
+      type: 'AgencyClientConsultantUnassigned',
       aggregate_id: aggregate.getId(),
       data: {
         _id: command._id

@@ -3,12 +3,12 @@
 const {Transform} = require('stream');
 const {AgencyRepository} = require('../../../src/Agency/AgencyRepository');
 const {
-  AGENCY_CLIENT_CONSULTANT_ADDED,
-  AGENCY_CLIENT_CONSULTANT_REMOVED
+  AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+  AGENCY_CLIENT_CONSULTANT_UNASSIGNED
 } = require('../../../src/Events');
 
 const events = [
-  AGENCY_CLIENT_CONSULTANT_ADDED, AGENCY_CLIENT_CONSULTANT_REMOVED
+  AGENCY_CLIENT_CONSULTANT_ASSIGNED, AGENCY_CLIENT_CONSULTANT_UNASSIGNED
 ];
 
 /**
@@ -31,7 +31,7 @@ class AgencyClientConsultantProjection extends Transform {
       return callback(null, data);
     }
     const event = data.event;
-    if (AGENCY_CLIENT_CONSULTANT_ADDED === data.event.type) {
+    if (AGENCY_CLIENT_CONSULTANT_ASSIGNED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
       // NOR do we care about any updates to the actual name
       let repository = new AgencyRepository(this.eventstore);
@@ -53,7 +53,7 @@ class AgencyClientConsultantProjection extends Transform {
         .catch((err) => {
           return callback(err);
         });
-    } else if (AGENCY_CLIENT_CONSULTANT_REMOVED === data.event.type) {
+    } else if (AGENCY_CLIENT_CONSULTANT_UNASSIGNED === data.event.type) {
       this.model.remove({_id: event.data._id}, (err) => {
         return callback(err, data);
       });

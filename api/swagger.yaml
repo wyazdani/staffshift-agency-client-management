@@ -194,12 +194,12 @@ paths:
       security:
         - jwt: []
       parameters:
-        - $ref: "#/parameters/add_agency_consultant_role_payload"
+        - $ref: "#/parameters/agency_consultant_role_payload"
       responses:
         200:
           description: "Creates an Agency Consultant Role"
           schema:
-            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+            $ref: "#/definitions/agency_consultant_role_item_def"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Creates an Agency Consultant Role"
@@ -236,6 +236,24 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/consultant_role_id"
+    post:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "updateAgencyConsultantRole"
+      operationId: "updateAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/agency_consultant_role_update_payload"
+      responses:
+        200:
+          description: "Updates an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/agency_consultant_role_item_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Updates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
     get:
       x-swagger-router-controller: "AgencyConsultantRole"
       x-octophant-event: "getAgencyConsultantRole"
@@ -270,7 +288,7 @@ paths:
         200:
           description: "Enables an Agency Consultant Role"
           schema:
-            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+            $ref: "#/definitions/empty_payload_def"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Creates an Agency Consultant Role"
@@ -294,7 +312,7 @@ paths:
         200:
           description: "Disables an Agency Consultant Role"
           schema:
-            $ref: "#/definitions/add_agency_consultant_role_payload_def"
+            $ref: "#/definitions/empty_payload_def"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Creates an Agency Consultant Role"
@@ -332,13 +350,20 @@ parameters:
     description: "Used when the payload is expected to be empty"
     schema:
       $ref: "#/definitions/empty_payload_def"
-  add_agency_consultant_role_payload:
-    name: add_agency_consultant_role_payload
+  agency_consultant_role_payload:
+    name: agency_consultant_role_payload
     in: body
     required: true
     description: "The payload used to create an agency consultant role"
     schema:
-      $ref: "#/definitions/add_agency_consultant_role_payload_def"
+      $ref: "#/definitions/agency_consultant_role_payload_def"
+  agency_consultant_role_update_payload:
+    name: agency_consultant_role_update_payload
+    in: body
+    required: true
+    description: "The payload used to create an agency consultant role"
+    schema:
+      $ref: "#/definitions/agency_consultant_role_update_payload"
   assign_client_consultant_payload:
     name: assign_client_consultant_payload
     in: body
@@ -431,12 +456,23 @@ definitions:
       updated_at:
         type: string
     additionalProperties: false
-  add_agency_consultant_role_payload_def:
+  agency_consultant_role_payload_def:
     type: object
     required:
       - name
       - description
       - max_consultants
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      max_consultants:
+        type: integer
+        minimum: 1
+    additionalProperties: false
+  agency_consultant_role_update_payload:
+    type: object
     properties:
       name:
         type: string

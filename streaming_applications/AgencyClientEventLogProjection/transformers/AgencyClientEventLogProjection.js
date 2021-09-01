@@ -3,12 +3,12 @@
 const {Transform} = require('stream');
 const {AgencyClientRepository} = require('../../../src/AgencyClient/AgencyClientRepository');
 const {
-  AGENCY_CLIENT_CONSULTANT_ADDED,
-  AGENCY_CLIENT_CONSULTANT_REMOVED
+  AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+  AGENCY_CLIENT_CONSULTANT_UNASSIGNED
 } = require('../../../src/Events');
 
 const events = [
-  AGENCY_CLIENT_CONSULTANT_ADDED, AGENCY_CLIENT_CONSULTANT_REMOVED
+  AGENCY_CLIENT_CONSULTANT_ASSIGNED, AGENCY_CLIENT_CONSULTANT_UNASSIGNED
 ];
 
 /**

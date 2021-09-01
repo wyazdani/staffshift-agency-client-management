@@ -25,6 +25,17 @@ const AgencyCommands = {
       sequence_id: ++eventId
     }];
   },
+  'updateAgencyConsultantRole': async (aggregate, command) => {
+    let eventId = aggregate.getLastEventId();
+    // Should this be one event or many
+    // We may want one event per business case
+    return {
+      type: 'AgencyConsultantRoleDetailsUpdated',
+      aggregate_id: aggregate.getId(),
+      data: {...command},
+      sequence_id: ++eventId
+    };
+  },
   'enableAgencyConsultantRole': async (aggregate, command) => {
     let eventId = aggregate.getLastEventId();
     if (!aggregate.canEnableConsultantRole(command._id)) {
