@@ -1,1 +1,11 @@
-{}
+{
+  "a24-staffshift-facade": {
+    "request_options": {
+      "protocol": "http",
+      "host": "staging-facade.staffshift.com",
+      "port": 80,
+      "version": "v1"
+    },
+    "request_timeout": 2000
+  }
+}

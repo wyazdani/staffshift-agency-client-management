@@ -56,12 +56,50 @@ paths:
         - $ref: "#/parameters/page_filter"
         - $ref: "#/parameters/items_per_page_filter"
         - $ref: "#/parameters/query_client_id"
+        - $ref: "#/parameters/query_client_type"
         - $ref: "#/parameters/query_linked"
+      responses:
+        200:
+          description: "List of Agency Clients"
+          headers:
+            link:
+              type: string
+            x-result-count:
+              type: integer
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/agency_client_item_response_def"
+        204:
+          $ref: "#/responses/no_content"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "List of Agency Clients"
+      tags:
+        - "Agency Client"
+  /agency/{agency_id}/clients/{client_id}:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    get:
+      x-swagger-router-controller: "AgencyClients"
+      x-octophant-event: "getAgencyClient"
+      operationId: "getAgencyClient"
+      security:
+        - jwt: []
       responses:
         200:
           description: "Gets an Agency Client"
           schema:
-            $ref: "#/definitions/assign_client_consultant_payload_def"
+            $ref: "#/definitions/agency_client_item_response_def"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Gets an Agency Client"
@@ -91,28 +129,6 @@ paths:
         default:
           $ref: "#/responses/server_error_model"
       summary: "Gets an Agency Client Event Listing"
-      tags:
-        - "Agency Client"
-  /agency/{agency_id}/clients/{client_id}:
-    parameters:
-      - $ref: "#/parameters/x_request_id"
-      - $ref: "#/parameters/x_request_jwt"
-      - $ref: "#/parameters/agency_id"
-      - $ref: "#/parameters/client_id"
-    get:
-      x-swagger-router-controller: "AgencyClients"
-      x-octophant-event: "getAgencyClient"
-      operationId: "getAgencyClient"
-      security:
-        - jwt: []
-      responses:
-        200:
-          description: "Gets an Agency Client"
-          schema:
-            $ref: "#/definitions/assign_client_consultant_payload_def"
-        default:
-          $ref: "#/responses/server_error_model"
-      summary: "Gets an Agency Client"
       tags:
         - "Agency Client"
   /agency/{agency_id}/clients/{client_id}/consultants:
@@ -320,6 +336,15 @@ paths:
         - "Agency Consultant Roles"
 parameters:
  # Query PARAMS
+  query_client_type:
+    name: client_type
+    in: query
+    description: "Client ID"
+    type: string
+    enum:
+     - organisation
+     - site
+     - ward
   query_client_id:
     name: client_id
     in: query
@@ -427,6 +452,36 @@ parameters:
     default: 25
     minimum: 1
 definitions:
+  agency_client_item_response_def:
+    type: object
+    required:
+      - _id
+      - agency_id
+      - client_id
+      - client_type
+      - linked
+      - created_at
+      - updated_at
+    properties:
+      _id:
+        type: string
+      agency_id:
+        type: string
+      client_id:
+        type: string
+      organisation_id:
+        type: string
+      site_id:
+        type: string
+      client_type:
+        type: string
+      linked:
+        type: boolean
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    additionalProperties: false
   list_agency_client_consultant_response_def:
     type: object
     required:
@@ -510,6 +565,19 @@ definitions:
         type: string
         pattern: ^[0-9a-fA-F]{24}$
     additionalProperties: false
+ # GENERIC CROSS ROUTE RESPONSES
+  unauthorize_error_model:
+    type: "object"
+    required:
+      - "code"
+      - "message"
+    properties:
+      code:
+        type: "string"
+        enum:
+          - UNAUTHORIZED
+      message:
+        type: "string"
   empty_payload_def:
     type: object
     additionalProperties: false
@@ -558,6 +626,10 @@ definitions:
       message:
         type: string
 responses:
+  unauthorize_error_model:
+    description: "Failed to authenticate the incoming request"
+    schema:
+      $ref: "#/definitions/unauthorize_error_model"
   no_content:
     description: "No Content. There were no records to return based on your query."
   resource_not_found:

@@ -96,7 +96,7 @@
             "name": "subscriber.agency-client-management-organisation",
             "processor": "./domain-events-processors/Consumer",
             "maxPullMessages": 4,
-            "maxConcurrentMessages": 2
+            "maxConcurrentMessages": 1
           }
         ]
       },
@@ -107,7 +107,7 @@
             "name": "subscriber.agency-client-management-site",
             "processor": "./domain-events-processors/Consumer",
             "maxPullMessages": 4,
-            "maxConcurrentMessages": 2
+            "maxConcurrentMessages": 1
           }
         ]
       },
@@ -118,10 +118,20 @@
             "name": "subscriber.agency-client-management-ward",
             "processor": "./domain-events-processors/Consumer",
             "maxPullMessages": 4,
-            "maxConcurrentMessages": 2
+            "maxConcurrentMessages": 1
           }
         ]
       }
     ]
+  },
+  "a24-staffshift-facade": {
+    "api_token": "2Asv2cnB3mgQjYCLHNkz8RPAcXjZnc8gJh2cGaV2",
+    "request_options": {
+      "protocol": "http",
+      "host": "localhost",
+      "port": 3155,
+      "version": "v1"
+    },
+    "request_timeout": 2000
   }
 }

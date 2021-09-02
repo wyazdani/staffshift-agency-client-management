@@ -26,6 +26,10 @@ class EventStoreTransformer extends Transform {
    * }
    */
   _transform(data, encoding, callback) {
+    if (data.operationType !== 'insert') {
+      console.log('WE ARE ONLY DEALING WITH INSERT EVENTS');
+      return callback();
+    }
     // What should we do if we get a non-insert operation type
     // data.operationType !== 'insert'
     let newData = {

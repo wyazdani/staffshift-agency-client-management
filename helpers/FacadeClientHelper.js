@@ -4,6 +4,7 @@ const config = require('config');
 const StaffshiftFacadeClient = require('a24-node-staffshift-facade-client');
 const {ValidationError, AuthorizationError, RuntimeError} = require('a24-node-error-utils');
 const ClientHelper = require('./ClientHelper');
+const clientConfig = config.get('a24-staffshift-facade');
 
 /**
  * Facade client helper
@@ -43,7 +44,7 @@ class FacadeClientHelper {
 
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
-    const authorization = `token ${config.get('staffshift-facade-service.api_token')}`;
+    const authorization = `token ${clientConfig.api_token}`;
 
     this.logger.debug('The candidate system details GET call to staffshift facade service has started');
     return new Promise((resolve, reject) => {
@@ -88,7 +89,7 @@ class FacadeClientHelper {
    *
    * @param {string} agencyId - The agency Id
    * @param {string} organisationId - The organisation Id
-   * @param {string} siteId - The site Id
+   * @param {string} siteId (Optional) - The site Id
    * @param {string} wardId (Optional) - The ward Id
    * @param {Object} options (Optional) - Request parameters like xRequestId
    *
@@ -100,18 +101,21 @@ class FacadeClientHelper {
         'xRequestId': this.logger.requestId,
         agencyId: agencyId,
         organisationId: organisationId,
-        siteId: siteId,
-        agencyOrgType: 'site'
+        agencyOrgType: 'organisation'
       };
-      if (wardId) {
-        options['wardId'] = wardId;
-        options['agencyOrgType'] = 'ward';
-      }
+    }
+    if (siteId) {
+      options['siteId'] = siteId;
+      options['agencyOrgType'] = 'site';
+    }
+    if (wardId) {
+      options['wardId'] = wardId;
+      options['agencyOrgType'] = 'ward';
     }
 
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
-    const authorization = `token ${config.get('staffshift-facade-service.api_token')}`;
+    const authorization = `token ${clientConfig.api_token}`;
     this.logger.debug('The candidate system details GET call to staffshift facade service has started');
     return new Promise((resolve, reject) => {
       api.listAgencyOrganisationLink(authorization, options, (error, data, response) => {
@@ -160,7 +164,7 @@ class FacadeClientHelper {
   async getAgencyDetailsFromId(agencyId) {
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyApi(client);
-    const tokenAuthorization = `token ${config.get('staffshift-facade-service').api_token}`;
+    const tokenAuthorization = `token ${clientConfig.api_token}`;
 
     let options = {
       'xRequestId': this.logger.requestId
@@ -199,9 +203,9 @@ class FacadeClientHelper {
   }
 
   static getInstance() {
-    const clientConfig = config.get('staffshift-facade-service');
     const client = new StaffshiftFacadeClient.ApiClient();
-    client.basePath = `${clientConfig.protocol}://${clientConfig.request_options.host}:${clientConfig.request_options.port}/${clientConfig.current_api_version}`;
+    const requestOptions = clientConfig.request_options;
+    client.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
     return client;
   }
 }

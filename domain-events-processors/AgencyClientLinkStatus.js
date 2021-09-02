@@ -37,6 +37,14 @@ class AgencyClientLinkStatus {
 
     // Need to have a try catch to wrap all the awaits
     try {
+      // Handle the Organisation Delete
+      if (eventName == 'agency_organisation_link_deleted') {
+        conversionData.command = {type: 'unlinkAgencyClient', data: {client_type: 'organisation'}};
+        conversionData.client_id = data.organisation_id;
+        return conversionData;
+      }
+
+      // Handle the Site Delete
       if (eventName == 'agency_organisation_site_link_deleted') {
         conversionData.command = {type: 'unlinkAgencyClient', data: {organisation_id: data.organisation_id, client_type: 'site'}};
         conversionData.client_id = data.site_id;
@@ -45,9 +53,16 @@ class AgencyClientLinkStatus {
 
       // Handle the Ward Delete
       if (eventName == 'agency_organisation_site_ward_link_deleted') {
-        conversionData.command = {type: 'unlinkAgencyClient', data: {organisation_id: data.organisation_id, client_type: 'ward'}};
+        conversionData.command = {type: 'unlinkAgencyClient', data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}};
         conversionData.client_id = data.ward_id;
         return conversionData;
+      }
+
+      // It changed lets figure out if is a link or unlink
+      if (eventName == 'agency_organisation_link_status_changed' || eventName == 'agency_organisation_link_created') {
+        const command = await _getCommand(this._logger, data);
+        conversionData.command = {type: command, data: {client_type: 'organisation'}};
+        conversionData.client_id = data.organisation_id;
       }
 
       // It changed lets figure out if is a link or unlink
@@ -60,7 +75,7 @@ class AgencyClientLinkStatus {
       // It changed lets figure out if is a link or unlink
       if (eventName == 'agency_organisation_site_ward_link_status_changed' || eventName == 'agency_organisation_site_ward_link_created') {
         const command = await _getCommand(this._logger, data);
-        conversionData.command = {type: command, data: {organisation_id: data.organisation_id, client_type: 'ward'}};
+        conversionData.command = {type: command, data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}};
         conversionData.client_id = data.ward_id;
       }
 
@@ -85,7 +100,7 @@ async function _getCommand(logger, data) {
   const client = new FacadeClientHelper(logger);
   // Need try catch
   let response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id);
-  if (response.length > 1) {
+  if (response && response.length > 1) {
     throw new Error('We are only expecting a single agency client entry to be returned');
   }
   // Default to unlinked, we only need to now assert if a response was returned
