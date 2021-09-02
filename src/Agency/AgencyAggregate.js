@@ -1,5 +1,6 @@
 'use strict';
 const _ = require('lodash');
+const {AGENCY_CONSULTANT_ROLE_STATUS_ENABLED, AGENCY_CONSULTANT_ROLE_STATUS_DISABLED} = require('./AgencyEnums');
 
 class AgencyAggregate {
 
@@ -7,11 +8,6 @@ class AgencyAggregate {
   constructor(id, aggregate) {
     this._id = id;
     this._aggregate = aggregate;
-  }
-
-  getMaxAllowedConsultants(consultantRoleId) {
-    const role = _.find(this._aggregate.consultant_roles, {_id: consultantRoleId});
-    return (role) ? role.max_consultants : 0;
   }
 
   getConsultantRole(consultantRoleId) {
@@ -27,7 +23,7 @@ class AgencyAggregate {
     if (!role) {
       throw new Error('BOOM, THERE IS NO MATCHING ROLE');
     }
-    return role.status !== 'enabled';
+    return role.status !== AGENCY_CONSULTANT_ROLE_STATUS_ENABLED;
   }
 
   canDisableConsultantRole(consultantRoleId) {
@@ -35,7 +31,7 @@ class AgencyAggregate {
     if (!role) {
       throw new Error('BOOM, THERE IS NO MATCHING ROLE');
     }
-    return role.status !== 'disabled';
+    return role.status !== AGENCY_CONSULTANT_ROLE_STATUS_DISABLED;
   }
 
   getId() {
