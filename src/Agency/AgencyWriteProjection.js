@@ -5,11 +5,11 @@ const {
   AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
   AGENCY_CONSULTANT_ROLE_ENABLED,
   AGENCY_CONSULTANT_ROLE_DISABLED
-} = require('../Events');
+} = require('./enums/AgencyEventEnums');
 const {
   AGENCY_CONSULTANT_ROLE_STATUS_ENABLED,
   AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
-} = require('./AgencyEnums');
+} = require('./enums/AgencyConsultantRoleEnums');
 
 const projections = {
   [AGENCY_CONSULTANT_ROLE_ADDED]: (aggregate, event) => {

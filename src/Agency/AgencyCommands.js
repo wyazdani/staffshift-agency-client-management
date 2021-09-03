@@ -1,13 +1,25 @@
 'use strict';
 const ObjectID = require('mongodb').ObjectID;
+const {
+  ADD_AGENCY_CONSULTANT_ROLE,
+  UPDATE_AGENCY_CONSULTANT_ROLE,
+  ENABLE_AGENCY_CONSULTANT_ROLE,
+  DISABLE_AGENCY_CONSULTANT_ROLE
+} = require('./enums/AgencyCommandEnums');
+const {
+  AGENCY_CONSULTANT_ROLE_ADDED,
+  AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
+  AGENCY_CONSULTANT_ROLE_ENABLED,
+  AGENCY_CONSULTANT_ROLE_DISABLED
+} = require('./enums/AgencyEventEnums');
 
 const AgencyCommands = {
-  'addAgencyConsultantRole': async (aggregate, command) => {
+  [ADD_AGENCY_CONSULTANT_ROLE]: async (aggregate, command) => {
     let eventId = aggregate.getLastEventId();
     // We are looking to auto enabled a newly created consultant roles
     let consultantId = (new ObjectID).toString();
     return [{
-      type: 'AgencyConsultantRoleAdded',
+      type: AGENCY_CONSULTANT_ROLE_ADDED,
       aggregate_id: aggregate.getId(),
       data: {
         _id: consultantId,
@@ -17,7 +29,7 @@ const AgencyCommands = {
       },
       sequence_id: ++eventId
     }, {
-      type: 'AgencyConsultantRoleEnabled',
+      type: AGENCY_CONSULTANT_ROLE_ENABLED,
       aggregate_id: aggregate.getId(),
       data: {
         _id: consultantId
@@ -25,24 +37,24 @@ const AgencyCommands = {
       sequence_id: ++eventId
     }];
   },
-  'updateAgencyConsultantRole': async (aggregate, command) => {
+  [UPDATE_AGENCY_CONSULTANT_ROLE]: async (aggregate, command) => {
     let eventId = aggregate.getLastEventId();
     // Should this be one event or many
     // We may want one event per business case
     return {
-      type: 'AgencyConsultantRoleDetailsUpdated',
+      type: AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
       aggregate_id: aggregate.getId(),
       data: {...command},
       sequence_id: ++eventId
     };
   },
-  'enableAgencyConsultantRole': async (aggregate, command) => {
+  [ENABLE_AGENCY_CONSULTANT_ROLE]: async (aggregate, command) => {
     let eventId = aggregate.getLastEventId();
     if (!aggregate.canEnableConsultantRole(command._id)) {
       return [];
     }
     return {
-      type: 'AgencyConsultantRoleEnabled',
+      type: AGENCY_CONSULTANT_ROLE_ENABLED,
       aggregate_id: aggregate.getId(),
       data: {
         _id: command._id
@@ -50,13 +62,13 @@ const AgencyCommands = {
       sequence_id: ++eventId
     };
   },
-  'disableAgencyConsultantRole': async (aggregate, command) => {
+  [DISABLE_AGENCY_CONSULTANT_ROLE]: async (aggregate, command) => {
     let eventId = aggregate.getLastEventId();
     if (!aggregate.canDisableConsultantRole(command._id)) {
       return [];
     }
     return {
-      type: 'AgencyConsultantRoleDisabled',
+      type: AGENCY_CONSULTANT_ROLE_DISABLED,
       aggregate_id: aggregate.getId(),
       data: {
         _id: command._id
