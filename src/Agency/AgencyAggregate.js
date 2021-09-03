@@ -1,6 +1,9 @@
 'use strict';
 const _ = require('lodash');
-const {AGENCY_CONSULTANT_ROLE_STATUS_ENABLED, AGENCY_CONSULTANT_ROLE_STATUS_DISABLED} = require('./AgencyEnums');
+const {
+  AGENCY_CONSULTANT_ROLE_STATUS_ENABLED,
+  AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
+} = require('./enums/AgencyConsultantRoleEnums');
 
 class AgencyAggregate {
 
