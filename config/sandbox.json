@@ -1,1 +1,9 @@
-{}
+{
+  "a24-staffshift-facade": {
+    "request_options": {
+      "protocol": "http",
+      "host": "sandbox-facade.staffshift.com"
+    },
+    "request_timeout": 2000
+  }
+}
