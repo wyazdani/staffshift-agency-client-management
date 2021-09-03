@@ -4,6 +4,7 @@
   "description": "Micro service for managing staffshift agency clients",
   "main": "index.js",
   "scripts": {
+    "build-ts": "tsc",
     "start": "node index.js",
     "start-tracing": "node -r ./tracing.js index.js",
     "test": "node testfile-drop-database && npm run migrate && ./node_modules/.bin/nyc node testfile.js",
@@ -64,6 +65,8 @@
     "z-schema": "4.2.4",
     "superagent": "6.1.0",
     "nyc": "15.1.0",
-    "mock-require": "3.0.3"
+    "mock-require": "3.0.3",
+    "ts-node": "10.2.1",
+    "typescript": "4.4.2"
   }
 }
