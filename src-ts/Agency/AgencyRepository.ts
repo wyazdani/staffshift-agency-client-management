@@ -22,7 +22,7 @@ export class AgencyRepository {
     );
   }
 
-  async save(events: Event[]) {
+  async save(events: Event[]): Promise<any[]> {
     return this.store.insertMany(events, {lean: true});
   }
 }

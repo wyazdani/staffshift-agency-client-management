@@ -26,7 +26,7 @@ export class GenericRepository {
    *
    * @return Promise<Object>
    */
-  async listResources(query: FilterQuery<any>, limit: number, skip: number, sortBy: Object) {
+  async listResources(query: FilterQuery<any>, limit: number, skip: number, sortBy: Object): Promise<{count: number, data: any[]}> {
     try {
       const [count, data] = await Promise.all([
         this.getCount(query),
@@ -52,7 +52,7 @@ export class GenericRepository {
    *
    * @return Promise<Number>
    */
-  private async getCount(query: FilterQuery<any>) {
+  private async getCount(query: FilterQuery<any>): Promise<number> {
     try {
       return await this.store.countDocuments(query);
     } catch (dbError) {
@@ -77,13 +77,12 @@ export class GenericRepository {
    */
   private async getListing(query: FilterQuery<any>, skip:number, limit:number, sortBy: Object) {
     try {
-      const list = await this.store.find(query)
+      return await this.store.find(query)
         .skip(skip)
         .limit(limit)
         .sort(sortBy)
         .lean()
         .exec();
-      return list;
     } catch (dbError) {
       throw new RuntimeError(`An error occurred while listing the records for ${this.store.modelName}`, {dbError});
     }

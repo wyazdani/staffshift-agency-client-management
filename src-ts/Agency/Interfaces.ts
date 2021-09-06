@@ -13,9 +13,12 @@ export interface AgencyAggregateRecord {
   last_sequence_id: number
 }
 
+export interface AgencyAggregateId {
+  agency_id: string
+}
 export interface Event {
   type: AgencyEventEnums,
-  aggregate_id: any,
+  aggregate_id: AgencyAggregateId,
   data: Object,
   sequence_id: number
 }

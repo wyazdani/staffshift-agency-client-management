@@ -9,7 +9,7 @@ export class AgencyCommandHandler {
     this.repository = repository;
   }
 
-  async apply(agency_id: string, command: Command) {
+  async apply(agency_id: string, command: Command): Promise<any[]> {
     // we need to add try catch here to handle the errors from these awaits.
     let aggregate = await this.repository.getAggregate(agency_id);
     if (!AgencyCommands[command.type]) {
