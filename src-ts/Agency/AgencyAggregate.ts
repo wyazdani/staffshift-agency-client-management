@@ -1,4 +1,4 @@
-import {AgencyConsultantRoleEnums} from './Enums';
+import {AgencyConsultantRoleEnums} from './AgencyEnums';
 import _ from 'lodash';
 import {AgencyAggregateRecord, AgencyAggregateId, AgencyConsultantRole} from './Interfaces';
 

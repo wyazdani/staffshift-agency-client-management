@@ -1,8 +1,8 @@
 'use strict';
-import {AgencyCommandEnums, AgencyEventEnums} from './Enums';
+import {AgencyCommandEnums, AgencyEventEnums} from './AgencyEnums';
 import {ObjectID} from 'mongodb';
 import {AgencyAggregate} from "./AgencyAggregate";
-import {AgencyAggregateRecord, AgencyEvent} from "./Interfaces";
+import {AgencyEvent} from "./Interfaces";
 
 export const AgencyCommands = {
   [AgencyCommandEnums.ADD_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<AgencyEvent[]> => {

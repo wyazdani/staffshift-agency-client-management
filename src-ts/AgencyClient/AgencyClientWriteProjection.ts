@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {AgencyClientEventType} from './Enums';
+import {AgencyClientEventType} from './AgencyClientEnums';
 import {AgencyClientAggregateRecord, AgencyClientConsultant} from "./Interfaces";
 
 export const AgencyClientWriteProjection = {

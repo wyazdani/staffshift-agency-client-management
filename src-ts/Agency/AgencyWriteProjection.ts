@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {AgencyConsultantRoleEnums, AgencyEventEnums} from './Enums';
+import {AgencyConsultantRoleEnums, AgencyEventEnums} from './AgencyEnums';
 import {AgencyAggregateRecord, AgencyConsultantRole} from "./Interfaces";
 
 

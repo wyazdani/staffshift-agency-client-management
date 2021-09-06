@@ -1,4 +1,4 @@
-import {AgencyClientCommandEnum, AgencyClientEventType} from './Enums';
+import {AgencyClientCommandEnum, AgencyClientEventType} from './AgencyClientEnums';
 import {ObjectID} from 'mongodb';
 import {AgencyClientEvent} from "./Interfaces";
 import {AgencyClientAggregate} from "./AgencyClientAggregate";

@@ -1,4 +1,4 @@
-import {AgencyClientCommandEnum, AgencyClientEventType} from './Enums';
+import {AgencyClientCommandEnum, AgencyClientEventType} from './AgencyClientEnums';
 export interface AgencyClientConsultant {
   _id: string,
   consultant_role_id: string,

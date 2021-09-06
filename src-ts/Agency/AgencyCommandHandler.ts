@@ -1,7 +1,7 @@
 'use strict';
 import {AgencyCommands} from "./AgencyCommands";
 import {AgencyRepository} from "./AgencyRepository";
-import {AgencyCommand, AgencyEvent} from "./Interfaces"
+import {AgencyCommand} from "./Interfaces"
 
 export class AgencyCommandHandler {
   private repository: AgencyRepository;
