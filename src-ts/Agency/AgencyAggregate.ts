@@ -1,6 +1,6 @@
 import {AgencyConsultantRoleEnums} from './Enums';
 import _ from 'lodash';
-import {AgencyAggregateRecord, AgencyAggregateId, ConsultantRole} from './Interfaces';
+import {AgencyAggregateRecord, AgencyAggregateId, AgencyConsultantRole} from './Interfaces';
 
 
 export class AgencyAggregate {
@@ -12,11 +12,11 @@ export class AgencyAggregate {
     this.aggregate = aggregate;
   }
 
-  getConsultantRole(consultantRoleId: string): ConsultantRole {
+  getConsultantRole(consultantRoleId: string): AgencyConsultantRole {
     return _.find(this.aggregate.consultant_roles, {_id: consultantRoleId});
   }
 
-  getConsultantRoles(): ConsultantRole[] {
+  getConsultantRoles(): AgencyConsultantRole[] {
     return this.aggregate.consultant_roles;
   }
 

@@ -1,7 +1,7 @@
 'use strict';
 import {AgencyCommands} from "./AgencyCommands";
 import {AgencyRepository} from "./AgencyRepository";
-import {Command, Event} from "./Interfaces"
+import {AgencyCommand, AgencyEvent} from "./Interfaces"
 
 export class AgencyCommandHandler {
   private repository: AgencyRepository;
@@ -9,7 +9,7 @@ export class AgencyCommandHandler {
     this.repository = repository;
   }
 
-  async apply(agency_id: string, command: Command): Promise<any[]> {
+  async apply(agency_id: string, command: AgencyCommand): Promise<any[]> {
     // we need to add try catch here to handle the errors from these awaits.
     let aggregate = await this.repository.getAggregate(agency_id);
     if (!AgencyCommands[command.type]) {

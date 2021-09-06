@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import {AgencyConsultantRoleEnums, AgencyEventEnums} from './Enums';
-import {AgencyAggregateRecord, ConsultantRole} from "./Interfaces";
+import {AgencyAggregateRecord, AgencyConsultantRole} from "./Interfaces";
 
 
 export const AgencyWriteProjection = {
   [AgencyEventEnums.AGENCY_CONSULTANT_ROLE_ADDED]: (aggregate: AgencyAggregateRecord, event: any): AgencyAggregateRecord => {
-    const consultantRole: ConsultantRole = {
+    const consultantRole: AgencyConsultantRole = {
       _id: event.data._id,
       name: event.data.name,
       description: event.data.description,

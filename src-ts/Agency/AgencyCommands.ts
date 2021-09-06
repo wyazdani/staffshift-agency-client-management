@@ -2,10 +2,10 @@
 import {AgencyCommandEnums, AgencyEventEnums} from './Enums';
 import {ObjectID} from 'mongodb';
 import {AgencyAggregate} from "./AgencyAggregate";
-import {AgencyAggregateRecord, Event} from "./Interfaces";
+import {AgencyAggregateRecord, AgencyEvent} from "./Interfaces";
 
 export const AgencyCommands = {
-  [AgencyCommandEnums.ADD_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<Event[]> => {
+  [AgencyCommandEnums.ADD_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<AgencyEvent[]> => {
     let eventId = aggregate.getLastEventId();
     // We are looking to auto enabled a newly created consultant roles
     let consultantId = (new ObjectID).toString();
@@ -28,7 +28,7 @@ export const AgencyCommands = {
       sequence_id: ++eventId
     }];
   },
-  [AgencyCommandEnums.UPDATE_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<Event[]> => {
+  [AgencyCommandEnums.UPDATE_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<AgencyEvent[]> => {
     let eventId = aggregate.getLastEventId();
     // Should this be one event or many
     // We may want one event per business case
@@ -39,7 +39,7 @@ export const AgencyCommands = {
       sequence_id: ++eventId
     }];
   },
-  [AgencyCommandEnums.ENABLE_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<Event[]> => {
+  [AgencyCommandEnums.ENABLE_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<AgencyEvent[]> => {
     let eventId = aggregate.getLastEventId();
     if (!aggregate.canEnableConsultantRole(command._id)) {
       return [];
@@ -53,7 +53,7 @@ export const AgencyCommands = {
       sequence_id: ++eventId
     }];
   },
-  [AgencyCommandEnums.DISABLE_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<Event[]> => {
+  [AgencyCommandEnums.DISABLE_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<AgencyEvent[]> => {
     let eventId = aggregate.getLastEventId();
     if (!aggregate.canDisableConsultantRole(command._id)) {
       return [];
