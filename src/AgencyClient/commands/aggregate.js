@@ -1,5 +1,6 @@
 'use strict';
 const ObjectID = require('mongodb').ObjectID;
+const _ = require('lodash');
 
 const projections = {
   // CMD coming from a Triage Domain Event
@@ -10,10 +11,7 @@ const projections = {
       return {
         type: 'AgencyClientLinked',
         aggregate_id: aggregate.getId(),
-        data: {
-          organisation_id: command.organisation_id,
-          client_type: command.client_type
-        },
+        data: {...command},
         sequence_id: ++eventId
       };
     }
@@ -29,9 +27,7 @@ const projections = {
       return {
         type: 'AgencyClientUnLinked',
         aggregate_id: aggregate.getId(),
-        data: {
-          organisation_id: command.organisation_id
-        },
+        data: {...command},
         sequence_id: ++eventId
       };
     }
@@ -40,7 +36,7 @@ const projections = {
   },
   'addAgencyClientConsultant': async (aggregate, command) => {
     // Need to do a try catch here
-    await aggregate.addClientConsultant(command);
+    await aggregate.validateAddClientConsultant(command);
     let eventId = aggregate.getLastEventId();
     return {
       type: 'AgencyClientConsultantAssigned',
@@ -55,7 +51,7 @@ const projections = {
   },
   'removeAgencyClientConsultant': async (aggregate, command) => {
     // Need to do a try catch here
-    await aggregate.removeClientConsultant(command);
+    await aggregate.validateRemoveClientConsultant(command);
     let eventId = aggregate.getLastEventId();
     return {
       type: 'AgencyClientConsultantUnassigned',

@@ -18,6 +18,9 @@ module.exports = async (logger, message, metadata, callback) => {
 
 async function process(logger, message) {
   switch (message.event.name) {
+    case 'agency_organisation_link_created':
+    case 'agency_organisation_link_deleted':
+    case 'agency_organisation_link_status_changed':
     case 'agency_organisation_site_link_created':
     case 'agency_organisation_site_link_deleted':
     case 'agency_organisation_site_link_status_changed':

@@ -5,7 +5,11 @@ const {
   AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
   AGENCY_CONSULTANT_ROLE_ENABLED,
   AGENCY_CONSULTANT_ROLE_DISABLED
-} = require('../Events');
+} = require('./enums/AgencyEventEnums');
+const {
+  AGENCY_CONSULTANT_ROLE_STATUS_ENABLED,
+  AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
+} = require('./enums/AgencyConsultantRoleEnums');
 
 const projections = {
   [AGENCY_CONSULTANT_ROLE_ADDED]: (aggregate, event) => {
@@ -31,7 +35,7 @@ const projections = {
   [AGENCY_CONSULTANT_ROLE_ENABLED]: (aggregate, event) => {
     aggregate.consultant_roles = _.map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
-        return {...item, status: 'enabled'};
+        return {...item, status: AGENCY_CONSULTANT_ROLE_STATUS_ENABLED};
       }
       return item;
     });
@@ -40,7 +44,7 @@ const projections = {
   [AGENCY_CONSULTANT_ROLE_DISABLED]: (aggregate, event) => {
     aggregate.consultant_roles = _.map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
-        return {...item, status: 'disabled'};
+        return {...item, status: AGENCY_CONSULTANT_ROLE_STATUS_DISABLED};
       }
       return item;
     });

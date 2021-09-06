@@ -3,10 +3,10 @@ const {CORE} = require('../core/enums/PipelineTypes');
 const {AGENCY_CLIENT_MANAGEMENT_DB_KEY} = require('../DatabaseConfigKeys');
 const StreamEventHandlers = require('../core/StreamEventHandlers');
 const EventStoreTransformer = require('../core/streams/EventStoreTransformer');
-const AgencyClientProjection = require('./transformers/AgencyClientProjection');
+const AgencyClientsProjectionTransformer = require('./transformers/AgencyClientsProjectionTransformer');
 const {WATCH} = require('../core/enums/StreamTypes');
 
-const {AgencyClients, EventStore} = require('../../models');
+const {AgencyClientsProjection, EventStore} = require('../../models');
 const HIGH_WATER_MARK = 5;
 
 /**
@@ -54,11 +54,11 @@ class EventStorePipeline {
     const opts = {
       highWaterMark: HIGH_WATER_MARK,
       eventstore: EventStore,
-      model: AgencyClients,
+      model: AgencyClientsProjection,
       pipeline: EventStorePipeline.getID(),
       logger: logger
     };
-    const projectionTransformer = new AgencyClientProjection(opts);
+    const projectionTransformer = new AgencyClientsProjectionTransformer(opts);
     const tokenWriterStream = tokenManager.getResumeTokenWriterStream(EventStorePipeline.getID(), WATCH, {highWaterMark: HIGH_WATER_MARK});
     StreamEventHandlers.attachEventHandlers(logger, watchStream);
 

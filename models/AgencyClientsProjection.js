@@ -17,13 +17,18 @@ const agencyClients = new Schema(
     },
     organisation_id: {
       type: String,
-      required: true,
-      description: 'The event type / name'
+      required: false,
+      description: 'The organisation id'
+    },
+    site_id: {
+      type: String,
+      required: false,
+      description: 'The site id'
     },
     client_type: {
       type: String,
       required: true,
-      description: 'The event type / name'
+      description: 'The client type details'
     },
     linked: {
       type: Boolean,
@@ -40,11 +45,11 @@ const agencyClients = new Schema(
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     },
-    collection: 'AgencyClients'
+    collection: 'AgencyClientsProjection'
   }
 );
 
 /**
  * Defines the model for the AgencyClients Read Projection
  */
-module.exports = mongoose.model('AgencyClients', agencyClients);
+module.exports = mongoose.model('AgencyClientsProjection', agencyClients);

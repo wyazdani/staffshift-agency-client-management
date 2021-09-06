@@ -27,5 +27,14 @@
       "put": "PUT",
       "get": "GET"
     }
+  },
+  "a24-staffshift-facade": {
+    "request_options": {
+      "protocol": "http",
+      "host": "localhost",
+      "port": 5151,
+      "version": "v1"
+    },
+    "request_timeout": 2000
   }
 }

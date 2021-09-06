@@ -15,7 +15,7 @@ class AgencyClientAggregate {
   }
 
   // Business Logic that should be applied
-  async addClientConsultant(consultant) {
+  async validateAddClientConsultant(consultant) {
     const agencyAggregate = await this._agency_repository.getAggregate(this._id.agency_id);
     // Should this be another aggregate?
     const consultantRole = agencyAggregate.getConsultantRole(consultant.consultant_role_id);
@@ -34,7 +34,7 @@ class AgencyClientAggregate {
     }
   }
 
-  async removeClientConsultant(consultant) {
+  async validateRemoveClientConsultant(consultant) {
     // prevent us from deleting something that does not exist
     if (_.find(this._aggregate.consultants, {_id: consultant._id}) === undefined) {
       throw new Error('CONSULTANT NOT FOUND');

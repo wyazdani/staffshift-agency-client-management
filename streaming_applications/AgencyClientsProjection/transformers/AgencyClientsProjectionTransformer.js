@@ -13,7 +13,7 @@ const events = [
 /**
  * Convert an event store entry into the Agency Client Read Projection
  */
-class AgencyClientProjection extends Transform {
+class AgencyClientsProjectionTransformer extends Transform {
 
   constructor(opts = {}) {
     // We only cater for object mode
@@ -30,14 +30,19 @@ class AgencyClientProjection extends Transform {
       return callback(null, data);
     }
     const event = data.event;
-
+    let criteria = {
+      agency_id: event.aggregate_id.agency_id,
+      client_id: event.aggregate_id.client_id
+    };
+    if (event.data.organisation_id) {
+      criteria.organisation_id = event.data.organisation_id;
+    }
+    if (event.data.site_id) {
+      criteria.site_id = event.data.site_id;
+    }
     if (AGENCY_CLIENT_LINKED === data.event.type) {
       this.model.findOneAndUpdate(
-        {
-          agency_id: event.aggregate_id.agency_id,
-          client_id: event.aggregate_id.client_id,
-          organisation_id: event.data.organisation_id
-        },
+        criteria,
         {
           client_type: event.data.client_type,
           linked: true
@@ -49,12 +54,9 @@ class AgencyClientProjection extends Transform {
       );
     } else if (AGENCY_CLIENT_UNLINKED === data.event.type) {
       this.model.findOneAndUpdate(
+        criteria,
         {
-          agency_id: event.aggregate_id.agency_id,
-          client_id: event.aggregate_id.client_id,
-          organisation_id: event.data.organisation_id
-        },
-        {
+          client_type: event.data.client_type,
           linked: false
         },
         {upsert: true},
@@ -67,4 +69,4 @@ class AgencyClientProjection extends Transform {
   }
 }
 
-module.exports = AgencyClientProjection;
+module.exports = AgencyClientsProjectionTransformer;
