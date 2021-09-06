@@ -9,5 +9,6 @@ RUN npm install -g "mountebank@1.*"
 
 EXPOSE 2525
 EXPOSE 4000
+EXPOSE 5151
 
 CMD ["mb", "--mock"]

@@ -41,7 +41,558 @@ paths:
       tags:
         - "Status"
       summary: "Gets the status of the service"
+  /agency/{agency_id}/clients:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+    get:
+      x-swagger-router-controller: "AgencyClients"
+      x-octophant-event: "listAgencyClients"
+      operationId: "listAgencyClients"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/page_filter"
+        - $ref: "#/parameters/items_per_page_filter"
+        - $ref: "#/parameters/query_client_id"
+        - $ref: "#/parameters/query_client_type"
+        - $ref: "#/parameters/query_linked"
+      responses:
+        200:
+          description: "List of Agency Clients"
+          headers:
+            link:
+              type: string
+            x-result-count:
+              type: integer
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/agency_client_item_response_def"
+        204:
+          $ref: "#/responses/no_content"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "List of Agency Clients"
+      tags:
+        - "Agency Client"
+  /agency/{agency_id}/clients/{client_id}:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    get:
+      x-swagger-router-controller: "AgencyClients"
+      x-octophant-event: "getAgencyClient"
+      operationId: "getAgencyClient"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Gets an Agency Client"
+          schema:
+            $ref: "#/definitions/agency_client_item_response_def"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Gets an Agency Client"
+      tags:
+        - "Agency Client"
+  /agency/{agency_id}/clients/{client_id}/events:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    get:
+      x-swagger-router-controller: "AgencyClientEventLogs"
+      x-octophant-event: "listAgencyClientEventLogs"
+      operationId: "listAgencyClientEventLogs"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/page_filter"
+        - $ref: "#/parameters/items_per_page_filter"
+        - $ref: "#/parameters/query_event"
+      responses:
+        200:
+          description: "Gets an Agency Client Event Listing"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Gets an Agency Client Event Listing"
+      tags:
+        - "Agency Client"
+  /agency/{agency_id}/clients/{client_id}/consultants:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "AgencyClientConsultants"
+      x-octophant-event: "addAgencyClientConsultant"
+      operationId: "addAgencyClientConsultant"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/assign_client_consultant_payload"
+      responses:
+        200:
+          description: "Adds an Agency Client Consultant"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Adds an Agency Client Consultant"
+      tags:
+        - "Agency Client Consultants"
+    get:
+      x-swagger-router-controller: "AgencyClientConsultants"
+      x-octophant-event: "listAgencyClientConsultants"
+      operationId: "listAgencyClientConsultants"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/page_filter"
+        - $ref: "#/parameters/items_per_page_filter"
+        - $ref: "#/parameters/query_consultant_role_id"
+      responses:
+        200:
+          description: "List Agency Client Consultants"
+          schema:
+            $ref: "#/definitions/list_agency_client_consultant_response_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "List Agency Client Consultants"
+      tags:
+        - "Agency Client Consultants"
+  /agency/{agency_id}/clients/{client_id}/consultants/{consultant_id}:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+      - $ref: "#/parameters/consultant_id"
+    delete:
+      x-swagger-router-controller: "AgencyClient"
+      x-octophant-event: "removeAgencyClientConsultant"
+      operationId: "removeAgencyClientConsultant"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Removes an Agency Client Consultant"
+          schema:
+            $ref: "#/definitions/assign_client_consultant_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Removes an Agency Client Consultant"
+      tags:
+        - "Agency Client Consultants"
+  /agency/{agency_id}/consultant-roles:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+    post:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "addAgencyConsultantRole"
+      operationId: "addAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/agency_consultant_role_payload"
+      responses:
+        200:
+          description: "Creates an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/agency_consultant_role_item_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Creates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+    get:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "listAgencyConsultantRoles"
+      operationId: "listAgencyConsultantRoles"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "List Agency Consultant Roles"
+          headers:
+            link:
+              type: string
+            x-result-count:
+              type: integer
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/agency_consultant_role_item_def"
+        204:
+          $ref: "#/responses/no_content"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "List Agency Consultant Roles"
+      tags:
+        - "Agency Consultant Roles"
+  /agency/{agency_id}/consultant-roles/{consultant_role_id}:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/consultant_role_id"
+    post:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "updateAgencyConsultantRole"
+      operationId: "updateAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/agency_consultant_role_update_payload"
+      responses:
+        200:
+          description: "Updates an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/agency_consultant_role_item_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Updates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+    get:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "getAgencyConsultantRole"
+      operationId: "getAgencyConsultantRole"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Retrieves a single Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/agency_consultant_role_item_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Retrieves a single Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+  /agency/{agency_id}/consultant-roles/{consultant_role_id}/enable:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/consultant_role_id"
+    post:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "enableAgencyConsultantRole"
+      operationId: "changeStatusAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        200:
+          description: "Enables an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/empty_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Creates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+  /agency/{agency_id}/consultant-roles/{consultant_role_id}/disable:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/consultant_role_id"
+    post:
+      x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "disableAgencyConsultantRole"
+      operationId: "changeStatusAgencyConsultantRole"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        200:
+          description: "Disables an Agency Consultant Role"
+          schema:
+            $ref: "#/definitions/empty_payload_def"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Creates an Agency Consultant Role"
+      tags:
+        - "Agency Consultant Roles"
+parameters:
+ # Query PARAMS
+  query_client_type:
+    name: client_type
+    in: query
+    description: "Client ID"
+    type: string
+    enum:
+     - organisation
+     - site
+     - ward
+  query_client_id:
+    name: client_id
+    in: query
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Client ID"
+    type: string
+  query_linked:
+    name: linked
+    in: query
+    description: "Indicates if the client is linked or not"
+    type: boolean
+  query_consultant_role_id:
+    name: consultant_role_id
+    in: query
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "The consultant role id"
+    type: string
+  query_event:
+    name: event
+    in: query
+    description: "The event that should be filtered on"
+    type: string
+ # Route PARAMS
+  empty_payload:
+    name: empty_payload
+    in: body
+    required: true
+    description: "Used when the payload is expected to be empty"
+    schema:
+      $ref: "#/definitions/empty_payload_def"
+  agency_consultant_role_payload:
+    name: agency_consultant_role_payload
+    in: body
+    required: true
+    description: "The payload used to create an agency consultant role"
+    schema:
+      $ref: "#/definitions/agency_consultant_role_payload_def"
+  agency_consultant_role_update_payload:
+    name: agency_consultant_role_update_payload
+    in: body
+    required: true
+    description: "The payload used to create an agency consultant role"
+    schema:
+      $ref: "#/definitions/agency_consultant_role_update_payload"
+  assign_client_consultant_payload:
+    name: assign_client_consultant_payload
+    in: body
+    required: true
+    description: "The payload used to create an agency client consultant"
+    schema:
+      $ref: "#/definitions/assign_client_consultant_payload_def"
+  x_request_id:
+    name: X-Request-Id
+    in: header
+    description: "The request Id for the incoming request"
+    type: string
+  x_request_jwt:
+    name: x-request-jwt
+    in: header
+    required: true
+    type: string
+    description: "The JWT Token"
+  agency_id:
+    name: agency_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Agency ID"
+    type: string
+  client_id:
+    name: client_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Client ID"
+    type: string
+  consultant_id:
+    name: consultant_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Consultant ID"
+    type: string
+  consultant_role_id:
+    name: consultant_role_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Consultant Role ID"
+    type: string
+  page_filter:
+    name: page
+    in: query
+    description: "The page number to be displayed"
+    required: false
+    type: integer
+    default: 1
+    minimum: 1
+  items_per_page_filter:
+    name: "items_per_page"
+    in: "query"
+    description: "The items per page to be displayed"
+    required: false
+    type: integer
+    default: 25
+    minimum: 1
 definitions:
+  agency_client_item_response_def:
+    type: object
+    required:
+      - _id
+      - agency_id
+      - client_id
+      - client_type
+      - linked
+      - created_at
+      - updated_at
+    properties:
+      _id:
+        type: string
+      agency_id:
+        type: string
+      client_id:
+        type: string
+      organisation_id:
+        type: string
+      site_id:
+        type: string
+      client_type:
+        type: string
+      linked:
+        type: boolean
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    additionalProperties: false
+  list_agency_client_consultant_response_def:
+    type: object
+    required:
+      - _id
+      - agency_id
+      - client_id
+      - consultant_role_id
+      - consultant_role_name
+      - consultant_id
+      - created_at
+      - updated_at
+    properties:
+      _id:
+        type: string
+      agency_id:
+        type: string
+      client_id:
+        type: string
+      consultant_role_id:
+        type: string
+      consultant_role_name:
+        type: string
+      consultant_id:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    additionalProperties: false
+  agency_consultant_role_payload_def:
+    type: object
+    required:
+      - name
+      - description
+      - max_consultants
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      max_consultants:
+        type: integer
+        minimum: 1
+    additionalProperties: false
+  agency_consultant_role_update_payload:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      max_consultants:
+        type: integer
+        minimum: 1
+    additionalProperties: false
+  agency_consultant_role_item_def:
+    type: object
+    required:
+      - name
+      - description
+      - max_consultants
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      max_consultants:
+        type: integer
+        minimum: 1
+    additionalProperties: false
+  assign_client_consultant_payload_def:
+    type: object
+    required:
+      - consultant_role_id
+      - consultant_id
+    properties:
+      consultant_role_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      consultant_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+    additionalProperties: false
+ # GENERIC CROSS ROUTE RESPONSES
+  unauthorize_error_model:
+    type: "object"
+    required:
+      - "code"
+      - "message"
+    properties:
+      code:
+        type: "string"
+        enum:
+          - UNAUTHORIZED
+      message:
+        type: "string"
+  empty_payload_def:
+    type: object
+    additionalProperties: false
+  server_error_def:
+    type: "object"
+    required:
+    - code
+    - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      stack:
+        type: string
   server_status_response:
     type: "object"
     required:
@@ -61,6 +612,34 @@ definitions:
         type: string
       stack:
         type: string
+  resource_not_found:
+    description: "No resource found"
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - RESOURCE_NOT_FOUND
+      message:
+        type: string
+responses:
+  unauthorize_error_model:
+    description: "Failed to authenticate the incoming request"
+    schema:
+      $ref: "#/definitions/unauthorize_error_model"
+  no_content:
+    description: "No Content. There were no records to return based on your query."
+  resource_not_found:
+    description: "Resource not found"
+    schema:
+      $ref: "#/definitions/resource_not_found"
+  server_error_model:
+    description: "Server error occurred"
+    schema:
+      $ref: "#/definitions/server_error_def"
 securityDefinitions:
   jwt:
     type: apiKey

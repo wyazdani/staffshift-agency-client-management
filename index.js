@@ -27,6 +27,8 @@ const pubsubAuditConfig = {
   auth: config.get('octophant_audit.pubsub_project'),
   topics: config.get('octophant_audit.pubsub_topics')
 };
+const {LinkHeaderHelper} = require('a24-node-query-utils');
+
 MessagePublisher.configure(pubsubAuditConfig);
 // Allow any calls on /docs and /api-docs
 const allowedRegex = '^/docs.*|^/api-docs.*';
@@ -36,6 +38,9 @@ const options = {
   controllers: './controllers',
   useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
 };
+
+// Configure the LinkHeaderHelper for required link header for pagination
+LinkHeaderHelper.configure(config.get('exposed_server'));
 
 const errorHandlerConfig = {
   client_errors: config.get('client_errors')

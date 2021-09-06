@@ -3,6 +3,12 @@
     "port": 3370,
     "timeout": 15000
   },
+  "exposed_server": {
+    "host": "localhost",
+    "port": 3370,
+    "protocol": "http",
+    "version": "v1"
+  },
   "client_errors": {
     "400": {
       "error_code": null,
@@ -36,7 +42,7 @@
   },
   "bDebug": false,
   "mongo": {
-    "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementDev",
+    "database_host": "mongodb://localhost:27017/staffshiftclientmanagementDev",
     "options": {
       "poolSize": 10,
       "useNewUrlParser": true,
@@ -69,5 +75,63 @@
       "delay": 10000,
       "server_close_timeout": 5000
     }
+  },
+  "pubSubAuth": {
+    "projectId": "staffshift-dev-env",
+    "credentials": {}
+  },
+  "pubsub_log_level": "notice",
+  "app_domain": "ss",
+  "app_name": "agency-client-management",
+  "ss_domain_event": {
+    "app": "agency-client-management",
+    "jwt_secret": "SomeSecret",
+    "pod_id": 234,
+    "strict_mode": true,
+    "ss_domain_event_topics": [
+      {
+        "name": "ss.global.agency.organisation.link",
+        "subscribers": [
+          {
+            "name": "subscriber.agency-client-management-organisation",
+            "processor": "./domain-events-processors/Consumer",
+            "maxPullMessages": 4,
+            "maxConcurrentMessages": 1
+          }
+        ]
+      },
+      {
+        "name": "ss.global.agency.organisation.site.link",
+        "subscribers": [
+          {
+            "name": "subscriber.agency-client-management-site",
+            "processor": "./domain-events-processors/Consumer",
+            "maxPullMessages": 4,
+            "maxConcurrentMessages": 1
+          }
+        ]
+      },
+      {
+        "name": "ss.global.agency.organisation.site.ward.link",
+        "subscribers": [
+          {
+            "name": "subscriber.agency-client-management-ward",
+            "processor": "./domain-events-processors/Consumer",
+            "maxPullMessages": 4,
+            "maxConcurrentMessages": 1
+          }
+        ]
+      }
+    ]
+  },
+  "a24-staffshift-facade": {
+    "api_token": "2Asv2cnB3mgQjYCLHNkz8RPAcXjZnc8gJh2cGaV2",
+    "request_options": {
+      "protocol": "http",
+      "host": "localhost",
+      "port": 3155,
+      "version": "v1"
+    },
+    "request_timeout": 2000
   }
 }
