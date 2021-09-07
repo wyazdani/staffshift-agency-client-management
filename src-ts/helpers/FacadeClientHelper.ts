@@ -97,7 +97,7 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetails(agencyId: string, organisationId: string, siteId: string, wardId: string, options: {[key: string]: any}) {
+  async getAgencyClientDetails(agencyId: string, organisationId: string, siteId: string, wardId: string, options: {[key: string]: any}): Promise<any> {
     if (!options) {
       options = {
         'xRequestId': this.logger.requestId,

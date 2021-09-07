@@ -1,4 +1,5 @@
 
+import _ from 'lodash'
 const app = require('connect')();
 const http = require('http');
 const swaggerTools = require('swagger-tools');
@@ -10,7 +11,6 @@ const {RuntimeError, ErrorHandler} = require('a24-node-error-utils');
 const Logger = require('a24-logzio-winston');
 const Url = require('url');
 Logger.setup(config.logger);
-const _ = require('lodash');
 const serverPort = (config.has('server.port')) ? config.get('server.port') : 3370;
 const mongoose = require('mongoose');
 mongoose.plugin((schema: any) => { schema.options.usePushEach = true; });
@@ -34,7 +34,7 @@ const allowedRegex = '^/docs.*|^/api-docs.*';
 // swaggerRouter configuration
 const options = {
   swaggerUi: '/swagger.json',
-  controllers: './controllers',
+  controllers: './dist/controllers',
   useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
 };
 

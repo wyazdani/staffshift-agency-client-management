@@ -63,6 +63,7 @@ coverage/
 
 # Exclude local config files
 config/local.json
+config/local.js
 config/local-development.json
 /config/local-staging.json
 

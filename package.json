@@ -10,7 +10,8 @@
     "test": "node testfile-drop-database && npm run migrate && ./node_modules/.bin/nyc node testfile.js",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore . *.js",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
-    "start-streaming-application-core-agency-client-consultants": "node StreamingApplication.js --type=core --name=AgencyClientConsultant",
+    "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
+    "start-streaming-application-core-agency-client-consultants": "node dist/StreamingApplication --type=core --name=AgencyClientConsultant",
     "start-streaming-application-core-agency-client": "node StreamingApplication.js --type=core --name=AgencyClientsProjection",
     "start-streaming-application-core-agency-client-event-log": "node StreamingApplication.js --type=core --name=AgencyClientEventLogProjection"
   },

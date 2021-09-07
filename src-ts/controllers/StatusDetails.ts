@@ -1,14 +1,14 @@
 import {SwaggerRequest} from "SwaggerRequest";
 import {ServerResponse} from "http";
 
-export class StatusDetailsController {
+module.exports =  {
   /**
    * Gets the status of the service
    * @param req - The http request object
    * @param res - The http response object
    * @param next - The callback used to pass control to the next middleware
    */
-  static getSystemStatus(req: SwaggerRequest, res: ServerResponse, next: Function) {
+  getSystemStatus:(req: SwaggerRequest, res: ServerResponse, next: Function) => {
     const objStatus = {
       'up_time': Math.floor(process.uptime())
     };
