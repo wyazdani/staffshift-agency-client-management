@@ -1,7 +1,7 @@
 import {AgencyClientCommandEnum, AgencyClientEventType} from './AgencyClientEnums';
 import {ObjectID} from 'mongodb';
-import {AgencyClientEvent} from "./Interfaces";
-import {AgencyClientAggregate} from "./AgencyClientAggregate";
+import {AgencyClientEvent} from './Interfaces';
+import {AgencyClientAggregate} from './AgencyClientAggregate';
 
 export const AgencyClientCommands = {
   // CMD coming from a Triage Domain Event

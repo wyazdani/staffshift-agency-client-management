@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import {Pipeline, WatchHandler} from "./Pipeline";
-import {LoggerContext} from "a24-logzio-winston";
-import {MongoClients} from "./MongoClients";
-import {ResumeTokenCollectionManager} from "./ResumeTokenCollectionManager";
-import {PIPELINE_TYPES} from "./ChangeStreamEnums";
+import {Pipeline, WatchHandler} from './Pipeline';
+import {LoggerContext} from 'a24-logzio-winston';
+import {MongoClients} from './MongoClients';
+import {ResumeTokenCollectionManager} from './ResumeTokenCollectionManager';
+import {PIPELINE_TYPES} from './ChangeStreamEnums';
 
 export class WatcherContext {
   private readonly name: string;

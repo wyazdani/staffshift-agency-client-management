@@ -1,6 +1,5 @@
-'use strict';
 
-import {LoggerContext} from "a24-logzio-winston";
+import {LoggerContext} from 'a24-logzio-winston';
 
 const config = require('config');
 const StaffshiftFacadeClient = require('a24-node-staffshift-facade-client');
@@ -168,7 +167,7 @@ export class FacadeClientHelper {
     const api = new StaffshiftFacadeClient.AgencyApi(client);
     const tokenAuthorization = `token ${clientConfig.api_token}`;
 
-    let options = {
+    const options = {
       'xRequestId': this.logger.requestId
     };
 

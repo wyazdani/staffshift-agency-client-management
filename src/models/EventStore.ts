@@ -1,4 +1,4 @@
-import {Document, Schema, model} from "mongoose";
+import {Document, Schema, model} from 'mongoose';
 export type EventStoreDocument = Document & {
   type: string,
   aggregate_id: Object,

@@ -1,6 +1,6 @@
-import {IncomingDomainEvents} from "../models/IncomingDomainEvents";
-import {AgencyClientLinkStatus} from "./AgencyClientLinkStatus";
-import {LoggerContext} from "a24-logzio-winston";
+import {IncomingDomainEvents} from '../models/IncomingDomainEvents';
+import {AgencyClientLinkStatus} from './AgencyClientLinkStatus';
+import {LoggerContext} from 'a24-logzio-winston';
 
 module.exports = async (logger: LoggerContext, message: any, metadata: any, callback: Function) => {
   process(logger, message)

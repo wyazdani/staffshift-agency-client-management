@@ -1,7 +1,7 @@
-import {LoggerContext} from "a24-logzio-winston";
-import {ResumeTokenCollectionManager} from "./ResumeTokenCollectionManager";
-import {MongoClients} from "./MongoClients";
-import {PIPELINE_TYPES} from "./ChangeStreamEnums";
+import {LoggerContext} from 'a24-logzio-winston';
+import {ResumeTokenCollectionManager} from './ResumeTokenCollectionManager';
+import {MongoClients} from './MongoClients';
+import {PIPELINE_TYPES} from './ChangeStreamEnums';
 
 export interface WatchHandler {
   shutdown: Function

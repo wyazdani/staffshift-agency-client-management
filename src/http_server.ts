@@ -1,6 +1,6 @@
 
-import _ from 'lodash'
-import {JWTSecurityHelper} from "./helpers/JWTSecurityHelper";
+import _ from 'lodash';
+import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
 const app = require('connect')();
 const http = require('http');
 const swaggerTools = require('swagger-tools');
@@ -50,7 +50,7 @@ mongoose.connect(config.mongo.database_host, config.mongo.options);
 mongoose.connection.on(
   'error',
   function mongooseConnection(error: Error) {
-    let loggerContext = Logger.getContext('startup');
+    const loggerContext = Logger.getContext('startup');
     loggerContext.crit('MongoDB connection error', error);
     process.exit(1);
   }
@@ -90,13 +90,13 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
   // Validate Swagger requests
   app.use(middleware.swaggerValidator());
 
-  let securityMetaData: {[key in string]: any} = {};
+  const securityMetaData: {[key in string]: any} = {};
   app.use(function configureAuditorContext(req: any, res: any, next: Function) {
     // Allow the docs to load
     if (req.url.match(allowedRegex) || (!_.isEmpty(req.swagger.operation) && req.swagger.operation['x-public-operation'] === true)) {
       return next();
     }
-    let jwtToken = req.headers['x-request-jwt'];
+    const jwtToken = req.headers['x-request-jwt'];
     if (!jwtToken) {
       return next(
         new RuntimeError('Missing required JWT header, update swagger api definition to make X-Request-JWT required')
@@ -109,7 +109,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
     if (!req.swagger.operation['x-octophant-event'] && _.isEmpty(req.swagger.operation['x-octophant-event'])) {
       return next(new RuntimeError('x-octophant-event is expected to be configured for operation, but is not'));
     }
-    let publisher = new MessagePublisher(req.Logger);
+    const publisher = new MessagePublisher(req.Logger);
     req.octophant = Auditor.getAuditorContext(
       req,
       jwtToken,

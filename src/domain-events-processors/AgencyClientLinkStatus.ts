@@ -1,8 +1,8 @@
-import {LoggerContext} from "a24-logzio-winston";
-import {AgencyClientRepository} from "../AgencyClient/AgencyClientRepository";
-import {EventStore} from "../models/EventStore";
-import {AgencyClientCommandHandler} from "../AgencyClient/AgencyClientCommandHandler";
-import {FacadeClientHelper} from "../helpers/FacadeClientHelper";
+import {LoggerContext} from 'a24-logzio-winston';
+import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
+import {EventStore} from '../models/EventStore';
+import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
+import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 
 export class AgencyClientLinkStatus {
   private readonly logger: LoggerContext;
@@ -18,9 +18,9 @@ export class AgencyClientLinkStatus {
   public async apply(message: any): Promise<any> {
     console.log(message.event.name);
     // try catch to handle the await error
-    let conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
-    let repository = new AgencyClientRepository(EventStore);
-    let handler = new AgencyClientCommandHandler(repository);
+    const conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
+    const repository = new AgencyClientRepository(EventStore);
+    const handler = new AgencyClientCommandHandler(repository);
     return handler.apply(conversionData.agency_id, conversionData.client_id, conversionData.command);
   }
 
@@ -32,7 +32,7 @@ export class AgencyClientLinkStatus {
    * @param {Object} data - The Triage event data that needs to be converted
    */
   private async convertTriageEventToCommand(eventName: string, data: any) {
-    let conversionData: {[key: string]: any} = {};
+    const conversionData: {[key: string]: any} = {};
     conversionData.agency_id = data.agency_id;
 
     // Need to have a try catch to wrap all the awaits
@@ -97,7 +97,7 @@ export class AgencyClientLinkStatus {
   private async getCommand(data: any) {
     const client = new FacadeClientHelper(this.logger);
     // Need try catch
-    let response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id);
+    const response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id);
     if (response && response.length > 1) {
       throw new Error('We are only expecting a single agency client entry to be returned');
     }

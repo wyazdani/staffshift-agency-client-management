@@ -12,7 +12,7 @@ export const ClientHelper = {
    * @return {ValidationError}
    */
   deserializeStatusCode400: function deserializeStatusCode400(client: any, model: any, response: any) {
-    let item = client.deserialize(response, model);
+    const item = client.deserialize(response, model);
     return new ValidationError(item.message, item.errors);
   },
 
@@ -64,4 +64,4 @@ export const ClientHelper = {
     const errorMsg = (response && response.body && response.body.message) ? response.body.message :  'Permission denied';
     return new PermissionDenied(errorMsg);
   }
-}
+};

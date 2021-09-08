@@ -1,4 +1,4 @@
-import {Document, Schema, model} from "mongoose";
+import {Document, Schema, model} from 'mongoose';
 export type IncomingDomainEventDocument = Document & {
   type: string,
   aggregate_id: Object,

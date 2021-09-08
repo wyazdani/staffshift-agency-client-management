@@ -1,7 +1,7 @@
-import {Transform, TransformCallback, TransformOptions} from "stream";
-import {Model} from "mongoose";
-import {LoggerContext} from "a24-logzio-winston";
-import {AgencyClientRepository} from "../../../AgencyClient/AgencyClientRepository";
+import {Transform, TransformCallback, TransformOptions} from 'stream';
+import {Model} from 'mongoose';
+import {LoggerContext} from 'a24-logzio-winston';
+import {AgencyClientRepository} from '../../../AgencyClient/AgencyClientRepository';
 import {Events} from '../../../Events';
 
 const events = [
@@ -38,7 +38,7 @@ export class AgencyClientEventLogProjection extends Transform {
       return callback(null, data);
     }
     const event = data.event;
-    let repository = new AgencyClientRepository(this.eventstore);
+    const repository = new AgencyClientRepository(this.eventstore);
     repository.getAggregate(event.aggregate_id.agency_id, event.aggregate_id.client_id, event.sequence_id)
       .then((aggregate) => {
         const agencyClientEvent = new this.model({
@@ -55,8 +55,8 @@ export class AgencyClientEventLogProjection extends Transform {
           return callback(null, data);
         });
       }).catch((err) => {
-      return callback(err);
-    });
+        return callback(err);
+      });
     // Should we be adding something here since this is a possible "hanging" issue
   }
 }

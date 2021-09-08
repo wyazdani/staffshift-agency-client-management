@@ -1,11 +1,11 @@
-import {ServerResponse} from "http";
-import {GenericRepository} from "../GenericRepository";
+import {ServerResponse} from 'http';
+import {GenericRepository} from '../GenericRepository';
 import {get} from 'lodash';
-import _ from "lodash";
-import {AgencyClientsProjection} from "../models/AgencyClientsProjection";
+import _ from 'lodash';
+import {AgencyClientsProjection} from '../models/AgencyClientsProjection';
 const {QueryHelper} = require('a24-node-query-utils');
-import {SwaggerRequest} from "SwaggerRequest";
-import {PaginationHelper} from "../helpers/PaginationHelper";
+import {SwaggerRequest} from 'SwaggerRequest';
+import {PaginationHelper} from '../helpers/PaginationHelper';
 const {ResourceNotFoundError} = require('a24-node-error-utils');
 
 /**
@@ -19,10 +19,10 @@ module.exports.getAgencyClient = async (req: SwaggerRequest, res: ServerResponse
   const swaggerParams = req.swagger.params || {};
   const logger = req.Logger;
 
-  let limit = QueryHelper.getItemsPerPage(swaggerParams);
-  let skip = QueryHelper.getSkipValue(swaggerParams, limit);
-  let sortBy = QueryHelper.getSortParams(swaggerParams);
-  let query = QueryHelper.getQuery(swaggerParams);
+  const limit = QueryHelper.getItemsPerPage(swaggerParams);
+  const skip = QueryHelper.getSkipValue(swaggerParams, limit);
+  const sortBy = QueryHelper.getSortParams(swaggerParams);
+  const query = QueryHelper.getQuery(swaggerParams);
 
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
   query.client_id = get(req, 'swagger.params.client_id.value', '');
@@ -43,7 +43,7 @@ module.exports.getAgencyClient = async (req: SwaggerRequest, res: ServerResponse
   } catch (error) {
     return next(error);
   }
-}
+};
 
 /**
  * Retrieves agency client listing
@@ -56,10 +56,10 @@ module.exports.listAgencyClients = async (req: SwaggerRequest, res: ServerRespon
   const swaggerParams = req.swagger.params || {};
   const logger = req.Logger;
 
-  let limit = QueryHelper.getItemsPerPage(swaggerParams);
-  let skip = QueryHelper.getSkipValue(swaggerParams, limit);
-  let sortBy = QueryHelper.getSortParams(swaggerParams);
-  let query = QueryHelper.getQuery(swaggerParams);
+  const limit = QueryHelper.getItemsPerPage(swaggerParams);
+  const skip = QueryHelper.getSkipValue(swaggerParams, limit);
+  const sortBy = QueryHelper.getSortParams(swaggerParams);
+  const query = QueryHelper.getQuery(swaggerParams);
 
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
 
@@ -80,4 +80,4 @@ module.exports.listAgencyClients = async (req: SwaggerRequest, res: ServerRespon
   } catch (error) {
     return next(error);
   }
-}
+};

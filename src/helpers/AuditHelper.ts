@@ -1,4 +1,4 @@
-import {LoggerContext} from "a24-logzio-winston";
+import {LoggerContext} from 'a24-logzio-winston';
 const {RuntimeError} = require('a24-node-error-utils');
 
 export type Audit = {
@@ -48,7 +48,7 @@ export class AuditHelper {
               'original_error': err
             }
           );
-          let runtimeError = new RuntimeError(`Error while auditing for action: ${auditDetails.action}`, err);
+          const runtimeError = new RuntimeError(`Error while auditing for action: ${auditDetails.action}`, err);
           return callback(runtimeError);
         }
         this.logger.info(`Audit was successfully done for action: ${auditDetails.action}`);

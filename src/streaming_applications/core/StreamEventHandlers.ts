@@ -1,6 +1,6 @@
 import {Readable, Writable, Stream} from 'stream';
 import {ChangeStream} from 'mongodb';
-import {LoggerContext} from "a24-logzio-winston";
+import {LoggerContext} from 'a24-logzio-winston';
 /**
  * Responsible for attaching event listeners/handlers to the stream both writable and readable
  */

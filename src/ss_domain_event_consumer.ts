@@ -1,5 +1,5 @@
 const config = require('config');
-import Logger from 'a24-logzio-winston'
+import Logger from 'a24-logzio-winston';
 Logger.setup(config.logger); // Setup logger
 const loggerContext = Logger.getContext('startup');
 const mongoose = require('mongoose');
@@ -11,7 +11,7 @@ mongoose.connect(config.mongo.database_host, config.mongo.options);
 mongoose.connection.on(
   'error',
   function mongooseConnection(error: Error) {
-    let loggerContext = Logger.getContext('startup');
+    const loggerContext = Logger.getContext('startup');
     loggerContext.error('MongoDB connection error', error);
     return process.exit(1);
   }

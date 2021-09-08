@@ -1,8 +1,8 @@
-import {Transform, TransformOptions} from "stream";
-import {AgencyRepository} from "../../../Agency/AgencyRepository";
-import {Events} from "../../../Events";
-import {CallbackError, Model} from "mongoose";
-import {LoggerContext} from "a24-logzio-winston";
+import {Transform, TransformOptions} from 'stream';
+import {AgencyRepository} from '../../../Agency/AgencyRepository';
+import {Events} from '../../../Events';
+import {CallbackError, Model} from 'mongoose';
+import {LoggerContext} from 'a24-logzio-winston';
 
 const events = [
   Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
@@ -39,10 +39,10 @@ export class AgencyClientConsultantProjection extends Transform {
     if (Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
       // NOR do we care about any updates to the actual name
-      let repository = new AgencyRepository(this.eventstore);
+      const repository = new AgencyRepository(this.eventstore);
       repository.getAggregate(event.aggregate_id.agency_id)
         .then((agencyAggregate) => {
-          let role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
+          const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
           const agencyClientConsultant = new this.model({
             _id: event.data._id,
             agency_id: event.aggregate_id.agency_id,
@@ -66,8 +66,8 @@ export class AgencyClientConsultantProjection extends Transform {
       this.model.updateMany({consultant_role_id: event.data._id},
         {$set: {consultant_role_name: event.data.name}}, {},
         (err: CallbackError) => {
-        return callback(err, data);
-      });
+          return callback(err, data);
+        });
     }
     // Should we be adding something here since this is a possible "hanging" issue
   }

@@ -1,14 +1,14 @@
-import {Pipeline, WatchHandler} from "../core/Pipeline";
-import {PIPELINE_TYPES, STREAM_TYPES} from "../core/ChangeStreamEnums";
-import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from "../DatabaseConfigKeys";
-import {MongoClients} from "../core/MongoClients";
-import {LoggerContext} from "a24-logzio-winston";
-import {ResumeTokenCollectionManager} from "../core/ResumeTokenCollectionManager";
-import {EventStore} from "../../models/EventStore";
-import {EventStoreTransformer} from "../core/streams/EventStoreTransformer";
-import {AgencyClientsProjection} from "../../models/AgencyClientsProjection";
-import {AgencyClientsProjectionTransformer} from "./transformers/AgencyClientsProjectionTransformer";
-import {StreamEventHandlers} from "../core/StreamEventHandlers";
+import {Pipeline, WatchHandler} from '../core/Pipeline';
+import {PIPELINE_TYPES, STREAM_TYPES} from '../core/ChangeStreamEnums';
+import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from '../DatabaseConfigKeys';
+import {MongoClients} from '../core/MongoClients';
+import {LoggerContext} from 'a24-logzio-winston';
+import {ResumeTokenCollectionManager} from '../core/ResumeTokenCollectionManager';
+import {EventStore} from '../../models/EventStore';
+import {EventStoreTransformer} from '../core/streams/EventStoreTransformer';
+import {AgencyClientsProjection} from '../../models/AgencyClientsProjection';
+import {AgencyClientsProjectionTransformer} from './transformers/AgencyClientsProjectionTransformer';
+import {StreamEventHandlers} from '../core/StreamEventHandlers';
 
 const HIGH_WATER_MARK = 5;
 /**
@@ -88,7 +88,7 @@ export class EventStorePipeline implements Pipeline {
           watchStream.close(() => eventStoreTransformer.end());
         });
       }
-    }
+    };
   }
 
 }

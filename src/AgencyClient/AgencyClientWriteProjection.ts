@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {AgencyClientEventType} from './AgencyClientEnums';
-import {AgencyClientAggregateRecord, AgencyClientConsultant} from "./Interfaces";
+import {AgencyClientAggregateRecord, AgencyClientConsultant} from './Interfaces';
 
 export const AgencyClientWriteProjection = {
   [AgencyClientEventType.AGENCY_CLIENT_LINKED]: (aggregate: AgencyClientAggregateRecord, event: any): AgencyClientAggregateRecord => {

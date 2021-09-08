@@ -1,7 +1,7 @@
-'use strict';
+
 const JWT = require('jsonwebtoken');
 const {AuthorizationError} = require('a24-node-error-utils');
-import _ from "lodash";
+import _ from 'lodash';
 
 /**
  * This module contains methods that assists with swaggers security

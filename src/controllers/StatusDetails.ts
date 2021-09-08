@@ -1,5 +1,5 @@
-import {SwaggerRequest} from "SwaggerRequest";
-import {ServerResponse} from "http";
+import {SwaggerRequest} from 'SwaggerRequest';
+import {ServerResponse} from 'http';
 
 module.exports =  {
   /**
@@ -8,7 +8,7 @@ module.exports =  {
    * @param res - The http response object
    * @param next - The callback used to pass control to the next middleware
    */
-  getSystemStatus:(req: SwaggerRequest, res: ServerResponse, next: Function) => {
+  getSystemStatus: (req: SwaggerRequest, res: ServerResponse, next: Function) => {
     const objStatus = {
       'up_time': Math.floor(process.uptime())
     };
@@ -16,4 +16,4 @@ module.exports =  {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(objStatus));
   }
-}
+};

@@ -1,14 +1,14 @@
-'use strict';
+
 import {AgencyCommandEnums, AgencyEventEnums} from './AgencyEnums';
 import {ObjectID} from 'mongodb';
-import {AgencyAggregate} from "./AgencyAggregate";
-import {AgencyEvent} from "./Interfaces";
+import {AgencyAggregate} from './AgencyAggregate';
+import {AgencyEvent} from './Interfaces';
 
 export const AgencyCommands = {
   [AgencyCommandEnums.ADD_AGENCY_CONSULTANT_ROLE]: async (aggregate: AgencyAggregate, command: any): Promise<AgencyEvent[]> => {
     let eventId = aggregate.getLastEventId();
     // We are looking to auto enabled a newly created consultant roles
-    let consultantId = (new ObjectID).toString();
+    const consultantId = (new ObjectID).toString();
     return [{
       type: AgencyEventEnums.AGENCY_CONSULTANT_ROLE_ADDED,
       aggregate_id: aggregate.getId(),

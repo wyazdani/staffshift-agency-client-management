@@ -1,4 +1,4 @@
-import {Document, Schema, model} from "mongoose";
+import {Document, Schema, model} from 'mongoose';
 export type AgencyClientEventLogDocument = Document & {
   agency_id: string,
   client_id: string,

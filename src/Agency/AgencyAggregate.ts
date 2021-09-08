@@ -2,7 +2,6 @@ import {AgencyConsultantRoleEnums} from './AgencyEnums';
 import _ from 'lodash';
 import {AgencyAggregateRecord, AgencyAggregateId, AgencyConsultantRole} from './Interfaces';
 
-
 export class AgencyAggregate {
   id: AgencyAggregateId;
   aggregate: AgencyAggregateRecord;
@@ -29,7 +28,7 @@ export class AgencyAggregate {
   }
 
   canDisableConsultantRole(consultantRoleId: string): boolean {
-    let role =  _.find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+    const role =  _.find(this.aggregate.consultant_roles, {_id: consultantRoleId});
     if (!role) {
       throw new Error('BOOM, THERE IS NO MATCHING ROLE');
     }

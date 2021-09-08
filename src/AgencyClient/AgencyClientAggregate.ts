@@ -1,6 +1,6 @@
-import {AgencyClientAggregateId, AgencyClientAggregateRecord, AgencyClientConsultant} from "./Interfaces";
+import {AgencyClientAggregateId, AgencyClientAggregateRecord, AgencyClientConsultant} from './Interfaces';
 import _ from 'lodash';
-import {AgencyRepository} from "../Agency/AgencyRepository";
+import {AgencyRepository} from '../Agency/AgencyRepository';
 
 export class AgencyClientAggregate {
   private readonly id: AgencyClientAggregateId;
@@ -12,7 +12,7 @@ export class AgencyClientAggregate {
     this.agencyRepository = agencyRepository;
   }
   isLinked(): boolean {
-    return !! this.aggregate.linked;
+    return !!this.aggregate.linked;
   }
   // Business Logic that should be applied
   async validateAddClientConsultant(consultant: AgencyClientConsultant): Promise<void> {

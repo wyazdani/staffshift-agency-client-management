@@ -1,4 +1,4 @@
-'use strict';
+
 import {Writable, WritableOptions} from 'stream';
 export interface ResumeTokenWriterOptions extends WritableOptions{
   _id: string,

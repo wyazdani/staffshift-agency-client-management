@@ -1,20 +1,20 @@
-import {Pipeline, WatchHandler} from "../core/Pipeline";
-import {PIPELINE_TYPES, STREAM_TYPES} from "../core/ChangeStreamEnums";
-import {MongoClients} from "../core/MongoClients";
-import {LoggerContext} from "a24-logzio-winston";
-import {ResumeTokenCollectionManager} from "../core/ResumeTokenCollectionManager";
-import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from "../DatabaseConfigKeys";
-import {StreamEventHandlers} from "../core/StreamEventHandlers";
-import {AgencyClientEventLogProjection} from "./transformers/AgencyClientEventLogProjection";
-import {AgencyClientEventLog} from "../../models/AgencyClientEventLog";
-import {EventStore} from "../../models/EventStore";
-import {EventStoreTransformer} from "../core/streams/EventStoreTransformer";
+import {Pipeline, WatchHandler} from '../core/Pipeline';
+import {PIPELINE_TYPES, STREAM_TYPES} from '../core/ChangeStreamEnums';
+import {MongoClients} from '../core/MongoClients';
+import {LoggerContext} from 'a24-logzio-winston';
+import {ResumeTokenCollectionManager} from '../core/ResumeTokenCollectionManager';
+import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from '../DatabaseConfigKeys';
+import {StreamEventHandlers} from '../core/StreamEventHandlers';
+import {AgencyClientEventLogProjection} from './transformers/AgencyClientEventLogProjection';
+import {AgencyClientEventLog} from '../../models/AgencyClientEventLog';
+import {EventStore} from '../../models/EventStore';
+import {EventStoreTransformer} from '../core/streams/EventStoreTransformer';
 
 const HIGH_WATER_MARK = 5;
 /**
  * Responsible for aggregating agency candidate details
  */
-export class EventStorePipeline implements Pipeline{
+export class EventStorePipeline implements Pipeline {
   getID(): string {
     return 'agency_client_event_log_event_store';
   }
@@ -84,6 +84,6 @@ export class EventStorePipeline implements Pipeline{
           watchStream.close(() => eventStoreTransformer.end());
         });
       }
-    }
+    };
   }
 }

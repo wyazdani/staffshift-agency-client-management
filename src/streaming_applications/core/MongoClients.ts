@@ -1,10 +1,10 @@
-import {LoggerContext} from "a24-logzio-winston";
+import {LoggerContext} from 'a24-logzio-winston';
 import {MongoClient, Db} from 'mongodb';
 import _ from 'lodash';
 const config = require('config');
 
-let configKeys: {[key in string]: number} = {};
-let clients: {[key in string]: MongoClient} = {};
+const configKeys: {[key in string]: number} = {};
+const clients: {[key in string]: MongoClient} = {};
 
 /**
  * Basic connection manager to ensure we have one connection with a sane pool size
@@ -62,11 +62,10 @@ export class MongoClients {
     if (_.isString(configKeyListing)) {
       return this.applyKeyCount(configKeyListing);
     }
-    for (let item of configKeyListing) {
+    for (const item of configKeyListing) {
       this.applyKeyCount(item);
     }
   }
-
 
   /**
    * Basic counter method

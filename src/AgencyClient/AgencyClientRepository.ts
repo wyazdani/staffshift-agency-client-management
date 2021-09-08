@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import {Model, FilterQuery} from 'mongoose';
-import {AgencyClientAggregateRecord, AgencyClientEvent} from "./Interfaces";
-import {AgencyClientAggregate} from "./AgencyClientAggregate";
-import {AgencyRepository} from "../Agency/AgencyRepository";
-import {AgencyClientWriteProjection} from "./AgencyClientWriteProjection";
+import {AgencyClientAggregateRecord, AgencyClientEvent} from './Interfaces';
+import {AgencyClientAggregate} from './AgencyClientAggregate';
+import {AgencyRepository} from '../Agency/AgencyRepository';
+import {AgencyClientWriteProjection} from './AgencyClientWriteProjection';
 
 export class AgencyClientRepository {
   store: Model<any>;

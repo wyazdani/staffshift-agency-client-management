@@ -2,7 +2,7 @@ import {Transform, TransformCallback, TransformOptions} from 'stream';
 /**
  * Convert a standard delta change stream event into an upsert structure that can be used
  */
-export class EventStoreTransformer extends Transform{
+export class EventStoreTransformer extends Transform {
 
   constructor(opts: TransformOptions) {
     // We only cater for object mode
@@ -29,7 +29,7 @@ export class EventStoreTransformer extends Transform{
     }
     // What should we do if we get a non-insert operation type
     // data.operationType !== 'insert'
-    let newData = {
+    const newData = {
       _id: data._id,
       event: data.fullDocument
     };

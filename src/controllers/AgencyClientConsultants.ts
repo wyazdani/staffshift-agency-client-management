@@ -1,12 +1,12 @@
-import {AgencyClientRepository} from "../AgencyClient/AgencyClientRepository";
-import {EventStore} from "../models/EventStore";
-import {AgencyClientCommandHandler} from "../AgencyClient/AgencyClientCommandHandler";
-import _ from "lodash";
+import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
+import {EventStore} from '../models/EventStore';
+import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
+import _ from 'lodash';
 import {ServerResponse} from 'http';
-import {GenericRepository} from "../GenericRepository";
-import {AgencyClientConsultants} from "../models/AgencyClientConsultants";
-import {PaginationHelper} from "../helpers/PaginationHelper";
-import {SwaggerRequest} from "SwaggerRequest";
+import {GenericRepository} from '../GenericRepository';
+import {AgencyClientConsultants} from '../models/AgencyClientConsultants';
+import {PaginationHelper} from '../helpers/PaginationHelper';
+import {SwaggerRequest} from 'SwaggerRequest';
 const {QueryHelper} = require('a24-node-query-utils');
 
 /**
@@ -22,11 +22,11 @@ module.exports.addAgencyClientConsultant = async (req: SwaggerRequest, res: Serv
   const client_id = _.get(req, 'swagger.params.client_id.value', '');
   const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
 
-  let repository = new AgencyClientRepository(EventStore);
-  let handler = new AgencyClientCommandHandler(repository);
+  const repository = new AgencyClientRepository(EventStore);
+  const handler = new AgencyClientCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
-  let command = {
+  const command = {
     type: command_type,
     data: payload
   };
@@ -45,7 +45,7 @@ module.exports.addAgencyClientConsultant = async (req: SwaggerRequest, res: Serv
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
   }
-}
+};
 
 /**
  * Remove Agency Client Consultant
@@ -60,11 +60,11 @@ module.exports.removeAgencyClientConsultant = async (req: SwaggerRequest, res: S
   const consultant_id = _.get(req, 'swagger.params.consultant_id.value', '');
   const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
 
-  let repository = new AgencyClientRepository(EventStore);
-  let handler = new AgencyClientCommandHandler(repository);
+  const repository = new AgencyClientRepository(EventStore);
+  const handler = new AgencyClientCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
-  let command = {
+  const command = {
     type: command_type,
     data: {_id: consultant_id}
   };
@@ -95,10 +95,10 @@ module.exports.listAgencyClientConsultants = async (req: SwaggerRequest, res: Se
   const swaggerParams = req.swagger.params || {};
   const logger = req.Logger;
 
-  let limit = QueryHelper.getItemsPerPage(swaggerParams);
-  let skip = QueryHelper.getSkipValue(swaggerParams, limit);
-  let sortBy = QueryHelper.getSortParams(swaggerParams);
-  let query = QueryHelper.getQuery(swaggerParams);
+  const limit = QueryHelper.getItemsPerPage(swaggerParams);
+  const skip = QueryHelper.getSkipValue(swaggerParams, limit);
+  const sortBy = QueryHelper.getSortParams(swaggerParams);
+  const query = QueryHelper.getQuery(swaggerParams);
 
   query.agency_id = _.get(req, 'swagger.params.agency_id.value', '');
   query.client_id = _.get(req, 'swagger.params.client_id.value', '');

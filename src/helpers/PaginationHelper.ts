@@ -1,5 +1,5 @@
-import _ from "lodash";
-import {ServerResponse} from "http";
+import _ from 'lodash';
+import {ServerResponse} from 'http';
 const {QueryHelper, LinkHeaderHelper} = require('a24-node-query-utils');
 
 /**

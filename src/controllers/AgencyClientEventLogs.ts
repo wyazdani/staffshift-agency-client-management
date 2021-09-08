@@ -1,9 +1,9 @@
-import {ClientRequest, ServerResponse} from "http";
-import {GenericRepository} from "../GenericRepository";
-import {AgencyClientEventLog} from "../models/AgencyClientEventLog";
-import {PaginationHelper} from "../helpers/PaginationHelper"
-import {SwaggerRequest} from "SwaggerRequest";
-import _ from "lodash";
+import {ClientRequest, ServerResponse} from 'http';
+import {GenericRepository} from '../GenericRepository';
+import {AgencyClientEventLog} from '../models/AgencyClientEventLog';
+import {PaginationHelper} from '../helpers/PaginationHelper';
+import {SwaggerRequest} from 'SwaggerRequest';
+import _ from 'lodash';
 const {QueryHelper} = require('a24-node-query-utils');
 
 /**
@@ -16,10 +16,10 @@ module.exports.listAgencyClientEventLogs = async (req: SwaggerRequest, res: Serv
   const swaggerParams = req.swagger.params || {};
   const logger = req.Logger;
 
-  let limit = QueryHelper.getItemsPerPage(swaggerParams);
-  let skip = QueryHelper.getSkipValue(swaggerParams, limit);
-  let sortBy = QueryHelper.getSortParams(swaggerParams);
-  let query = QueryHelper.getQuery(swaggerParams);
+  const limit = QueryHelper.getItemsPerPage(swaggerParams);
+  const skip = QueryHelper.getSkipValue(swaggerParams, limit);
+  const sortBy = QueryHelper.getSortParams(swaggerParams);
+  const query = QueryHelper.getQuery(swaggerParams);
 
   query.agency_id = _.get(req, 'swagger.params.agency_id.value', '');
   query.client_id = _.get(req, 'swagger.params.client_id.value', '');
@@ -48,4 +48,4 @@ module.exports.listAgencyClientEventLogs = async (req: SwaggerRequest, res: Serv
   } catch (error) {
     return next(error);
   }
-}
+};

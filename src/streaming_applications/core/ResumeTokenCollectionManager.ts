@@ -1,6 +1,6 @@
 import {Db, Timestamp, ChangeStreamOptions} from 'mongodb';
-import {STREAM_TYPES} from "./ChangeStreamEnums";
-import {ResumeTokenWriter} from "./streams/ResumeTokenWriter";
+import {STREAM_TYPES} from './ChangeStreamEnums';
+import {ResumeTokenWriter} from './streams/ResumeTokenWriter';
 
 export interface WatchOptions extends ChangeStreamOptions {
   total?: number//We use total in seed

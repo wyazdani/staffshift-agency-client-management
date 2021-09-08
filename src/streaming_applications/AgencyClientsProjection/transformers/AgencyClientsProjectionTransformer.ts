@@ -1,7 +1,7 @@
-import {Transform, TransformCallback, TransformOptions} from "stream";
-import {LoggerContext} from "a24-logzio-winston";
-import {CallbackError, FilterQuery, Model} from "mongoose";
-import {Events} from "../../../Events";
+import {Transform, TransformCallback, TransformOptions} from 'stream';
+import {LoggerContext} from 'a24-logzio-winston';
+import {CallbackError, FilterQuery, Model} from 'mongoose';
+import {Events} from '../../../Events';
 
 const events = [
   Events.AGENCY_CLIENT_LINKED, Events.AGENCY_CLIENT_UNLINKED
@@ -38,7 +38,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
       return callback(null, data);
     }
     const event = data.event;
-    let criteria: FilterQuery<any> = {
+    const criteria: FilterQuery<any> = {
       agency_id: event.aggregate_id.agency_id,
       client_id: event.aggregate_id.client_id
     };

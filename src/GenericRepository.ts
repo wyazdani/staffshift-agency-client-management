@@ -1,5 +1,5 @@
-import {LoggerContext} from "a24-logzio-winston";
-import {FilterQuery, Model} from "mongoose";
+import {LoggerContext} from 'a24-logzio-winston';
+import {FilterQuery, Model} from 'mongoose';
 const {RuntimeError} = require('a24-node-error-utils');
 
 /**
@@ -41,7 +41,6 @@ export class GenericRepository {
       throw error;
     }
   }
-
 
   /**
    * Gets the count of records that matches a given query
