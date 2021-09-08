@@ -165,11 +165,10 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
       await httpTerminator.terminate();
       logger.log('info', 'server stopped gracefully');
       await Logger.close();
-      const used = process.memoryUsage();
+      const used: any = process.memoryUsage();
       let memoryLog = 'Memory Usage: ';
       for (const key in used) {
-        // memoryLog += ` ${key}: ${Math.round(+used[key] / 1024 / 1024 * 100) / 100}MB`;
-        //@TODO: REMEMBER TO SOLVE IT HERE -----------------
+        memoryLog += ` ${key}: ${Math.round(+used[key] / 1024 / 1024 * 100) / 100}MB`;
       }
       console.log(memoryLog);
       process.exit(0);

@@ -7,7 +7,7 @@ import {PIPELINE_TYPES} from "./ChangeStreamEnums";
 
 export class WatcherContext {
   private readonly name: string;
-  private pipelines: Pipeline[];
+  private readonly pipelines: Pipeline[];
   private watchHandlers: WatchHandler[];
   constructor(name: string, pipelines: Pipeline[]) {
     this.name = name;

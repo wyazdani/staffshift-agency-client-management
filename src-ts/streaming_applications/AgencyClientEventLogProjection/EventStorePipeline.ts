@@ -1,24 +1,31 @@
 import {Pipeline, WatchHandler} from "../core/Pipeline";
 import {PIPELINE_TYPES, STREAM_TYPES} from "../core/ChangeStreamEnums";
-import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from "../DatabaseConfigKeys";
-import {LoggerContext} from "a24-logzio-winston";
 import {MongoClients} from "../core/MongoClients";
+import {LoggerContext} from "a24-logzio-winston";
 import {ResumeTokenCollectionManager} from "../core/ResumeTokenCollectionManager";
+import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from "../DatabaseConfigKeys";
+import {StreamEventHandlers} from "../core/StreamEventHandlers";
+import {AgencyClientEventLogProjection} from "./transformers/AgencyClientEventLogProjection";
+import {AgencyClientEventLog} from "../../models/AgencyClientEventLog";
 import {EventStore} from "../../models/EventStore";
 import {EventStoreTransformer} from "../core/streams/EventStoreTransformer";
-import {AgencyClientConsultants} from "../../models/AgencyClientConsultants";
-import {AgencyClientConsultantProjection} from "./transformers/AgencyClientConsultantProjection";
-import {StreamEventHandlers} from "../core/StreamEventHandlers";
 
 const HIGH_WATER_MARK = 5;
 /**
  * Responsible for aggregating agency candidate details
  */
-export class EventStorePipeline implements Pipeline {
-  getID() {
-    return 'agency_client_consultant_event_store';
+export class EventStorePipeline implements Pipeline{
+  getID(): string {
+    return 'agency_client_event_log_event_store';
   }
-
+  /**
+   * Return an array of DB identifiers that the pipeline interacts with
+   *
+   * @returns {Array<String>}
+   */
+  getMongoClientConfigKeys(): string[] {
+    return [AGENCY_CLIENT_MANAGEMENT_DB_KEY];
+  }
   /**
    * Return pipeline type
    *
@@ -27,20 +34,10 @@ export class EventStorePipeline implements Pipeline {
   getType(): PIPELINE_TYPES {
     return PIPELINE_TYPES.CORE;
   }
-
-  /**
-   * Return an array of DB identifiers that the pipeline interacts with
-   *
-   * @returns {Array<String>}
-   */
-  getMongoClientConfigKeys() {
-    return [AGENCY_CLIENT_MANAGEMENT_DB_KEY];
-  }
-
   /**
    * Initiates and process change stream events
    *
-   * @param {Object} logger - Logger instance
+   * @param {LoggerContext} logger - Logger instance
    * @param {MongoClients} clientManager - Client manager for mongodb connections
    * @param {ResumeTokenCollectionManager} tokenManager - Instance of ResumeTokenCollectionManager class
    */
@@ -55,11 +52,11 @@ export class EventStorePipeline implements Pipeline {
     const opts = {
       highWaterMark: HIGH_WATER_MARK,
       eventstore: EventStore,
-      model: AgencyClientConsultants,
+      model: AgencyClientEventLog,
       pipeline: this.getID(),
       logger: logger
     };
-    const projectionTransformer = new AgencyClientConsultantProjection(opts);
+    const projectionTransformer = new AgencyClientEventLogProjection(opts);
     const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES.WATCH, {highWaterMark: HIGH_WATER_MARK});
     StreamEventHandlers.attachEventHandlers(logger, watchStream);
 

@@ -106,10 +106,9 @@ async function shutdown() {
     }
     await Logger.close();
     let memoryLog = 'Memory Usage: ';
-    const used = process.memoryUsage();
+    const used: any = process.memoryUsage();
     for (const key in used) {
-      // memoryLog += ` ${key}: ${Math.round(used[key] / 1024 / 1024 * 100) / 100}MB`;
-      //@TODO: fix it
+       memoryLog += ` ${key}: ${Math.round(used[key] / 1024 / 1024 * 100) / 100}MB`;
     }
     console.log(memoryLog);
     process.exit(0);

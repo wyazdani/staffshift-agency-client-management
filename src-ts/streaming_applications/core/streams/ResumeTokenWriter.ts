@@ -25,7 +25,7 @@ export class ResumeTokenWriter extends Writable {
   constructor(opts: ResumeTokenWriterOptions) {
     // We only cater for object mode
     opts.objectMode = true;
-    super(options);
+    super(opts);
     this.counter = 0;
     this.isFirstTime = true;
     this._id = opts._id;
@@ -57,5 +57,3 @@ export class ResumeTokenWriter extends Writable {
     next();
   }
 }
-
-module.exports = ResumeTokenWriter;

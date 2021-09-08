@@ -12,8 +12,8 @@
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
     "start-streaming-application-core-agency-client-consultants": "node dist/StreamingApplication --type=core --name=AgencyClientConsultant",
-    "start-streaming-application-core-agency-client": "node StreamingApplication.js --type=core --name=AgencyClientsProjection",
-    "start-streaming-application-core-agency-client-event-log": "node StreamingApplication.js --type=core --name=AgencyClientEventLogProjection"
+    "start-streaming-application-core-agency-client": "node dist/StreamingApplication --type=core --name=AgencyClientsProjection",
+    "start-streaming-application-core-agency-client-event-log": "node dist/StreamingApplication --type=core --name=AgencyClientEventLogProjection"
   },
   "keywords": [
     "swagger"

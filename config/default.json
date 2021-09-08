@@ -74,6 +74,9 @@
     "http": {
       "delay": 10000,
       "server_close_timeout": 5000
+    },
+    "changestream": {
+      "server_close_timeout": 5000
     }
   },
   "pubSubAuth": {

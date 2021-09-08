@@ -1,13 +1,13 @@
 import {Pipeline, WatchHandler} from "../core/Pipeline";
 import {PIPELINE_TYPES, STREAM_TYPES} from "../core/ChangeStreamEnums";
 import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from "../DatabaseConfigKeys";
-import {LoggerContext} from "a24-logzio-winston";
 import {MongoClients} from "../core/MongoClients";
+import {LoggerContext} from "a24-logzio-winston";
 import {ResumeTokenCollectionManager} from "../core/ResumeTokenCollectionManager";
 import {EventStore} from "../../models/EventStore";
 import {EventStoreTransformer} from "../core/streams/EventStoreTransformer";
-import {AgencyClientConsultants} from "../../models/AgencyClientConsultants";
-import {AgencyClientConsultantProjection} from "./transformers/AgencyClientConsultantProjection";
+import {AgencyClientsProjection} from "../../models/AgencyClientsProjection";
+import {AgencyClientsProjectionTransformer} from "./transformers/AgencyClientsProjectionTransformer";
 import {StreamEventHandlers} from "../core/StreamEventHandlers";
 
 const HIGH_WATER_MARK = 5;
@@ -15,8 +15,17 @@ const HIGH_WATER_MARK = 5;
  * Responsible for aggregating agency candidate details
  */
 export class EventStorePipeline implements Pipeline {
-  getID() {
-    return 'agency_client_consultant_event_store';
+  getID(): string {
+    return 'agency_client_event_store';
+  }
+
+  /**
+   * Return an array of DB identifiers that the pipeline interacts with
+   *
+   * @returns {Array<String>}
+   */
+  getMongoClientConfigKeys(): string[] {
+    return [AGENCY_CLIENT_MANAGEMENT_DB_KEY];
   }
 
   /**
@@ -29,18 +38,9 @@ export class EventStorePipeline implements Pipeline {
   }
 
   /**
-   * Return an array of DB identifiers that the pipeline interacts with
-   *
-   * @returns {Array<String>}
-   */
-  getMongoClientConfigKeys() {
-    return [AGENCY_CLIENT_MANAGEMENT_DB_KEY];
-  }
-
-  /**
    * Initiates and process change stream events
    *
-   * @param {Object} logger - Logger instance
+   * @param {LoggerContext} logger - Logger instance
    * @param {MongoClients} clientManager - Client manager for mongodb connections
    * @param {ResumeTokenCollectionManager} tokenManager - Instance of ResumeTokenCollectionManager class
    */
@@ -48,18 +48,19 @@ export class EventStorePipeline implements Pipeline {
     const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES.WATCH);
     const watchDb = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
-    logger.info('Collection watch initiated', {collection: EventStore.collection.name, pipeline_id: this.getID(), stream_type: STREAM_TYPES.WATCH});
+    logger.info('Collection watch initiated',
+      {collection: EventStore.collection.name, pipeline_id: this.getID(), stream_type: STREAM_TYPES.WATCH});
 
     const eventStoreTransformer = new EventStoreTransformer({highWaterMark: HIGH_WATER_MARK});
     //set options to initialize streams
     const opts = {
       highWaterMark: HIGH_WATER_MARK,
       eventstore: EventStore,
-      model: AgencyClientConsultants,
+      model: AgencyClientsProjection,
       pipeline: this.getID(),
       logger: logger
     };
-    const projectionTransformer = new AgencyClientConsultantProjection(opts);
+    const projectionTransformer = new AgencyClientsProjectionTransformer(opts);
     const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES.WATCH, {highWaterMark: HIGH_WATER_MARK});
     StreamEventHandlers.attachEventHandlers(logger, watchStream);
 
@@ -89,4 +90,5 @@ export class EventStorePipeline implements Pipeline {
       }
     }
   }
+
 }
