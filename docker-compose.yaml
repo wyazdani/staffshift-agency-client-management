@@ -5,7 +5,8 @@ services:
     container_name: staffshift-agency-client-management
     ports:
     - "3370:3370"
-    command: 'sh -c "npm run test && npm run lint"'
+#    command: 'sh -c "npm run test && npm run lint"'
+    command: 'sh -c "npm run test"'
     environment:
     - NODE_ENV=ci
     depends_on:
