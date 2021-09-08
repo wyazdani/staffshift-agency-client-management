@@ -30,6 +30,9 @@ RUN  echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa && chmod o-rw $HOME/.ssh/id_r
 # Add the application source code
 COPY . ./
 
+# Build typescript
+RUN npm run build-ts
+
 EXPOSE 3370
 
-CMD ["node", "index.js"]
+CMD ["node", "dist/http_server"]

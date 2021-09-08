@@ -3,7 +3,7 @@ export enum Events {
   AGENCY_CONSULTANT_ROLE_ADDED = 'AgencyConsultantRoleAdded',
   AGENCY_CONSULTANT_ROLE_ENABLED = 'AgencyConsultantRoleEnabled',
   AGENCY_CONSULTANT_ROLE_DISABLED = 'AgencyConsultantRoleDisabled',
-  AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED = 'The Agency Consultant Role has been updated',
+  AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED = 'AgencyConsultantRoleDetailsUpdated',
   AGENCY_CLIENT_CONSULTANT_ASSIGNED = 'AgencyClientConsultantAssigned',
   AGENCY_CLIENT_CONSULTANT_UNASSIGNED = 'AgencyClientConsultantUnassigned',
   AGENCY_CLIENT_LINKED = 'AgencyClientLinked',

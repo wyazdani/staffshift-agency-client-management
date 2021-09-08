@@ -1,5 +1,6 @@
 
 import _ from 'lodash'
+import {JWTSecurityHelper} from "./helpers/JWTSecurityHelper";
 const app = require('connect')();
 const http = require('http');
 const swaggerTools = require('swagger-tools');
@@ -18,7 +19,6 @@ const {mongooseTimezone, timezoneMiddleware} = require('a24-node-timezone-utils'
 mongoose.plugin(mongooseTimezone);
 mongoose.Promise = global.Promise;
 const {MessagePublisher} = require('a24-node-pubsub');
-const JWTSecurityHelper = require('./helpers/JWTSecurityHelper');
 const {Auditor} = require('a24-node-octophant-utils');
 const {createHttpTerminator} = require('http-terminator');
 const pubsubAuditConfig = {

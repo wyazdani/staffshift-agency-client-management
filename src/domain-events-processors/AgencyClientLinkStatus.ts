@@ -97,7 +97,7 @@ export class AgencyClientLinkStatus {
   private async getCommand(data: any) {
     const client = new FacadeClientHelper(this.logger);
     // Need try catch
-    let response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id, {});
+    let response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id);
     if (response && response.length > 1) {
       throw new Error('We are only expecting a single agency client entry to be returned');
     }

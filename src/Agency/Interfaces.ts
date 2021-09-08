@@ -19,10 +19,10 @@ export interface AgencyAggregateId {
 export interface AgencyEvent {
   type: AgencyEventEnums,
   aggregate_id: AgencyAggregateId,
-  data: Object,
+  data: object,
   sequence_id: number
 }
 export interface AgencyCommand {
   type: AgencyCommandEnums,
-  data: Object
+  data: object
 }

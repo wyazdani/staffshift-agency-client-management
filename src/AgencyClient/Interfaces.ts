@@ -19,10 +19,10 @@ export interface AgencyClientAggregateId {
 export interface AgencyClientEvent {
   type: AgencyClientEventType,
   aggregate_id: AgencyClientAggregateId,
-  data: Object,
+  data: object,
   sequence_id: number
 }
 export interface AgencyClientCommand {
   type: AgencyClientCommandEnum
-  data: Object
+  data: object
 }

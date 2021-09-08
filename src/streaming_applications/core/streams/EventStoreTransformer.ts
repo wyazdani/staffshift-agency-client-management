@@ -1,10 +1,10 @@
-import {Transform, TransformCallback} from 'stream';
+import {Transform, TransformCallback, TransformOptions} from 'stream';
 /**
  * Convert a standard delta change stream event into an upsert structure that can be used
  */
 export class EventStoreTransformer extends Transform{
 
-  constructor(opts: {[key in string]: any} = {}) {
+  constructor(opts: TransformOptions) {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);

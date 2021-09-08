@@ -183,7 +183,7 @@ paths:
       - $ref: "#/parameters/client_id"
       - $ref: "#/parameters/consultant_id"
     delete:
-      x-swagger-router-controller: "AgencyClient"
+      x-swagger-router-controller: "AgencyClientConsultants"
       x-octophant-event: "removeAgencyClientConsultant"
       operationId: "removeAgencyClientConsultant"
       security:

@@ -44,7 +44,7 @@ export class AgencyClientEventLogProjection extends Transform {
         const agencyClientEvent = new this.model({
           agency_id: event.aggregate_id.agency_id,
           client_id: event.aggregate_id.client_id,
-          event: event.type,
+          event_type: event.type,
           evented_at: event.created_at,
           snapshot: aggregate.getConsultants()
         });
