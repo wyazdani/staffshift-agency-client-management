@@ -33,7 +33,7 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetails(agencyId: string, organisationId: string, siteId: string, wardId: string, options?: {[key: string]: any}): Promise<any> {
+  async getAgencyClientDetails(agencyId: string, organisationId: string, siteId?: string, wardId?: string, options?: {[key: string]: any}): Promise<any> {
     if (!options) {
       options = {
         'xRequestId': this.logger.requestId,
@@ -51,6 +51,54 @@ export class FacadeClientHelper {
       options['agencyOrgType'] = 'ward';
     }
 
+    const client = FacadeClientHelper.getInstance();
+    const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
+    const authorization = `token ${clientConfig.api_token}`;
+    this.logger.debug('The candidate system details GET call to staffshift facade service has started', {options});
+    return new Promise((resolve: Function, reject: Function) => {
+      api.listAgencyOrganisationLink(authorization, options, (error: any, data: any, response: any) => {
+        let item = null;
+        if (error) {
+          if (response) {
+            if (response.statusCode === 400) {
+              item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
+              const validationError = new ValidationError(
+                item.message,
+                item.errors
+              );
+              return reject(validationError);
+            }
+            if (response.statusCode === 401) {
+              const authorizationError = new AuthorizationError('Invalid token specified');
+              return reject(authorizationError);
+            }
+
+            if (response.statusCode === 404) {
+              return resolve();
+            }
+
+            item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
+            return reject(item);
+          }
+          item = new RuntimeError('An error occurred during the candidate system details data get call', error);
+          return reject(item);
+        }
+        this.logger.debug(
+          'The candidate system details GET call to staffshift facade service has been completed successfully',
+          {body: response.body}
+        );
+        return resolve(response.body);
+      });
+    });
+  }
+
+  /**
+   * Retrieve the ALL agency client details
+   *
+   * @return Promise<Object>
+   */
+   async getAgencyClientDetailsListing(options?: {[key: string]: any}): Promise<any> {
+    options = {...options, 'xRequestId': this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
     const authorization = `token ${clientConfig.api_token}`;

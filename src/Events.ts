@@ -7,7 +7,8 @@ export enum Events {
   AGENCY_CLIENT_CONSULTANT_ASSIGNED = 'AgencyClientConsultantAssigned',
   AGENCY_CLIENT_CONSULTANT_UNASSIGNED = 'AgencyClientConsultantUnassigned',
   AGENCY_CLIENT_LINKED = 'AgencyClientLinked',
-  AGENCY_CLIENT_UNLINKED = 'AgencyClientUnLinked'
+  AGENCY_CLIENT_UNLINKED = 'AgencyClientUnLinked',
+  AGENCY_CLIENT_SYNCED = 'AgencyClientSynced'
 }
 
 const events = {
@@ -42,5 +43,9 @@ const events = {
   [Events.AGENCY_CLIENT_UNLINKED]: {
     name: 'AgencyClientUnLinked',
     description: 'The Agency Client was unlinked, does not indicate a deletion'
+  },
+  [Events.AGENCY_CLIENT_SYNCED]: {
+    name: 'AgencyClientSynced',
+    description: 'Sync event to move data from legacy application to microservice'
   }
 };
