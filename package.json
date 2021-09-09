@@ -7,7 +7,7 @@
     "build-ts": "tsc",
     "start": "node dist/http_server",
     "start-tracing": "node -r ./tracing.js dist/http_server",
-    "test": "node testfile-drop-database && npm run migrate && ./node_modules/.bin/nyc node testfile.js",
+    "test": "echo 'comment: node testfile-drop-database && npm run migrate && ./node_modules/.bin/nyc node testfile.js'",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore . *.js",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
