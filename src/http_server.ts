@@ -1,6 +1,8 @@
 
 import _ from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
+import {SwaggerRequest} from "SwaggerRequest";
+import {ServerResponse} from "http";
 const app = require('connect')();
 const http = require('http');
 const swaggerTools = require('swagger-tools');
@@ -64,7 +66,7 @@ const swaggerDoc = jsyaml.safeLoad(spec);
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware: any) {
 
-  app.use(function initUse(req: any, res: any, next: Function) {
+  app.use(function initUse(req: SwaggerRequest, res: ServerResponse, next: Function) {
     let loggerContext = null;
     if (!_.isEmpty(req.headers) && !_.isEmpty(req.headers['x-request-id'])) {
       loggerContext = Logger.getContext(req.headers['x-request-id']);
@@ -91,7 +93,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
   app.use(middleware.swaggerValidator());
 
   const securityMetaData: {[key in string]: any} = {};
-  app.use(function configureAuditorContext(req: any, res: any, next: Function) {
+  app.use(function configureAuditorContext(req: SwaggerRequest, res: ServerResponse, next: Function) {
     // Allow the docs to load
     if (req.url.match(allowedRegex) || (!_.isEmpty(req.swagger.operation) && req.swagger.operation['x-public-operation'] === true)) {
       return next();

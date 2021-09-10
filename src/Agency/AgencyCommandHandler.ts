@@ -2,14 +2,13 @@
 import {AgencyCommands} from './AgencyCommands';
 import {AgencyRepository} from './AgencyRepository';
 import {AgencyCommand} from './Interfaces';
+import {EventStoreDocument} from '../models/EventStore';
 
 export class AgencyCommandHandler {
-  private repository: AgencyRepository;
-  constructor(repository: AgencyRepository) {
-    this.repository = repository;
+  constructor(private repository: AgencyRepository) {
   }
 
-  async apply(agency_id: string, command: AgencyCommand): Promise<any[]> {
+  async apply(agency_id: string, command: AgencyCommand): Promise<EventStoreDocument[]> {
     // we need to add try catch here to handle the errors from these awaits.
     const aggregate = await this.repository.getAggregate(agency_id);
     if (!AgencyCommands[command.type]) {

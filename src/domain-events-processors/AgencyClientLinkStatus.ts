@@ -5,9 +5,7 @@ import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHan
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 
 export class AgencyClientLinkStatus {
-  private readonly logger: LoggerContext;
-  constructor(logger: LoggerContext) {
-    this.logger = logger;
+  constructor(private logger: LoggerContext) {
   }
 
   /**

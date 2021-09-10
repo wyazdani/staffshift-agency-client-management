@@ -5,9 +5,7 @@ import {Model, FilterQuery} from 'mongoose';
 import {AgencyAggregateRecord, AgencyEvent} from './Interfaces';
 
 export class AgencyRepository {
-  store: Model<any>;
-  constructor(store: Model<any>) {
-    this.store = store;
+  constructor(private store: Model<any>) {
   }
 
   async getAggregate(agencyId: string, sequenceId: number = undefined): Promise<AgencyAggregate> {

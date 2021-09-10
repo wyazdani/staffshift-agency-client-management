@@ -3,13 +3,7 @@ import _ from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 
 export class AgencyClientAggregate {
-  private readonly id: AgencyClientAggregateId;
-  private readonly aggregate: AgencyClientAggregateRecord;
-  private readonly agencyRepository: AgencyRepository;
-  constructor(id: any, aggregate: AgencyClientAggregateRecord, agencyRepository: AgencyRepository) {
-    this.id = id;
-    this.aggregate = aggregate;
-    this.agencyRepository = agencyRepository;
+  constructor(private id: AgencyClientAggregateId, private aggregate: AgencyClientAggregateRecord, private agencyRepository: AgencyRepository) {
   }
   isLinked(): boolean {
     return !!this.aggregate.linked;

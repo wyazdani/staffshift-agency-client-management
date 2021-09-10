@@ -3,9 +3,7 @@ import {AgencyClientCommand} from './Interfaces';
 import {AgencyClientCommands} from './AgencyClientCommands';
 
 export class AgencyClientCommandHandler {
-  private readonly repository: AgencyClientRepository;
-  constructor(repository: AgencyClientRepository) {
-    this.repository = repository;
+  constructor(private repository: AgencyClientRepository) {
   }
 
   async apply(agencyId: string, clientId: string, command: AgencyClientCommand): Promise<any[]> {

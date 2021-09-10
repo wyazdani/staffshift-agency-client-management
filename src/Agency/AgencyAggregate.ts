@@ -3,12 +3,7 @@ import _ from 'lodash';
 import {AgencyAggregateRecord, AgencyAggregateId, AgencyConsultantRole} from './Interfaces';
 
 export class AgencyAggregate {
-  id: AgencyAggregateId;
-  aggregate: AgencyAggregateRecord;
-
-  constructor(id: AgencyAggregateId, aggregate: AgencyAggregateRecord) {
-    this.id = id;
-    this.aggregate = aggregate;
+  constructor(private id: AgencyAggregateId, private aggregate: AgencyAggregateRecord) {
   }
 
   getConsultantRole(consultantRoleId: string): AgencyConsultantRole {

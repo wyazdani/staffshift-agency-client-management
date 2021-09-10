@@ -24,7 +24,7 @@
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "no-sync": "error",
     "no-trailing-spaces": ["error"],
-    "no-unused-vars": ["warn"],
+    "no-unused-vars": ["off"],
     "no-whitespace-before-property": ["error"],
     "object-curly-spacing": ["error", "never"],
     "quotes": ["error", "single"],

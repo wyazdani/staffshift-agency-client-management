@@ -11,11 +11,7 @@ export type Audit = {
  * Assists with doing the audit for the given resource
  */
 export class AuditHelper {
-  private readonly logger: LoggerContext;
-  private readonly auditor: any;
-  constructor(logger: LoggerContext, auditor: any) {
-    this.logger = logger;
-    this.auditor = auditor;
+  constructor(private logger: LoggerContext, private auditor: any) {
   }
   /**
    * Produce audit using the passed in configuration object
@@ -39,7 +35,7 @@ export class AuditHelper {
       auditDetails.resource_type,
       auditDetails.resource_id,
       auditDetails.data,
-      (err: any) => {
+      (err: Error) => {
         if (err) {
           this.logger.crit(
             `Audit failed for action: ${auditDetails.action}`,

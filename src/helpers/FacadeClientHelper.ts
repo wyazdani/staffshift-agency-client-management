@@ -6,20 +6,38 @@ const StaffshiftFacadeClient = require('a24-node-staffshift-facade-client');
 const {ValidationError, AuthorizationError, RuntimeError} = require('a24-node-error-utils');
 const clientConfig = config.get('a24-staffshift-facade');
 
+interface FacadeClientRecord {
+  _id: string,
+  organisation_name: string,
+  organisation_id: string,
+  agency_name: string,
+  agency_id: string,
+  agency_org_type: string,
+  agency_linked?: boolean
+  //There are a lot of fields in the response. but i only added required and the ones that we used in code
+}
+
+interface GetAgencyClientDetailsOptions {
+  xRequestId: string,
+  agencyId: string,
+  organisationId: string,
+  agencyOrgType: string,
+  siteId?: string,
+  wardId?: string
+}
+
 /**
  * Facade client helper
  *
  * Will expose the client functions to the rest of the application
  */
 export class FacadeClientHelper {
-  private readonly logger: LoggerContext;
   /**
    * Constructor
    *
    * @param {LoggerContext} logger - A logger object
    */
-  constructor(logger: LoggerContext) {
-    this.logger = logger;
+  constructor(private logger: LoggerContext) {
   }
 
   /**
@@ -33,7 +51,7 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetails(agencyId: string, organisationId: string, siteId: string, wardId: string, options?: {[key: string]: any}): Promise<any> {
+  async getAgencyClientDetails(agencyId: string, organisationId: string, siteId: string, wardId: string, options?: GetAgencyClientDetailsOptions): Promise<FacadeClientRecord[]> {
     if (!options) {
       options = {
         'xRequestId': this.logger.requestId,
