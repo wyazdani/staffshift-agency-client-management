@@ -6,9 +6,7 @@ import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyClientWriteProjection} from './AgencyClientWriteProjection';
 
 export class AgencyClientRepository {
-  store: Model<any>;
-  constructor(store: Model<any>) {
-    this.store = store;
+  constructor(private store: Model<any>) {
   }
 
   async getAggregate(agencyId: string, clientId: string, sequenceId: number = undefined): Promise<AgencyClientAggregate> {

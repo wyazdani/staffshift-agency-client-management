@@ -6,12 +6,8 @@ import {ResumeTokenCollectionManager} from './ResumeTokenCollectionManager';
 import {PIPELINE_TYPES} from './ChangeStreamEnums';
 
 export class WatcherContext {
-  private readonly name: string;
-  private readonly pipelines: Pipeline[];
   private watchHandlers: WatchHandler[];
-  constructor(name: string, pipelines: Pipeline[]) {
-    this.name = name;
-    this.pipelines = pipelines;
+  constructor(private name: string, private pipelines: Pipeline[]) {
     this.watchHandlers = [];
   }
   getStreamingAppName(): string {

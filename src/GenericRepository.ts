@@ -9,11 +9,7 @@ const {RuntimeError} = require('a24-node-error-utils');
  *  IE a mixin concept / parasitic inheritance / Based on interfaces?
  */
 export class GenericRepository {
-  private logger: LoggerContext;
-  private store: Model<any>;
-  constructor(logger: LoggerContext, store: Model<any>) {
-    this.logger = logger;
-    this.store = store;
+  constructor(private logger: LoggerContext, private store: Model<any>) {
   }
 
   /**

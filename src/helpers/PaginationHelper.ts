@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {ServerResponse} from 'http';
+import {SwaggerRequest} from "SwaggerRequest";
 const {QueryHelper, LinkHeaderHelper} = require('a24-node-query-utils');
 
 /**
@@ -13,7 +14,7 @@ export class PaginationHelper {
    * @param {IncomingMessage} res - The http response object
    * @param {Number} count - The total number of records
    */
-  static setPaginationHeaders(req: any, res: ServerResponse, count: number) {
+  static setPaginationHeaders(req: SwaggerRequest, res: ServerResponse, count: number) {
     const swaggerParams = _.get(req, 'swagger.params', {});
     const relLinkOptions = {
       count,
