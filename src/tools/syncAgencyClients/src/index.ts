@@ -1,9 +1,9 @@
 const config = require('config');
 const Logger = require('a24-logzio-winston');
-import {FacadeClientHelper} from '../../../src/helpers/FacadeClientHelper';
-import {AgencyClientRepository} from '../../../src/AgencyClient/AgencyClientRepository';
-import {EventStore} from '../../../src/models/EventStore';
-import {AgencyClientCommandHandler} from '../../../src/AgencyClient/AgencyClientCommandHandler';
+import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
+import {AgencyClientRepository} from '../../../AgencyClient/AgencyClientRepository';
+import {EventStore} from '../../../models/EventStore';
+import {AgencyClientCommandHandler} from '../../../AgencyClient/AgencyClientCommandHandler';
 import {connect, disconnect} from 'mongoose';
 
 Logger.setup(config.logger);
