@@ -45,7 +45,14 @@ const syncAgencyClients = async (page: number): Promise<number> => {
   return response.length;
 }
 
-const getSyncCommandDetails = (agencyClientLink: any) => {
+/**
+ * Convert the agency client link into a specific sync command
+ *
+ * @param agencyClientLink - The agency client link details
+ *
+ * @returns object - The Sync Command
+ */
+const getSyncCommandDetails = (agencyClientLink: any): object => {
   const details: any = {
     command: {
       type: 'syncAgencyClient'
