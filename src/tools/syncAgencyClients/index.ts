@@ -5,6 +5,7 @@ import {AgencyClientRepository} from '../../AgencyClient/AgencyClientRepository'
 import {EventStore} from '../../models/EventStore';
 import {AgencyClientCommandHandler} from '../../AgencyClient/AgencyClientCommandHandler';
 import {connect, disconnect} from 'mongoose';
+import {AgencyClientCommand} from '../../AgencyClient/Interfaces';
 
 Logger.setup(config.logger);
 const loggerContext = Logger.getContext('syncAgencyClients');
@@ -12,9 +13,16 @@ const client = new FacadeClientHelper(loggerContext);
 const repository = new AgencyClientRepository(EventStore);
 const handler = new AgencyClientCommandHandler(repository);
 
-const itemsPerPage = 20;
+const itemsPerPage = 250;
 
-const run = async (page: number) => {
+/**
+ * Connects to database, loops and does a per page sync until exhausted
+ *
+ * @param page - The page number that should be processed
+ *
+ * @returns void
+ */
+const run = async (page: number): Promise<void> => {
   try {
     await connect(config.mongo.database_host, config.mongo.options);
     let completed = false;
@@ -30,6 +38,13 @@ const run = async (page: number) => {
   }
 }
 
+/**
+ * Gets a single page listing of Agency Clients, applies the Sync Command for each item
+ *
+ * @param page - The page number that should be processed
+ *
+ * @returns Total Processed items - Should be the page size or less
+ */
 const syncAgencyClients = async (page: number): Promise<number> => {
   const options = {
     xRequestId: loggerContext.requestId,
@@ -52,7 +67,7 @@ const syncAgencyClients = async (page: number): Promise<number> => {
  *
  * @returns object - The Sync Command
  */
-const getSyncCommandDetails = (agencyClientLink: any): object => {
+const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
   const details: any = {
     command: {
       type: 'syncAgencyClient'
@@ -99,3 +114,8 @@ run(page).then(() => {
   loggerContext.error('Script did not complete, you will need to rerun it', err);
   process.exit(1);
 });
+
+interface SyncCommand {
+  command: AgencyClientCommand,
+  client_id: string
+}
