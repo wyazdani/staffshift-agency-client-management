@@ -37,6 +37,7 @@ async function run(page: number) {
 
 async function syncAgencyClients(page: number): Promise<number> {
   const options = {
+    xRequestId: loggerContext.requestId,
     sortBy: ['_id'],
     page,
     itemsPerPage
