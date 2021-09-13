@@ -14,12 +14,7 @@ const handler = new AgencyClientCommandHandler(repository);
 
 const itemsPerPage = 20;
 
-/**
- * Runs the process that selects data from facade and creates a syncAgencyClient Command per item retrieved
- *
- * @param page - The page that we should start at
- */
-async function run(page: number) {
+const run = async (page: number) => {
   try {
     await connect(config.mongo.database_host, config.mongo.options);
     let completed = false;
@@ -35,7 +30,7 @@ async function run(page: number) {
   }
 }
 
-async function syncAgencyClients(page: number): Promise<number> {
+const syncAgencyClients = async (page: number): Promise<number> => {
   const options = {
     xRequestId: loggerContext.requestId,
     sortBy: ['_id'],
@@ -50,7 +45,7 @@ async function syncAgencyClients(page: number): Promise<number> {
   return response.length;
 }
 
-function getSyncCommandDetails(agencyClientLink: any) {
+const getSyncCommandDetails = (agencyClientLink: any) => {
   const details: any = {
     command: {
       type: 'syncAgencyClient'
