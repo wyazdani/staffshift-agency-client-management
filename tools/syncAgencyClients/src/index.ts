@@ -4,21 +4,10 @@ import {AgencyClientRepository} from '../../../src/AgencyClient/AgencyClientRepo
 import {EventStore} from '../../../src/models/EventStore';
 import {AgencyClientCommandHandler} from '../../../src/AgencyClient/AgencyClientCommandHandler';
 const Logger = require('a24-logzio-winston');
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+import {connect, disconnect} from 'mongoose';
 
 Logger.setup(config.logger);
 const loggerContext = Logger.getContext('syncAgencyClients');
-
-mongoose.connect(config.mongo.database_host, config.mongo.options);
-mongoose.connection.on(
-  'error',
-  function mongooseConnection(error: Error) {
-    loggerContext.crit('MongoDB connection error', error);
-    process.exit(1);
-  }
-);
-
 const client = new FacadeClientHelper(loggerContext);
 const repository = new AgencyClientRepository(EventStore);
 const handler = new AgencyClientCommandHandler(repository);
@@ -32,9 +21,10 @@ const itemsPerPage = 20;
  */
 async function run(page: number) {
   try {
+    await connect(config.mongo.database_host, config.mongo.options);
     let completed = false;
     do {
-      let itemsCompleted = await syncAgencyClients(page);
+      const itemsCompleted = await syncAgencyClients(page);
       completed = (itemsCompleted !== itemsPerPage);
       loggerContext.info(`Completed page: ${page} with an items per page of: ${itemsPerPage}`);
       page++;
@@ -46,21 +36,21 @@ async function run(page: number) {
 }
 
 async function syncAgencyClients(page: number): Promise<number> {
-  let options = {
+  const options = {
     sortBy: ['_id'],
     page,
     itemsPerPage
   }
-  let response = await client.getAgencyClientDetailsListing(options);
-  for (let item of response) {
-    let details = getSyncCommandDetails(item)
+  const response = await client.getAgencyClientDetailsListing(options);
+  for (const item of response) {
+    const details = getSyncCommandDetails(item)
     await handler.apply(item.agency_id, details.client_id, details.command);
   }
   return response.length;
 }
 
 function getSyncCommandDetails(agencyClientLink: any) {
-  let details: any = {
+  const details: any = {
     command: {
       type: 'syncAgencyClient'
     }
@@ -98,11 +88,11 @@ function getSyncCommandDetails(agencyClientLink: any) {
 
 let page = (process.argv[2]) ? parseInt(process.argv[2]) : 1;
 
-run(page).then(() => {
+run(page).then(_ => {
+  return disconnect();
+}).then(() => {
   loggerContext.info('The script has completed and does NOT need to be re-run');
-  mongoose.connection.close();
 }).catch((err) => {
   loggerContext.error('Script did not complete, you will need to rerun it', err);
-  mongoose.connection.close();
   process.exit(1);
 });
