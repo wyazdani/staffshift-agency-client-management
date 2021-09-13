@@ -6,6 +6,7 @@ import {EventStore} from '../../models/EventStore';
 import {AgencyClientCommandHandler} from '../../AgencyClient/AgencyClientCommandHandler';
 import {connect, disconnect} from 'mongoose';
 import {AgencyClientCommand} from '../../AgencyClient/Interfaces';
+import {AgencyClientCommandEnum} from '../../AgencyClient/AgencyClientEnums';
 
 Logger.setup(config.logger);
 const loggerContext = Logger.getContext('syncAgencyClients');
@@ -36,7 +37,7 @@ const run = async (page: number): Promise<void> => {
     loggerContext.error('There was an error while syncing agency clients', err);
     throw err;
   }
-}
+};
 
 /**
  * Gets a single page listing of Agency Clients, applies the Sync Command for each item
@@ -55,10 +56,10 @@ const syncAgencyClients = async (page: number): Promise<number> => {
   const response = await client.getAgencyClientDetailsListing(options);
   for (const item of response) {
     const details = getSyncCommandDetails(item);
-    await handler.apply(item.agency_id, details.client_id, details.command);
+    await handler.apply(item.agency_id, details.clientId, details.command);
   }
   return response.length;
-}
+};
 
 /**
  * Convert the agency client link into a specific sync command
@@ -68,10 +69,12 @@ const syncAgencyClients = async (page: number): Promise<number> => {
  * @returns object - The Sync Command
  */
 const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
-  const details: any = {
+  const details: SyncCommand = {
     command: {
-      type: 'syncAgencyClient'
-    }
+      type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
+      data: {}
+    },
+    clientId: ''
   };
 
   switch (agencyClientLink.agency_org_type) {
@@ -80,7 +83,7 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
         client_type: 'organisation',
         linked: agencyClientLink.agency_linked
       };
-      details.client_id = agencyClientLink.organisation_id;
+      details.clientId = agencyClientLink.organisation_id;
       return details;
     case 'site':
       details.command.data = {
@@ -88,7 +91,7 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
         client_type: 'site',
         linked: agencyClientLink.agency_linked
       };
-      details.client_id = agencyClientLink.site_id;
+      details.clientId = agencyClientLink.site_id;
       return details;
     case 'ward':
       details.command.data = {
@@ -97,12 +100,12 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
         client_type: 'ward',
         linked: agencyClientLink.agency_linked
       };
-      details.client_id = agencyClientLink.ward_id;
+      details.clientId = agencyClientLink.ward_id;
       return details;
     default:
       throw new Error(`Unexpected agency organisation type received: ${agencyClientLink.agency_org_type}`);
   }
-}
+};
 
 const page = (process.argv[2]) ? parseInt(process.argv[2]) : 1;
 
@@ -117,5 +120,5 @@ run(page).then(() => {
 
 interface SyncCommand {
   command: AgencyClientCommand,
-  client_id: string
+  clientId: string
 }
