@@ -16,6 +16,11 @@ const handler = new AgencyClientCommandHandler(repository);
 
 const itemsPerPage = 250;
 
+interface SyncCommand {
+  command: AgencyClientCommand,
+  clientId: string
+}
+
 /**
  * Connects to database, loops and does a per page sync until exhausted
  *
@@ -66,7 +71,7 @@ const syncAgencyClients = async (page: number): Promise<number> => {
  *
  * @param agencyClientLink - The agency client link details
  *
- * @returns object - The Sync Command
+ * @returns A single SyncCommand
  */
 const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
   const details: SyncCommand = {
@@ -117,8 +122,3 @@ run(page).then(() => {
   loggerContext.error('Script did not complete, you will need to rerun it', err);
   process.exit(1);
 });
-
-interface SyncCommand {
-  command: AgencyClientCommand,
-  clientId: string
-}
