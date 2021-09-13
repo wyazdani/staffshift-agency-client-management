@@ -1,16 +1,9 @@
 {
-  "env": {
-    "browser": true,
-    "node": true,
-    "mocha": true,
-    "es6": true
-  },
-  "extends": "eslint:recommended",
+  "parser": "@typescript-eslint/parser",
+  "extends": ["plugin:@typescript-eslint/recommended"],
   "parserOptions": {
     "ecmaVersion": 2018,
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
+    "sourceType": "module"
   },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
@@ -31,7 +24,7 @@
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "no-sync": "error",
     "no-trailing-spaces": ["error"],
-    "no-unused-vars": ["warn"],
+    "no-unused-vars": ["off"],
     "no-whitespace-before-property": ["error"],
     "object-curly-spacing": ["error", "never"],
     "quotes": ["error", "single"],
@@ -40,6 +33,14 @@
     "space-before-blocks": ["error", "always"],
     "space-in-parens": ["error", "never"],
     "space-unary-ops": ["error", {"words": true, "nonwords": false}],
-    "strict": ["error", "global"]
+    "strict": ["error", "global"],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": 1,
+    "@typescript-eslint/no-inferrable-types": [
+      "warn", {
+        "ignoreParameters": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 }
