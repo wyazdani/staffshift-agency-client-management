@@ -1,9 +1,9 @@
 const config = require('config');
+const Logger = require('a24-logzio-winston');
 import {FacadeClientHelper} from '../../../src/helpers/FacadeClientHelper';
 import {AgencyClientRepository} from '../../../src/AgencyClient/AgencyClientRepository';
 import {EventStore} from '../../../src/models/EventStore';
 import {AgencyClientCommandHandler} from '../../../src/AgencyClient/AgencyClientCommandHandler';
-const Logger = require('a24-logzio-winston');
 import {connect, disconnect} from 'mongoose';
 
 Logger.setup(config.logger);
@@ -28,7 +28,7 @@ async function run(page: number) {
       completed = (itemsCompleted !== itemsPerPage);
       loggerContext.info(`Completed page: ${page} with an items per page of: ${itemsPerPage}`);
       page++;
-    } while (completed === false)
+    } while (completed === false);
   } catch (err) {
     loggerContext.error('There was an error while syncing agency clients', err);
     throw err;
@@ -40,10 +40,10 @@ async function syncAgencyClients(page: number): Promise<number> {
     sortBy: ['_id'],
     page,
     itemsPerPage
-  }
+  };
   const response = await client.getAgencyClientDetailsListing(options);
   for (const item of response) {
-    const details = getSyncCommandDetails(item)
+    const details = getSyncCommandDetails(item);
     await handler.apply(item.agency_id, details.client_id, details.command);
   }
   return response.length;
@@ -54,7 +54,7 @@ function getSyncCommandDetails(agencyClientLink: any) {
     command: {
       type: 'syncAgencyClient'
     }
-  }
+  };
 
   switch (agencyClientLink.agency_org_type) {
     case 'organisation':
@@ -86,9 +86,9 @@ function getSyncCommandDetails(agencyClientLink: any) {
   }
 }
 
-let page = (process.argv[2]) ? parseInt(process.argv[2]) : 1;
+const page = (process.argv[2]) ? parseInt(process.argv[2]) : 1;
 
-run(page).then(_ => {
+run(page).then(() => {
   return disconnect();
 }).then(() => {
   loggerContext.info('The script has completed and does NOT need to be re-run');
