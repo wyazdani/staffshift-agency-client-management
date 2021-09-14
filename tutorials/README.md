@@ -160,3 +160,14 @@ Add discussion points here.
 | bAgcyLnkd | false |
 | dtCreate | false |
 | dtMod | false |
+
+
+## Commands are explicit
+* linkAgencyClient
+* unlinkAgencyClient
+* enableAgencyClient
+* disableAgencyClient
+* addAgencyClientCreditStop
+* removeAgencyClientCreditStop
+* addShiftReferenceNumber
+* addAgencyClientRequiresPurchaseOrder

@@ -17,8 +17,6 @@ Logger.setup(config.logger);
 const serverPort = (config.has('server.port')) ? config.get('server.port') : 3370;
 const mongoose = require('mongoose');
 mongoose.plugin((schema: any) => { schema.options.usePushEach = true; });
-const {mongooseTimezone, timezoneMiddleware} = require('a24-node-timezone-utils');
-mongoose.plugin(mongooseTimezone);
 mongoose.Promise = global.Promise;
 const {MessagePublisher} = require('a24-node-pubsub');
 const {Auditor} = require('a24-node-octophant-utils');
@@ -134,9 +132,6 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
 
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
-
-  // Timezone serialization middleware
-  app.use(timezoneMiddleware());
 
   app.use(function errorHandler(err: any, req: any, res: any, next: Function) {
     ErrorHandler.onError(err, req, res, next);

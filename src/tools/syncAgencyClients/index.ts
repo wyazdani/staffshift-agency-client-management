@@ -14,7 +14,7 @@ const client = new FacadeClientHelper(loggerContext);
 const repository = new AgencyClientRepository(EventStore);
 const handler = new AgencyClientCommandHandler(repository);
 
-const itemsPerPage = 250;
+const itemsPerPage = 100;
 
 interface SyncCommand {
   command: AgencyClientCommand,
@@ -30,8 +30,10 @@ interface SyncCommand {
  */
 const run = async (page: number): Promise<void> => {
   try {
+    loggerContext.info('Connecting to the database');
     await connect(config.mongo.database_host, config.mongo.options);
     let completed = false;
+    loggerContext.info('Starting the sync agency client process');
     do {
       const itemsCompleted = await syncAgencyClients(page);
       completed = (itemsCompleted !== itemsPerPage);
@@ -86,7 +88,8 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
     case 'organisation':
       details.command.data = {
         client_type: 'organisation',
-        linked: agencyClientLink.agency_linked
+        linked: agencyClientLink.agency_linked,
+        linked_at: new Date(agencyClientLink.created_at)
       };
       details.clientId = agencyClientLink.organisation_id;
       return details;
@@ -94,7 +97,8 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
       details.command.data = {
         organisation_id: agencyClientLink.organisation_id,
         client_type: 'site',
-        linked: agencyClientLink.agency_linked
+        linked: agencyClientLink.agency_linked,
+        linked_at: new Date(agencyClientLink.created_at)
       };
       details.clientId = agencyClientLink.site_id;
       return details;
@@ -103,7 +107,8 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
         organisation_id: agencyClientLink.organisation_id,
         site_id: agencyClientLink.site_id,
         client_type: 'ward',
-        linked: agencyClientLink.agency_linked
+        linked: agencyClientLink.agency_linked,
+        linked_at: new Date(agencyClientLink.created_at)
       };
       details.clientId = agencyClientLink.ward_id;
       return details;

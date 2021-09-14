@@ -14,7 +14,6 @@ export class AgencyClientLinkStatus {
    * @param {Object} message  - The PubSub Triage Domain Event Message
    */
   public async apply(message: any): Promise<any> {
-    console.log(message.event.name);
     // try catch to handle the await error
     const conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
     const repository = new AgencyClientRepository(EventStore);
