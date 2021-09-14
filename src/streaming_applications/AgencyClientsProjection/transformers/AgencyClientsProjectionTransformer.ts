@@ -4,7 +4,7 @@ import {CallbackError, FilterQuery, Model} from 'mongoose';
 import {Events} from '../../../Events';
 
 const events = [
-  Events.AGENCY_CLIENT_LINKED, Events.AGENCY_CLIENT_UNLINKED
+  Events.AGENCY_CLIENT_LINKED, Events.AGENCY_CLIENT_UNLINKED, Events.AGENCY_CLIENT_SYNCED
 ];
 
 interface ProjectionTransformerOptions extends TransformOptions {
@@ -66,6 +66,18 @@ export class AgencyClientsProjectionTransformer extends Transform {
         {
           client_type: event.data.client_type,
           linked: false
+        },
+        {upsert: true},
+        (err: CallbackError) => {
+          return callback(err, data);
+        }
+      );
+    } else if (Events.AGENCY_CLIENT_SYNCED === data.event.type) {
+      this.model.findOneAndUpdate(
+        criteria,
+        {
+          client_type: event.data.client_type,
+          linked: event.data.linked
         },
         {upsert: true},
         (err: CallbackError) => {

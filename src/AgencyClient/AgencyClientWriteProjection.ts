@@ -12,6 +12,11 @@ export const AgencyClientWriteProjection = {
     aggregate.linked = false;
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
+  [AgencyClientEventType.AGENCY_CLIENT_SYNCED]: (aggregate: AgencyClientAggregateRecord, event: any): AgencyClientAggregateRecord => {
+    aggregate.linked = event.data.linked;
+    aggregate.client_type = event.data.client_type;
+    return {...aggregate, last_sequence_id: event.sequence_id};
+  },
   [AgencyClientEventType.AGENCY_CLIENT_CONSULTANT_ASSIGNED]: (aggregate: AgencyClientAggregateRecord, event: any): AgencyClientAggregateRecord => {
     const consultant: AgencyClientConsultant = {
       _id: event.data._id,
