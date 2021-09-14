@@ -142,6 +142,8 @@ Add discussion points here.
 | objSteGeoLctn | true |
 
 #### References
+| Field Name | Details |
+| --- | --- |
 | sAgcyId | reference |
 | sOrgId | reference |
 | sSteId | reference |
@@ -149,6 +151,8 @@ Add discussion points here.
 | sWrdTypId | reference |
 
 #### AgencyClient Link Data
+| Field Name | Details |
+| --- | --- |
 | sAgcyOrgRef | false |
 | sAgcyOrgType | `organisation|site|ward` |
 | bReqPo | false |
