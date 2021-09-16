@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  id: '0002-EventStore-aggregate-sequence-unique-index',
+  id: '0002-create-collection-EventStore',
   up: (db, cb) => {
     db.createCollection('EventStore', cb);
   },
