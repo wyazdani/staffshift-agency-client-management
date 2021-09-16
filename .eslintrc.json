@@ -5,6 +5,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "plugins": ["prefer-arrow"],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": ["error", "always"],
@@ -33,7 +34,18 @@
     "space-before-blocks": ["error", "always"],
     "space-in-parens": ["error", "never"],
     "space-unary-ops": ["error", {"words": true, "nonwords": false}],
-    "strict": ["error", "global"],
+    "strict": "off",
+    "prefer-const": "error",
+    "prefer-arrow-callback": "error",
+    "arrow-body-style": ["error", "as-needed"],
+    "prefer-arrow/prefer-arrow-functions": [
+      "error",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": 1,
     "@typescript-eslint/no-inferrable-types": [
@@ -41,6 +53,7 @@
         "ignoreParameters": true
       }
     ],
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-require-imports": "error"
   }
 }
