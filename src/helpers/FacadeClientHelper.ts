@@ -6,7 +6,7 @@ const StaffshiftFacadeClient = require('a24-node-staffshift-facade-client');
 const {ValidationError, AuthorizationError, RuntimeError} = require('a24-node-error-utils');
 const clientConfig = config.get('a24-staffshift-facade');
 
-interface FacadeClientRecord {
+export interface FacadeClientRecord {
   _id: string,
   organisation_name: string,
   organisation_id: string,

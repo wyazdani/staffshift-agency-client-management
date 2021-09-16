@@ -1,4 +1,4 @@
-
+import path from 'path';
 import _ from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
 import {SwaggerRequest} from "SwaggerRequest";
@@ -36,7 +36,7 @@ const allowedRegex = '^/docs.*|^/api-docs.*';
 // swaggerRouter configuration
 const options = {
   swaggerUi: '/swagger.json',
-  controllers: './dist/controllers',
+  controllers: path.resolve(__dirname, 'controllers'),
   useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
 };
 

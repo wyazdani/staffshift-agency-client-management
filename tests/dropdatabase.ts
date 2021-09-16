@@ -1,13 +1,12 @@
-'use strict';
-const config = require('config');
-const mongoose = require('mongoose');
+import config from 'config';
+import mongoose from 'mongoose';
 const env = process.env.NODE_ENV;
-
+const {database_host: databaseHost, options} = config.get('mongo');
 (async () => {
   try {
     if (env === 'testing') {
-      await mongoose.connect(config.mongo.database_host, config.mongo.options);
-      await mongoose.connection.db.dropDatabase(mongoose.connection.db);
+      await mongoose.connect(databaseHost, options);
+      await mongoose.connection.db.dropDatabase();
       await mongoose.connection.close();
     } else {
       console.log('Not dropping database env: ', env);
