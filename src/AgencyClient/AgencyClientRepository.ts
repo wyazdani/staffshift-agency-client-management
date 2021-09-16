@@ -4,6 +4,7 @@ import {AgencyClientAggregateRecord, AgencyClientEvent} from './Interfaces';
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyClientWriteProjection} from './AgencyClientWriteProjection';
+import { EventRepository } from '../EventRepository';
 
 export class AgencyClientRepository {
   constructor(private store: Model<any>) {
@@ -15,11 +16,10 @@ export class AgencyClientRepository {
       query['sequence_id'] = {$lte: sequenceId};
     }
     const events = await this.store.find(query).sort({sequence_id: 1}).lean();
-
     return new AgencyClientAggregate(
       {agency_id: agencyId, client_id: clientId},
       _.reduce(events, eventApplier, {last_sequence_id: 0}),
-      new AgencyRepository(this.store)
+      new AgencyRepository(new EventRepository(this.store, {}))
     );
   }
 

@@ -8,6 +8,33 @@ export type EventStoreDocument = Document & {
   updated_at: Date
 };
 
+const eventMetaDataSchema = new Schema<EventStoreDocument>(
+  {
+    user_id: {
+      type: String,
+      required: true,
+      description: 'The event type aka the event name'
+    },
+    client_id: {
+      type: String,
+      required: true
+    },
+    context: {
+      type: Object,
+      required: true,
+      description: 'Free-form defined by the actual type'
+    },
+    correlation_id: {
+      type: String,
+      required: true,
+      description: 'An artificial sequencer to reduce aggregate level concurrency'
+    }
+  },
+  {
+    _id: false
+  }
+);
+
 const eventStoreSchema = new Schema<EventStoreDocument>(
   {
     type: {
@@ -28,7 +55,8 @@ const eventStoreSchema = new Schema<EventStoreDocument>(
       type: Number,
       required: true,
       description: 'An artificial sequencer to reduce aggregate level concurrency'
-    }
+    },
+    meta_data: eventMetaDataSchema
   },
   {
     versionKey: false,

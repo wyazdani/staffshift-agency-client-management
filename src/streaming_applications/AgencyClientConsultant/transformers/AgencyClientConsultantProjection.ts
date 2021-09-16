@@ -3,6 +3,7 @@ import {AgencyRepository} from '../../../Agency/AgencyRepository';
 import {Events} from '../../../Events';
 import {CallbackError, Model} from 'mongoose';
 import {LoggerContext} from 'a24-logzio-winston';
+import { EventRepository } from '../../../EventRepository';
 
 const events = [
   Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
@@ -39,7 +40,8 @@ export class AgencyClientConsultantProjection extends Transform {
     if (Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
       // NOR do we care about any updates to the actual name
-      const repository = new AgencyRepository(this.eventstore);
+      const eventRepository = new EventRepository(this.eventstore, {});
+      const repository = new AgencyRepository(eventRepository);
       repository.getAggregate(event.aggregate_id.agency_id)
         .then((agencyAggregate) => {
           const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);

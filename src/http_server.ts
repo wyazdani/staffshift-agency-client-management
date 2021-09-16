@@ -1,4 +1,3 @@
-
 import _ from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
 import {SwaggerRequest} from "SwaggerRequest";
@@ -63,6 +62,10 @@ const swaggerDoc = jsyaml.safeLoad(spec);
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware: any) {
+  app.use((req: SwaggerRequest, res: ServerResponse, next: Function) => {
+    console.log('DATA');
+    next();
+  });
 
   app.use(function initUse(req: SwaggerRequest, res: ServerResponse, next: Function) {
     let loggerContext = null;
@@ -123,7 +126,14 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
 
   // Modifying the middleware swagger security, to cater for jwt verification
   securityMetaData.jwt = function validateJWT(req: any, def: any, token: any, next: Function) {
-    return JWTSecurityHelper.jwtVerification(req, token, config.api_token, next);
+    return JWTSecurityHelper.jwtVerification(req, token, config.api_token, (err, response) => {
+      if (err) {
+        return next(err);
+      }
+      _.set(req, 'authentication.jwt.token', response.token);
+      _.set(req, 'authentication.jwt.payload', response.decoded);
+      next();
+    });
   };
   // Set the methods that should be used for swagger security
   app.use(middleware.swaggerSecurity(securityMetaData));

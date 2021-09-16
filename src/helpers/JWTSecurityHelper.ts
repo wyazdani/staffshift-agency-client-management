@@ -17,19 +17,17 @@ export class JWTSecurityHelper {
    * @param {object} req - The request object
    * @param {object} token - The token passed to the helper
    * @param {object} secret - The secret specified by the api
-   * @param {function} next - The next callback with structure function(err)
+   * @param {function} next - The next callback with structure function(err, response)
    *
    * @author Ruan <ruan.robson@a24group.com>
    * @since  30 July 2021
    */
-  static jwtVerification(req: SwaggerRequest, token: string, secret: string, next: Function) {
+  static jwtVerification(req: SwaggerRequest, token: string, secret: string, callback: (err: Error, response?: any) => {}) {
     JWT.verify(token, secret, function validate(err: Error, decoded: object) {
       if (err) {
-        return next(new AuthorizationError('Invalid token specified'));
+        return callback(new AuthorizationError('Invalid token specified'));
       }
-      _.set(req, 'authentication.jwt.token', token);
-      _.set(req, 'authentication.jwt.payload', decoded);
-      return next();
+      return callback(null, {token, decoded});
     });
   }
 }
