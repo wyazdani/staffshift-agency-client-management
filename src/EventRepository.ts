@@ -56,7 +56,6 @@ export class EventRepository {
       event.meta_data = this.eventMeta;
       return event;
     });
-    console.log(events, enrichedEvents)
     return this.store.insertMany(enrichedEvents);
   }
 }

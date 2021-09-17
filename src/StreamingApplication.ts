@@ -4,7 +4,6 @@ import {ResumeTokenCollectionManager} from './streaming_applications/core/Resume
 import {isString} from 'lodash';
 import mongoose from 'mongoose';
 import StreamingApplications from './streaming_applications';
-import { v4 as uuidv4 } from 'uuid';
 const config = require('config');
 const StreamTracker = 'StreamTracker';
 const Logger = require('a24-logzio-winston');
@@ -23,8 +22,7 @@ mongoose.connection.on(
 );
 
 const args = arg({
-  '--type': String,
-  '--name': String
+  '--type': String
 }, {
   argv: process.argv
 });
@@ -60,7 +58,7 @@ async function getTokenCollectionManager() {
 async function attachWatchers() {
   const tokenManager = await getTokenCollectionManager();
   for (const watcher of StreamingApplications) {
-      const streamLoggerContext = Logger.getContext(uuidv4());
+      const streamLoggerContext = Logger.getContext();
       await watcher.watch(CHANGE_STREAM_TYPE, streamLoggerContext, MongoClients.getInstance(), tokenManager);
   }
 }

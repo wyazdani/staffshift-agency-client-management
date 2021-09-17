@@ -1,6 +1,5 @@
 const config = require('config');
 const Logger = require('a24-logzio-winston');
-import { v4 as uuidv4 } from 'uuid';
 import {FacadeClientHelper} from '../../helpers/FacadeClientHelper';
 import {AgencyClientRepository} from '../../AgencyClient/AgencyClientRepository';
 import {EventStore} from '../../models/EventStore';
@@ -11,9 +10,9 @@ import {AgencyClientCommandEnum} from '../../AgencyClient/AgencyClientEnums';
 import { EventRepository } from '../../EventRepository';
 
 Logger.setup(config.logger);
-const loggerContext = Logger.getContext('syncAgencyClients');
+const loggerContext = Logger.getContext();
 const client = new FacadeClientHelper(loggerContext);
-const eventRepository = new EventRepository(EventStore, uuidv4(), {user_id: 'system'});
+const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
 const repository = new AgencyClientRepository(eventRepository);
 const handler = new AgencyClientCommandHandler(repository);
 

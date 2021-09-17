@@ -129,10 +129,13 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
       if (err) {
         return next(err);
       }
-      const eventRepository = new EventRepository(EventStore, response.decoded.request_id, {
-        user_id: response.decoded.sub,
-        client_id: response.decoded.client_id,
-        context: response.decoded.context
+      const eventRepository = new EventRepository(
+        EventStore,
+        response.decoded.request_id,
+        {
+          user_id: response.decoded.sub,
+          client_id: response.decoded.client_id,
+          context: response.decoded.context
       });
       _.set(req, 'eventRepository', eventRepository);
       next();

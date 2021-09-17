@@ -4,6 +4,30 @@ const JWT = require('jsonwebtoken');
 const {AuthorizationError} = require('a24-node-error-utils');
 import _ from 'lodash';
 
+
+interface DecodedJWT {
+  sub: string,
+  request_id: string,
+  client_id?: string,
+  context?: {
+    type: string
+    id?: string
+  }
+}
+
+export interface JWTVerification {
+  token: string,
+  decoded: {
+    sub: string,
+    request_id: string,
+    client_id?: string,
+    context?: {
+      type: string
+      id?: string
+    }
+  }
+}
+
 /**
  * This module contains methods that assists with swaggers security
  * and JWT verification.
@@ -22,8 +46,8 @@ export class JWTSecurityHelper {
    * @author Ruan <ruan.robson@a24group.com>
    * @since  30 July 2021
    */
-  static jwtVerification(req: SwaggerRequest, token: string, secret: string, callback: (err: Error, response?: any) => {}) {
-    JWT.verify(token, secret, function validate(err: Error, decoded: object) {
+  static jwtVerification(req: SwaggerRequest, token: string, secret: string, callback: (err: Error, response?: JWTVerification) => {}) {
+    JWT.verify(token, secret, function validate(err: Error, decoded: DecodedJWT) {
       if (err) {
         return callback(new AuthorizationError('Invalid token specified'));
       }
