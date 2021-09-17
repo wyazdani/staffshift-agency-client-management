@@ -8,6 +8,24 @@ export interface Event {
   aggregate_id: any,
   data: object,
   sequence_id: number
+  correlation_id: string
+  meta_data?: {
+    user_id: string,
+    client_id: string,
+    context: {
+      type: string
+      id?: string
+    }
+  }
+}
+
+export interface EventMeta {
+  user_id: string,
+  client_id: string,
+  context: {
+    type: string
+    id?: string
+  }
 }
 
 /**
@@ -17,14 +35,7 @@ export interface Event {
  *  IE a mixin concept / parasitic inheritance / Based on interfaces?
  */
 export class EventRepository {
-  eventMeta: { user_id: string; client_id: string; context: any; correlation_id: string; };
-  constructor(private store: Model<any>, auth: any) {
-    this.eventMeta = {
-      user_id: auth.sub,
-      client_id: auth.client_id,
-      context: auth.context,
-      correlation_id: auth.request_id
-    };
+  constructor(private store: Model<any>, private correlation_id: string, private eventMeta?: EventMeta) {
   }
 
   async leftFoldEvents(eventHandler: any, aggregateId: any, sequenceId: number = undefined): Promise<any> {
@@ -42,7 +53,7 @@ export class EventRepository {
 
   async save(events: any): Promise<any[]> {
     const enrichedEvents = _.map(events, (event) => {
-      event.correlation_id = this.eventMeta.correlation_id
+      event.correlation_id = this.correlation_id
       event.meta_data = this.eventMeta
       return event;
     });

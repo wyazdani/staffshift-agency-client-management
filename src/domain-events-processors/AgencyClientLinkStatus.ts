@@ -1,11 +1,15 @@
+import { v4 as uuidv4 } from 'uuid';
 import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
 import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
+import { EventRepository } from '../EventRepository';
 
 export class AgencyClientLinkStatus {
+  eventRepository: EventRepository;
   constructor(private logger: LoggerContext) {
+    this.eventRepository = new EventRepository(EventStore, uuidv4());
   }
 
   /**
@@ -16,7 +20,7 @@ export class AgencyClientLinkStatus {
   public async apply(message: any): Promise<any> {
     // try catch to handle the await error
     const conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
-    const repository = new AgencyClientRepository(EventStore);
+    const repository = new AgencyClientRepository(this.eventRepository);
     const handler = new AgencyClientCommandHandler(repository);
     return handler.apply(conversionData.agency_id, conversionData.client_id, conversionData.command);
   }

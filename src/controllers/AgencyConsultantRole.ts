@@ -2,9 +2,7 @@ import {ServerResponse} from 'http';
 import {SwaggerRequest} from 'SwaggerRequest';
 import {get} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {EventStore} from '../models/EventStore';
 import {AgencyCommandHandler} from '../Agency/AgencyCommandHandler';
-import { EventRepository } from '../EventRepository';
 const {ResourceNotFoundError} = require('a24-node-error-utils');
 
 /**
@@ -18,8 +16,8 @@ module.exports.addAgencyConsultantRole = async (req: SwaggerRequest, res: Server
   const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
   const agency_id = get(req, 'swagger.params.agency_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
-  const eventRepository = new EventRepository(EventStore, get(req, 'authentication.jwt.payload', {}));
-  const repository = new AgencyRepository(eventRepository);
+
+  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
   const handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -56,8 +54,7 @@ module.exports.updateAgencyConsultantRole = async (req: SwaggerRequest, res: Ser
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
-  const eventRepository = new EventRepository(EventStore, get(req, 'authentication.jwt.payload', {}));
-  const repository = new AgencyRepository(eventRepository);
+  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
   const handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -93,8 +90,7 @@ module.exports.changeStatusAgencyConsultantRole = async (req: SwaggerRequest, re
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
-  const eventRepository = new EventRepository(EventStore, get(req, 'authentication.jwt.payload', {}));
-  const repository = new AgencyRepository(eventRepository);
+  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
   const handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -130,8 +126,7 @@ module.exports.getAgencyConsultantRole = async (req: SwaggerRequest, res: Server
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
 
   // Consider using a builder | respository pattern
-  const eventRepository = new EventRepository(EventStore, get(req, 'authentication.jwt.payload', {}));
-  const repository = new AgencyRepository(eventRepository);
+  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
 
   try {
     // This will most likely need to project only the section we are working with based on the route
@@ -165,8 +160,7 @@ module.exports.listAgencyConsultantRoles = async (req: SwaggerRequest, res: Serv
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
 
   // Consider using a builder | respository pattern
-  const eventRepository = new EventRepository(EventStore, get(req, 'authentication.jwt.payload', {}));
-  const repository = new AgencyRepository(eventRepository);
+  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
 
   try {
     // This will most likely need to project only the section we are working with based on the route

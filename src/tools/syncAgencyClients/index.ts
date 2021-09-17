@@ -1,5 +1,6 @@
 const config = require('config');
 const Logger = require('a24-logzio-winston');
+import { v4 as uuidv4 } from 'uuid';
 import {FacadeClientHelper} from '../../helpers/FacadeClientHelper';
 import {AgencyClientRepository} from '../../AgencyClient/AgencyClientRepository';
 import {EventStore} from '../../models/EventStore';
@@ -7,11 +8,13 @@ import {AgencyClientCommandHandler} from '../../AgencyClient/AgencyClientCommand
 import {connect, disconnect} from 'mongoose';
 import {AgencyClientCommand} from '../../AgencyClient/Interfaces';
 import {AgencyClientCommandEnum} from '../../AgencyClient/AgencyClientEnums';
+import { EventRepository } from '../../EventRepository';
 
 Logger.setup(config.logger);
 const loggerContext = Logger.getContext('syncAgencyClients');
 const client = new FacadeClientHelper(loggerContext);
-const repository = new AgencyClientRepository(EventStore);
+const eventRepository = new EventRepository(EventStore, uuidv4());
+const repository = new AgencyClientRepository(eventRepository);
 const handler = new AgencyClientCommandHandler(repository);
 
 const itemsPerPage = 100;

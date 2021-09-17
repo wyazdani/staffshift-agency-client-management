@@ -1,5 +1,4 @@
 import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
-import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import _ from 'lodash';
 import {ServerResponse} from 'http';
@@ -22,7 +21,7 @@ module.exports.addAgencyClientConsultant = async (req: SwaggerRequest, res: Serv
   const client_id = _.get(req, 'swagger.params.client_id.value', '');
   const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
 
-  const repository = new AgencyClientRepository(EventStore);
+  const repository = new AgencyClientRepository(_.get(req, 'eventRepository', undefined));
   const handler = new AgencyClientCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -60,7 +59,7 @@ module.exports.removeAgencyClientConsultant = async (req: SwaggerRequest, res: S
   const consultant_id = _.get(req, 'swagger.params.consultant_id.value', '');
   const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
 
-  const repository = new AgencyClientRepository(EventStore);
+  const repository = new AgencyClientRepository(_.get(req, 'eventRepository', undefined));
   const handler = new AgencyClientCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.

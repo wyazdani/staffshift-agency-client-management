@@ -2,6 +2,9 @@ import _ from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
 import {SwaggerRequest} from "SwaggerRequest";
 import {ServerResponse} from "http";
+import path from 'path';
+import { EventRepository } from './EventRepository';
+import { EventStore } from './models/EventStore';
 const app = require('connect')();
 const http = require('http');
 const swaggerTools = require('swagger-tools');
@@ -33,7 +36,7 @@ const allowedRegex = '^/docs.*|^/api-docs.*';
 // swaggerRouter configuration
 const options = {
   swaggerUi: '/swagger.json',
-  controllers: './dist/controllers',
+  controllers: path.resolve(__dirname, 'controllers'),
   useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
 };
 
@@ -62,10 +65,6 @@ const swaggerDoc = jsyaml.safeLoad(spec);
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware: any) {
-  app.use((req: SwaggerRequest, res: ServerResponse, next: Function) => {
-    console.log('DATA');
-    next();
-  });
 
   app.use(function initUse(req: SwaggerRequest, res: ServerResponse, next: Function) {
     let loggerContext = null;
@@ -130,8 +129,12 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
       if (err) {
         return next(err);
       }
-      _.set(req, 'authentication.jwt.token', response.token);
-      _.set(req, 'authentication.jwt.payload', response.decoded);
+      const eventRepository = new EventRepository(EventStore, response.decoded.request_id, {
+        user_id: response.decoded.sub,
+        client_id: response.decoded.client_id,
+        context: response.decoded.context
+      });
+      _.set(req, 'eventRepository', eventRepository);
       next();
     });
   };

@@ -8,6 +8,24 @@ export type EventStoreDocument = Document & {
   updated_at: Date
 };
 
+const contextSchema = new Schema<EventStoreDocument>(
+  {
+    type: {
+      type: String,
+      required: true,
+      description: 'The event type aka the event name'
+    },
+    id: {
+      type: String,
+      required: false,
+      description: 'The event type aka the event name'
+    }
+  },
+  {
+    _id: false
+  }
+);
+
 const eventMetaDataSchema = new Schema<EventStoreDocument>(
   {
     user_id: {
@@ -20,7 +38,7 @@ const eventMetaDataSchema = new Schema<EventStoreDocument>(
       required: true
     },
     context: {
-      type: Object,
+      type: contextSchema,
       required: true,
       description: 'Free-form defined by the actual type'
     }
