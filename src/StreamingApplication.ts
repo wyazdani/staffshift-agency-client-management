@@ -4,17 +4,17 @@ import {ResumeTokenCollectionManager} from './streaming_applications/core/Resume
 import {isString} from 'lodash';
 import mongoose from 'mongoose';
 import StreamingApplications from './streaming_applications';
-const config = require('config');
+import * as config from 'config';
+import Logger from 'a24-logzio-winston';
+import arg from 'arg';
 const StreamTracker = 'StreamTracker';
-const Logger = require('a24-logzio-winston');
-const arg = require('arg');
 
 mongoose.plugin((schema: any) => { schema.options.usePushEach = true; });
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongo.database_host, config.mongo.options);
+mongoose.connect(config.get('mongo').database_host, config.get('mongo').options);
 mongoose.connection.on(
   'error',
-  function mongooseConnection(error) {
+  (error) => {
     const loggerContext = Logger.getContext('startup');
     loggerContext.crit('MongoDB connection error', error);
     process.exit(1);

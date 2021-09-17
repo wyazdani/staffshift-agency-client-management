@@ -1,11 +1,10 @@
 import {SwaggerRequest} from 'SwaggerRequest';
+import {AuthorizationError} from 'a24-node-error-utils';
+import {verify} from 'jsonwebtoken';
+import {set} from 'lodash';
 
-const JWT = require('jsonwebtoken');
-const {AuthorizationError} = require('a24-node-error-utils');
-import _ from 'lodash';
 
-
-interface DecodedJWT {
+interface DecodedJWTInterface {
   sub: string,
   request_id: string,
   client_id?: string,
@@ -15,7 +14,7 @@ interface DecodedJWT {
   }
 }
 
-export interface JWTVerification {
+export interface JWTVerificationInterface {
   token: string,
   decoded: {
     sub: string,

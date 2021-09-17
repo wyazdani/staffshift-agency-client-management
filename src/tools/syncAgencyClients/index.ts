@@ -1,5 +1,5 @@
-const config = require('config');
-const Logger = require('a24-logzio-winston');
+import config from 'config';
+import Logger from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../../helpers/FacadeClientHelper';
 import {AgencyClientRepository} from '../../AgencyClient/AgencyClientRepository';
 import {EventStore} from '../../models/EventStore';
@@ -9,7 +9,7 @@ import {AgencyClientCommand} from '../../AgencyClient/Interfaces';
 import {AgencyClientCommandEnum} from '../../AgencyClient/AgencyClientEnums';
 import { EventRepository } from '../../EventRepository';
 
-Logger.setup(config.logger);
+Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
 const client = new FacadeClientHelper(loggerContext);
 const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
@@ -33,7 +33,7 @@ interface SyncCommand {
 const run = async (page: number): Promise<void> => {
   try {
     loggerContext.info('Connecting to the database');
-    await connect(config.mongo.database_host, config.mongo.options);
+    await connect(config.get('mongo').database_host, config.get('mongo').options);
     let completed = false;
     loggerContext.info('Starting the sync agency client process');
     do {
@@ -121,9 +121,7 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
 
 const page = (process.argv[2]) ? parseInt(process.argv[2]) : 1;
 
-run(page).then(() => {
-  return disconnect();
-}).then(() => {
+run(page).then(() => disconnect()).then(() => {
   loggerContext.info('The script has completed and does NOT need to be re-run');
 }).catch((err) => {
   loggerContext.error('Script did not complete, you will need to rerun it', err);

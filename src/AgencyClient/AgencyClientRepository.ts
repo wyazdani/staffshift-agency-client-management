@@ -26,3 +26,5 @@ export class AgencyClientRepository {
     return this.eventRepository.save(events);
   }
 }
+
+const eventApplier = (aggregate: AgencyClientAggregateRecord, event: AgencyClientEvent): AgencyClientAggregateRecord => AgencyClientWriteProjection[event.type](aggregate, event);

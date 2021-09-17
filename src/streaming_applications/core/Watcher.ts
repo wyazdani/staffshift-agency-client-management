@@ -20,7 +20,7 @@ export class WatcherContext {
     let keys: string[] = [];
     for (const item of this.getPipelines()) {
       if (item.getType() === type) {
-        keys = _.concat(keys, item.getMongoClientConfigKeys());
+        keys = concat(keys, item.getMongoClientConfigKeys());
       }
     }
     return keys;

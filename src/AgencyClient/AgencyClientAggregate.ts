@@ -13,7 +13,7 @@ export class AgencyClientAggregate {
     const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
     // Should this be another aggregate?
     const consultantRole = agencyAggregate.getConsultantRole(consultant.consultant_role_id);
-    const currentCount = _.countBy(this.aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
+    const currentCount = countBy(this.aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
 
     if (!consultantRole) {
       throw new Error(`CONSULTANT ROLE ${consultant.consultant_role_id} NOT DEFINED`);
@@ -29,7 +29,7 @@ export class AgencyClientAggregate {
   }
   async validateRemoveClientConsultant(consultant: AgencyClientConsultant): Promise<void> {
     // prevent us from deleting something that does not exist
-    if (_.find(this.aggregate.consultants, {_id: consultant._id}) === undefined) {
+    if (find(this.aggregate.consultants, {_id: consultant._id}) === undefined) {
       throw new Error('CONSULTANT NOT FOUND');
     }
   }

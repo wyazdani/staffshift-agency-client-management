@@ -57,9 +57,7 @@ export class AgencyClientEventLogProjection extends Transform {
           }
           return callback(null, data);
         });
-      }).catch((err) => {
-        return callback(err);
-      });
+      }).catch((err) => callback(err));
     // Should we be adding something here since this is a possible "hanging" issue
   }
 }
