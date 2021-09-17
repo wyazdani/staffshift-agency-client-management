@@ -7,7 +7,7 @@
     "build-ts": "tsc",
     "start": "node dist/http_server",
     "start-tracing": "node -r ./tracing.js dist/http_server",
-    "test": "sh -c 'npx ts-node ./tests/dropdatabase.ts' && sh -c 'npm run migrate' && sh -c 'npx nyc npx mocha'",
+    "test": "node ./testfile-drop-database.js && npm run migrate && node_modules/.bin/nyc node_modules/.bin/mocha",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore . *.js",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
