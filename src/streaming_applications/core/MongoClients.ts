@@ -1,7 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {MongoClient, Db} from 'mongodb';
-import _ from 'lodash';
-const config = require('config');
+import {isString} from 'lodash';
+import config from 'config';
 
 const configKeys: {[key in string]: number} = {};
 const clients: {[key in string]: MongoClient} = {};
@@ -59,7 +59,7 @@ export class MongoClients {
    * @param {String|Array<String>} configKeyListing - The config keys
    */
   registerClientConfigs(configKeyListing: string[] | string) {
-    if (_.isString(configKeyListing)) {
+    if (isString(configKeyListing)) {
       return this.applyKeyCount(configKeyListing);
     }
     for (const item of configKeyListing) {

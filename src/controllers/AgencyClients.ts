@@ -1,12 +1,10 @@
 import {ServerResponse} from 'http';
 import {GenericRepository} from '../GenericRepository';
-import {get} from 'lodash';
-import _ from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {AgencyClientsProjection} from '../models/AgencyClientsProjection';
-const {QueryHelper} = require('a24-node-query-utils');
+import {QueryHelper, ResourceNotFoundError} from 'a24-node-error-utils';
 import {SwaggerRequest} from 'SwaggerRequest';
 import {PaginationHelper} from '../helpers/PaginationHelper';
-const {ResourceNotFoundError} = require('a24-node-error-utils');
 
 /**
  * Gets a single agency client
@@ -30,7 +28,7 @@ module.exports.getAgencyClient = async (req: SwaggerRequest, res: ServerResponse
   const service = new GenericRepository(logger, AgencyClientsProjection);
   try {
     const {data} = await service.listResources(query, limit, skip, sortBy);
-    if (_.isEmpty(data)) {
+    if (isEmpty(data)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
       return next(new ResourceNotFoundError('Agency Client resource not found'));
     }
@@ -66,10 +64,10 @@ module.exports.listAgencyClients = async (req: SwaggerRequest, res: ServerRespon
   const service = new GenericRepository(logger, AgencyClientsProjection);
   try {
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
-    const statusCode = _.isEmpty(data) ? 204 : 200;
+    const statusCode = isEmpty(data) ? 204 : 200;
     await PaginationHelper.setPaginationHeaders(req, res, count);
     res.statusCode = statusCode;
-    if (_.isEmpty(data)) {
+    if (isEmpty(data)) {
       logger.info('Resource listing completed, no records found.', {statusCode});
       return res.end();
     }

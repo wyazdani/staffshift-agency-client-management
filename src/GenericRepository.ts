@@ -1,6 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {FilterQuery, Model} from 'mongoose';
-const {RuntimeError} = require('a24-node-error-utils');
+import {RuntimeError} from 'a24-node-error-utils';
 
 /**
  * GenericRepository

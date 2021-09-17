@@ -1,9 +1,7 @@
-
 import {LoggerContext} from 'a24-logzio-winston';
-
-const config = require('config');
-const StaffshiftFacadeClient = require('a24-node-staffshift-facade-client');
-const {ValidationError, AuthorizationError, RuntimeError} = require('a24-node-error-utils');
+import config from 'config';
+import StaffshiftFacadeClient from 'a24-node-staffshift-facade-client';
+import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
 const clientConfig = config.get('a24-staffshift-facade');
 
 interface FacadeClientRecord {
@@ -118,7 +116,7 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-   async getAgencyClientDetailsListing(options?: GetAgencyClientDetailsOptions): Promise<any> {
+  async getAgencyClientDetailsListing(options?: GetAgencyClientDetailsOptions): Promise<any> {
     options = {...options, 'xRequestId': this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);

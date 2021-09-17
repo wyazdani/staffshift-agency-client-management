@@ -23,9 +23,7 @@
     "max-len": ["warn", 120],
     "no-duplicate-imports": ["error"],
     "no-multiple-empty-lines": ["error", { "max": 1 }],
-    "no-sync": "error",
     "no-trailing-spaces": ["error"],
-    "no-unused-vars": ["off"],
     "no-whitespace-before-property": ["error"],
     "object-curly-spacing": ["error", "never"],
     "quotes": ["error", "single"],
@@ -38,6 +36,7 @@
     "prefer-const": "error",
     "prefer-arrow-callback": "error",
     "arrow-body-style": ["error", "as-needed"],
+    "no-unused-vars": "off",
     "prefer-arrow/prefer-arrow-functions": [
       "error",
       {
@@ -54,6 +53,24 @@
       }
     ],
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-require-imports": "error"
+    "@typescript-eslint/no-require-imports": "error",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "suffix": ["Interface"]
+      },
+      {
+        "selector": "enum",
+        "format": ["PascalCase"],
+        "suffix": ["Enum"]
+      },
+      {
+        "selector": "typeParameter",
+        "format": ["PascalCase"],
+        "suffix": ["Type"]
+      }
+    ]
   }
 }

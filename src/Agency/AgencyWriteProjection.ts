@@ -16,7 +16,7 @@ export const AgencyWriteProjection = {
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AgencyEventEnums.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED]: (aggregate: AgencyAggregateRecord, event: any): AgencyAggregateRecord => {
-    aggregate.consultant_roles = _.map(aggregate.consultant_roles, (item) => {
+    aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
         return {...item, ...event.data};
       }
@@ -25,7 +25,7 @@ export const AgencyWriteProjection = {
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AgencyEventEnums.AGENCY_CONSULTANT_ROLE_ENABLED]: (aggregate: AgencyAggregateRecord, event: any): AgencyAggregateRecord => {
-    aggregate.consultant_roles = _.map(aggregate.consultant_roles, (item) => {
+    aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
         return {...item, status: AgencyConsultantRoleEnums.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED};
       }
@@ -34,7 +34,7 @@ export const AgencyWriteProjection = {
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AgencyEventEnums.AGENCY_CONSULTANT_ROLE_DISABLED]: (aggregate: AgencyAggregateRecord, event: any): AgencyAggregateRecord => {
-    aggregate.consultant_roles = _.map(aggregate.consultant_roles, (item) => {
+    aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
         return {...item, status: AgencyConsultantRoleEnums.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED};
       }

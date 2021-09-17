@@ -1,34 +1,32 @@
-
-import _ from 'lodash';
+import {isEmpty} from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
-import {SwaggerRequest} from "SwaggerRequest";
-import {ServerResponse} from "http";
-const app = require('connect')();
-const http = require('http');
-const swaggerTools = require('swagger-tools');
-const jsyaml = require('js-yaml');
-const fs = require('fs');
-const config = require('config');
-const A24ErrorUtils = require('a24-node-error-utils');
-const {RuntimeError, ErrorHandler} = require('a24-node-error-utils');
-const Logger = require('a24-logzio-winston');
-const Url = require('url');
-Logger.setup(config.logger);
+import {SwaggerRequest} from 'SwaggerRequest';
+import http, {ServerResponse} from 'http';
+import connect from 'connect';
+const app = connect();
+import swaggerTools from 'swagger-tools';
+import {load} from 'js-yaml';
+import fs from 'fs';
+import config from 'config';
+import A24ErrorUtils, {RuntimeError, ErrorHandler} from 'a24-node-error-utils';
+import Logger from 'a24-logzio-winston';
+import Url from 'url';
+Logger.setup(config.get('logger'));
 const serverPort = (config.has('server.port')) ? config.get('server.port') : 3370;
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 mongoose.plugin((schema: any) => { schema.options.usePushEach = true; });
-const {mongooseTimezone, timezoneMiddleware} = require('a24-node-timezone-utils');
+import {mongooseTimezone, timezoneMiddleware} from 'a24-node-timezone-utils';
 mongoose.plugin(mongooseTimezone);
 mongoose.Promise = global.Promise;
-const {MessagePublisher} = require('a24-node-pubsub');
-const {Auditor} = require('a24-node-octophant-utils');
-const {createHttpTerminator} = require('http-terminator');
+import {MessagePublisher} from 'a24-node-pubsub';
+import {Auditor} from 'a24-node-octophant-utils';
+import {createHttpTerminator} from 'http-terminator';
 const pubsubAuditConfig = {
   env: process.env.NODE_ENV || 'development',
   auth: config.get('octophant_audit.pubsub_project'),
   topics: config.get('octophant_audit.pubsub_topics')
 };
-const {LinkHeaderHelper} = require('a24-node-query-utils');
+import {LinkHeaderHelper} from 'a24-node-query-utils';
 
 MessagePublisher.configure(pubsubAuditConfig);
 // Allow any calls on /docs and /api-docs
@@ -48,10 +46,10 @@ const errorHandlerConfig = {
 };
 A24ErrorUtils.configure(errorHandlerConfig);
 
-mongoose.connect(config.mongo.database_host, config.mongo.options);
+mongoose.connect(config.get('mongo').database_host, config.get('mongo').options);
 mongoose.connection.on(
   'error',
-  function mongooseConnection(error: Error) {
+  (error: Error) => {
     const loggerContext = Logger.getContext('startup');
     loggerContext.crit('MongoDB connection error', error);
     process.exit(1);
@@ -61,17 +59,17 @@ mongoose.connection.on(
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 // eslint-disable-next-line no-sync
 const spec = fs.readFileSync('./api/swagger.yaml', 'utf8');
-const swaggerDoc = jsyaml.safeLoad(spec);
+const swaggerDoc = load(spec);
 
 // Initialize the Swagger middleware
-swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware: any) {
+swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
 
-  app.use(function initUse(req: SwaggerRequest, res: ServerResponse, next: Function) {
+  app.use((req: SwaggerRequest, res: ServerResponse, next: Function) => {
     let loggerContext = null;
-    if (!_.isEmpty(req.headers) && !_.isEmpty(req.headers['x-request-id'])) {
-      loggerContext = Logger.getContext(req.headers['x-request-id']);
+    if (!isEmpty(req.headers) && !isEmpty(req.headers['x-request-id'])) {
+      loggerContext = Logger.getContext(req.headers['x-request-id'] as string);
     } else {
-      loggerContext = Logger.getContext();
+      loggerContext = Logger.getContext(null);
     }
     // Strip off the query params to keep log message to minimum and to use that in a building link header
     const parsedUrl = Url.parse(req.url);
@@ -93,9 +91,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
   app.use(middleware.swaggerValidator());
 
   const securityMetaData: {[key in string]: any} = {};
-  app.use(function configureAuditorContext(req: SwaggerRequest, res: ServerResponse, next: Function) {
+  app.use((req: SwaggerRequest, res: ServerResponse, next: Function) => {
     // Allow the docs to load
-    if (req.url.match(allowedRegex) || (!_.isEmpty(req.swagger.operation) && req.swagger.operation['x-public-operation'] === true)) {
+    if (req.url.match(allowedRegex) || (!isEmpty(req.swagger.operation) && req.swagger.operation['x-public-operation'] === true)) {
       return next();
     }
     const jwtToken = req.headers['x-request-jwt'];
@@ -104,11 +102,11 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
         new RuntimeError('Missing required JWT header, update swagger api definition to make X-Request-JWT required')
       );
     }
-    if (_.isEmpty(req.swagger.operation)) { // operation not supported, lets return.swagger will handle with 405.
+    if (isEmpty(req.swagger.operation)) { // operation not supported, lets return.swagger will handle with 405.
       return next();
     }
     // Make sure octophant-event is configured correctly
-    if (!req.swagger.operation['x-octophant-event'] && _.isEmpty(req.swagger.operation['x-octophant-event'])) {
+    if (!req.swagger.operation['x-octophant-event'] && isEmpty(req.swagger.operation['x-octophant-event'])) {
       return next(new RuntimeError('x-octophant-event is expected to be configured for operation, but is not'));
     }
     const publisher = new MessagePublisher(req.Logger);
@@ -125,7 +123,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
 
   // Modifying the middleware swagger security, to cater for jwt verification
   securityMetaData.jwt = function validateJWT(req: any, def: any, token: any, next: Function) {
-    return JWTSecurityHelper.jwtVerification(req, token, config.api_token, next);
+    return JWTSecurityHelper.jwtVerification(req, token, config.get('api_token'), next);
   };
   // Set the methods that should be used for swagger security
   app.use(middleware.swaggerSecurity(securityMetaData));
@@ -138,14 +136,14 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
   // Timezone serialization middleware
   app.use(timezoneMiddleware());
 
-  app.use(function errorHandler(err: any, req: any, res: any, next: Function) {
+  app.use((err: any, req: any, res: any, next: Function) => {
     ErrorHandler.onError(err, req, res, next);
   });
 
   // Start the server
   const server = http.createServer(app);
   server.setTimeout(config.get('server.timeout'));
-  server.listen(serverPort, function createFunc() {
+  server.listen(serverPort, () => {
     // eslint-disable-next-line no-console
     console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     // eslint-disable-next-line no-console
@@ -156,8 +154,8 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
     server,
     gracefulTerminationTimeout: config.get('graceful_shutdown.http.server_close_timeout')
   });
-  const logger = Logger.getContext();
-  async function shutdown() {
+  const logger = Logger.getContext(null);
+  const shutdown = async () => {
     logger.log('info', 'starting graceful shutdown process');
     //This delay is to make sure k8s iptables are updated and no new request is established.
     //more info: https://blog.laputa.io/graceful-shutdown-in-kubernetes-85f1c8d586da
@@ -179,7 +177,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
       await Logger.close();
       process.exit(1);
     }
-  }
+  };
   for (const signal of config.get('graceful_shutdown.signals')) {
     process.on(signal, shutdown);
   }

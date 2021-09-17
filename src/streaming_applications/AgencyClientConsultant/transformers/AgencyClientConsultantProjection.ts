@@ -51,23 +51,15 @@ export class AgencyClientConsultantProjection extends Transform {
             consultant_role_name: role.name,
             consultant_id: event.data.consultant_id
           });
-          agencyClientConsultant.save((err: Error) => {
-            return callback(err, data);
-          });
+          agencyClientConsultant.save((err: Error) => callback(err, data));
         })
-        .catch((err) => {
-          return callback(err);
-        });
+        .catch((err) => callback(err));
     } else if (Events.AGENCY_CLIENT_CONSULTANT_UNASSIGNED === data.event.type) {
-      this.model.remove({_id: event.data._id}, (err) => {
-        return callback(err, data);
-      });
+      this.model.remove({_id: event.data._id}, (err) => callback(err, data));
     } else if (Events.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED === data.event.type && event.data.name) {
       this.model.updateMany({consultant_role_id: event.data._id},
         {$set: {consultant_role_name: event.data.name}}, {},
-        (err: CallbackError) => {
-          return callback(err, data);
-        });
+        (err: CallbackError) => callback(err, data));
     }
     // Should we be adding something here since this is a possible "hanging" issue
   }

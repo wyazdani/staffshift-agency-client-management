@@ -51,7 +51,12 @@
     "url": "0.11.0"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "8.5.1",
+    "@types/config": "0.0.39",
+    "@types/connect": "^3.4.35",
+    "@types/http-terminator": "^2.0.2",
+    "@types/js-yaml": "^4.0.3",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/swagger-tools": "^0.10.7",
     "@typescript-eslint/eslint-plugin": "4.31.0",
     "@typescript-eslint/parser": "4.31.0",
     "a24nodetestutils": "git+ssh://git@github.com:A24Group/A24NodeTestUtils.git#v2.2.0",

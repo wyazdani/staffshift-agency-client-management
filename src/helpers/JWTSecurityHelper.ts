@@ -1,8 +1,7 @@
 import {SwaggerRequest} from 'SwaggerRequest';
-
-const JWT = require('jsonwebtoken');
-const {AuthorizationError} = require('a24-node-error-utils');
-import _ from 'lodash';
+import {AuthorizationError} from 'a24-node-error-utils';
+import {verify} from 'jsonwebtoken';
+import {set} from 'lodash';
 
 /**
  * This module contains methods that assists with swaggers security
@@ -23,12 +22,12 @@ export class JWTSecurityHelper {
    * @since  30 July 2021
    */
   static jwtVerification(req: SwaggerRequest, token: string, secret: string, next: Function) {
-    JWT.verify(token, secret, function validate(err: Error, decoded: object) {
+    verify(token, secret, (err: Error, decoded: object) => {
       if (err) {
         return next(new AuthorizationError('Invalid token specified'));
       }
-      _.set(req, 'authentication.jwt.token', token);
-      _.set(req, 'authentication.jwt.payload', decoded);
+      set(req, 'authentication.jwt.token', token);
+      set(req, 'authentication.jwt.payload', decoded);
       return next();
     });
   }

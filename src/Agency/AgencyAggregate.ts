@@ -7,7 +7,7 @@ export class AgencyAggregate {
   }
 
   getConsultantRole(consultantRoleId: string): AgencyConsultantRole {
-    return _.find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+    return find(this.aggregate.consultant_roles, {_id: consultantRoleId});
   }
 
   getConsultantRoles(): AgencyConsultantRole[] {
@@ -15,7 +15,7 @@ export class AgencyAggregate {
   }
 
   canEnableConsultantRole(consultantRoleId: string): boolean {
-    const role =  _.find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+    const role =  find(this.aggregate.consultant_roles, {_id: consultantRoleId});
     if (!role) {
       throw new Error('BOOM, THERE IS NO MATCHING ROLE');
     }
@@ -23,7 +23,7 @@ export class AgencyAggregate {
   }
 
   canDisableConsultantRole(consultantRoleId: string): boolean {
-    const role =  _.find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+    const role =  find(this.aggregate.consultant_roles, {_id: consultantRoleId});
     if (!role) {
       throw new Error('BOOM, THERE IS NO MATCHING ROLE');
     }

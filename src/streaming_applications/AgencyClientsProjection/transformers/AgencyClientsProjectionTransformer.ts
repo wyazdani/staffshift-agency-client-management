@@ -56,9 +56,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
           linked: true
         },
         {upsert: true},
-        (err: CallbackError) => {
-          return callback(err, data);
-        }
+        (err: CallbackError) => callback(err, data)
       );
     } else if (Events.AGENCY_CLIENT_UNLINKED === data.event.type) {
       this.model.findOneAndUpdate(
@@ -68,9 +66,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
           linked: false
         },
         {upsert: true},
-        (err: CallbackError) => {
-          return callback(err, data);
-        }
+        (err: CallbackError) => callback(err, data)
       );
     } else if (Events.AGENCY_CLIENT_SYNCED === data.event.type) {
       this.model.findOneAndUpdate(
@@ -80,9 +76,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
           linked: event.data.linked
         },
         {upsert: true},
-        (err: CallbackError) => {
-          return callback(err, data);
-        }
+        (err: CallbackError) => callback(err, data)
       );
     }
     // Should we be adding something here since this is a possible "hanging" issue

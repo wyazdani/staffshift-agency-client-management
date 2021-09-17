@@ -4,10 +4,10 @@ import {LoggerContext} from 'a24-logzio-winston';
 
 module.exports = async (logger: LoggerContext, message: any, metadata: any, callback: Function) => {
   process(logger, message)
-    .then(() => {
+    .then(() =>
       // create does not do new and set a _id value, using insertMany instead
-      return IncomingDomainEvents.insertMany(message);
-    })
+      IncomingDomainEvents.insertMany(message)
+    )
     .then(() => {
       callback();
     })

@@ -16,7 +16,7 @@ export class AgencyRepository {
     const events: AgencyEvent[] = await this.store.find(query).sort({sequence_id: 1}).lean();
     return new AgencyAggregate(
       {agency_id: agencyId},
-      _.reduce(events, eventApplier, {last_sequence_id: 0})
+      reduce(events, eventApplier, {last_sequence_id: 0})
     );
   }
 
@@ -25,6 +25,4 @@ export class AgencyRepository {
   }
 }
 
-const eventApplier = (aggregate: AgencyAggregateRecord, event: AgencyEvent): AgencyAggregateRecord => {
-  return AgencyWriteProjection[event.type](aggregate, event);
-};
+const eventApplier = (aggregate: AgencyAggregateRecord, event: AgencyEvent): AgencyAggregateRecord => AgencyWriteProjection[event.type](aggregate, event);

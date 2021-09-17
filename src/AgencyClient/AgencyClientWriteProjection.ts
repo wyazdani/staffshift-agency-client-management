@@ -29,9 +29,7 @@ export const AgencyClientWriteProjection = {
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
   [AgencyClientEventType.AGENCY_CLIENT_CONSULTANT_UNASSIGNED]: (aggregate: AgencyClientAggregateRecord, event: any): AgencyClientAggregateRecord => {
-    aggregate.consultants = _.differenceWith(aggregate.consultants, [event.data], (value, other) => {
-      return ((value._id == other._id));
-    });
+    aggregate.consultants = differenceWith(aggregate.consultants, [event.data], (value, other) => ((value._id == other._id)));
     return {...aggregate, last_sequence_id: event.sequence_id};
   }
 };

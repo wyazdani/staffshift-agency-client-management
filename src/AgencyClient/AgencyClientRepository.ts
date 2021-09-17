@@ -18,7 +18,7 @@ export class AgencyClientRepository {
 
     return new AgencyClientAggregate(
       {agency_id: agencyId, client_id: clientId},
-      _.reduce(events, eventApplier, {last_sequence_id: 0}),
+      reduce(events, eventApplier, {last_sequence_id: 0}),
       new AgencyRepository(this.store)
     );
   }
@@ -28,6 +28,4 @@ export class AgencyClientRepository {
   }
 }
 
-const eventApplier = (aggregate: AgencyClientAggregateRecord, event: AgencyClientEvent): AgencyClientAggregateRecord => {
-  return AgencyClientWriteProjection[event.type](aggregate, event);
-};
+const eventApplier = (aggregate: AgencyClientAggregateRecord, event: AgencyClientEvent): AgencyClientAggregateRecord => AgencyClientWriteProjection[event.type](aggregate, event);

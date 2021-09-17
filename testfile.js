@@ -110,7 +110,7 @@ const dropDatabase = function dropDatabase(callback) {
   });
 };
 
-if (_.isEmpty(customDir)) {
+if (isEmpty(customDir)) {
   dropDatabase(function dropDatabase() {
     // Read all files/dirs recursively from the specified testing directory
     readTestDir(testDir);

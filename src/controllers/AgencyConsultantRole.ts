@@ -4,7 +4,7 @@ import {get} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {EventStore} from '../models/EventStore';
 import {AgencyCommandHandler} from '../Agency/AgencyCommandHandler';
-const {ResourceNotFoundError} = require('a24-node-error-utils');
+import {ResourceNotFoundError} from 'a24-node-error-utils';
 
 /**
  * Add Agency Consultant Role

@@ -1,10 +1,10 @@
-import {ClientRequest, ServerResponse} from 'http';
+import {ServerResponse} from 'http';
 import {GenericRepository} from '../GenericRepository';
 import {AgencyClientEventLog} from '../models/AgencyClientEventLog';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequest} from 'SwaggerRequest';
-import _ from 'lodash';
-const {QueryHelper} = require('a24-node-query-utils');
+import {isEmpty, get} from 'lodash';
+import {QueryHelper} from 'a24-node-error-utils';
 
 /**
  * Retrieves agency client event listing
@@ -21,16 +21,16 @@ module.exports.listAgencyClientEventLogs = async (req: SwaggerRequest, res: Serv
   const sortBy = QueryHelper.getSortParams(swaggerParams);
   const query = QueryHelper.getQuery(swaggerParams);
 
-  query.agency_id = _.get(req, 'swagger.params.agency_id.value', '');
-  query.client_id = _.get(req, 'swagger.params.client_id.value', '');
+  query.agency_id = get(req, 'swagger.params.agency_id.value', '');
+  query.client_id = get(req, 'swagger.params.client_id.value', '');
 
   const service = new GenericRepository(logger, AgencyClientEventLog);
   try {
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
-    const statusCode = _.isEmpty(data) ? 204 : 200;
+    const statusCode = isEmpty(data) ? 204 : 200;
     await PaginationHelper.setPaginationHeaders(req, res, count);
     res.statusCode = statusCode;
-    if (_.isEmpty(data)) {
+    if (isEmpty(data)) {
       logger.info('The GET list call of Tags has been completed successfully, but no records were found.', {
         statusCode
       });
