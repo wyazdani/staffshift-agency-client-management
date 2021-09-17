@@ -13,12 +13,12 @@ const contextSchema = new Schema<EventStoreDocument>(
     type: {
       type: String,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'The context type as per the staffshift enums https://github.com/A24Group/staffshift-node-enums'
     },
     id: {
       type: String,
       required: false,
-      description: 'The event type aka the event name'
+      description: 'The context type identifier'
     }
   },
   {
@@ -31,7 +31,7 @@ const eventMetaDataSchema = new Schema<EventStoreDocument>(
     user_id: {
       type: String,
       required: true,
-      description: 'The event type aka the event name'
+      description: 'The user id, may be an acutal user_id OR system'
     },
     client_id: {
       type: String,
@@ -40,7 +40,7 @@ const eventMetaDataSchema = new Schema<EventStoreDocument>(
     context: {
       type: contextSchema,
       required: true,
-      description: 'Free-form defined by the actual type'
+      description: 'The context type and id'
     }
   },
   {
@@ -57,7 +57,8 @@ const eventStoreSchema = new Schema<EventStoreDocument>(
     },
     aggregate_id: {
       type: Object,
-      required: true
+      required: true,
+      description: 'Uniquely identifies the aggregate'
     },
     data: {
       type: Object,
@@ -73,7 +74,7 @@ const eventStoreSchema = new Schema<EventStoreDocument>(
     correlation_id: {
       type: String,
       required: true,
-      description: 'An artificial sequencer to reduce aggregate level concurrency'
+      description: 'Similar to a process_id / request_id depending on the source of the command and events'
     }
   },
   {

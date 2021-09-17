@@ -13,7 +13,7 @@ import { EventRepository } from '../../EventRepository';
 Logger.setup(config.logger);
 const loggerContext = Logger.getContext('syncAgencyClients');
 const client = new FacadeClientHelper(loggerContext);
-const eventRepository = new EventRepository(EventStore, uuidv4());
+const eventRepository = new EventRepository(EventStore, uuidv4(), {user_id: 'system'});
 const repository = new AgencyClientRepository(eventRepository);
 const handler = new AgencyClientCommandHandler(repository);
 

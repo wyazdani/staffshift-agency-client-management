@@ -1,28 +1,27 @@
 import _ from 'lodash';
-import {LoggerContext} from 'a24-logzio-winston';
 import {FilterQuery, Model} from 'mongoose';
-const {RuntimeError} = require('a24-node-error-utils');
 
 export interface Event {
-  type: any,
-  aggregate_id: any,
+  type: string,
+  aggregate_id: object,
   data: object,
   sequence_id: number
   correlation_id: string
-  meta_data?: {
+  meta_data: {
     user_id: string,
-    client_id: string,
-    context: {
+    client_id?: string,
+    context?: {
       type: string
       id?: string
     }
   }
 }
 
+// Might be worth having a UserEventMeta and SystemEventMeta concept
 export interface EventMeta {
   user_id: string,
-  client_id: string,
-  context: {
+  client_id?: string,
+  context?: {
     type: string
     id?: string
   }
@@ -30,15 +29,15 @@ export interface EventMeta {
 
 /**
  * EventRepository
- *  Based on the new implementation details the service layer no longer exists.
- *  Should this be injected into the well defined aggregates rather?
- *  IE a mixin concept / parasitic inheritance / Based on interfaces?
+ *   Should the EventStore be passed in here?
+ *   How would we handle snaphots? Pass a list of possible "stores"?
+ *   How do we build snapshots in the background and use them when they are ready?
  */
 export class EventRepository {
   constructor(private store: Model<any>, private correlation_id: string, private eventMeta?: EventMeta) {
   }
 
-  async leftFoldEvents(eventHandler: any, aggregateId: any, sequenceId: number = undefined): Promise<any> {
+  async leftFoldEvents(eventHandler: any, aggregateId: object, sequenceId: number = undefined): Promise<any> {
     const query: FilterQuery<any> = {aggregate_id: aggregateId};
     if (sequenceId) {
       query['sequence_id'] = {$lte: sequenceId};
@@ -51,10 +50,10 @@ export class EventRepository {
     );
   }
 
-  async save(events: any): Promise<any[]> {
+  async save(events: Event[]): Promise<any[]> {
     const enrichedEvents = _.map(events, (event) => {
-      event.correlation_id = this.correlation_id
-      event.meta_data = this.eventMeta
+      event.correlation_id = this.correlation_id;
+      event.meta_data = this.eventMeta;
       return event;
     });
     console.log(events, enrichedEvents)

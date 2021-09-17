@@ -9,7 +9,7 @@ import { EventRepository } from '../EventRepository';
 export class AgencyClientLinkStatus {
   eventRepository: EventRepository;
   constructor(private logger: LoggerContext) {
-    this.eventRepository = new EventRepository(EventStore, uuidv4());
+    this.eventRepository = new EventRepository(EventStore, uuidv4(), {user_id: 'system'});
   }
 
   /**
