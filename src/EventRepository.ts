@@ -42,6 +42,7 @@ export class EventRepository {
 
   async save(events: any): Promise<any[]> {
     const enrichedEvents = _.map(events, (event) => {
+      event.correlation_id = this.eventMeta.correlation_id
       event.meta_data = this.eventMeta
       return event;
     });

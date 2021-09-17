@@ -23,11 +23,6 @@ const eventMetaDataSchema = new Schema<EventStoreDocument>(
       type: Object,
       required: true,
       description: 'Free-form defined by the actual type'
-    },
-    correlation_id: {
-      type: String,
-      required: true,
-      description: 'An artificial sequencer to reduce aggregate level concurrency'
     }
   },
   {
@@ -56,7 +51,12 @@ const eventStoreSchema = new Schema<EventStoreDocument>(
       required: true,
       description: 'An artificial sequencer to reduce aggregate level concurrency'
     },
-    meta_data: eventMetaDataSchema
+    meta_data: eventMetaDataSchema,
+    correlation_id: {
+      type: String,
+      required: true,
+      description: 'An artificial sequencer to reduce aggregate level concurrency'
+    }
   },
   {
     versionKey: false,
