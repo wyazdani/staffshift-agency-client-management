@@ -1,7 +1,25 @@
 import _ from 'lodash';
 import {FilterQuery, Model} from 'mongoose';
 
-export interface Event {
+export interface AggregateEvent {
+  type: string,
+  aggregate_id: object,
+  data: object,
+  sequence_id: number
+}
+
+// Might be worth having a UserEventMeta and SystemEventMeta concept
+export interface EventMeta {
+  user_id: string,
+  client_id?: string,
+  context?: {
+    type: string
+    id?: string
+  }
+}
+
+
+interface Event {
   type: string,
   aggregate_id: object,
   data: object,
@@ -14,16 +32,6 @@ export interface Event {
       type: string
       id?: string
     }
-  }
-}
-
-// Might be worth having a UserEventMeta and SystemEventMeta concept
-export interface EventMeta {
-  user_id: string,
-  client_id?: string,
-  context?: {
-    type: string
-    id?: string
   }
 }
 
@@ -50,11 +58,9 @@ export class EventRepository {
     );
   }
 
-  async save(events: Event[]): Promise<any[]> {
-    const enrichedEvents = _.map(events, (event) => {
-      event.correlation_id = this.correlation_id;
-      event.meta_data = this.eventMeta;
-      return event;
+  async save(events: AggregateEvent[]): Promise<any[]> {
+    const enrichedEvents: Event[] = _.map(events, (aggEvent) => {
+      return {...aggEvent, correlation_id: this.correlation_id, meta_data: this.eventMeta};
     });
     return this.store.insertMany(enrichedEvents);
   }
