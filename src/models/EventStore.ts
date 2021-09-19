@@ -71,7 +71,11 @@ const eventStoreSchema = new Schema<EventStoreDocument>(
       required: true,
       description: 'An artificial sequencer to reduce aggregate level concurrency'
     },
-    meta_data: eventMetaDataSchema,
+    meta_data: {
+      type: eventMetaDataSchema,
+      require: true,
+      description: 'Meta data that describes the event but does not belong to the event'
+    },
     correlation_id: {
       type: String,
       required: true,

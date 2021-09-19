@@ -1,15 +1,11 @@
-import { v4 as uuidv4 } from 'uuid';
 import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
-import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import { EventRepository } from '../EventRepository';
 
 export class AgencyClientLinkStatus {
-  eventRepository: EventRepository;
-  constructor(private logger: LoggerContext) {
-    this.eventRepository = new EventRepository(EventStore, uuidv4(), {user_id: 'system'});
+  constructor(private logger: LoggerContext, private eventRepository: EventRepository) {
   }
 
   /**

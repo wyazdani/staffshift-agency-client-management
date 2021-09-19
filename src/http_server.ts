@@ -125,7 +125,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
 
   // Modifying the middleware swagger security, to cater for jwt verification
   securityMetaData.jwt = function validateJWT(req: any, def: any, token: any, next: Function) {
-    return JWTSecurityHelper.jwtVerification(req, token, config.api_token, (err, response) => {
+    return JWTSecurityHelper.jwtVerification(token, config.api_token, (err, response) => {
       if (err) {
         return next(err);
       }
