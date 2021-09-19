@@ -23,6 +23,8 @@ module.exports = async (logger: LoggerContext, message: any, metadata: any, call
 
 async function process(logger: LoggerContext, message: any) {
   const correlationId = uuidv4();
+  const eventMeta = await getEventMeta(logger, message.application_jwt);
+  const eventRepository = new EventRepository(EventStore, correlationId, eventMeta);
   logger.info('Handling incoming domain event', {correlation_id: correlationId, event_id: message.event.id});
   switch (message.event.name) {
     case 'agency_organisation_link_created':
@@ -34,8 +36,6 @@ async function process(logger: LoggerContext, message: any) {
     case 'agency_organisation_site_ward_link_created':
     case 'agency_organisation_site_ward_link_deleted':
     case 'agency_organisation_site_ward_link_status_changed': {
-      const eventMeta = await getEventMeta(logger, message.application_jwt);
-      const eventRepository = new EventRepository(EventStore, correlationId, eventMeta);
       const handler = new AgencyClientLinkStatus(logger, eventRepository);
       return handler.apply(message);
     }
