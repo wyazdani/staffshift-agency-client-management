@@ -129,9 +129,16 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
       if (err) {
         return next(err);
       }
+      // TODO not sure if this is expected, requires investigation - https://github.com/A24Group/staffshift-agency-client-management/issues/40
+      if (req.Logger.requestId !== response.decoded.request_id) {
+        req.Logger.info(
+          'JWT and current logger do not have matching request identifiers',
+          {loggerContext: req.Logger.requestId, jwt: response.decoded.request_id}
+        );
+      }
       const eventRepository = new EventRepository(
         EventStore,
-        response.decoded.request_id,
+        req.Logger.requestId,
         {
           user_id: response.decoded.sub,
           client_id: response.decoded.client_id,

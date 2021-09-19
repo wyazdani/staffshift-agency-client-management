@@ -35,12 +35,13 @@ const eventMetaDataSchema = new Schema<EventStoreDocument>(
     },
     client_id: {
       type: String,
-      required: true
+      required: false,
+      description: 'The oauth client id, undefined when a system related event is created'
     },
     context: {
       type: contextSchema,
-      required: true,
-      description: 'The context type and id'
+      required: false,
+      description: 'The context type and id, undefined when a system related event is created'
     }
   },
   {
