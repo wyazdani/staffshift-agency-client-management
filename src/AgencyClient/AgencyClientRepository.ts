@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import {Model, FilterQuery} from 'mongoose';
 import {AgencyClientAggregateRecord, AgencyClientEvent} from './Interfaces';
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
@@ -11,7 +10,11 @@ export class AgencyClientRepository {
   }
 
   async getAggregate(agencyId: string, clientId: string, sequenceId: number = undefined): Promise<AgencyClientAggregate> {
-    const projection = await this.eventRepository.leftFoldEvents(AgencyClientWriteProjection, {agency_id: agencyId, client_id: clientId}, sequenceId);
+    const projection: AgencyClientAggregateRecord  = await this.eventRepository.leftFoldEvents(
+      AgencyClientWriteProjection,
+      {agency_id: agencyId, client_id: clientId},
+      sequenceId
+    );
     return new AgencyClientAggregate(
       {agency_id: agencyId, client_id: clientId},
       projection,

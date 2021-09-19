@@ -18,7 +18,6 @@ export interface EventMeta {
   }
 }
 
-
 interface Event {
   type: string,
   aggregate_id: object,
@@ -35,6 +34,9 @@ interface Event {
   }
 }
 
+interface BaseProjection {
+  last_sequence_id: number,
+}
 /**
  * EventRepository
  *   Should the EventStore be passed in here?
@@ -45,8 +47,8 @@ export class EventRepository {
   constructor(private store: Model<any>, private correlation_id: string, private eventMeta?: EventMeta) {
   }
 
-  async leftFoldEvents(eventHandler: any, aggregateId: object, sequenceId: number = undefined): Promise<any> {
-    const query: FilterQuery<any> = {aggregate_id: aggregateId};
+  async leftFoldEvents(eventHandler: any, aggregateId: object, sequenceId: number = undefined): Promise<BaseProjection> {
+    const query: FilterQuery<object> = {aggregate_id: aggregateId};
     if (sequenceId) {
       query['sequence_id'] = {$lte: sequenceId};
     }
