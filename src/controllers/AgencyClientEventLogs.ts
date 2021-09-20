@@ -4,7 +4,7 @@ import {AgencyClientEventLog} from '../models/AgencyClientEventLog';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequest} from 'SwaggerRequest';
 import {isEmpty, get} from 'lodash';
-import {QueryHelper} from 'a24-node-error-utils';
+import {QueryHelper} from 'a24-node-query-utils';
 
 /**
  * Retrieves agency client event listing
