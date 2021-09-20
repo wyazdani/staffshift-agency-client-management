@@ -1,18 +1,15 @@
 import {IncomingDomainEvents} from '../models/IncomingDomainEvents';
 import {AgencyClientLinkStatus} from './AgencyClientLinkStatus';
 import {LoggerContext} from 'a24-logzio-winston';
-import { JWTSecurityHelper } from '../helpers/JWTSecurityHelper';
-import { EventMeta, EventRepository } from '../EventRepository';
-import { EventStore } from '../models/EventStore';
-import { v4 as uuidv4 } from 'uuid';
+import {JWTSecurityHelper} from '../helpers/JWTSecurityHelper';
+import {EventMeta, EventRepository} from '../EventRepository';
+import {v4 as uuidv4} from 'uuid';
+import {EventStore} from '../models/EventStore';
 const config = require('config');
 
 module.exports = async (logger: LoggerContext, message: any, metadata: any, callback: Function) => {
   process(logger, message)
-    .then(() => {
-      // create does not do new and set a _id value, using insertMany instead
-      return IncomingDomainEvents.create(message);
-    })
+    .then(() => IncomingDomainEvents.create(message))
     .then(() => {
       callback();
     })
@@ -53,5 +50,5 @@ const getEventMeta = async (logger: LoggerContext, token:string): Promise<EventM
       }
       resolve({user_id: response.decoded.sub || 'system', client_id: response.decoded.client_id, context: response.decoded.context});
     });
-  })
-}
+  });
+};

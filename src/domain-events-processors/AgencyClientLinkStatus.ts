@@ -2,7 +2,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
 import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
-import { EventRepository } from '../EventRepository';
+import {EventRepository} from '../EventRepository';
 
 export class AgencyClientLinkStatus {
   constructor(private logger: LoggerContext, private eventRepository: EventRepository) {
