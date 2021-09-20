@@ -7,7 +7,7 @@ import {GenericRepository} from '../GenericRepository';
 import {AgencyClientConsultants} from '../models/AgencyClientConsultants';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequest} from 'SwaggerRequest';
-import {QueryHelper} from 'a24-node-error-utils';
+import {QueryHelper} from 'a24-node-query-utils';
 
 /**
  * Add Agency Client Consultant

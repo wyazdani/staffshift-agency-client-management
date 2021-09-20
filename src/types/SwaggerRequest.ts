@@ -1,8 +1,8 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {IncomingMessage} from 'http';
 
-export interface SwaggerRequest extends IncomingMessage{
-  Logger: LoggerContext,
+export interface SwaggerRequest extends IncomingMessage {
+  Logger: typeof LoggerContext,
   swagger: {
     params: {[key: string]: any},
     operation: {
@@ -10,6 +10,6 @@ export interface SwaggerRequest extends IncomingMessage{
       'x-public-operation'?: boolean
     }
   },
-  octophant: object,
+  octophant: never,
   basePathName: string
 }

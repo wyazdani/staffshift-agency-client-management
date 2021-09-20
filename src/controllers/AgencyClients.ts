@@ -2,7 +2,8 @@ import {ServerResponse} from 'http';
 import {GenericRepository} from '../GenericRepository';
 import {get, isEmpty} from 'lodash';
 import {AgencyClientsProjection} from '../models/AgencyClientsProjection';
-import {QueryHelper, ResourceNotFoundError} from 'a24-node-error-utils';
+import {QueryHelper} from 'a24-node-query-utils';
+import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {SwaggerRequest} from 'SwaggerRequest';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 
