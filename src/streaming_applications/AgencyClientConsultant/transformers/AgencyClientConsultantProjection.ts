@@ -3,6 +3,7 @@ import {AgencyRepository} from '../../../Agency/AgencyRepository';
 import {Events} from '../../../Events';
 import {CallbackError, Model} from 'mongoose';
 import {LoggerContext} from 'a24-logzio-winston';
+import {EventRepository} from '../../../EventRepository';
 
 const events = [
   Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
@@ -10,14 +11,14 @@ const events = [
   Events.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
 ];
 interface options extends TransformOptions {
-  eventstore: Model<any>,
+  eventRepository: EventRepository,
   model: Model<any>,
   pipeline: string,
   logger: LoggerContext
 }
 
 export class AgencyClientConsultantProjection extends Transform {
-  private readonly eventstore: Model<any>;
+  private readonly eventRepository: EventRepository;
   private model: Model<any>;
   private pipeline: string;
   private logger: LoggerContext;
@@ -25,7 +26,7 @@ export class AgencyClientConsultantProjection extends Transform {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
-    this.eventstore = opts.eventstore;
+    this.eventRepository = opts.eventRepository;
     this.model = opts.model;
     this.pipeline = opts.pipeline;
     this.logger = opts.logger;
@@ -33,13 +34,15 @@ export class AgencyClientConsultantProjection extends Transform {
 
   _transform(data: any, encoding: any, callback: Function) {
     if (!events.includes(data.event.type)) {
+      this.logger.debug('Incoming event ignored', {event: data.event.type});
       return callback(null, data);
     }
+    this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
     if (Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
       // NOR do we care about any updates to the actual name
-      const repository = new AgencyRepository(this.eventstore);
+      const repository = new AgencyRepository(this.eventRepository);
       repository.getAggregate(event.aggregate_id.agency_id)
         .then((agencyAggregate) => {
           const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);

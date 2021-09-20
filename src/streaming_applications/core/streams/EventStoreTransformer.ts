@@ -23,16 +23,23 @@ export class EventStoreTransformer extends Transform {
    * }
    */
   _transform(data: any, encoding: any, callback: TransformCallback) {
-    if (data.operationType !== 'insert') {
-      console.log('WE ARE ONLY DEALING WITH INSERT EVENTS');
-      return callback();
-    }
+    let newData = {};
     // What should we do if we get a non-insert operation type
     // data.operationType !== 'insert'
-    const newData = {
-      _id: data._id,
-      event: data.fullDocument
-    };
+    if (data.operationType !== 'insert') {
+      console.log('WE ARE ONLY DEALING WITH INSERT EVENTS');
+      newData = {
+        _id: data._id,
+        event: {
+          type: 'NOOP'
+        }
+      };
+    } else {
+      newData = {
+        _id: data._id,
+        event: data.fullDocument
+      };
+    }
     callback(null, newData);
   }
 }

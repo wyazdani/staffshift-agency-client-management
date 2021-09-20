@@ -1,11 +1,11 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
-import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
+import {EventRepository} from '../EventRepository';
 
 export class AgencyClientLinkStatus {
-  constructor(private logger: LoggerContext) {
+  constructor(private logger: LoggerContext, private eventRepository: EventRepository) {
   }
 
   /**
@@ -14,10 +14,9 @@ export class AgencyClientLinkStatus {
    * @param {Object} message  - The PubSub Triage Domain Event Message
    */
   public async apply(message: any): Promise<any> {
-    console.log(message.event.name);
     // try catch to handle the await error
     const conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
-    const repository = new AgencyClientRepository(EventStore);
+    const repository = new AgencyClientRepository(this.eventRepository);
     const handler = new AgencyClientCommandHandler(repository);
     return handler.apply(conversionData.agency_id, conversionData.client_id, conversionData.command);
   }

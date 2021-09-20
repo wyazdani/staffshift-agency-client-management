@@ -22,8 +22,7 @@ mongoose.connection.on(
 );
 
 const args = arg({
-  '--type': String,
-  '--name': String
+  '--type': String
 }, {
   argv: process.argv
 });
@@ -38,12 +37,7 @@ if (!args['--type']) {
   loggerContext.error('Expected --type has not been passed');
   process.exit(1);
 }
-if (!args['--name']) {
-  loggerContext.error('Expected --name has not been passed');
-  process.exit(1);
-}
 const CHANGE_STREAM_TYPE = args['--type'].toLowerCase();
-const STREAMING_APP_NAME = args['--name'].toLowerCase();
 
 /**
  * Gets configured resume token manager class
@@ -62,22 +56,16 @@ async function getTokenCollectionManager() {
  * Starts all the watchers aka change streams that have been registered
  */
 async function attachWatchers() {
-  if (appFound) {
-    const tokenManager = await getTokenCollectionManager();
-    for (const watcher of StreamingApplications) {
-      if (watcher.getStreamingAppName().toLowerCase() === STREAMING_APP_NAME) {
-        await watcher.watch(CHANGE_STREAM_TYPE, loggerContext, MongoClients.getInstance(), tokenManager);
-      }
-    }
+  const tokenManager = await getTokenCollectionManager();
+  for (const watcher of StreamingApplications) {
+      const streamLoggerContext = Logger.getContext();
+      await watcher.watch(CHANGE_STREAM_TYPE, streamLoggerContext, MongoClients.getInstance(), tokenManager);
   }
 }
 
 // Lets register streaming application connections
 for (const watcher of StreamingApplications) {
-  if (watcher.getStreamingAppName().toLowerCase() === STREAMING_APP_NAME) {
-    appFound = true;
-    MongoClients.getInstance().registerClientConfigs(watcher.getMongoClientConfigKeys(CHANGE_STREAM_TYPE));
-  }
+  MongoClients.getInstance().registerClientConfigs(watcher.getMongoClientConfigKeys(CHANGE_STREAM_TYPE));
 }
 
 attachWatchers().catch((err) => {
@@ -92,9 +80,7 @@ async function shutdown() {
   try {
     const promiseArray = [];
     for (const watcher of StreamingApplications) {
-      if (watcher.getStreamingAppName().toLowerCase() === STREAMING_APP_NAME) {
-        promiseArray.push(watcher.shutdown());
-      }
+      promiseArray.push(watcher.shutdown());
     }
     const result = await Promise.race([Promise.all(promiseArray),
       new Promise((resolve) => setTimeout(() => resolve('can\'t exit in specified time'), config.get('graceful_shutdown.changestream.server_close_timeout')))]);

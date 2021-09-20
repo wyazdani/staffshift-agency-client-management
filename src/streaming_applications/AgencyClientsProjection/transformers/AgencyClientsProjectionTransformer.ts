@@ -2,13 +2,14 @@ import {Transform, TransformCallback, TransformOptions} from 'stream';
 import {LoggerContext} from 'a24-logzio-winston';
 import {CallbackError, FilterQuery, Model} from 'mongoose';
 import {Events} from '../../../Events';
+import {EventRepository} from '../../../EventRepository';
 
 const events = [
   Events.AGENCY_CLIENT_LINKED, Events.AGENCY_CLIENT_UNLINKED, Events.AGENCY_CLIENT_SYNCED
 ];
 
 interface ProjectionTransformerOptions extends TransformOptions {
-  eventstore: Model<any>,
+  eventRepository: EventRepository,
   model: Model<any>,
   pipeline: string,
   logger: LoggerContext
@@ -18,7 +19,7 @@ interface ProjectionTransformerOptions extends TransformOptions {
  * Convert an event store entry into the Agency Client Read Projection
  */
 export class AgencyClientsProjectionTransformer extends Transform {
-  private readonly eventstore: Model<any>;
+  private readonly eventRepository: EventRepository;
   private model: Model<any>;
   private pipeline: string;
   private logger: LoggerContext;
@@ -27,7 +28,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
-    this.eventstore = opts.eventstore;
+    this.eventRepository = opts.eventRepository;
     this.model = opts.model;
     this.pipeline = opts.pipeline;
     this.logger = opts.logger;
@@ -35,8 +36,10 @@ export class AgencyClientsProjectionTransformer extends Transform {
 
   _transform(data: any, encoding: any, callback: TransformCallback) {
     if (!events.includes(data.event.type)) {
+      this.logger.debug('Incoming event ignored', {event: data.event.type});
       return callback(null, data);
     }
+    this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
     const criteria: FilterQuery<any> = {
       agency_id: event.aggregate_id.agency_id,
