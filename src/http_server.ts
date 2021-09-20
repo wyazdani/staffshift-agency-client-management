@@ -1,10 +1,10 @@
+import path from 'path';
 import _ from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
 import {SwaggerRequest} from "SwaggerRequest";
 import {ServerResponse} from "http";
-import path from 'path';
-import { EventRepository } from './EventRepository';
-import { EventStore } from './models/EventStore';
+import {EventRepository} from './EventRepository';
+import {EventStore} from './models/EventStore';
 const app = require('connect')();
 const http = require('http');
 const swaggerTools = require('swagger-tools');
