@@ -1,7 +1,4 @@
 {
-  "mocha": {
-    "reporter": "spec"
-  },
   "logger": {
     "stack": {
       "app": "staffshift-agency-client-management"
