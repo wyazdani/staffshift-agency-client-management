@@ -39,7 +39,7 @@ export class AgencyClientEventLogProjection extends Transform {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
       return callback(null, data);
     }
-    this.logger.debug('Processing the incoming event ignored', {event: data.event.type});
+    this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
     const repository = new AgencyClientRepository(this.eventRepository);
     repository.getAggregate(event.aggregate_id.agency_id, event.aggregate_id.client_id, event.sequence_id)

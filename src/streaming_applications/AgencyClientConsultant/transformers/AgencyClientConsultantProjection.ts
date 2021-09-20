@@ -37,7 +37,7 @@ export class AgencyClientConsultantProjection extends Transform {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
       return callback(null, data);
     }
-    this.logger.debug('Processing the incoming event ignored', {event: data.event.type});
+    this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
     if (Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
