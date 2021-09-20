@@ -1,8 +1,10 @@
-import path from 'path';
 import _ from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
 import {SwaggerRequest} from "SwaggerRequest";
 import {ServerResponse} from "http";
+import path from 'path';
+import { EventRepository } from './EventRepository';
+import { EventStore } from './models/EventStore';
 const app = require('connect')();
 const http = require('http');
 const swaggerTools = require('swagger-tools');
@@ -17,8 +19,6 @@ Logger.setup(config.logger);
 const serverPort = (config.has('server.port')) ? config.get('server.port') : 3370;
 const mongoose = require('mongoose');
 mongoose.plugin((schema: any) => { schema.options.usePushEach = true; });
-const {mongooseTimezone, timezoneMiddleware} = require('a24-node-timezone-utils');
-mongoose.plugin(mongooseTimezone);
 mongoose.Promise = global.Promise;
 const {MessagePublisher} = require('a24-node-pubsub');
 const {Auditor} = require('a24-node-octophant-utils');
@@ -125,7 +125,28 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
 
   // Modifying the middleware swagger security, to cater for jwt verification
   securityMetaData.jwt = function validateJWT(req: any, def: any, token: any, next: Function) {
-    return JWTSecurityHelper.jwtVerification(req, token, config.api_token, next);
+    return JWTSecurityHelper.jwtVerification(token, config.api_token, (err, response) => {
+      if (err) {
+        return next(err);
+      }
+      // TODO not sure if this is expected, requires investigation - https://github.com/A24Group/staffshift-agency-client-management/issues/40
+      if (req.Logger.requestId !== response.decoded.request_id) {
+        req.Logger.info(
+          'JWT and current logger do not have matching request identifiers',
+          {loggerContext: req.Logger.requestId, jwt: response.decoded.request_id}
+        );
+      }
+      const eventRepository = new EventRepository(
+        EventStore,
+        req.Logger.requestId,
+        {
+          user_id: response.decoded.sub,
+          client_id: response.decoded.client_id,
+          context: response.decoded.context
+      });
+      _.set(req, 'eventRepository', eventRepository);
+      next();
+    });
   };
   // Set the methods that should be used for swagger security
   app.use(middleware.swaggerSecurity(securityMetaData));
@@ -134,9 +155,6 @@ swaggerTools.initializeMiddleware(swaggerDoc, function middleWareFunc(middleware
 
   // Serve the Swagger documents and Swagger UI
   app.use(middleware.swaggerUi());
-
-  // Timezone serialization middleware
-  app.use(timezoneMiddleware());
 
   app.use(function errorHandler(err: any, req: any, res: any, next: Function) {
     ErrorHandler.onError(err, req, res, next);

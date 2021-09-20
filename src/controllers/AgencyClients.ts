@@ -62,8 +62,8 @@ module.exports.listAgencyClients = async (req: SwaggerRequest, res: ServerRespon
   const query = QueryHelper.getQuery(swaggerParams);
 
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
-
   const service = new GenericRepository(logger, AgencyClientsProjection);
+
   try {
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
     const statusCode = _.isEmpty(data) ? 204 : 200;

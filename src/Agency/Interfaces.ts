@@ -1,3 +1,4 @@
+import {AggregateEvent} from '../EventRepository';
 import {AgencyCommandEnums, AgencyConsultantRoleEnums, AgencyEventEnums} from './AgencyEnums';
 
 export interface AgencyConsultantRole {
@@ -16,7 +17,7 @@ export interface AgencyAggregateRecord {
 export interface AgencyAggregateId {
   agency_id: string
 }
-export interface AgencyEvent {
+export interface AgencyEvent extends AggregateEvent {
   type: AgencyEventEnums,
   aggregate_id: AgencyAggregateId,
   data: object,

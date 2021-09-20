@@ -9,6 +9,7 @@ import {AgencyClientEventLogProjection} from './transformers/AgencyClientEventLo
 import {AgencyClientEventLog} from '../../models/AgencyClientEventLog';
 import {EventStore} from '../../models/EventStore';
 import {EventStoreTransformer} from '../core/streams/EventStoreTransformer';
+import {EventRepository} from '../../EventRepository';
 
 const HIGH_WATER_MARK = 5;
 /**
@@ -42,6 +43,7 @@ export class EventStorePipeline implements Pipeline {
    * @param {ResumeTokenCollectionManager} tokenManager - Instance of ResumeTokenCollectionManager class
    */
   async watch(logger: LoggerContext, clientManager: MongoClients, tokenManager: ResumeTokenCollectionManager): Promise<WatchHandler> {
+    const eventRepository = new EventRepository(EventStore, logger.requestId);
     const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES.WATCH);
     const watchDb = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
@@ -51,7 +53,7 @@ export class EventStorePipeline implements Pipeline {
     //set options to initialize streams
     const opts = {
       highWaterMark: HIGH_WATER_MARK,
-      eventstore: EventStore,
+      eventRepository: eventRepository,
       model: AgencyClientEventLog,
       pipeline: this.getID(),
       logger: logger

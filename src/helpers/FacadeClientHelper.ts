@@ -75,7 +75,7 @@ export class FacadeClientHelper {
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
     const authorization = `token ${clientConfig.api_token}`;
-    this.logger.debug('The candidate system details GET call to staffshift facade service has started', {options});
+    this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
     return new Promise((resolve: Function, reject: Function) => {
       api.listAgencyOrganisationLink(authorization, options, (error: any, data: any, response: any) => {
         let item = null;
@@ -101,11 +101,11 @@ export class FacadeClientHelper {
             item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
             return reject(item);
           }
-          item = new RuntimeError('An error occurred during the candidate system details data get call', error);
+          item = new RuntimeError('An error occurred during the agency client data get call', error);
           return reject(item);
         }
         this.logger.debug(
-          'The candidate system details GET call to staffshift facade service has been completed successfully',
+          'The agency client GET call to staffshift facade service has been completed successfully',
           {body: response.body}
         );
         return resolve(response.body);
@@ -123,7 +123,7 @@ export class FacadeClientHelper {
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
     const authorization = `token ${clientConfig.api_token}`;
-    this.logger.debug('The candidate system details GET call to staffshift facade service has started', {options});
+    this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
     return new Promise((resolve: (results?: FacadeClientRecord[]) => void, reject: (error: Error) => void) => {
       api.listAgencyOrganisationLink(authorization, options, (error: any, data: any, response: any) => {
         let item = null;
@@ -149,11 +149,11 @@ export class FacadeClientHelper {
             item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
             return reject(item);
           }
-          item = new RuntimeError('An error occurred during the candidate system details data get call', error);
+          item = new RuntimeError('An error occurred during the agency client data get call', error);
           return reject(item);
         }
         this.logger.debug(
-          'The candidate system details GET call to staffshift facade service has been completed successfully',
+          'The agency client GET call to staffshift facade service has been completed successfully',
           {body: response.body}
         );
         return resolve(response.body);

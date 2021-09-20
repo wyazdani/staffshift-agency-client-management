@@ -26,10 +26,9 @@ const incomingDomainEventsSchema = new Schema<IncomingDomainEventDocument>(
     versionKey: false,
     timestamps: {
       createdAt: 'created_at',
-      updatedAt: 'updated_at'
+      updatedAt: false
     },
-    collection: 'IncomingDomainEvents',
-    _id: false
+    collection: 'IncomingDomainEvents'
   }
 );
 
