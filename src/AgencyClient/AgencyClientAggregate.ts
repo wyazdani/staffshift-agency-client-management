@@ -1,15 +1,19 @@
-import {AgencyClientAggregateId, AgencyClientAggregateRecord, AgencyClientConsultant} from './Interfaces';
-import _ from 'lodash';
+import {AgencyClientAggregateIdInterface,
+  AgencyClientAggregateRecordInterface,
+  AgencyClientConsultantInterface} from './Interfaces';
+import {countBy, find} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 
 export class AgencyClientAggregate {
-  constructor(private id: AgencyClientAggregateId, private aggregate: AgencyClientAggregateRecord, private agencyRepository: AgencyRepository) {
-  }
+  constructor(private id: AgencyClientAggregateIdInterface,
+    private aggregate: AgencyClientAggregateRecordInterface,
+    private agencyRepository: AgencyRepository) {}
+
   isLinked(): boolean {
     return !!this.aggregate.linked;
   }
   // Business Logic that should be applied
-  async validateAddClientConsultant(consultant: AgencyClientConsultant): Promise<void> {
+  async validateAddClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
     // Should this be another aggregate?
     const consultantRole = agencyAggregate.getConsultantRole(consultant.consultant_role_id);
@@ -27,18 +31,18 @@ export class AgencyClientAggregate {
       throw new Error(`CONSULTANT ROLE ${consultant.consultant_role_id} IS NOT ENABLED`);
     }
   }
-  async validateRemoveClientConsultant(consultant: AgencyClientConsultant): Promise<void> {
+  async validateRemoveClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
     // prevent us from deleting something that does not exist
     if (find(this.aggregate.consultants, {_id: consultant._id}) === undefined) {
       throw new Error('CONSULTANT NOT FOUND');
     }
   }
 
-  getConsultants(): AgencyClientConsultant[] {
+  getConsultants(): AgencyClientConsultantInterface[] {
     return this.aggregate.consultants;
   }
 
-  getId(): AgencyClientAggregateId {
+  getId(): AgencyClientAggregateIdInterface {
     return this.id;
   }
 
@@ -47,7 +51,7 @@ export class AgencyClientAggregate {
   }
 
   // Base class method for all aggregates
-  toJSON() {
+  toJSON(): AgencyClientAggregateRecordInterface {
     return this.aggregate;
   }
 }

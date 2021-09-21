@@ -2,10 +2,11 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
 import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../EventRepository';
 
 export class AgencyClientLinkStatus {
-  constructor(private logger: LoggerContext, private eventRepository: EventRepository) {
+  constructor(private logger: typeof LoggerContext, private eventRepository: EventRepository) {
   }
 
   /**
@@ -22,14 +23,14 @@ export class AgencyClientLinkStatus {
   }
 
   /**
-   * Convert the Triage Events into Commands
+   * Convert the Triage EventsEnum into Commands
    * In the future similar commands will be issued to this services API directly
    *
    * @param {String} eventName - The Triage event name that needs to be converted
    * @param {Object} data - The Triage event data that needs to be converted
    */
-  private async convertTriageEventToCommand(eventName: string, data: any) {
-    const conversionData: {[key: string]: any} = {};
+  private async convertTriageEventToCommand(eventName: string, data: any): Promise<GenericObjectInterface> {
+    const conversionData: GenericObjectInterface = {};
     conversionData.agency_id = data.agency_id;
 
     // Need to have a try catch to wrap all the awaits
@@ -50,7 +51,10 @@ export class AgencyClientLinkStatus {
 
       // Handle the Ward Delete
       if (eventName == 'agency_organisation_site_ward_link_deleted') {
-        conversionData.command = {type: 'unlinkAgencyClient', data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}};
+        conversionData.command = {
+          type: 'unlinkAgencyClient',
+          data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
+        };
         conversionData.client_id = data.ward_id;
         return conversionData;
       }
@@ -70,9 +74,13 @@ export class AgencyClientLinkStatus {
       }
 
       // It changed lets figure out if is a link or unlink
-      if (eventName == 'agency_organisation_site_ward_link_status_changed' || eventName == 'agency_organisation_site_ward_link_created') {
+      if (eventName == 'agency_organisation_site_ward_link_status_changed' ||
+        eventName == 'agency_organisation_site_ward_link_created') {
         const command = await this.getCommand(data);
-        conversionData.command = {type: command, data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}};
+        conversionData.command = {
+          type: command,
+          data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
+        };
         conversionData.client_id = data.ward_id;
       }
 
@@ -91,7 +99,7 @@ export class AgencyClientLinkStatus {
    *
    * @returns {String} - The command that should be applied
    */
-  private async getCommand(data: any) {
+  private async getCommand(data: GenericObjectInterface): Promise<string> {
     const client = new FacadeClientHelper(this.logger);
     // Need try catch
     const response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id);

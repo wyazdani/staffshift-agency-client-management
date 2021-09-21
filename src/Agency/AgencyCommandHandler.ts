@@ -1,16 +1,15 @@
-
 import {AgencyCommands} from './AgencyCommands';
 import {AgencyRepository} from './AgencyRepository';
-import {AgencyCommand} from './Interfaces';
-import {EventStoreDocument} from '../models/EventStore';
+import {AgencyCommandInterface} from './Interfaces';
+import {EventStoreDocumentType} from '../models/EventStore';
 
 export class AgencyCommandHandler {
   constructor(private repository: AgencyRepository) {
   }
 
-  async apply(agency_id: string, command: AgencyCommand): Promise<EventStoreDocument[]> {
+  async apply(agencyId: string, command: AgencyCommandInterface): Promise<EventStoreDocumentType[]> {
     // we need to add try catch here to handle the errors from these awaits.
-    const aggregate = await this.repository.getAggregate(agency_id);
+    const aggregate = await this.repository.getAggregate(agencyId);
     if (!AgencyCommands[command.type]) {
       throw new Error(`Command type:${command.type} is not supported`);
     }

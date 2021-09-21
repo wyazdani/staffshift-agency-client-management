@@ -1,29 +1,32 @@
 import {AggregateEvent} from '../EventRepository';
-import {AgencyCommandEnums, AgencyConsultantRoleEnums, AgencyEventEnums} from './AgencyEnums';
+import {AgencyCommandEnum, AgencyConsultantRoleEnum, AgencyEventEnum} from './AgencyEnums';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
-export interface AgencyConsultantRole {
+export interface AgencyConsultantRoleInterface {
   _id: string,
   name: string,
   description: string,
   max_consultants: number,
-  status?: AgencyConsultantRoleEnums
+  status?: AgencyConsultantRoleEnum
 }
 
-export interface AgencyAggregateRecord {
-  consultant_roles?: AgencyConsultantRole[],
+export interface AgencyAggregateRecordInterface {
+  consultant_roles?: AgencyConsultantRoleInterface[],
   last_sequence_id: number
 }
 
-export interface AgencyAggregateId {
+export interface AgencyAggregateIdInterface {
   agency_id: string
 }
-export interface AgencyEvent extends AggregateEvent {
-  type: AgencyEventEnums,
-  aggregate_id: AgencyAggregateId,
-  data: object,
+
+export interface AgencyEventInterface extends AggregateEvent {
+  type: AgencyEventEnum,
+  aggregate_id: AgencyAggregateIdInterface,
+  data: GenericObjectInterface,
   sequence_id: number
 }
-export interface AgencyCommand {
-  type: AgencyCommandEnums,
-  data: object
+
+export interface AgencyCommandInterface {
+  type: AgencyCommandEnum,
+  data: GenericObjectInterface
 }

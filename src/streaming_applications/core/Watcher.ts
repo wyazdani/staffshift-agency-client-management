@@ -1,22 +1,22 @@
-import _ from 'lodash';
-import {Pipeline, WatchHandler} from './Pipeline';
+import {concat} from 'lodash';
+import {PipelineInterface, WatchHandlerInterface} from './Pipeline';
 import {LoggerContext} from 'a24-logzio-winston';
 import {MongoClients} from './MongoClients';
 import {ResumeTokenCollectionManager} from './ResumeTokenCollectionManager';
-import {PIPELINE_TYPES} from './ChangeStreamEnums';
+import {PIPELINE_TYPES_ENUM} from './ChangeStreamEnums';
 
 export class WatcherContext {
-  private watchHandlers: WatchHandler[];
-  constructor(private name: string, private pipelines: Pipeline[]) {
+  private watchHandlers: WatchHandlerInterface[];
+  constructor(private name: string, private pipelines: PipelineInterface[]) {
     this.watchHandlers = [];
   }
   getStreamingAppName(): string {
     return this.name;
   }
-  getPipelines(): Pipeline[] {
+  getPipelines(): PipelineInterface[] {
     return this.pipelines;
   }
-  getMongoClientConfigKeys(type: PIPELINE_TYPES) {
+  getMongoClientConfigKeys(type: PIPELINE_TYPES_ENUM): string[] {
     let keys: string[] = [];
     for (const item of this.getPipelines()) {
       if (item.getType() === type) {
@@ -25,8 +25,12 @@ export class WatcherContext {
     }
     return keys;
   }
-  async watch(type: PIPELINE_TYPES, logger: LoggerContext, clientManager: MongoClients, tokenManager: ResumeTokenCollectionManager) {
+  async watch(type: PIPELINE_TYPES_ENUM,
+    logger: typeof LoggerContext,
+    clientManager: MongoClients,
+    tokenManager: ResumeTokenCollectionManager): Promise<void> {
     this.watchHandlers = [];
+
     for (const PipelineClass of this.getPipelines()) {
       if (PipelineClass.getType() === type) {
         try {
@@ -38,7 +42,8 @@ export class WatcherContext {
       }
     }
   }
-  async shutdown() {
+
+  async shutdown(): Promise<void> {
     const promiseArray = [];
     for (const pipeline of this.watchHandlers) {
       promiseArray.push(pipeline.shutdown());

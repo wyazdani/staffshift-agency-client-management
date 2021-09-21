@@ -1,6 +1,6 @@
 import {EventStorePipeline} from './EventStorePipeline';
-import {Watcher} from '../core/Watcher';
+import {Watcher, WatcherContext} from '../core/Watcher';
 
 const pipelines = [new EventStorePipeline()];
-
-module.exports = Watcher.getWatcherContext('AgencyClientsProjection', pipelines);
+const watcherContext: WatcherContext = Watcher.getWatcherContext('AgencyClientsProjection', pipelines);
+export default watcherContext;

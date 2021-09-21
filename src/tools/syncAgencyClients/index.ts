@@ -5,8 +5,9 @@ import {AgencyClientRepository} from '../../AgencyClient/AgencyClientRepository'
 import {EventStore} from '../../models/EventStore';
 import {AgencyClientCommandHandler} from '../../AgencyClient/AgencyClientCommandHandler';
 import {connect, disconnect} from 'mongoose';
-import {AgencyClientCommand} from '../../AgencyClient/Interfaces';
+import {AgencyClientCommandInterface} from '../../AgencyClient/Interfaces';
 import {AgencyClientCommandEnum} from '../../AgencyClient/AgencyClientEnums';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 import { EventRepository } from '../../EventRepository';
 
 Logger.setup(config.get('logger'));
@@ -18,8 +19,8 @@ const handler = new AgencyClientCommandHandler(repository);
 
 const itemsPerPage = 100;
 
-interface SyncCommand {
-  command: AgencyClientCommand,
+interface SyncCommandInterface {
+  command: AgencyClientCommandInterface,
   clientId: string
 }
 
@@ -33,9 +34,12 @@ interface SyncCommand {
 const run = async (page: number): Promise<void> => {
   try {
     loggerContext.info('Connecting to the database');
-    await connect(config.get('mongo').database_host, config.get('mongo').options);
+    await connect(
+      config.get<GenericObjectInterface>('mongo').database_host,
+      config.get<GenericObjectInterface>('mongo').options);
     let completed = false;
     loggerContext.info('Starting the sync agency client process');
+
     do {
       const itemsCompleted = await syncAgencyClients(page);
       completed = (itemsCompleted !== itemsPerPage);
@@ -77,8 +81,8 @@ const syncAgencyClients = async (page: number): Promise<number> => {
  *
  * @returns A single SyncCommand
  */
-const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
-  const details: SyncCommand = {
+const getSyncCommandDetails = (agencyClientLink: any): SyncCommandInterface => {
+  const details: SyncCommandInterface = {
     command: {
       type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
       data: {}

@@ -2,20 +2,24 @@ import config from 'config';
 import Logger from 'a24-logzio-winston';
 Logger.setup(config.get('logger')); // Setup logger
 const loggerContext = Logger.getContext('startup');
-import mongoose from 'mongoose';
+import mongoose, {ConnectOptions} from 'mongoose';
 mongoose.Promise = global.Promise;
 
 import {MessageProcessor} from 'a24-node-pubsub';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
-mongoose.connect(config.get('mongo').database_host, config.get('mongo').options);
-mongoose.connection.on(
-  'error',
-  (error: Error) => {
-    const loggerContext = Logger.getContext('startup');
-    loggerContext.error('MongoDB connection error', error);
-    return process.exit(1);
-  }
-);
+const mongooseErrorCallback = (error: Error) => {
+  const loggerContext = Logger.getContext('startup');
+  loggerContext.error('MongoDB connection error', error);
+  return process.exit(1);
+};
+
+mongoose
+  .connect(config.get<GenericObjectInterface>('mongo').database_host as string,
+    config.get<GenericObjectInterface>('mongo').options as ConnectOptions)
+  .catch(mongooseErrorCallback);
+
+mongoose.connection.on('error', mongooseErrorCallback);
 
 // Setup message processor
 const processorConfig = {

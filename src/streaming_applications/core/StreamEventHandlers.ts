@@ -13,7 +13,7 @@ export class StreamEventHandlers {
    *
    * @returns {Stream} - THe passed in stream
    */
-  static attachEventHandlers(logger: LoggerContext, stream: Stream | ChangeStream) {
+  static attachEventHandlers(logger: typeof LoggerContext, stream: Stream | ChangeStream):  Stream | ChangeStream {
     if (stream instanceof Readable) {
       stream.on('end', () => {
         logger.info(`Stream event: End for ${stream.constructor.name}`);

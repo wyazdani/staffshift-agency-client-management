@@ -1,14 +1,17 @@
 import {Document, Schema, model} from 'mongoose';
-export type AgencyClientEventLogDocument = Document & {
+import {GenericObjectInterface} from 'GenericObjectInterface';
+
+export type AgencyClientEventLogDocumentType = Document & {
   agency_id: string,
   client_id: string,
   event_type: string,
-  snapshot: Object,
+  snapshot: GenericObjectInterface,
   evented_at: Date,
   created_at: Date,
   updated_at: Date
 };
-const agencyClientEventLog = new Schema<AgencyClientEventLogDocument>(
+
+const agencyClientEventLog = new Schema<AgencyClientEventLogDocumentType>(
   {
     agency_id: {
       type: String,
@@ -52,4 +55,4 @@ const agencyClientEventLog = new Schema<AgencyClientEventLogDocument>(
 /**
  * Defines the model for the AgencyClientEventLog Read Projection
  */
-export const AgencyClientEventLog = model<AgencyClientEventLogDocument>('AgencyClientEventLog', agencyClientEventLog);
+export const AgencyClientEventLog = model<AgencyClientEventLogDocumentType>('AgencyClientEventLog', agencyClientEventLog);

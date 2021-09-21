@@ -1,8 +1,10 @@
-
 import {Writable, WritableOptions} from 'stream';
-export interface ResumeTokenWriterOptions extends WritableOptions{
+import {Collection} from 'mongodb';
+import {GenericObjectInterface} from 'GenericObjectInterface';
+
+export interface ResumeTokenWriterOptionsInterface extends WritableOptions {
   _id: string,
-  collection: any,
+  collection: Collection,
   persistRate?: number
 }
 /**
@@ -14,7 +16,7 @@ export class ResumeTokenWriter extends Writable {
   private counter: number;
   private isFirstTime: boolean;
   private readonly _id: string;
-  private readonly collection: any;
+  private readonly collection: Collection;
   private readonly persistRate: number;
   /**
    *
@@ -22,7 +24,7 @@ export class ResumeTokenWriter extends Writable {
    * @param {Object} opts.collection - The collection object that will be used for the updateOne
    * @param {Number} opts.persistRate - Will persist the token every X events
    */
-  constructor(opts: ResumeTokenWriterOptions) {
+  constructor(opts: ResumeTokenWriterOptionsInterface) {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
@@ -33,7 +35,7 @@ export class ResumeTokenWriter extends Writable {
     this.persistRate = opts.persistRate || 1;
   }
 
-  _write(data: any, encoding: any, next: Function) {
+  _write(data: GenericObjectInterface, encoding: BufferEncoding, next: (error?: Error | null) => void): void {
     this.counter++;
     if (this.counter >= this.persistRate || this.isFirstTime) {
       this.isFirstTime = false;

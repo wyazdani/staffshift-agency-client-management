@@ -1,17 +1,18 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {IncomingMessage} from 'http';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../EventRepository';
 
-export interface SwaggerRequest extends IncomingMessage {
+export interface SwaggerRequestInterface extends IncomingMessage {
   Logger: typeof LoggerContext,
   swagger: {
-    params: {[key: string]: any},
+    params: {[key: string]: unknown},
     operation: {
       'x-octophant-event'?: string,
       'x-public-operation'?: boolean
     }
   },
-  octophant: object,
+  octophant: GenericObjectInterface,
   eventRepository: EventRepository,
   basePathName: string
 }

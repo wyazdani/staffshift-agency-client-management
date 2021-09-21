@@ -1,7 +1,8 @@
-import {SwaggerRequest} from 'SwaggerRequest';
+import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {AuthorizationError} from 'a24-node-error-utils';
 import {verify} from 'jsonwebtoken';
 import {set} from 'lodash';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
 
 interface DecodedJWTInterface {
@@ -39,7 +40,7 @@ export class JWTSecurityHelper {
    *
    * @param {object} token - The token passed to the helper
    * @param {object} secret - The secret specified by the api
-   * @param {function} callback - A callback function
+   * @param {(error?: Error) => void} callback - A callback function
    *
    * @author Ruan <ruan.robson@a24group.com>
    * @since  30 July 2021

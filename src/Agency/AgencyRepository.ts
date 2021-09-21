@@ -1,7 +1,7 @@
-import _ from 'lodash';
+import {reduce} from 'lodash';
 import {AgencyWriteProjection} from './AgencyWriteProjection';
 import {AgencyAggregate} from './AgencyAggregate';
-import {AgencyAggregateRecord, AgencyEvent} from './Interfaces';
+import {AgencyAggregateRecordInterface, AgencyEventInterface} from './Interfaces';
 import { EventRepository } from '../EventRepository';
 
 export class AgencyRepository {
@@ -17,7 +17,7 @@ export class AgencyRepository {
     return new AgencyAggregate({agency_id: agencyId}, projection);
   }
 
-  async save(events: AgencyEvent[]): Promise<any[]> {
+  async save(events: AgencyEventInterface[]): Promise<any[]> {
     return this.eventRepository.save(events);
   }
 }
