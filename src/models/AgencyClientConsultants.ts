@@ -1,6 +1,6 @@
 import {Document, Schema, model} from 'mongoose';
 
-export type AgencyClientConsultantDocument = Document & {
+export type AgencyClientConsultantDocumentType = Document & {
   agency_id: string,
   client_id: string,
   consultant_role_id: string,
@@ -10,7 +10,7 @@ export type AgencyClientConsultantDocument = Document & {
   updated_at: Date
 };
 
-const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocument>(
+const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocumentType>(
   {
     agency_id: {
       type: String,
@@ -54,4 +54,5 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocument>
 /**
  * Defines the model for the AgencyClientConsultants Read Projection
  */
-export const AgencyClientConsultants = model<AgencyClientConsultantDocument>('AgencyClientConsultants', agencyClientConsultantsSchema);
+export const AgencyClientConsultants =
+  model<AgencyClientConsultantDocumentType>('AgencyClientConsultants', agencyClientConsultantsSchema);

@@ -1,4 +1,4 @@
-export enum AgencyClientEventType {
+export enum AgencyClientEventEnum {
   AGENCY_CLIENT_CONSULTANT_ASSIGNED = 'AgencyClientConsultantAssigned',
   AGENCY_CLIENT_CONSULTANT_UNASSIGNED = 'AgencyClientConsultantUnassigned',
   AGENCY_CLIENT_LINKED = 'AgencyClientLinked',

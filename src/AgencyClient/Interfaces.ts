@@ -1,28 +1,36 @@
-import {AgencyClientCommandEnum, AgencyClientEventType} from './AgencyClientEnums';
-export interface AgencyClientConsultant {
-  _id: string,
-  consultant_role_id: string,
-  consultant_id: string
+import {AgencyClientCommandEnum, AgencyClientEventEnum} from './AgencyClientEnums';
+import {GenericObjectInterface} from 'GenericObjectInterface';
+
+export interface AgencyClientConsultantInterface {
+  _id?: string,
+  consultant_role_id?: string,
+  consultant_id?: string,
+  client_type?: string,
+  linked?: boolean,
+  organisation_id?: string,
+  site_id?: string
 }
 
-export interface AgencyClientAggregateRecord {
+export interface AgencyClientAggregateRecordInterface {
   last_sequence_id: number,
   linked?: boolean,
   client_type?: string,
-  consultants?: AgencyClientConsultant[]
+  consultants?: AgencyClientConsultantInterface[]
 }
-export interface AgencyClientAggregateId {
+
+export interface AgencyClientAggregateIdInterface {
   agency_id: string,
   client_id: string
 }
 
-export interface AgencyClientEvent {
-  type: AgencyClientEventType,
-  aggregate_id: AgencyClientAggregateId,
-  data: object,
+export interface AgencyClientEventInterface {
+  type: AgencyClientEventEnum,
+  aggregate_id: AgencyClientAggregateIdInterface,
+  data: GenericObjectInterface,
   sequence_id: number
 }
-export interface AgencyClientCommand {
+
+export interface AgencyClientCommandInterface {
   type: AgencyClientCommandEnum
-  data: object
+  data: AgencyClientConsultantInterface
 }

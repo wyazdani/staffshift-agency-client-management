@@ -1,27 +1,29 @@
-import {Transform, TransformOptions} from 'stream';
+import {Transform, TransformCallback, TransformOptions} from 'stream';
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
-import {Events} from '../../../Events';
+import {EventsEnum} from '../../../Events';
 import {CallbackError, Model} from 'mongoose';
 import {LoggerContext} from 'a24-logzio-winston';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
 const events = [
-  Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
-  Events.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
-  Events.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
+  EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+  EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
+  EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
 ];
-interface options extends TransformOptions {
+
+interface OptionsInterface extends TransformOptions {
   eventstore: Model<any>,
   model: Model<any>,
   pipeline: string,
-  logger: LoggerContext
+  logger: typeof LoggerContext
 }
 
 export class AgencyClientConsultantProjection extends Transform {
   private readonly eventstore: Model<any>;
   private model: Model<any>;
   private pipeline: string;
-  private logger: LoggerContext;
-  constructor(opts: options) {
+  private logger: typeof LoggerContext;
+  constructor(opts: OptionsInterface) {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
@@ -31,12 +33,14 @@ export class AgencyClientConsultantProjection extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: any, encoding: any, callback: Function) {
+  _transform(data: GenericObjectInterface,
+    encoding: BufferEncoding,
+    callback: TransformCallback): void {
     if (!events.includes(data.event.type)) {
       return callback(null, data);
     }
     const event = data.event;
-    if (Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED === data.event.type) {
+    if (EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED === data.event.type) {
       // if the UI does the legend stitching we dont do this work
       // NOR do we care about any updates to the actual name
       const repository = new AgencyRepository(this.eventstore);
@@ -54,9 +58,9 @@ export class AgencyClientConsultantProjection extends Transform {
           agencyClientConsultant.save((err: Error) => callback(err, data));
         })
         .catch((err) => callback(err));
-    } else if (Events.AGENCY_CLIENT_CONSULTANT_UNASSIGNED === data.event.type) {
+    } else if (EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED === data.event.type) {
       this.model.remove({_id: event.data._id}, (err) => callback(err, data));
-    } else if (Events.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED === data.event.type && event.data.name) {
+    } else if (EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED === data.event.type && event.data.name) {
       this.model.updateMany({consultant_role_id: event.data._id},
         {$set: {consultant_role_name: event.data.name}}, {},
         (err: CallbackError) => callback(err, data));

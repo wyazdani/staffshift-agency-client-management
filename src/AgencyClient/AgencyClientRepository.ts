@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import {reduce} from 'lodash';
 import {Model, FilterQuery} from 'mongoose';
-import {AgencyClientAggregateRecord, AgencyClientEvent} from './Interfaces';
+import {AgencyClientAggregateRecordInterface, AgencyClientEventInterface} from './Interfaces';
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyClientWriteProjection} from './AgencyClientWriteProjection';
@@ -23,9 +23,11 @@ export class AgencyClientRepository {
     );
   }
 
-  async save(events: AgencyClientEvent[]): Promise<any[]> {
+  async save(events: AgencyClientEventInterface[]): Promise<any[]> {
     return this.store.insertMany(events, {lean: true});
   }
 }
 
-const eventApplier = (aggregate: AgencyClientAggregateRecord, event: AgencyClientEvent): AgencyClientAggregateRecord => AgencyClientWriteProjection[event.type](aggregate, event);
+const eventApplier = (aggregate: AgencyClientAggregateRecordInterface,
+  event: AgencyClientEventInterface): AgencyClientAggregateRecordInterface =>
+  AgencyClientWriteProjection[event.type](aggregate, event);

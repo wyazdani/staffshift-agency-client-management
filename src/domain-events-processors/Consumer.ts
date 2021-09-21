@@ -1,8 +1,14 @@
 import {IncomingDomainEvents} from '../models/IncomingDomainEvents';
 import {AgencyClientLinkStatus} from './AgencyClientLinkStatus';
 import {LoggerContext} from 'a24-logzio-winston';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
-module.exports = async (logger: LoggerContext, message: any, metadata: any, callback: Function) => {
+export default async (
+  logger: typeof LoggerContext,
+  message: GenericObjectInterface,
+  metadata: GenericObjectInterface,
+  callback: (error?: Error) => void): Promise<void> => {
+
   process(logger, message)
     .then(() =>
       // create does not do new and set a _id value, using insertMany instead
@@ -16,8 +22,10 @@ module.exports = async (logger: LoggerContext, message: any, metadata: any, call
     });
 };
 
-async function process(logger: LoggerContext, message: any) {
-  switch (message.event.name) {
+const process = async (logger: typeof LoggerContext, message: GenericObjectInterface) => {
+  const eventName = (message.event as GenericObjectInterface).name as string;
+
+  switch (eventName) {
     case 'agency_organisation_link_created':
     case 'agency_organisation_link_deleted':
     case 'agency_organisation_link_status_changed':
@@ -31,7 +39,7 @@ async function process(logger: LoggerContext, message: any) {
       return handler.apply(message);
     }
     default:
-      console.log({event_name: message.event.name});
-      logger.info('UnHandled Agency Client Event', {event_name: message.event.name});
+      console.log({event_name: eventName});
+      logger.info('UnHandled Agency Client Event', {event_name: eventName});
   }
-}
+};

@@ -1,6 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {FilterQuery, Model} from 'mongoose';
 import {RuntimeError} from 'a24-node-error-utils';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
 /**
  * GenericRepository
@@ -9,7 +10,7 @@ import {RuntimeError} from 'a24-node-error-utils';
  *  IE a mixin concept / parasitic inheritance / Based on interfaces?
  */
 export class GenericRepository {
-  constructor(private logger: LoggerContext, private store: Model<any>) {
+  constructor(private logger: typeof LoggerContext, private store: Model<any>) {
   }
 
   /**
@@ -22,7 +23,10 @@ export class GenericRepository {
    *
    * @return Promise<Object>
    */
-  async listResources(query: FilterQuery<any>, limit: number, skip: number, sortBy: Object): Promise<{count: number, data: any[]}> {
+  async listResources(query: FilterQuery<any>,
+    limit: number,
+    skip: number,
+    sortBy: GenericObjectInterface): Promise<{count: number, data: any[]}> {
     try {
       const [count, data] = await Promise.all([
         this.getCount(query),
@@ -70,7 +74,7 @@ export class GenericRepository {
    *
    * @return Promise<Array<Object>>
    */
-  private async getListing(query: FilterQuery<any>, skip:number, limit:number, sortBy: Object) {
+  private async getListing(query: FilterQuery<any>, skip:number, limit:number, sortBy: GenericObjectInterface) {
     try {
       return await this.store.find(query)
         .skip(skip)

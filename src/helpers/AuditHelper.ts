@@ -1,17 +1,18 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {RuntimeError} from 'a24-node-error-utils';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
-export type Audit = {
+interface AuditInterface {
   action: string,
   resource_type: string,
   resource_id: string,
-  data: Object
+  data: GenericObjectInterface
 }
 /**
  * Assists with doing the audit for the given resource
  */
 export class AuditHelper {
-  constructor(private logger: LoggerContext, private auditor: any) {
+  constructor(private logger: typeof LoggerContext, private auditor: any) {
   }
   /**
    * Produce audit using the passed in configuration object
@@ -27,7 +28,7 @@ export class AuditHelper {
    * }
    * @param {Function} callback - (err) returns nothing on success
    */
-  produceAudit(auditDetails: Audit, callback: Function) {
+  produceAudit(auditDetails: AuditInterface, callback: (error?: Error) => void) {
     auditDetails.action = (auditDetails.action) ? auditDetails.action : this.auditor.getEvent();
     this.logger.info(`Audit for action: ${auditDetails.action} started`);
     this.auditor.doAuditCustomEvent(

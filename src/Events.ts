@@ -1,5 +1,4 @@
-
-export enum Events {
+export enum EventsEnum {
   AGENCY_CONSULTANT_ROLE_ADDED = 'AgencyConsultantRoleAdded',
   AGENCY_CONSULTANT_ROLE_ENABLED = 'AgencyConsultantRoleEnabled',
   AGENCY_CONSULTANT_ROLE_DISABLED = 'AgencyConsultantRoleDisabled',
@@ -11,40 +10,44 @@ export enum Events {
   AGENCY_CLIENT_SYNCED = 'AgencyClientSynced'
 }
 
-const events = {
-  [Events.AGENCY_CONSULTANT_ROLE_ADDED]: {
+type EventsType = {
+  [key in EventsEnum]: {name: string, description: string};
+}
+
+const events: EventsType = {
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED]: {
     name: 'AgencyConsultantRoleAdded',
     description: 'The Agency Consultant Role has been created'
   },
-  [Events.AGENCY_CONSULTANT_ROLE_ENABLED]: {
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED]: {
     name: 'AgencyConsultantRoleEnabled',
     description: 'The Agency Consultant Role has been enabled'
   },
-  [Events.AGENCY_CONSULTANT_ROLE_DISABLED]: {
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED]: {
     name: 'AgencyConsultantRoleDisabled',
     description: 'The Agency Consultant Role has been disabled'
   },
-  [Events.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED]: {
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED]: {
     name: 'AgencyConsultantRoleDetailsUpdated',
     description: 'The Agency Consultant Role has been updated'
   },
-  [Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED]: {
+  [EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED]: {
     name: 'AgencyClientConsultantAssigned',
     description: 'The Agency Client Consultant has been assigned'
   },
-  [Events.AGENCY_CLIENT_CONSULTANT_UNASSIGNED]: {
+  [EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED]: {
     name: 'AgencyClientConsultantUnassigned',
     description: 'The Agency Client Consultant has been unassigned'
   },
-  [Events.AGENCY_CLIENT_LINKED]: {
+  [EventsEnum.AGENCY_CLIENT_LINKED]: {
     name: 'AgencyClientLinked',
     description: 'The Agency Client was linked'
   },
-  [Events.AGENCY_CLIENT_UNLINKED]: {
+  [EventsEnum.AGENCY_CLIENT_UNLINKED]: {
     name: 'AgencyClientUnLinked',
     description: 'The Agency Client was unlinked, does not indicate a deletion'
   },
-  [Events.AGENCY_CLIENT_SYNCED]: {
+  [EventsEnum.AGENCY_CLIENT_SYNCED]: {
     name: 'AgencyClientSynced',
     description: 'Sync event to move data from legacy application to microservice'
   }

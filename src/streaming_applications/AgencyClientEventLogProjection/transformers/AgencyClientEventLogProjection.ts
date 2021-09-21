@@ -2,17 +2,18 @@ import {Transform, TransformCallback, TransformOptions} from 'stream';
 import {Model} from 'mongoose';
 import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../../../AgencyClient/AgencyClientRepository';
-import {Events} from '../../../Events';
+import {EventsEnum} from '../../../Events';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
 const events = [
-  Events.AGENCY_CLIENT_CONSULTANT_ASSIGNED, Events.AGENCY_CLIENT_CONSULTANT_UNASSIGNED
+  EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED
 ];
 
-interface ProjectionOptions extends TransformOptions {
+interface ProjectionOptionsInterface extends TransformOptions {
   eventstore: Model<any>,
   model: Model<any>,
   pipeline: string,
-  logger: LoggerContext
+  logger: typeof LoggerContext
 }
 
 /**
@@ -22,8 +23,8 @@ export class AgencyClientEventLogProjection extends Transform {
   private readonly eventstore: Model<any>;
   private model: Model<any>;
   private pipeline: string;
-  private logger: LoggerContext;
-  constructor(opts: ProjectionOptions) {
+  private logger: typeof LoggerContext;
+  constructor(opts: ProjectionOptionsInterface) {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
@@ -33,7 +34,7 @@ export class AgencyClientEventLogProjection extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: any, encoding: any, callback: TransformCallback) {
+  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
     if (!events.includes(data.event.type)) {
       return callback(null, data);
     }

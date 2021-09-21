@@ -2,6 +2,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {MongoClient, Db} from 'mongodb';
 import {isString} from 'lodash';
 import config from 'config';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
 const configKeys: {[key in string]: number} = {};
 const clients: {[key in string]: MongoClient} = {};
@@ -24,7 +25,7 @@ export class MongoClients {
    *
    * @returns {MongoClient.db}
    */
-  async getClientDatabase(logger: LoggerContext, configKey: string): Promise<Db> {
+  async getClientDatabase(logger: typeof LoggerContext, configKey: string): Promise<Db> {
     const client = await this.getClient(logger, configKey);
     return client.db();
   }
@@ -37,11 +38,13 @@ export class MongoClients {
    *
    * @returns {MongoClient}
    */
-  async getClient(logger: LoggerContext, configKey: string): Promise<MongoClient> {
+  async getClient(logger: typeof LoggerContext, configKey: string): Promise<MongoClient> {
     if (clients[configKey]) {
       return clients[configKey];
     }
-    const options = {poolSize: (configKeys[configKey] > 5) ? configKeys[configKey] : 5, ...config.get(`${configKey}.options`)};
+    const options = {poolSize: (configKeys[configKey] > 5) ?
+      configKeys[configKey] : 5, ...config.get<GenericObjectInterface>(`${configKey}.options`)};
+
     const client = new MongoClient(config.get(`${configKey}.database_host`), options);
     clients[configKey] = client;
     // Connect the client to the server
@@ -58,7 +61,7 @@ export class MongoClients {
    *
    * @param {String|Array<String>} configKeyListing - The config keys
    */
-  registerClientConfigs(configKeyListing: string[] | string) {
+  registerClientConfigs(configKeyListing: string[] | string): void {
     if (isString(configKeyListing)) {
       return this.applyKeyCount(configKeyListing);
     }
@@ -72,7 +75,7 @@ export class MongoClients {
    *
    * @param {String} key - The config key
    */
-  private applyKeyCount(key: string) {
+  private applyKeyCount(key: string): void {
     if (configKeys[key]) {
       configKeys[key]++;
     } else {

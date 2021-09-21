@@ -1,6 +1,6 @@
 import {isEmpty} from 'lodash';
 import {JWTSecurityHelper} from './helpers/JWTSecurityHelper';
-import {SwaggerRequest} from 'SwaggerRequest';
+import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import http, {ServerResponse} from 'http';
 import connect from 'connect';
 const app = connect();
@@ -13,7 +13,7 @@ import Logger from 'a24-logzio-winston';
 import Url from 'url';
 Logger.setup(config.get('logger'));
 const serverPort = (config.has('server.port')) ? config.get('server.port') : 3370;
-import mongoose from 'mongoose';
+import mongoose, {ConnectOptions, Error} from 'mongoose';
 mongoose.plugin((schema: any) => { schema.options.usePushEach = true; });
 import {mongooseTimezone, timezoneMiddleware} from 'a24-node-timezone-utils';
 mongoose.plugin(mongooseTimezone);
@@ -27,6 +27,7 @@ const pubsubAuditConfig = {
   topics: config.get('octophant_audit.pubsub_topics')
 };
 import {LinkHeaderHelper} from 'a24-node-query-utils';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
 MessagePublisher.configure(pubsubAuditConfig);
 // Allow any calls on /docs and /api-docs
@@ -46,15 +47,19 @@ const errorHandlerConfig = {
 };
 A24ErrorUtils.configure(errorHandlerConfig);
 
-mongoose.connect(config.get('mongo').database_host, config.get('mongo').options);
+const mongooseErrorCallback = (error: Error) => {
+  const loggerContext = Logger.getContext('startup');
+  loggerContext.error('MongoDB connection error', error);
+  return process.exit(1);
+};
+
+mongoose
+  .connect(config.get<GenericObjectInterface>('mongo').database_host,
+    config.get<GenericObjectInterface>('mongo').options as ConnectOptions)
+  .catch(mongooseErrorCallback);
+
 mongoose.connection.on(
-  'error',
-  (error: Error) => {
-    const loggerContext = Logger.getContext('startup');
-    loggerContext.crit('MongoDB connection error', error);
-    process.exit(1);
-  }
-);
+  'error', mongooseErrorCallback);
 
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 // eslint-disable-next-line no-sync
@@ -64,7 +69,7 @@ const swaggerDoc = load(spec);
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
 
-  app.use((req: SwaggerRequest, res: ServerResponse, next: Function) => {
+  app.use((req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error) => void) => {
     let loggerContext = null;
     if (!isEmpty(req.headers) && !isEmpty(req.headers['x-request-id'])) {
       loggerContext = Logger.getContext(req.headers['x-request-id'] as string);
@@ -91,7 +96,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
   app.use(middleware.swaggerValidator());
 
   const securityMetaData: {[key in string]: any} = {};
-  app.use((req: SwaggerRequest, res: ServerResponse, next: Function) => {
+  app.use((req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error) => void) => {
     // Allow the docs to load
     if (req.url.match(allowedRegex) || (!isEmpty(req.swagger.operation) && req.swagger.operation['x-public-operation'] === true)) {
       return next();
@@ -122,9 +127,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
   });
 
   // Modifying the middleware swagger security, to cater for jwt verification
-  securityMetaData.jwt = function validateJWT(req: any, def: any, token: any, next: Function) {
-    return JWTSecurityHelper.jwtVerification(req, token, config.get('api_token'), next);
-  };
+  securityMetaData.jwt =
+    (req: any, def: any, token: any, next: (error?: Error) => void) =>
+      JWTSecurityHelper.jwtVerification(req, token, config.get('api_token'), next);
   // Set the methods that should be used for swagger security
   app.use(middleware.swaggerSecurity(securityMetaData));
   // Route validated requests to appropriate controller
@@ -136,7 +141,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
   // Timezone serialization middleware
   app.use(timezoneMiddleware());
 
-  app.use((err: any, req: any, res: any, next: Function) => {
+  app.use((err: any, req: any, res: any, next: (error?: Error) => void) => {
     ErrorHandler.onError(err, req, res, next);
   });
 
@@ -178,7 +183,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
       process.exit(1);
     }
   };
-  for (const signal of config.get('graceful_shutdown.signals')) {
+  for (const signal of config.get<GenericObjectInterface>('graceful_shutdown').signals) {
     process.on(signal, shutdown);
   }
 });

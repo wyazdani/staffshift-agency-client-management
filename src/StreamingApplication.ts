@@ -2,24 +2,30 @@ import {MongoClients} from './streaming_applications/core/MongoClients';
 import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from './streaming_applications/DatabaseConfigKeys';
 import {ResumeTokenCollectionManager} from './streaming_applications/core/ResumeTokenCollectionManager';
 import {isString} from 'lodash';
-import mongoose from 'mongoose';
+import mongoose, {ConnectOptions} from 'mongoose';
 import StreamingApplications from './streaming_applications';
 import * as config from 'config';
 import Logger from 'a24-logzio-winston';
 import arg from 'arg';
+import {GenericObjectInterface} from 'GenericObjectInterface';
+import {PIPELINE_TYPES_ENUM} from './streaming_applications/core/ChangeStreamEnums';
 const StreamTracker = 'StreamTracker';
 
-mongoose.plugin((schema: any) => { schema.options.usePushEach = true; });
+mongoose.plugin((schema: GenericObjectInterface) => { schema.options.usePushEach = true; });
 mongoose.Promise = global.Promise;
-mongoose.connect(config.get('mongo').database_host, config.get('mongo').options);
+
+const mongooseErrorCallback = (error: Error) => {
+  const loggerContext = Logger.getContext('startup');
+  loggerContext.error('MongoDB connection error', error);
+  return process.exit(1);
+};
+
+mongoose.connect(config.get<GenericObjectInterface>('mongo').database_host,
+  config.get<GenericObjectInterface>('mongo').options as ConnectOptions)
+  .catch(mongooseErrorCallback);
+
 mongoose.connection.on(
-  'error',
-  (error) => {
-    const loggerContext = Logger.getContext('startup');
-    loggerContext.crit('MongoDB connection error', error);
-    process.exit(1);
-  }
-);
+  'error', mongooseErrorCallback);
 
 const args = arg({
   '--type': String,
@@ -50,33 +56,36 @@ const STREAMING_APP_NAME = args['--name'].toLowerCase();
  *
  * @returns {Promise<ResumeTokenCollectionManager>}
  */
-async function getTokenCollectionManager() {
+const getTokenCollectionManager = async () => {
   const manager = new ResumeTokenCollectionManager();
   const db = await MongoClients.getInstance().getClientDatabase(loggerContext, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
   manager.setDatabase(db);
   manager.setCollectionName(StreamTracker);
   return manager;
-}
+};
 
 /**
  * Starts all the watchers aka change streams that have been registered
  */
-async function attachWatchers() {
+const attachWatchers = async () => {
   if (appFound) {
     const tokenManager = await getTokenCollectionManager();
     for (const watcher of StreamingApplications) {
       if (watcher.getStreamingAppName().toLowerCase() === STREAMING_APP_NAME) {
-        await watcher.watch(CHANGE_STREAM_TYPE, loggerContext, MongoClients.getInstance(), tokenManager);
+        await watcher
+          .watch(CHANGE_STREAM_TYPE as PIPELINE_TYPES_ENUM, loggerContext, MongoClients.getInstance(), tokenManager);
       }
     }
   }
-}
+};
 
 // Lets register streaming application connections
 for (const watcher of StreamingApplications) {
   if (watcher.getStreamingAppName().toLowerCase() === STREAMING_APP_NAME) {
     appFound = true;
-    MongoClients.getInstance().registerClientConfigs(watcher.getMongoClientConfigKeys(CHANGE_STREAM_TYPE));
+    MongoClients
+      .getInstance()
+      .registerClientConfigs(watcher.getMongoClientConfigKeys(CHANGE_STREAM_TYPE as PIPELINE_TYPES_ENUM));
   }
 }
 
@@ -86,7 +95,7 @@ attachWatchers().catch((err) => {
 });
 
 //Graceful shutdown:
-async function shutdown() {
+const shutdown = async () => {
   const logger = Logger.getContext('gracefulshutdown');
   logger.info('starting graceful shutdown process');
   try {
@@ -97,7 +106,13 @@ async function shutdown() {
       }
     }
     const result = await Promise.race([Promise.all(promiseArray),
-      new Promise((resolve) => setTimeout(() => resolve('can\'t exit in specified time'), config.get('graceful_shutdown.changestream.server_close_timeout')))]);
+      new Promise((resolve) =>
+        setTimeout(() =>
+          resolve('can\'t exit in specified time'),
+        config.get<GenericObjectInterface>('graceful_shutdown').changestream.server_close_timeout)
+      )
+    ]);
+
     if (isString(result)) {
       logger.error(result);
       logger.info('stopping forcefully');
@@ -116,7 +131,8 @@ async function shutdown() {
     logger.error('could not do graceful shutdown in the specified time, exiting forcefully', err);
     process.exit(1);
   }
-}
-for (const signal of config.get('graceful_shutdown.signals')) {
+};
+
+for (const signal of config.get<GenericObjectInterface>('graceful_shutdown').signals) {
   process.on(signal, shutdown);
 }
