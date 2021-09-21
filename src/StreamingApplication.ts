@@ -9,34 +9,43 @@ import Logger from 'a24-logzio-winston';
 import arg from 'arg';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 import {PIPELINE_TYPES_ENUM} from './streaming_applications/core/ChangeStreamEnums';
+
 const StreamTracker = 'StreamTracker';
 
-mongoose.plugin((schema: GenericObjectInterface) => { schema.options.usePushEach = true; });
+mongoose.plugin((schema: GenericObjectInterface) => {
+  schema.options.usePushEach = true;
+});
 mongoose.Promise = global.Promise;
 
 const mongooseErrorCallback = (error: Error) => {
   const loggerContext = Logger.getContext('startup');
+
   loggerContext.error('MongoDB connection error', error);
+
   return process.exit(1);
 };
 
-mongoose.connect(config.get<GenericObjectInterface>('mongo').database_host,
-  config.get<GenericObjectInterface>('mongo').options as ConnectOptions)
+mongoose
+  .connect(
+    config.get<GenericObjectInterface>('mongo').database_host,
+    config.get<GenericObjectInterface>('mongo').options as ConnectOptions
+  )
   .catch(mongooseErrorCallback);
 
-mongoose.connection.on(
-  'error', mongooseErrorCallback);
+mongoose.connection.on('error', mongooseErrorCallback);
 
-const args = arg({
-  '--type': String
-}, {
-  argv: process.argv
-});
+const args = arg(
+  {
+    '--type': String
+  },
+  {
+    argv: process.argv
+  }
+);
 
 //setup logger
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext('ChangeStream Setup');
-let appFound = false;
 
 // validate and store ENV
 if (!args['--type']) {
@@ -52,9 +61,12 @@ const CHANGE_STREAM_TYPE = args['--type'].toLowerCase();
  */
 const getTokenCollectionManager = async () => {
   const manager = new ResumeTokenCollectionManager();
+
   const db = await MongoClients.getInstance().getClientDatabase(loggerContext, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
+
   manager.setDatabase(db);
   manager.setCollectionName(StreamTracker);
+
   return manager;
 };
 
@@ -63,18 +75,24 @@ const getTokenCollectionManager = async () => {
  */
 const attachWatchers = async () => {
   const tokenManager = await getTokenCollectionManager();
+
   for (const watcher of StreamingApplications) {
-      const streamLoggerContext = Logger.getContext();
-      await watcher
-          .watch(CHANGE_STREAM_TYPE as PIPELINE_TYPES_ENUM, streamLoggerContext, MongoClients.getInstance(), tokenManager);
+    const streamLoggerContext = Logger.getContext();
+
+    await watcher.watch(
+      CHANGE_STREAM_TYPE as PIPELINE_TYPES_ENUM,
+      streamLoggerContext,
+      MongoClients.getInstance(),
+      tokenManager
+    );
   }
 };
 
 // Lets register streaming application connections
 for (const watcher of StreamingApplications) {
-  MongoClients
-      .getInstance()
-      .registerClientConfigs(watcher.getMongoClientConfigKeys(CHANGE_STREAM_TYPE as PIPELINE_TYPES_ENUM));
+  MongoClients.getInstance().registerClientConfigs(
+    watcher.getMongoClientConfigKeys(CHANGE_STREAM_TYPE as PIPELINE_TYPES_ENUM)
+  );
 }
 
 attachWatchers().catch((err) => {
@@ -85,17 +103,21 @@ attachWatchers().catch((err) => {
 //Graceful shutdown:
 const shutdown = async () => {
   const logger = Logger.getContext('gracefulshutdown');
+
   logger.info('starting graceful shutdown process');
   try {
     const promiseArray = [];
+
     for (const watcher of StreamingApplications) {
       promiseArray.push(watcher.shutdown());
     }
-    const result = await Promise.race([Promise.all(promiseArray),
+    const result = await Promise.race([
+      Promise.all(promiseArray),
       new Promise((resolve) =>
-        setTimeout(() =>
-          resolve('can\'t exit in specified time'),
-        config.get<GenericObjectInterface>('graceful_shutdown').changestream.server_close_timeout)
+        setTimeout(
+          () => resolve('can\'t exit in specified time'),
+          config.get<GenericObjectInterface>('graceful_shutdown').changestream.server_close_timeout
+        )
       )
     ]);
 
@@ -107,9 +129,11 @@ const shutdown = async () => {
     }
     await Logger.close();
     let memoryLog = 'Memory Usage: ';
+
     const used: any = process.memoryUsage();
+
     for (const key in used) {
-      memoryLog += ` ${key}: ${Math.round(used[key] / 1024 / 1024 * 100) / 100}MB`;
+      memoryLog += ` ${key}: ${Math.round((used[key] / 1024 / 1024) * 100) / 100}MB`;
     }
     console.log(memoryLog);
     process.exit(0);

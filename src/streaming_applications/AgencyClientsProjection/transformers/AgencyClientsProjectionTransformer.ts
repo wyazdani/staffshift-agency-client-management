@@ -5,15 +5,13 @@ import {EventRepository} from '../../../EventRepository';
 import {EventsEnum} from '../../../Events';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 
-const events = [
-  EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_UNLINKED, EventsEnum.AGENCY_CLIENT_SYNCED
-];
+const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_UNLINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
-  eventRepository: EventRepository,
-  model: Model<any>,
-  pipeline: string,
-  logger: typeof LoggerContext
+  eventRepository: EventRepository;
+  model: Model<any>;
+  pipeline: string;
+  logger: typeof LoggerContext;
 }
 
 /**
@@ -38,14 +36,17 @@ export class AgencyClientsProjectionTransformer extends Transform {
   _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
     if (!events.includes(data.event.type)) {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
+
       return callback(null, data);
     }
     this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
+
     const criteria: FilterQuery<any> = {
       agency_id: event.aggregate_id.agency_id,
       client_id: event.aggregate_id.client_id
     };
+
     if (event.data.organisation_id) {
       criteria.organisation_id = event.data.organisation_id;
     }

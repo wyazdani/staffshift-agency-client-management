@@ -14,10 +14,13 @@ import {Error} from 'mongoose';
  */
 export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
+
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
+
   const commandType = get(req, 'swagger.operation.x-octophant-event', '');
 
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
+
   const handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -50,11 +53,15 @@ export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res:
  */
 export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const payload = get(req, 'swagger.params.agency_consultant_role_update_payload.value', {});
+
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
+
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+
   const commandType = get(req, 'swagger.operation.x-octophant-event', '');
 
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
+
   const handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -85,12 +92,18 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
  * @param req - The http request object
  * @param res - The http response object
  */
-export const changeStatusAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
+export const changeStatusAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse
+): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
+
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+
   const commandType = get(req, 'swagger.operation.x-octophant-event', '');
 
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
+
   const handler = new AgencyCommandHandler(repository);
 
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -121,37 +134,46 @@ export const changeStatusAgencyConsultantRole = async (req: SwaggerRequestInterf
  * @param res - The http response object
  * @param next - The callback used to pass control to the next middleware
  */
-export const getAgencyConsultantRole =
-  async (req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error) => void): Promise<void> => {
-    const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+export const getAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error?: Error) => void
+): Promise<void> => {
+  const agencyId = get(req, 'swagger.params.agency_id.value', '');
 
-    // Consider using a builder | respository pattern
-    const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
+  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
 
-    try {
+  // Consider using a builder | respository pattern
+  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
+
+  try {
     // This will most likely need to project only the section we are working with based on the route
-      const aggregate = await repository.getAggregate(agencyId);
-      const consultantRole = aggregate.getConsultantRole(consultantRoleId);
+    const aggregate = await repository.getAggregate(agencyId);
 
-      // This needs to be centralised and done better
-      if (consultantRole) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(consultantRole));
-        return;
-      }
+    const consultantRole = aggregate.getConsultantRole(consultantRoleId);
 
-      return next(
-        new ResourceNotFoundError(`No agency consultant role found for agency: ${agencyId} and consultant: ${consultantRoleId}`));
-    } catch (err) {
     // This needs to be centralised and done better
-      console.log('ERR THERE WAS', err);
-      res.statusCode = 500;
+    if (consultantRole) {
+      res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({message: err.message}));
+      res.end(JSON.stringify(consultantRole));
+
+      return;
     }
-  };
+
+    return next(
+      new ResourceNotFoundError(
+        `No agency consultant role found for agency: ${agencyId} and consultant: ${consultantRoleId}`
+      )
+    );
+  } catch (err) {
+    // This needs to be centralised and done better
+    console.log('ERR THERE WAS', err);
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({message: err.message}));
+  }
+};
 
 /**
  * List Agency Consultant Role
@@ -168,6 +190,7 @@ export const listAgencyConsultantRoles = async (req: SwaggerRequestInterface, re
   try {
     // This will most likely need to project only the section we are working with based on the route
     const aggregate = await repository.getAggregate(agencyId);
+
     const consultantRoles = aggregate.getConsultantRoles();
 
     // This needs to be centralised and done better
@@ -176,6 +199,7 @@ export const listAgencyConsultantRoles = async (req: SwaggerRequestInterface, re
       res.setHeader('x-result-count', consultantRoles.length);
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(consultantRoles));
+
       return;
     }
     res.statusCode = 204;

@@ -1,12 +1,13 @@
-import {FacadeClientHelper, FacadeClientRecord} from '../../src/helpers/FacadeClientHelper';
+import {FacadeClientHelper, FacadeClientRecordInterface} from '../../src/helpers/FacadeClientHelper';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 import sinon from 'sinon';
 import {assert} from 'chai';
 import {LoggerContext} from 'a24-logzio-winston';
-const StaffshiftFacadeClient = require('a24-node-staffshift-facade-client');
+import StaffshiftFacadeClient from 'a24-node-staffshift-facade-client';
 
-describe('FacadeClientHelper Class', function () {
-  let logger: LoggerContext;
+describe('FacadeClientHelper Class', () => {
+  let logger: typeof LoggerContext;
+
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
   });
@@ -14,9 +15,9 @@ describe('FacadeClientHelper Class', function () {
     sinon.restore();
   });
 
-  describe('getAgencyClientDetails()', function () {
-    it('success scenario', async function () {
-      const record: FacadeClientRecord = {
+  describe('getAgencyClientDetails()', () => {
+    it('success scenario', async () => {
+      const record: FacadeClientRecordInterface = {
         _id: 'string',
         organisation_name: 'string',
         organisation_id: 'string',
@@ -25,19 +26,24 @@ describe('FacadeClientHelper Class', function () {
         agency_org_type: 'string',
         agency_linked: true
       };
+
       const apiResponse = {
         body: [record]
       };
+
       const client = new FacadeClientHelper(logger);
+
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         clb(null, apiResponse, apiResponse);
       });
+
       sinon.stub(StaffshiftFacadeClient, 'AgencyOrganisationLinkApi').returns({
         listAgencyOrganisationLink
       });
       const result = await client.getAgencyClientDetails('agency id', 'organisation id', 'site id', undefined, {
         xRequestId: logger.requestId
       });
+
       assert.equal(result, apiResponse.body);
       assert.equal(listAgencyOrganisationLink.callCount, 1, 'listAgencyOrganisationLink not called');
     });

@@ -5,6 +5,7 @@ import config from 'config';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 
 const configKeys: {[key in string]: number} = {};
+
 const clients: {[key in string]: MongoClient} = {};
 
 /**
@@ -27,6 +28,7 @@ export class MongoClients {
    */
   async getClientDatabase(logger: typeof LoggerContext, configKey: string): Promise<Db> {
     const client = await this.getClient(logger, configKey);
+
     return client.db();
   }
 
@@ -42,16 +44,20 @@ export class MongoClients {
     if (clients[configKey]) {
       return clients[configKey];
     }
-    const options = {poolSize: (configKeys[configKey] > 5) ?
-      configKeys[configKey] : 5, ...config.get<GenericObjectInterface>(`${configKey}.options`)};
+    const options = {
+      poolSize: configKeys[configKey] > 5 ? configKeys[configKey] : 5,
+      ...config.get<GenericObjectInterface>(`${configKey}.options`)
+    };
 
     const client = new MongoClient(config.get(`${configKey}.database_host`), options);
+
     clients[configKey] = client;
     // Connect the client to the server
     await client.connect();
     // Establish and verify connection
     await client.db().command({ping: 1});
     logger.info('Connection successful', {config_key: configKey});
+
     return clients[configKey];
   }
 

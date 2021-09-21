@@ -16,6 +16,7 @@ export class PaginationHelper {
    */
   static setPaginationHeaders(req: SwaggerRequestInterface, res: ServerResponse, count: number): void {
     const swaggerParams = get(req, 'swagger.params', {});
+
     const relLinkOptions = {
       count,
       url: req.basePathName,
@@ -23,6 +24,7 @@ export class PaginationHelper {
       items_per_page: get(swaggerParams, 'items_per_page.value'),
       query_string: QueryHelper.getQueryAndSortingString(swaggerParams)
     };
+
     // If there are no items there is no content
     if (count > 0) {
       res.setHeader('Content-Type', 'application/json');

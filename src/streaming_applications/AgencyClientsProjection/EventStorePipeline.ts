@@ -12,6 +12,7 @@ import {StreamEventHandlers} from '../core/StreamEventHandlers';
 import {EventRepository} from '../../EventRepository';
 
 const HIGH_WATER_MARK = 5;
+
 /**
  * Responsible for aggregating agency candidate details
  */
@@ -45,16 +46,27 @@ export class EventStorePipeline implements PipelineInterface {
    * @param {MongoClients} clientManager - Client manager for mongodb connections
    * @param {ResumeTokenCollectionManager} tokenManager - Instance of ResumeTokenCollectionManager class
    */
-  async watch(logger: typeof LoggerContext,
+  async watch(
+    logger: typeof LoggerContext,
     clientManager: MongoClients,
-    tokenManager: ResumeTokenCollectionManager): Promise<WatchHandlerInterface> {
+    tokenManager: ResumeTokenCollectionManager
+  ): Promise<WatchHandlerInterface> {
     const eventRepository = new EventRepository(EventStore, logger.requestId);
+
     const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES_ENUM.WATCH);
+
     const watchDb = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
+
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
-    logger.info('Collection watch initiated', {collection: EventStore.collection.name, pipeline_id: this.getID(), stream_type: STREAM_TYPES_ENUM.WATCH});
+
+    logger.info('Collection watch initiated', {
+      collection: EventStore.collection.name,
+      pipeline_id: this.getID(),
+      stream_type: STREAM_TYPES_ENUM.WATCH
+    });
 
     const eventStoreTransformer = new EventStoreTransformer({highWaterMark: HIGH_WATER_MARK});
+
     //set options to initialize streams
     const opts = {
       highWaterMark: HIGH_WATER_MARK,
@@ -63,9 +75,13 @@ export class EventStorePipeline implements PipelineInterface {
       pipeline: this.getID(),
       logger: logger
     };
+
     const projectionTransformer = new AgencyClientsProjectionTransformer(opts);
-    const tokenWriterStream = tokenManager
-      .getResumeTokenWriterStream(this.getID(), STREAM_TYPES_ENUM.WATCH, {highWaterMark: HIGH_WATER_MARK});
+
+    const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES_ENUM.WATCH, {
+      highWaterMark: HIGH_WATER_MARK
+    });
+
     StreamEventHandlers.attachEventHandlers(logger, watchStream);
 
     watchStream
@@ -74,7 +90,8 @@ export class EventStorePipeline implements PipelineInterface {
       .pipe(StreamEventHandlers.attachEventHandlers(logger, tokenWriterStream));
 
     const className = this.constructor.name;
-    return new class implements WatchHandlerInterface {
+
+    return new (class implements WatchHandlerInterface {
       /**
        * Shutdown the pipeline
        * Mongodb ChangeStream does not propagate close event through the pipeline, we need to call .end() manually
@@ -84,6 +101,7 @@ export class EventStorePipeline implements PipelineInterface {
        */
       shutdown() {
         logger.info(`pipeline ${className} starting shutdown`);
+
         return new Promise<void>((resolve) => {
           tokenWriterStream.on('finish', () => {
             logger.info(`pipeline ${className} finished shutdown`);
@@ -92,7 +110,6 @@ export class EventStorePipeline implements PipelineInterface {
           watchStream.close(() => eventStoreTransformer.end());
         });
       }
-    };
+    })();
   }
-
 }

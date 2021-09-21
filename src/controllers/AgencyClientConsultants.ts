@@ -15,37 +15,40 @@ import {Error} from 'mongoose';
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  */
-export const addAgencyClientConsultant =
-  async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
-    const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
-    const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const clientId = get(req, 'swagger.params.client_id.value', '');
-    const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
+  const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
 
-    const repository = new AgencyClientRepository(_.get(req, 'eventRepository', undefined));
-    const handler = new AgencyClientCommandHandler(repository);
+  const agencyId = get(req, 'swagger.params.agency_id.value', '');
 
-    // Decide how auth / audit data gets from here to the event in the event store.
-    const command = {
-      type: commandType,
-      data: payload
-    };
+  const clientId = get(req, 'swagger.params.client_id.value', '');
 
-    try {
-    // Passing in the agency and client ids here feels strange
-      await handler.apply(agencyId, clientId, command);
-      // This needs to be centralised and done better
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({status: 'completed'}));
-    } catch (err) {
-    // This needs to be centralised and done better
-      console.log('ERR THERE WAS', err);
-      res.statusCode = 500;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({message: err.message}));
-    }
+  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+
+  const repository = new AgencyClientRepository(get(req, 'eventRepository', undefined));
+
+  const handler = new AgencyClientCommandHandler(repository);
+
+  // Decide how auth / audit data gets from here to the event in the event store.
+  const command = {
+    type: commandType,
+    data: payload
   };
+
+  try {
+    // Passing in the agency and client ids here feels strange
+    await handler.apply(agencyId, clientId, command);
+    // This needs to be centralised and done better
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({status: 'completed'}));
+  } catch (err) {
+    // This needs to be centralised and done better
+    console.log('ERR THERE WAS', err);
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({message: err.message}));
+  }
+};
 
 /**
  * Remove Agency Client Consultant
@@ -53,36 +56,42 @@ export const addAgencyClientConsultant =
  * @param {ClientRequest} req - The http request object
  * @param {IncomingMessage} res - The http response object
  */
-export const removeAgencyClientConsultant =
-  async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
-    const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const clientId = get(req, 'swagger.params.client_id.value', '');
-    const consultantId = get(req, 'swagger.params.consultant_id.value', '');
-    const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+export const removeAgencyClientConsultant = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse
+): Promise<void> => {
+  const agencyId = get(req, 'swagger.params.agency_id.value', '');
 
-    const repository = new AgencyClientRepository(_.get(req, 'eventRepository', undefined));
-    const handler = new AgencyClientCommandHandler(repository);
+  const clientId = get(req, 'swagger.params.client_id.value', '');
 
-    // Decide how auth / audit data gets from here to the event in the event store.
-    const command = {
-      type: commandType,
-      data: {_id: consultantId}
-    };
+  const consultantId = get(req, 'swagger.params.consultant_id.value', '');
 
-    try {
-      await handler.apply(agencyId, clientId, command);
-      // This needs to be centralised and done better
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({status: 'completed'}));
-    } catch (err) {
-    // This needs to be centralised and done better
-      console.log('ERR THERE WAS', err);
-      res.statusCode = 500;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({message: err.message}));
-    }
+  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+
+  const repository = new AgencyClientRepository(get(req, 'eventRepository', undefined));
+
+  const handler = new AgencyClientCommandHandler(repository);
+
+  // Decide how auth / audit data gets from here to the event in the event store.
+  const command = {
+    type: commandType,
+    data: {_id: consultantId}
   };
+
+  try {
+    await handler.apply(agencyId, clientId, command);
+    // This needs to be centralised and done better
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({status: 'completed'}));
+  } catch (err) {
+    // This needs to be centralised and done better
+    console.log('ERR THERE WAS', err);
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({message: err.message}));
+  }
+};
 
 /**
  * List Agency Client Consultants
@@ -91,40 +100,48 @@ export const removeAgencyClientConsultant =
  * @param {IncomingMessage} res - The http response object
  * @param {(error?: Error) => void} next - The callback used to pass control to the next action/middleware
  */
-export const listAgencyClientConsultants =
-  async (req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error) => void): Promise<void> => {
-    const swaggerParams = req.swagger.params || {};
-    const logger = req.Logger;
+export const listAgencyClientConsultants = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error?: Error) => void
+): Promise<void> => {
+  const swaggerParams = req.swagger.params || {};
 
-    const limit = QueryHelper.getItemsPerPage(swaggerParams);
-    const skip = QueryHelper.getSkipValue(swaggerParams, limit);
-    const sortBy = QueryHelper.getSortParams(swaggerParams);
-    const query = QueryHelper.getQuery(swaggerParams);
+  const logger = req.Logger;
 
-    query.agency_id = get(req, 'swagger.params.agency_id.value', '');
-    query.client_id = get(req, 'swagger.params.client_id.value', '');
-    const service = new GenericRepository(logger, AgencyClientConsultants);
-    try {
-      const {count, data} = await service.listResources(query, limit, skip, sortBy);
-      const statusCode = isEmpty(data) ? 204 : 200;
-      await PaginationHelper.setPaginationHeaders(req, res, count);
-      res.statusCode = statusCode;
-      if (isEmpty(data)) {
-        logger.info('The GET list call of Tags has been completed successfully, but no records were found.', {
-          statusCode
-        });
-        return res.end();
-      }
+  const limit = QueryHelper.getItemsPerPage(swaggerParams);
 
-      logger.info(
-        'The GET list call of Tags has been completed successfully with result',
-        {
-          statusCode
-        }
-      );
-      return res.end(JSON.stringify(data));
+  const skip = QueryHelper.getSkipValue(swaggerParams, limit);
 
-    } catch (error) {
-      return next(error);
+  const sortBy = QueryHelper.getSortParams(swaggerParams);
+
+  const query = QueryHelper.getQuery(swaggerParams);
+
+  query.agency_id = get(req, 'swagger.params.agency_id.value', '');
+  query.client_id = get(req, 'swagger.params.client_id.value', '');
+  const service = new GenericRepository(logger, AgencyClientConsultants);
+
+  try {
+    const {count, data} = await service.listResources(query, limit, skip, sortBy);
+
+    const statusCode = isEmpty(data) ? 204 : 200;
+
+    await PaginationHelper.setPaginationHeaders(req, res, count);
+    res.statusCode = statusCode;
+    if (isEmpty(data)) {
+      logger.info('The GET list call of Tags has been completed successfully, but no records were found.', {
+        statusCode
+      });
+
+      return res.end();
     }
-  };
+
+    logger.info('The GET list call of Tags has been completed successfully with result', {
+      statusCode
+    });
+
+    return res.end(JSON.stringify(data));
+  } catch (error) {
+    return next(error);
+  }
+};

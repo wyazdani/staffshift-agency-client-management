@@ -4,15 +4,15 @@ import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../EventRepository';
 
 export interface SwaggerRequestInterface extends IncomingMessage {
-  Logger: typeof LoggerContext,
+  Logger: typeof LoggerContext;
   swagger: {
-    params: {[key: string]: unknown},
+    params: {[key: string]: unknown};
     operation: {
-      'x-octophant-event'?: string,
-      'x-public-operation'?: boolean
-    }
-  },
-  octophant: GenericObjectInterface,
-  eventRepository: EventRepository,
-  basePathName: string
+      'x-octophant-event'?: string;
+      'x-public-operation'?: boolean;
+    };
+  };
+  octophant: GenericObjectInterface;
+  eventRepository: EventRepository;
+  basePathName: string;
 }

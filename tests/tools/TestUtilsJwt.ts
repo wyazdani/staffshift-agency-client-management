@@ -1,6 +1,7 @@
-import config from "config";
-import * as jwt from 'jsonwebtoken';
-const secret: string = config.get('api_token');
-export function getJWT(payload: object = {}): string {
-  return jwt.sign(payload, secret);
-}
+import config from 'config';
+import {sign} from 'jsonwebtoken';
+import {GenericObjectInterface} from '../../src/types/GenericObjectInterface';
+
+const secret: string = config.get<string>('api_token');
+
+export const getJWT = (payload: GenericObjectInterface = {}): string => sign(payload, secret);

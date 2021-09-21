@@ -3,9 +3,9 @@ import {Collection} from 'mongodb';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 
 export interface ResumeTokenWriterOptionsInterface extends WritableOptions {
-  _id: string,
-  collection: Collection,
-  persistRate?: number
+  _id: string;
+  collection: Collection;
+  persistRate?: number;
 }
 /**
  * Upserts a resume token to the specified collection.
@@ -53,7 +53,9 @@ export class ResumeTokenWriter extends Writable {
         (err: Error) => {
           this.counter = 0;
           next(err);
-        });
+        }
+      );
+
       return;
     }
     next();

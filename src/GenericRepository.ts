@@ -10,8 +10,7 @@ import {GenericObjectInterface} from 'GenericObjectInterface';
  *  IE a mixin concept / parasitic inheritance / Based on interfaces?
  */
 export class GenericRepository {
-  constructor(private logger: typeof LoggerContext, private store: Model<any>) {
-  }
+  constructor(private logger: typeof LoggerContext, private store: Model<any>) {}
 
   /**
    * Retrieves a list of all records for the given params
@@ -23,15 +22,15 @@ export class GenericRepository {
    *
    * @return Promise<Object>
    */
-  async listResources(query: FilterQuery<any>,
+  async listResources(
+    query: FilterQuery<any>,
     limit: number,
     skip: number,
-    sortBy: GenericObjectInterface): Promise<{count: number, data: any[]}> {
+    sortBy: GenericObjectInterface
+  ): Promise<{count: number; data: any[]}> {
     try {
-      const [count, data] = await Promise.all([
-        this.getCount(query),
-        this.getListing(query, skip, limit, sortBy)
-      ]);
+      const [count, data] = await Promise.all([this.getCount(query), this.getListing(query, skip, limit, sortBy)]);
+
       return {
         count,
         data
@@ -55,10 +54,7 @@ export class GenericRepository {
     try {
       return await this.store.countDocuments(query);
     } catch (dbError) {
-      throw new RuntimeError(
-        `An error occurred while counting records for ${this.store.modelName}`,
-        dbError
-      );
+      throw new RuntimeError(`An error occurred while counting records for ${this.store.modelName}`, dbError);
     }
   }
 
@@ -74,14 +70,9 @@ export class GenericRepository {
    *
    * @return Promise<Array<Object>>
    */
-  private async getListing(query: FilterQuery<any>, skip:number, limit:number, sortBy: GenericObjectInterface) {
+  private async getListing(query: FilterQuery<any>, skip: number, limit: number, sortBy: GenericObjectInterface) {
     try {
-      return await this.store.find(query)
-        .skip(skip)
-        .limit(limit)
-        .sort(sortBy)
-        .lean()
-        .exec();
+      return await this.store.find(query).skip(skip).limit(limit).sort(sortBy).lean().exec();
     } catch (dbError) {
       throw new RuntimeError(`An error occurred while listing the records for ${this.store.modelName}`, {dbError});
     }

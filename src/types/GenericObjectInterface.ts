@@ -3,8 +3,9 @@
  * Typescript error that's occurring with the config library, and the also get rid of the
  * anys that we can't identify their type definition right away.
  *
- * @ref https://github.com/A24Group/staffshift-agency-client-management/issues/41
+ * @issue https://github.com/A24Group/staffshift-agency-client-management/issues/41
+ * @issue https://github.com/A24Group/staffshift-agency-client-management/issues/45
  */
 export interface GenericObjectInterface {
-  [key: string]: any
+  [key: string]: any;
 }

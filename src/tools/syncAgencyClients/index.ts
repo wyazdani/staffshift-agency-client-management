@@ -5,23 +5,26 @@ import {AgencyClientRepository} from '../../AgencyClient/AgencyClientRepository'
 import {EventStore} from '../../models/EventStore';
 import {AgencyClientCommandHandler} from '../../AgencyClient/AgencyClientCommandHandler';
 import {connect, disconnect} from 'mongoose';
-import {AgencyClientCommandInterface} from '../../AgencyClient/Interfaces';
-import {AgencyClientCommandEnum} from '../../AgencyClient/AgencyClientEnums';
 import {GenericObjectInterface} from 'GenericObjectInterface';
-import { EventRepository } from '../../EventRepository';
+import {EventRepository} from '../../EventRepository';
+import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../AgencyClient/types';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
+
 const client = new FacadeClientHelper(loggerContext);
+
 const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
+
 const repository = new AgencyClientRepository(eventRepository);
+
 const handler = new AgencyClientCommandHandler(repository);
 
 const itemsPerPage = 100;
 
 interface SyncCommandInterface {
-  command: AgencyClientCommandInterface,
-  clientId: string
+  command: AgencyClientCommandInterface;
+  clientId: string;
 }
 
 /**
@@ -36,13 +39,16 @@ const run = async (page: number): Promise<void> => {
     loggerContext.info('Connecting to the database');
     await connect(
       config.get<GenericObjectInterface>('mongo').database_host,
-      config.get<GenericObjectInterface>('mongo').options);
+      config.get<GenericObjectInterface>('mongo').options
+    );
     let completed = false;
+
     loggerContext.info('Starting the sync agency client process');
 
     do {
       const itemsCompleted = await syncAgencyClients(page);
-      completed = (itemsCompleted !== itemsPerPage);
+
+      completed = itemsCompleted !== itemsPerPage;
       loggerContext.info(`Completed page: ${page} with an items per page of: ${itemsPerPage}`);
       page++;
     } while (completed === false);
@@ -66,11 +72,15 @@ const syncAgencyClients = async (page: number): Promise<number> => {
     page,
     itemsPerPage
   };
+
   const response = await client.getAgencyClientDetailsListing(options);
+
   for (const item of response) {
     const details = getSyncCommandDetails(item);
+
     await handler.apply(item.agency_id, details.clientId, details.command);
   }
+
   return response.length;
 };
 
@@ -98,6 +108,7 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommandInterface => {
         linked_at: new Date(agencyClientLink.created_at)
       };
       details.clientId = agencyClientLink.organisation_id;
+
       return details;
     case 'site':
       details.command.data = {
@@ -107,6 +118,7 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommandInterface => {
         linked_at: new Date(agencyClientLink.created_at)
       };
       details.clientId = agencyClientLink.site_id;
+
       return details;
     case 'ward':
       details.command.data = {
@@ -117,17 +129,21 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommandInterface => {
         linked_at: new Date(agencyClientLink.created_at)
       };
       details.clientId = agencyClientLink.ward_id;
+
       return details;
     default:
       throw new Error(`Unexpected agency organisation type received: ${agencyClientLink.agency_org_type}`);
   }
 };
 
-const page = (process.argv[2]) ? parseInt(process.argv[2]) : 1;
+const page = process.argv[2] ? parseInt(process.argv[2]) : 1;
 
-run(page).then(() => disconnect()).then(() => {
-  loggerContext.info('The script has completed and does NOT need to be re-run');
-}).catch((err) => {
-  loggerContext.error('Script did not complete, you will need to rerun it', err);
-  process.exit(1);
-});
+run(page)
+  .then(() => disconnect())
+  .then(() => {
+    loggerContext.info('The script has completed and does NOT need to be re-run');
+  })
+  .catch((err) => {
+    loggerContext.error('Script did not complete, you will need to rerun it', err);
+    process.exit(1);
+  });

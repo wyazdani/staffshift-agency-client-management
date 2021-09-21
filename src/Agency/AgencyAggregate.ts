@@ -1,10 +1,13 @@
-import {AgencyConsultantRoleEnum} from './AgencyEnums';
 import {find} from 'lodash';
-import {AgencyAggregateRecordInterface, AgencyAggregateIdInterface, AgencyConsultantRoleInterface} from './Interfaces';
+import {
+  AgencyAggregateIdInterface,
+  AgencyAggregateRecordInterface,
+  AgencyConsultantRoleEnum,
+  AgencyConsultantRoleInterface
+} from './types';
 
 export class AgencyAggregate {
-  constructor(private id: AgencyAggregateIdInterface, private aggregate: AgencyAggregateRecordInterface) {
-  }
+  constructor(private id: AgencyAggregateIdInterface, private aggregate: AgencyAggregateRecordInterface) {}
 
   getConsultantRole(consultantRoleId: string): AgencyConsultantRoleInterface {
     return find(this.aggregate.consultant_roles, {_id: consultantRoleId});
@@ -15,18 +18,22 @@ export class AgencyAggregate {
   }
 
   canEnableConsultantRole(consultantRoleId: string): boolean {
-    const role =  find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+    const role = find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+
     if (!role) {
       throw new Error('BOOM, THERE IS NO MATCHING ROLE');
     }
+
     return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED;
   }
 
   canDisableConsultantRole(consultantRoleId: string): boolean {
-    const role =  find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+    const role = find(this.aggregate.consultant_roles, {_id: consultantRoleId});
+
     if (!role) {
       throw new Error('BOOM, THERE IS NO MATCHING ROLE');
     }
+
     return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED;
   }
   getId(): AgencyAggregateIdInterface {

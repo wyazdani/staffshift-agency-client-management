@@ -3,7 +3,7 @@ import {STREAM_TYPES_ENUM} from './ChangeStreamEnums';
 import {ResumeTokenWriter, ResumeTokenWriterOptionsInterface} from './streams/ResumeTokenWriter';
 
 export interface WatchOptionsInterface extends ChangeStreamOptions {
-  total?: number//We use total in seed
+  total?: number; //We use total in seed
 }
 /**
  * Resume Token Manager class
@@ -45,17 +45,23 @@ export class ResumeTokenCollectionManager {
    *
    * @returns {Object} - The modified watched options
    */
-  async setResumeAfterWatchOptions(pipeline: string,
+  async setResumeAfterWatchOptions(
+    pipeline: string,
     streamType: STREAM_TYPES_ENUM,
-    watchOptions: WatchOptionsInterface = {}): Promise<WatchOptionsInterface> {
+    watchOptions: WatchOptionsInterface = {}
+  ): Promise<WatchOptionsInterface> {
     if (!this.db || !this.collectionName) {
       throw new Error('Set both db and collection name before requesting watch options');
     }
     const pipelineId = `${pipeline}_${streamType}`;
+
     const resumeAfter = await this.db.collection(this.collectionName).findOne({_id: pipelineId});
+
     if (streamType === STREAM_TYPES_ENUM.WATCH && !resumeAfter) {
       const seedPipelineId = `${pipeline}_seed`;
+
       const seed = await this.db.collection(this.collectionName).findOne({_id: seedPipelineId});
+
       if (seed && seed.created_at) {
         watchOptions.startAtOperationTime = new Timestamp(1, seed.created_at.valueOf() / 1000);
       }
@@ -64,6 +70,7 @@ export class ResumeTokenCollectionManager {
       watchOptions.resumeAfter = resumeAfter.token;
       watchOptions.total = resumeAfter.total;
     }
+
     return watchOptions;
   }
 
@@ -78,11 +85,13 @@ export class ResumeTokenCollectionManager {
    */
   getResumeTokenWriterStream(pipeline: string, streamType: STREAM_TYPES_ENUM, writerOptions = {}): ResumeTokenWriter {
     const pipelineId = `${pipeline}_${streamType}`;
+
     const tokenOpts: ResumeTokenWriterOptionsInterface = {
       ...writerOptions,
       _id: pipelineId,
       collection: this.db.collection(this.collectionName)
     };
+
     return new ResumeTokenWriter(tokenOpts);
   }
 }

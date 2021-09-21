@@ -6,8 +6,7 @@ import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../EventRepository';
 
 export class AgencyClientLinkStatus {
-  constructor(private logger: typeof LoggerContext, private eventRepository: EventRepository) {
-  }
+  constructor(private logger: typeof LoggerContext, private eventRepository: EventRepository) {}
 
   /**
    * Will apply the Triage Domain Event to the related aggregate
@@ -17,8 +16,11 @@ export class AgencyClientLinkStatus {
   public async apply(message: any): Promise<any> {
     // try catch to handle the await error
     const conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
+
     const repository = new AgencyClientRepository(this.eventRepository);
+
     const handler = new AgencyClientCommandHandler(repository);
+
     return handler.apply(conversionData.agency_id, conversionData.client_id, conversionData.command);
   }
 
@@ -31,6 +33,7 @@ export class AgencyClientLinkStatus {
    */
   private async convertTriageEventToCommand(eventName: string, data: any): Promise<GenericObjectInterface> {
     const conversionData: GenericObjectInterface = {};
+
     conversionData.agency_id = data.agency_id;
 
     // Need to have a try catch to wrap all the awaits
@@ -39,13 +42,18 @@ export class AgencyClientLinkStatus {
       if (eventName == 'agency_organisation_link_deleted') {
         conversionData.command = {type: 'unlinkAgencyClient', data: {client_type: 'organisation'}};
         conversionData.client_id = data.organisation_id;
+
         return conversionData;
       }
 
       // Handle the Site Delete
       if (eventName == 'agency_organisation_site_link_deleted') {
-        conversionData.command = {type: 'unlinkAgencyClient', data: {organisation_id: data.organisation_id, client_type: 'site'}};
+        conversionData.command = {
+          type: 'unlinkAgencyClient',
+          data: {organisation_id: data.organisation_id, client_type: 'site'}
+        };
         conversionData.client_id = data.site_id;
+
         return conversionData;
       }
 
@@ -56,27 +64,39 @@ export class AgencyClientLinkStatus {
           data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
         };
         conversionData.client_id = data.ward_id;
+
         return conversionData;
       }
 
       // It changed lets figure out if is a link or unlink
       if (eventName == 'agency_organisation_link_status_changed' || eventName == 'agency_organisation_link_created') {
         const command = await this.getCommand(data);
+
         conversionData.command = {type: command, data: {client_type: 'organisation'}};
         conversionData.client_id = data.organisation_id;
       }
 
       // It changed lets figure out if is a link or unlink
-      if (eventName == 'agency_organisation_site_link_status_changed' || eventName == 'agency_organisation_site_link_created') {
+      if (
+        eventName == 'agency_organisation_site_link_status_changed' ||
+        eventName == 'agency_organisation_site_link_created'
+      ) {
         const command = await this.getCommand(data);
-        conversionData.command = {type: command, data: {organisation_id: data.organisation_id, client_type: 'site'}};
+
+        conversionData.command = {
+          type: command,
+          data: {organisation_id: data.organisation_id, client_type: 'site'}
+        };
         conversionData.client_id = data.site_id;
       }
 
       // It changed lets figure out if is a link or unlink
-      if (eventName == 'agency_organisation_site_ward_link_status_changed' ||
-        eventName == 'agency_organisation_site_ward_link_created') {
+      if (
+        eventName == 'agency_organisation_site_ward_link_status_changed' ||
+        eventName == 'agency_organisation_site_ward_link_created'
+      ) {
         const command = await this.getCommand(data);
+
         conversionData.command = {
           type: command,
           data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
@@ -101,16 +121,25 @@ export class AgencyClientLinkStatus {
    */
   private async getCommand(data: GenericObjectInterface): Promise<string> {
     const client = new FacadeClientHelper(this.logger);
+
     // Need try catch
-    const response = await client.getAgencyClientDetails(data.agency_id, data.organisation_id, data.site_id, data.ward_id);
+    const response = await client.getAgencyClientDetails(
+      data.agency_id,
+      data.organisation_id,
+      data.site_id,
+      data.ward_id
+    );
+
     if (response && response.length > 1) {
       throw new Error('We are only expecting a single agency client entry to be returned');
     }
     // Default to unlinked, we only need to now assert if a response was returned
     let command = 'unlinkAgencyClient';
+
     if (response) {
-      command = (response[0].agency_linked) ? 'linkAgencyClient' : 'unlinkAgencyClient';
+      command = response[0].agency_linked ? 'linkAgencyClient' : 'unlinkAgencyClient';
     }
+
     return command;
   }
 }

@@ -9,7 +9,7 @@ import {ServerResponse} from 'http';
  */
 export const getSystemStatus = (req: SwaggerRequestInterface, res: ServerResponse): void => {
   const objStatus = {
-    'up_time': Math.floor(process.uptime())
+    up_time: Math.floor(process.uptime())
   };
 
   res.statusCode = 200;

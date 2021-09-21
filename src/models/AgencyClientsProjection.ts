@@ -1,14 +1,14 @@
 import {Document, Schema, model} from 'mongoose';
 
 export type AgencyClientsProjectionDocumentType = Document & {
-  agency_id: string,
-  client_id: string,
-  organisation_id: string,
-  site_id: string,
-  client_type: string,
-  linked: boolean,
-  created_at: Date,
-  updated_at: Date
+  agency_id: string;
+  client_id: string;
+  organisation_id: string;
+  site_id: string;
+  client_type: string;
+  linked: boolean;
+  created_at: Date;
+  updated_at: Date;
 };
 
 const agencyClients = new Schema<AgencyClientsProjectionDocumentType>(
@@ -60,4 +60,7 @@ const agencyClients = new Schema<AgencyClientsProjectionDocumentType>(
 /**
  * Defines the model for the AgencyClients Read Projection
  */
-export const AgencyClientsProjection = model<AgencyClientsProjectionDocumentType>('AgencyClientsProjection', agencyClients);
+export const AgencyClientsProjection = model<AgencyClientsProjectionDocumentType>(
+  'AgencyClientsProjection',
+  agencyClients
+);

@@ -10,25 +10,33 @@ export class WatcherContext {
   constructor(private name: string, private pipelines: PipelineInterface[]) {
     this.watchHandlers = [];
   }
+
   getStreamingAppName(): string {
     return this.name;
   }
+
   getPipelines(): PipelineInterface[] {
     return this.pipelines;
   }
+
   getMongoClientConfigKeys(type: PIPELINE_TYPES_ENUM): string[] {
     let keys: string[] = [];
+
     for (const item of this.getPipelines()) {
       if (item.getType() === type) {
         keys = concat(keys, item.getMongoClientConfigKeys());
       }
     }
+
     return keys;
   }
-  async watch(type: PIPELINE_TYPES_ENUM,
+
+  async watch(
+    type: PIPELINE_TYPES_ENUM,
     logger: typeof LoggerContext,
     clientManager: MongoClients,
-    tokenManager: ResumeTokenCollectionManager): Promise<void> {
+    tokenManager: ResumeTokenCollectionManager
+  ): Promise<void> {
     this.watchHandlers = [];
 
     for (const PipelineClass of this.getPipelines()) {
@@ -45,6 +53,7 @@ export class WatcherContext {
 
   async shutdown(): Promise<void> {
     const promiseArray = [];
+
     for (const pipeline of this.watchHandlers) {
       promiseArray.push(pipeline.shutdown());
     }

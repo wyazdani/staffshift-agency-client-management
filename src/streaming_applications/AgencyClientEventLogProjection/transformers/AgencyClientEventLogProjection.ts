@@ -6,15 +6,13 @@ import {EventsEnum} from '../../../Events';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../../../EventRepository';
 
-const events = [
-  EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED
-];
+const events = [EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED];
 
 interface ProjectionOptionsInterface extends TransformOptions {
-  eventRepository: EventRepository,
-  model: Model<any>,
-  pipeline: string,
-  logger: typeof LoggerContext
+  eventRepository: EventRepository;
+  model: Model<any>;
+  pipeline: string;
+  logger: typeof LoggerContext;
 }
 
 /**
@@ -38,12 +36,16 @@ export class AgencyClientEventLogProjection extends Transform {
   _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
     if (!events.includes(data.event.type)) {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
+
       return callback(null, data);
     }
     this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
+
     const repository = new AgencyClientRepository(this.eventRepository);
-    repository.getAggregate(event.aggregate_id.agency_id, event.aggregate_id.client_id, event.sequence_id)
+
+    repository
+      .getAggregate(event.aggregate_id.agency_id, event.aggregate_id.client_id, event.sequence_id)
       .then((aggregate) => {
         const agencyClientEvent = new this.model({
           agency_id: event.aggregate_id.agency_id,
@@ -52,13 +54,16 @@ export class AgencyClientEventLogProjection extends Transform {
           evented_at: event.created_at,
           snapshot: aggregate.getConsultants()
         });
+
         agencyClientEvent.save((err: Error) => {
           if (err) {
             return callback(err);
           }
+
           return callback(null, data);
         });
-      }).catch((err) => callback(err));
+      })
+      .catch((err) => callback(err));
     // Should we be adding something here since this is a possible "hanging" issue
   }
 }
