@@ -30,7 +30,6 @@ const processorConfig = {
   app_name: config.get('app_name'),
   log_level: config.get('pubsub_log_level')
 };
-
 const mp = new MessageProcessor(processorConfig);
 
 // Add event listeners for message processor

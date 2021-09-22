@@ -26,13 +26,10 @@ describe('FacadeClientHelper Class', () => {
         agency_org_type: 'string',
         agency_linked: true
       };
-
       const apiResponse = {
         body: [record]
       };
-
       const client = new FacadeClientHelper(logger);
-
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         clb(null, apiResponse, apiResponse);
       });

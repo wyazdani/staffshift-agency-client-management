@@ -11,15 +11,10 @@ import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../Agenc
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
-
 const client = new FacadeClientHelper(loggerContext);
-
 const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
-
 const repository = new AgencyClientRepository(eventRepository);
-
 const handler = new AgencyClientCommandHandler(repository);
-
 const itemsPerPage = 100;
 
 interface SyncCommandInterface {
@@ -57,7 +52,6 @@ const run = async (page: number): Promise<void> => {
     throw err;
   }
 };
-
 /**
  * Gets a single page listing of Agency Clients, applies the Sync Command for each item
  *
@@ -72,7 +66,6 @@ const syncAgencyClients = async (page: number): Promise<number> => {
     page,
     itemsPerPage
   };
-
   const response = await client.getAgencyClientDetailsListing(options);
 
   for (const item of response) {
@@ -83,7 +76,6 @@ const syncAgencyClients = async (page: number): Promise<number> => {
 
   return response.length;
 };
-
 /**
  * Convert the agency client link into a specific sync command
  *
@@ -135,7 +127,6 @@ const getSyncCommandDetails = (agencyClientLink: any): SyncCommandInterface => {
       throw new Error(`Unexpected agency organisation type received: ${agencyClientLink.agency_org_type}`);
   }
 };
-
 const page = process.argv[2] ? parseInt(process.argv[2]) : 1;
 
 run(page)

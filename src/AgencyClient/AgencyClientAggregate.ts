@@ -19,10 +19,8 @@ export class AgencyClientAggregate {
   // Business Logic that should be applied
   async validateAddClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
-
     // Should this be another aggregate?
     const consultantRole = agencyAggregate.getConsultantRole(consultant.consultant_role_id);
-
     const currentCount =
       countBy(this.aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
 

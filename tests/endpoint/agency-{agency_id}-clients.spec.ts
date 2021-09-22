@@ -10,7 +10,6 @@ const validator = new ZSchema({});
 
 describe('/agency/{agency_id}/clients', () => {
   const jwtToken = getJWT();
-
   const headers = {
     'x-request-jwt': jwtToken,
     Accept: 'application/json',

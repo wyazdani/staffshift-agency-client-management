@@ -5,7 +5,6 @@ import config from 'config';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 
 const configKeys: {[key in string]: number} = {};
-
 const clients: {[key in string]: MongoClient} = {};
 
 /**
@@ -48,7 +47,6 @@ export class MongoClients {
       poolSize: configKeys[configKey] > 5 ? configKeys[configKey] : 5,
       ...config.get<GenericObjectInterface>(`${configKey}.options`)
     };
-
     const client = new MongoClient(config.get(`${configKey}.database_host`), options);
 
     clients[configKey] = client;

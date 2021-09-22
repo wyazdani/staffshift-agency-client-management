@@ -16,9 +16,7 @@ export class AgencyClientLinkStatus {
   public async apply(message: any): Promise<any> {
     // try catch to handle the await error
     const conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
-
     const repository = new AgencyClientRepository(this.eventRepository);
-
     const handler = new AgencyClientCommandHandler(repository);
 
     return handler.apply(conversionData.agency_id, conversionData.client_id, conversionData.command);
@@ -121,7 +119,6 @@ export class AgencyClientLinkStatus {
    */
   private async getCommand(data: GenericObjectInterface): Promise<string> {
     const client = new FacadeClientHelper(this.logger);
-
     // Need try catch
     const response = await client.getAgencyClientDetails(
       data.agency_id,

@@ -20,15 +20,10 @@ export const getAgencyClient = async (
   next: (error?: Error) => void
 ): Promise<void> => {
   const swaggerParams = req.swagger.params || {};
-
   const logger = req.Logger;
-
   const limit = QueryHelper.getItemsPerPage(swaggerParams);
-
   const skip = QueryHelper.getSkipValue(swaggerParams, limit);
-
   const sortBy = QueryHelper.getSortParams(swaggerParams);
-
   const query = QueryHelper.getQuery(swaggerParams);
 
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
@@ -68,15 +63,10 @@ export const listAgencyClients = async (
   next: (error?: Error) => void
 ): Promise<void> => {
   const swaggerParams = req.swagger.params || {};
-
   const logger = req.Logger;
-
   const limit = QueryHelper.getItemsPerPage(swaggerParams);
-
   const skip = QueryHelper.getSkipValue(swaggerParams, limit);
-
   const sortBy = QueryHelper.getSortParams(swaggerParams);
-
   const query = QueryHelper.getQuery(swaggerParams);
 
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
@@ -85,7 +75,6 @@ export const listAgencyClients = async (
 
   try {
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
-
     const statusCode = isEmpty(data) ? 204 : 200;
 
     await PaginationHelper.setPaginationHeaders(req, res, count);

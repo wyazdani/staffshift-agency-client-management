@@ -16,7 +16,6 @@ export const AgencyCommands: AgencyCommandsType = {
     command: GenericObjectInterface
   ): Promise<AgencyEventInterface[]> => {
     let eventId = aggregate.getLastEventId();
-
     // We are looking to auto enabled a newly created consultant roles
     const consultantId = new ObjectID().toString();
 

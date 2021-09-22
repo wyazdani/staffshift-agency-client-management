@@ -26,11 +26,8 @@ export default async (
 
 const process = async (logger: typeof LoggerContext, message: GenericObjectInterface) => {
   const eventName = (message.event as GenericObjectInterface).name as string;
-
   const correlationId = uuidv4();
-
   const eventMeta = await getEventMeta(logger, message.application_jwt);
-
   const eventRepository = new EventRepository(EventStore, correlationId, eventMeta);
 
   logger.info('Handling incoming domain event', {correlation_id: correlationId, event_id: message.event.id});
@@ -50,11 +47,9 @@ const process = async (logger: typeof LoggerContext, message: GenericObjectInter
       return handler.apply(message);
     }
     default:
-      console.log({event_name: eventName});
       logger.info('UnHandled Agency Client Event', {event_name: eventName});
   }
 };
-
 const getEventMeta = async (logger: typeof LoggerContext, token: string): Promise<EventMetaInterface> =>
   new Promise((resolve, reject) =>
     JWTSecurityHelper.jwtVerification(token, config.get<string>('api_token'), (err, response) => {

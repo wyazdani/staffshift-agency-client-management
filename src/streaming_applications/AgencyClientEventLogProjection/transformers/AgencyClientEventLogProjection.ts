@@ -41,7 +41,6 @@ export class AgencyClientEventLogProjection extends Transform {
     }
     this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
-
     const repository = new AgencyClientRepository(this.eventRepository);
 
     repository

@@ -80,9 +80,7 @@ export class FacadeClientHelper {
     }
 
     const client = FacadeClientHelper.getInstance();
-
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
-
     const authorization = `token ${clientConfig.api_token}`;
 
     this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
@@ -134,9 +132,7 @@ export class FacadeClientHelper {
   async getAgencyClientDetailsListing(options?: GetAgencyClientDetailsOptionsInterface): Promise<any> {
     options = {...options, xRequestId: this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
-
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
-
     const authorization = `token ${clientConfig.api_token}`;
 
     this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
@@ -182,7 +178,6 @@ export class FacadeClientHelper {
 
   static getInstance(): any {
     const client = new StaffshiftFacadeClient.ApiClient();
-
     const requestOptions = clientConfig.request_options as GenericObjectInterface;
 
     client.basePath = `${requestOptions.protocol as string}://${requestOptions.host as string}:${

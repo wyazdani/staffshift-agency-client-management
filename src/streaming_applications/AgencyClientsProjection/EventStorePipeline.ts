@@ -52,11 +52,8 @@ export class EventStorePipeline implements PipelineInterface {
     tokenManager: ResumeTokenCollectionManager
   ): Promise<WatchHandlerInterface> {
     const eventRepository = new EventRepository(EventStore, logger.requestId);
-
     const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES_ENUM.WATCH);
-
     const watchDb = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
-
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
 
     logger.info('Collection watch initiated', {
@@ -66,7 +63,6 @@ export class EventStorePipeline implements PipelineInterface {
     });
 
     const eventStoreTransformer = new EventStoreTransformer({highWaterMark: HIGH_WATER_MARK});
-
     //set options to initialize streams
     const opts = {
       highWaterMark: HIGH_WATER_MARK,
@@ -75,9 +71,7 @@ export class EventStorePipeline implements PipelineInterface {
       pipeline: this.getID(),
       logger: logger
     };
-
     const projectionTransformer = new AgencyClientsProjectionTransformer(opts);
-
     const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES_ENUM.WATCH, {
       highWaterMark: HIGH_WATER_MARK
     });

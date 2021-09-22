@@ -16,7 +16,6 @@ export class PaginationHelper {
    */
   static setPaginationHeaders(req: SwaggerRequestInterface, res: ServerResponse, count: number): void {
     const swaggerParams = get(req, 'swagger.params', {});
-
     const relLinkOptions = {
       count,
       url: req.basePathName,

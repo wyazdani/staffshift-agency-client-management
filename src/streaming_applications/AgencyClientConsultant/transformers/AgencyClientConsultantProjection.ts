@@ -52,7 +52,6 @@ export class AgencyClientConsultantProjection extends Transform {
         .getAggregate(event.aggregate_id.agency_id)
         .then((agencyAggregate) => {
           const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
-
           const agencyClientConsultant = new this.model({
             _id: event.data._id,
             agency_id: event.aggregate_id.agency_id,

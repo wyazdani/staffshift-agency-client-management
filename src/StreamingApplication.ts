@@ -53,7 +53,6 @@ if (!args['--type']) {
   process.exit(1);
 }
 const CHANGE_STREAM_TYPE = args['--type'].toLowerCase();
-
 /**
  * Gets configured resume token manager class
  *
@@ -61,7 +60,6 @@ const CHANGE_STREAM_TYPE = args['--type'].toLowerCase();
  */
 const getTokenCollectionManager = async () => {
   const manager = new ResumeTokenCollectionManager();
-
   const db = await MongoClients.getInstance().getClientDatabase(loggerContext, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
 
   manager.setDatabase(db);
@@ -69,7 +67,6 @@ const getTokenCollectionManager = async () => {
 
   return manager;
 };
-
 /**
  * Starts all the watchers aka change streams that have been registered
  */
@@ -129,13 +126,11 @@ const shutdown = async () => {
     }
     await Logger.close();
     let memoryLog = 'Memory Usage: ';
-
     const used: any = process.memoryUsage();
 
     for (const key in used) {
       memoryLog += ` ${key}: ${Math.round((used[key] / 1024 / 1024) * 100) / 100}MB`;
     }
-    console.log(memoryLog);
     process.exit(0);
   } catch (err) {
     logger.error('could not do graceful shutdown in the specified time, exiting forcefully', err);

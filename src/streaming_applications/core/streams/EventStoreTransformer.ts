@@ -30,7 +30,6 @@ export class EventStoreTransformer extends Transform {
     // What should we do if we get a non-insert operation type
     // data.operationType !== 'insert'
     if (data.operationType !== 'insert') {
-      console.log('WE ARE ONLY DEALING WITH INSERT EVENTS');
       newData = {
         _id: data._id,
         event: {

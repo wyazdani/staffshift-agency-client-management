@@ -12,11 +12,11 @@ const env = process.env.NODE_ENV;
       await mongoose.connection.db.dropDatabase(mongoose.connection.db);
       await mongoose.connection.close();
     } else {
-      console.log('Not dropping database env: ', env);
+      console.info('Not dropping database env: ', env);
     }
     process.exit(0);
   } catch (error) {
-    console.log('Error in drop database', error);
+    console.error('Error in drop database', error);
     process.exit(1);
   }
 })();

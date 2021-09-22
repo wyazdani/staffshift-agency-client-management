@@ -27,7 +27,6 @@ const contextSchema = new Schema<EventStoreDocumentType>(
     _id: false
   }
 );
-
 const eventMetaDataSchema = new Schema<EventStoreDocumentType>(
   {
     user_id: {
@@ -50,7 +49,6 @@ const eventMetaDataSchema = new Schema<EventStoreDocumentType>(
     _id: false
   }
 );
-
 const eventStoreSchema = new Schema<EventStoreDocumentType>(
   {
     type: {

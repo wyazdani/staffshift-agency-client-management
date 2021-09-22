@@ -22,7 +22,7 @@
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*"},
-      { "blankLine": "always", "prev": "*", "next": "return" }
+      { "blankLine": "any",    "prev": ["const", "let", "var"], "next": ["const", "let", "var"]}
     ],
     "sort-imports": ["error", {
       "ignoreCase": true,
@@ -31,6 +31,7 @@
       "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
       "allowSeparatedGroups": true
     }],
+    "no-console": ["error", { "allow": ["info", "error"] }],
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": ["error", "always"],
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],

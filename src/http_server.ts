@@ -33,13 +33,11 @@ const pubsubAuditConfig = {
 
 Logger.setup(config.get<GenericObjectInterface>('logger'));
 const serverPort = config.has('server.port') ? config.get('server.port') : 3370;
-
 const app = connect();
 
 MessagePublisher.configure(pubsubAuditConfig);
 // Allow any calls on /docs and /api-docs
 const allowedRegex = '^/docs.*|^/api-docs.*';
-
 // swaggerRouter configuration
 const options = {
   swaggerUi: '/swagger.json',
@@ -69,7 +67,6 @@ mongoose.connection.on('error', (error: Error) => {
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
 // eslint-disable-next-line no-sync
 const spec = fs.readFileSync('./api/swagger.yaml', 'utf8');
-
 const swaggerDoc = load(spec);
 
 // Initialize the Swagger middleware
@@ -184,18 +181,16 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
   server.setTimeout(config.get('server.timeout'));
   server.listen(serverPort, () => {
     // eslint-disable-next-line no-console
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+    console.info('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
     // eslint-disable-next-line no-console
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+    console.info('Swagger-ui is available on http://localhost:%d/docs', serverPort);
   });
 
   const httpTerminator = createHttpTerminator({
     server,
     gracefulTerminationTimeout: config.get('graceful_shutdown.http.server_close_timeout')
   });
-
   const logger = Logger.getContext();
-
   const shutdown = async (): Promise<void> => {
     logger.log('info', 'starting graceful shutdown process');
     //This delay is to make sure k8s iptables are updated and no new request is established.
@@ -207,13 +202,11 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
       logger.log('info', 'server stopped gracefully');
       await Logger.close();
       const used: any = process.memoryUsage();
-
       let memoryLog = 'Memory Usage: ';
 
       for (const key in used) {
         memoryLog += ` ${key}: ${Math.round((+used[key] / 1024 / 1024) * 100) / 100}MB`;
       }
-      console.log(memoryLog);
       process.exit(0);
     } catch (err) {
       logger.log('error', 'could not do graceful shutdown in the specified time, exiting forcefully', err);
