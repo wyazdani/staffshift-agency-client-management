@@ -2,7 +2,7 @@ import {ServerResponse} from 'http';
 import {SwaggerRequest} from 'SwaggerRequest';
 import {get} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyCommandHandler} from '../Agency/AgencyCommandHandler';
+import {AgencyCommandBusFactory} from "../factories/AgencyCommandBusFactory";
 const {ResourceNotFoundError} = require('a24-node-error-utils');
 
 /**
@@ -14,11 +14,11 @@ const {ResourceNotFoundError} = require('a24-node-error-utils');
  */
 module.exports.addAgencyConsultantRole = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
   const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
-  const agency_id = get(req, 'swagger.params.agency_id.value', '');
+  const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyCommandHandler(repository);
+  const agencyCommandBus = AgencyCommandBusFactory.getAgencyCommandBus(repository)
 
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
@@ -28,7 +28,7 @@ module.exports.addAgencyConsultantRole = async (req: SwaggerRequest, res: Server
 
   try {
     // Passing in the agency id here feels strange
-    await handler.apply(agency_id, command);
+    await agencyCommandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -55,7 +55,7 @@ module.exports.updateAgencyConsultantRole = async (req: SwaggerRequest, res: Ser
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyCommandHandler(repository);
+  const agencyCommandBus = AgencyCommandBusFactory.getAgencyCommandBus(repository)
 
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
@@ -65,7 +65,7 @@ module.exports.updateAgencyConsultantRole = async (req: SwaggerRequest, res: Ser
 
   try {
     // Passing in the agency id here feels strange
-    await handler.apply(agencyId, command);
+    await agencyCommandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -91,7 +91,7 @@ module.exports.changeStatusAgencyConsultantRole = async (req: SwaggerRequest, re
   const command_type = get(req, 'swagger.operation.x-octophant-event', '');
 
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyCommandHandler(repository);
+  const agencyCommandBus = AgencyCommandBusFactory.getAgencyCommandBus(repository)
 
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
@@ -101,7 +101,7 @@ module.exports.changeStatusAgencyConsultantRole = async (req: SwaggerRequest, re
 
   try {
     // Passing in the agency id here feels strange
-    await handler.apply(agencyId, command);
+    await agencyCommandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

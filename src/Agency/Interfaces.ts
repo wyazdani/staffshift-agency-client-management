@@ -1,5 +1,6 @@
 import {AggregateEvent} from '../EventRepository';
 import {AgencyCommandEnums, AgencyConsultantRoleEnums, AgencyEventEnums} from './AgencyEnums';
+import {AgencyAggregate} from "./AgencyAggregate";
 
 export interface AgencyConsultantRole {
   _id: string,
@@ -23,7 +24,35 @@ export interface AgencyEvent extends AggregateEvent {
   data: object,
   sequence_id: number
 }
+
+export interface AddAgencyConsultantRoleCommandData {
+  name: string;
+  description: string;
+  max_consultants: number
+}
+
+export interface UpdateAgencyConsultantRoleCommandData {
+  _id: string;
+  name: string;
+  description: string;
+  max_consultants: number
+}
+
+export interface DisableAgencyConsultantRoleCommandData {
+  _id: string
+}
+
+export interface EnableAgencyConsultantRoleCommandData {
+  _id: string
+}
+
+export type AgencyCommandData = AddAgencyConsultantRoleCommandData | DisableAgencyConsultantRoleCommandData | EnableAgencyConsultantRoleCommandData | UpdateAgencyConsultantRoleCommandData;
 export interface AgencyCommand {
   type: AgencyCommandEnums,
-  data: object
+  data: AgencyCommandData
+}
+
+export interface AgencyCommandHandlerInterface {
+  commandType: string;
+  execute(aggregate: AgencyAggregate, commandData: AgencyCommandData): Promise<any>;
 }
