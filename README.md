@@ -12,7 +12,7 @@ Onboarding Documentation can be found [here](https://github.com/A24Group/big-boo
 
 ## JWT
 Use the website https://jwt.io/ to validate your jwt. The secret you need to use will be defined as api_token in config file(Remember this will differ depending on the environment)
-
+```json
 {
   "iss": "apig",
   "sub": "5799b72e8aaf4a18b74c06a6",
@@ -26,6 +26,7 @@ Use the website https://jwt.io/ to validate your jwt. The secret you need to use
   "request_id": "03d3ed15-3184-4722-b258-c189ba5a3123",
   "iat": 1511446361
 }
+```
 
 ## Running the project
 This project has a couple of moving parts. This is a typescript project, config can be found in the `tsconfig.json` file. You will need to execute `npm run build-ts` to transpile to JS code, which is located in the `outDir`.
