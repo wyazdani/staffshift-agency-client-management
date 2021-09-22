@@ -1,10 +1,18 @@
 # staffshift-agency-client-management
 
-Onboarding Documentation can be found [here](https://github.com/A24Group/big-book-of-information/tree/master/onboarding)
+## Developer's Certificate of Origin
+By making a contribution to this project, I certify that:
+
+  (a) The contribution was created in whole or in part by me and I have the right to submit it under the open source license indicated in the file; or
+
+  (b) The contribution is based upon previous work that, to the best of my knowledge, is covered under an appropriate open source license and I have the right under that license to submit that work with modifications, whether created in whole or in part by me, under the same open source license (unless I am permitted to submit under a different license), as indicated in the file; or
+
+  (c) The contribution was provided directly to me by some other person who certified (a), (b) or (c) and I have not modified it.
 
 ## Table Of Contents
 * [Contributing Guidelines](https://github.com/A24Group/big-book-of-information/blob/master/onboarding/contributing.md)
 * [JWT](#jwt)
+* [Onboarding Documentation](https://github.com/A24Group/big-book-of-information/tree/master/onboarding)
 * [Project Design Reference Material](https://github.com/A24Group/big-book-of-information/tree/master/ddd_cqrs_eventsourcing)
 * [Running the project](#running-the-project)
 * [VS Code Settings](#vs-code-settings)
