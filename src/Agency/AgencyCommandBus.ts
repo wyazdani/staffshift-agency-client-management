@@ -1,4 +1,5 @@
-import {AgencyCommand, AgencyCommandHandlerInterface} from './Interfaces';
+import {AgencyCommandHandlerInterface} from './types/AgencyCommandHandlerInterface';
+import {AgencyCommandInterface} from './types';
 
 export class AgencyCommandBus {
   private commandHandlers: AgencyCommandHandlerInterface[] = [];
@@ -8,7 +9,7 @@ export class AgencyCommandBus {
     return this;
   }
 
-  async execute(agencyId: string, command: AgencyCommand): Promise<void> {
+  async execute(agencyId: string, command: AgencyCommandInterface): Promise<void> {
     const commandHandler = this.commandHandlers.find((handler) => handler.commandType === command.type);
 
     if (!commandHandler) {

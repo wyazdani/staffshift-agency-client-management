@@ -2,10 +2,9 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 import {GenericObjectInterface} from 'GenericObjectInterface';
-import {EventRepository} from '../EventRepository';
 
 export class AgencyClientLinkStatus {
-  constructor(private logger: LoggerContext, private agencyClientCommandBus: AgencyClientCommandBus) {}
+  constructor(private logger: typeof LoggerContext, private agencyClientCommandBus: AgencyClientCommandBus) {}
 
   /**
    * Will apply the Triage Domain Event to the related aggregate
