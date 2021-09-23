@@ -1,5 +1,4 @@
-import * as config from 'config';
-const {version} = config.get('exposed_server');
+import config from 'config';
 
 export class LocationHelper {
   /**
@@ -8,6 +7,8 @@ export class LocationHelper {
    * @param path - path to create the relative url
    */
   static getRelativeLocation(path: string): string {
+    const version = config.get<string>('exposed_server.version');
+
     return `/${version}${path}`;
   }
 }

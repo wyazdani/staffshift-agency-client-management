@@ -205,6 +205,7 @@ paths:
       - $ref: "#/parameters/agency_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
+      x-octophant-event: "addAgencyConsultantRole"
       operationId: "addAgencyConsultantRole"
       security:
         - jwt: []
@@ -217,6 +218,12 @@ paths:
             Location:
               description: "URL to retrieve the created Agency Consultant Role"
               type: string
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/add_consultant_roles_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Creates an Agency Consultant Role"
@@ -521,8 +528,10 @@ definitions:
     properties:
       name:
         type: string
+        minLength: 3
       description:
         type: string
+        minLength: 1
       max_consultants:
         type: integer
         minimum: 1
@@ -626,6 +635,41 @@ definitions:
           - RESOURCE_NOT_FOUND
       message:
         type: string
+  add_consultant_roles_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: "string"
+              enum:
+                - "INVALID_TYPE"
+                - "MIN_LENGTH"
+                - "MINIMUM"
+                - "OBJECT_ADDITIONAL_PROPERTIES"
+                - "OBJECT_MISSING_REQUIRED_PROPERTY"
+            message:
+              type: "string"
+            path:
+              type: "array"
+              items:
+                type: "string"
+            description:
+              type: "string"
 responses:
   unauthorize_error_model:
     description: "Failed to authenticate the incoming request"
