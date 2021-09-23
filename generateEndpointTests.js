@@ -2,17 +2,11 @@
 //IMPORTANT If you're getting errors while running this file, try adding this --stack-size=16000 when running the file
 
 const stt = require('swagger-test-templates');
-
 const yaml = require('js-yaml');
-
 const fs = require('fs');
-
 const path = './tests/endpoint/';
-
 const deref = require('json-schema-deref');
-
 let reffedSwagger, swagger;
-
 const config = {
   assertionFormat: 'should',
   testModule: 'supertest',

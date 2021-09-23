@@ -1,12 +1,8 @@
 'use strict';
 const {expect} = require('chai');
-
 const {ensureIndexExists, ensureIndexRemoved} = require('../../helpers/IndexExistsHelper');
-
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
-
 const testSchema = new Schema({
   first_field: {
     type: String,
@@ -17,9 +13,7 @@ const testSchema = new Schema({
     required: true
   }
 });
-
 const TestModel = mongoose.model('Tests', testSchema);
-
 const indexObj = {
   first_field: 1,
   second_field: 1
@@ -27,7 +21,6 @@ const indexObj = {
 
 describe('Index exists helper scenarios', () => {
   const testCollection = TestModel.collection;
-
   const indexesList = async () => await testCollection.indexes();
 
   /**
