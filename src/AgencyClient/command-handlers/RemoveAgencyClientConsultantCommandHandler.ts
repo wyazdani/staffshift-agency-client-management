@@ -6,7 +6,7 @@ import {
   RemoveAgencyClientConsultantCommandDataInterface
 } from '../types';
 
-export class AddAgencyClientConsultantCommandHandler implements AgencyClientCommandHandlerInterface {
+export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
 
   constructor(private agencyClientRepository: AgencyClientRepository) {}
