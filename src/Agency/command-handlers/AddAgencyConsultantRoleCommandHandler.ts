@@ -3,15 +3,19 @@ import {ObjectID} from 'mongodb';
 import {AgencyEventEnums} from '../AgencyEnums';
 import {AgencyCommandEnums} from '../AgencyEnums';
 import {AddAgencyConsultantRoleCommandData, AgencyCommandHandlerInterface} from "../Interfaces";
+import {AgencyRepository} from "../AgencyRepository";
 
 export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
     public commandType = AgencyCommandEnums.ADD_AGENCY_CONSULTANT_ROLE;
 
-    async execute(aggregate: AgencyAggregate, commandData: AddAgencyConsultantRoleCommandData) {
+    constructor(private agencyRepository: AgencyRepository) {}
+
+    async execute(agencyId: string, commandData: AddAgencyConsultantRoleCommandData) {
+        const aggregate = await this.agencyRepository.getAggregate(agencyId);
         let eventId = aggregate.getLastEventId();
         // We are looking to auto enable newly created consultant roles hence the two events
         const consultantId = (new ObjectID).toString();
-        return [
+        await this.agencyRepository.save([
             {
                 type: AgencyEventEnums.AGENCY_CONSULTANT_ROLE_ADDED,
                 aggregate_id: aggregate.getId(),
@@ -31,6 +35,6 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
                 },
                 sequence_id: ++eventId
             }
-        ];
+        ]);
     }
 }

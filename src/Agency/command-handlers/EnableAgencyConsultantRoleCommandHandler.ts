@@ -1,22 +1,25 @@
 import {AgencyCommandEnums, AgencyEventEnums} from '../AgencyEnums';
-import {AgencyAggregate} from '../AgencyAggregate';
 import {AgencyCommandHandlerInterface, EnableAgencyConsultantRoleCommandData} from "../Interfaces";
+import {AgencyRepository} from "../AgencyRepository";
 
 export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
     public commandType = AgencyCommandEnums.ENABLE_AGENCY_CONSULTANT_ROLE;
 
-    async execute(aggregate: AgencyAggregate, commandData: EnableAgencyConsultantRoleCommandData) {
-        let eventId = aggregate.getLastEventId();
+    constructor(private agencyRepository: AgencyRepository) {}
+
+    async execute(agencyId: string, commandData: EnableAgencyConsultantRoleCommandData) {
+        const aggregate = await this.agencyRepository.getAggregate(agencyId);
+        const eventId = aggregate.getLastEventId();
         if (!aggregate.canEnableConsultantRole(commandData._id)) {
-            return [];
+            return;
         }
-        return [{
+        await this.agencyRepository.save([{
             type: AgencyEventEnums.AGENCY_CONSULTANT_ROLE_ENABLED,
             aggregate_id: aggregate.getId(),
             data: {
                 _id: commandData._id
             },
-            sequence_id: ++eventId
-        }];
+            sequence_id: eventId + 1
+        }]);
     }
 }

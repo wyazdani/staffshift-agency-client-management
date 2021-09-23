@@ -1,6 +1,5 @@
 import {AggregateEvent} from '../EventRepository';
 import {AgencyCommandEnums, AgencyConsultantRoleEnums, AgencyEventEnums} from './AgencyEnums';
-import {AgencyAggregate} from "./AgencyAggregate";
 
 export interface AgencyConsultantRole {
   _id: string,
@@ -54,5 +53,5 @@ export interface AgencyCommand {
 
 export interface AgencyCommandHandlerInterface {
   commandType: string;
-  execute(aggregate: AgencyAggregate, commandData: AgencyCommandData): Promise<any>;
+  execute(agencyId: string, commandData: AgencyCommandData): Promise<any>;
 }

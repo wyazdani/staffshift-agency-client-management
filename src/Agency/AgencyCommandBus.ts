@@ -1,10 +1,7 @@
 import {AgencyCommand, AgencyCommandHandlerInterface} from './Interfaces';
-import {AgencyRepository} from "./AgencyRepository";
 
 export class AgencyCommandBus {
     private commandHandlers: AgencyCommandHandlerInterface[] = []
-
-    constructor(private agencyRepository: AgencyRepository) {}
 
     addHandler(commandHandler: AgencyCommandHandlerInterface) {
         this.commandHandlers.push(commandHandler);
@@ -17,8 +14,6 @@ export class AgencyCommandBus {
             throw new Error(`Command type:${command.type} is not supported`);
         }
 
-        const aggregate = await this.agencyRepository.getAggregate(agencyId);
-        const newEvents = await commandHandler.execute(aggregate, command.data);
-        await this.agencyRepository.save(newEvents);
+        await commandHandler.execute(agencyId, command.data);
     }
 }
