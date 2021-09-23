@@ -36,16 +36,17 @@ describe('Index exists helper scenarios', () => {
       second_field: 'two'
     });
     const indexesDropped = await testCollection.dropIndexes();
+
     expect(indexesDropped).to.be.equal(true);
     expect(await indexesList()).to.have.lengthOf(1);
   });
 
-  it ('should create an index that doesn\'t exist', async () => {
+  it('should create an index that doesn\'t exist', async () => {
     await ensureIndexExists(testCollection, indexObj, null);
     expect(await indexesList()).to.have.lengthOf(2);
   });
 
-  it ('should not be able to create an index that does exist', async () => {
+  it('should not be able to create an index that does exist', async () => {
     await testCollection.createIndex(indexObj);
     expect(await indexesList()).to.have.lengthOf(2);
 
@@ -55,7 +56,7 @@ describe('Index exists helper scenarios', () => {
     expect(await indexesList()).to.have.lengthOf(2);
   });
 
-  it ('should drop an index that does exist', async () => {
+  it('should drop an index that does exist', async () => {
     await testCollection.createIndex(indexObj);
     expect(await indexesList()).to.have.lengthOf(2);
 
@@ -63,7 +64,7 @@ describe('Index exists helper scenarios', () => {
     expect(await indexesList()).to.have.lengthOf(1);
   });
 
-  it ('should not be able to drop an index that doesn\'t exist', async () => {
+  it('should not be able to drop an index that doesn\'t exist', async () => {
     const indexExists = await ensureIndexRemoved(testCollection, indexObj, null);
 
     expect(indexExists).to.be.equal(false);

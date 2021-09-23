@@ -1,7 +1,7 @@
-import _ from 'lodash';
+import {get} from 'lodash';
 import {ServerResponse} from 'http';
-import {SwaggerRequest} from "SwaggerRequest";
-const {QueryHelper, LinkHeaderHelper} = require('a24-node-query-utils');
+import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
+import {QueryHelper, LinkHeaderHelper} from 'a24-node-query-utils';
 
 /**
  * Class responsible for managing pagination related functionality
@@ -14,15 +14,16 @@ export class PaginationHelper {
    * @param {IncomingMessage} res - The http response object
    * @param {Number} count - The total number of records
    */
-  static setPaginationHeaders(req: SwaggerRequest, res: ServerResponse, count: number) {
-    const swaggerParams = _.get(req, 'swagger.params', {});
+  static setPaginationHeaders(req: SwaggerRequestInterface, res: ServerResponse, count: number): void {
+    const swaggerParams = get(req, 'swagger.params', {});
     const relLinkOptions = {
       count,
       url: req.basePathName,
-      page: _.get(swaggerParams, 'page.value'),
-      items_per_page: _.get(swaggerParams, 'items_per_page.value'),
+      page: get(swaggerParams, 'page.value'),
+      items_per_page: get(swaggerParams, 'items_per_page.value'),
       query_string: QueryHelper.getQueryAndSortingString(swaggerParams)
     };
+
     // If there are no items there is no content
     if (count > 0) {
       res.setHeader('Content-Type', 'application/json');

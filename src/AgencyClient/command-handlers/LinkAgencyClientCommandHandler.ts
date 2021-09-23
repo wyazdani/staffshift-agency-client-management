@@ -1,24 +1,28 @@
-import {AgencyClientCommandHandlerInterface, LinkAgencyClientCommandData} from '../Interfaces';
-import {AgencyClientCommandEnum, AgencyClientEventType} from '../AgencyClientEnums';
 import {AgencyClientRepository} from '../AgencyClientRepository';
+import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
+import {AgencyClientCommandEnum, AgencyClientEventEnum, LinkAgencyClientCommandDataInterface} from '../types';
 
 export class LinkAgencyClientCommandHandler implements AgencyClientCommandHandlerInterface {
-    public commandType = AgencyClientCommandEnum.LINK_AGENCY_CLIENT;
+  public commandType = AgencyClientCommandEnum.LINK_AGENCY_CLIENT;
 
-    constructor(private agencyClientRepository: AgencyClientRepository) {}
+  constructor(private agencyClientRepository: AgencyClientRepository) {}
 
-    async execute(agencyId: string, clientId: string, commandData: LinkAgencyClientCommandData): Promise<void> {
-        const aggregate = await this.agencyClientRepository.getAggregate(agencyId, clientId);
+  async execute(agencyId: string, clientId: string, commandData: LinkAgencyClientCommandDataInterface): Promise<void> {
+    const aggregate = await this.agencyClientRepository.getAggregate(agencyId, clientId);
 
-        const isNotLinked = !aggregate.isLinked();
-        if (isNotLinked) {
-            const eventId = aggregate.getLastEventId();
-            await this.agencyClientRepository.save([{
-                type: AgencyClientEventType.AGENCY_CLIENT_LINKED,
-                aggregate_id: aggregate.getId(),
-                data: {...commandData},
-                sequence_id: eventId + 1
-            }]);
+    const isNotLinked = !aggregate.isLinked();
+
+    if (isNotLinked) {
+      const eventId = aggregate.getLastEventId();
+
+      await this.agencyClientRepository.save([
+        {
+          type: AgencyClientEventEnum.AGENCY_CLIENT_LINKED,
+          aggregate_id: aggregate.getId(),
+          data: {...commandData},
+          sequence_id: eventId + 1
         }
+      ]);
     }
+  }
 }

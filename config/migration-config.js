@@ -11,4 +11,3 @@ module.exports = {
   mongoUri: config.get('mongo.database_host'),
   migrationCollection: 'migrations'
 };
-

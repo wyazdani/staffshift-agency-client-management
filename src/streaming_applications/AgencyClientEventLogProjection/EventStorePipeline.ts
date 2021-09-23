@@ -1,5 +1,5 @@
-import {Pipeline, WatchHandler} from '../core/Pipeline';
-import {PIPELINE_TYPES, STREAM_TYPES} from '../core/ChangeStreamEnums';
+import {PipelineInterface, WatchHandlerInterface} from '../core/Pipeline';
+import {PIPELINE_TYPES_ENUM, STREAM_TYPES_ENUM} from '../core/ChangeStreamEnums';
 import {MongoClients} from '../core/MongoClients';
 import {LoggerContext} from 'a24-logzio-winston';
 import {ResumeTokenCollectionManager} from '../core/ResumeTokenCollectionManager';
@@ -12,10 +12,11 @@ import {EventStoreTransformer} from '../core/streams/EventStoreTransformer';
 import {EventRepository} from '../../EventRepository';
 
 const HIGH_WATER_MARK = 5;
+
 /**
  * Responsible for aggregating agency candidate details
  */
-export class EventStorePipeline implements Pipeline {
+export class EventStorePipeline implements PipelineInterface {
   getID(): string {
     return 'agency_client_event_log_event_store';
   }
@@ -32,8 +33,8 @@ export class EventStorePipeline implements Pipeline {
    *
    * @returns {String}
    */
-  getType(): PIPELINE_TYPES {
-    return PIPELINE_TYPES.CORE;
+  getType(): PIPELINE_TYPES_ENUM {
+    return PIPELINE_TYPES_ENUM.CORE;
   }
   /**
    * Initiates and process change stream events
@@ -42,12 +43,21 @@ export class EventStorePipeline implements Pipeline {
    * @param {MongoClients} clientManager - Client manager for mongodb connections
    * @param {ResumeTokenCollectionManager} tokenManager - Instance of ResumeTokenCollectionManager class
    */
-  async watch(logger: LoggerContext, clientManager: MongoClients, tokenManager: ResumeTokenCollectionManager): Promise<WatchHandler> {
+  async watch(
+    logger: typeof LoggerContext,
+    clientManager: MongoClients,
+    tokenManager: ResumeTokenCollectionManager
+  ): Promise<WatchHandlerInterface> {
     const eventRepository = new EventRepository(EventStore, logger.requestId);
-    const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES.WATCH);
+    const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES_ENUM.WATCH);
     const watchDb = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
-    logger.info('Collection watch initiated', {collection: EventStore.collection.name, pipeline_id: this.getID(), stream_type: STREAM_TYPES.WATCH});
+
+    logger.info('Collection watch initiated', {
+      collection: EventStore.collection.name,
+      pipeline_id: this.getID(),
+      stream_type: STREAM_TYPES_ENUM.WATCH
+    });
 
     const eventStoreTransformer = new EventStoreTransformer({highWaterMark: HIGH_WATER_MARK});
     //set options to initialize streams
@@ -59,7 +69,10 @@ export class EventStorePipeline implements Pipeline {
       logger: logger
     };
     const projectionTransformer = new AgencyClientEventLogProjection(opts);
-    const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES.WATCH, {highWaterMark: HIGH_WATER_MARK});
+    const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES_ENUM.WATCH, {
+      highWaterMark: HIGH_WATER_MARK
+    });
+
     StreamEventHandlers.attachEventHandlers(logger, watchStream);
 
     watchStream
@@ -68,7 +81,8 @@ export class EventStorePipeline implements Pipeline {
       .pipe(StreamEventHandlers.attachEventHandlers(logger, tokenWriterStream));
 
     const className = this.constructor.name;
-    return new class implements WatchHandler {
+
+    return new (class implements WatchHandlerInterface {
       /**
        * Shutdown the pipeline
        * Mongodb ChangeStream does not propagate close event through the pipeline, we need to call .end() manually
@@ -78,6 +92,7 @@ export class EventStorePipeline implements Pipeline {
        */
       shutdown() {
         logger.info(`pipeline ${className} starting shutdown`);
+
         return new Promise<void>((resolve) => {
           tokenWriterStream.on('finish', () => {
             logger.info(`pipeline ${className} finished shutdown`);
@@ -86,6 +101,6 @@ export class EventStorePipeline implements Pipeline {
           watchStream.close(() => eventStoreTransformer.end());
         });
       }
-    };
+    })();
   }
 }

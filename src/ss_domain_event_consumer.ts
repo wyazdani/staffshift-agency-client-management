@@ -1,21 +1,25 @@
-const config = require('config');
+import config from 'config';
 import Logger from 'a24-logzio-winston';
-Logger.setup(config.logger); // Setup logger
+import {MessageProcessor} from 'a24-node-pubsub';
+import {GenericObjectInterface} from 'GenericObjectInterface';
+import mongoose from 'mongoose';
+
+Logger.setup(config.get('logger')); // Setup logger
 const loggerContext = Logger.getContext('startup');
-const mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
 
-const {MessageProcessor} = require('a24-node-pubsub');
+const mongoConfig = config.get<GenericObjectInterface>('mongo');
 
-mongoose.connect(config.mongo.database_host, config.mongo.options);
-mongoose.connection.on(
-  'error',
-  function mongooseConnection(error: Error) {
-    const loggerContext = Logger.getContext('startup');
-    loggerContext.error('MongoDB connection error', error);
-    return process.exit(1);
-  }
-);
+mongoose.connect(mongoConfig.database_host, mongoConfig.options);
+
+mongoose.connection.on('error', (error: Error) => {
+  const loggerContext = Logger.getContext('startup');
+
+  loggerContext.error('MongoDB connection error', error);
+
+  return process.exit(1);
+});
 
 // Setup message processor
 const processorConfig = {
@@ -29,14 +33,15 @@ const processorConfig = {
 const mp = new MessageProcessor(processorConfig);
 
 // Add event listeners for message processor
-mp.on('error', function messageProcessorErrorHandler(err: Error) {
+mp.on('error', (err: Error) => {
   loggerContext.error('Fatal message consumption error', err);
   process.exit(1);
 });
 
-mp.configure(function configureDone(err: Error) {
+mp.configure((err: Error) => {
   if (err) {
     loggerContext.error('Google pubsub configuration error', err);
+
     return process.exit(1);
   }
 

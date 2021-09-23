@@ -3,7 +3,7 @@
  *
  * @see https://docs.mongodb.com/manual/reference/change-events/
  */
-export enum CHANGE_STREAM_EVENTS {
+export enum CHANGE_STREAM_EVENTS_ENUM {
   SEED = 'seed',
   SYNC = 'sync',
   INSERT = 'insert',
@@ -14,7 +14,7 @@ export enum CHANGE_STREAM_EVENTS {
 /**
  * Enums reflecting the pipeline types that are supported
  */
-export enum PIPELINE_TYPES {
+export enum PIPELINE_TYPES_ENUM {
   CORE = 'core',
   ENRICHMENT = 'enrichment'
 }
@@ -22,7 +22,7 @@ export enum PIPELINE_TYPES {
 /**
  * Enums reflecting the stream types
  */
-export enum STREAM_TYPES {
+export enum STREAM_TYPES_ENUM {
   WATCH = 'watch',
   SEED = 'seed'
 }

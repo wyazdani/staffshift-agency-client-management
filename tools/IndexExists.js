@@ -10,9 +10,9 @@
 const generateIndexName = (indexKeys) => {
   const keys = Object.keys(indexKeys);
 
-  return keys.length > 1 ? keys.reduce((acc, curr, index) => {
-    return acc + `${index === 1 ? `_${indexKeys[acc]}` : ''}_${curr}_${indexKeys[curr]}`;
-  }) : `${keys[0]}_${indexKeys[keys[0]]}`;
+  return keys.length > 1
+    ? keys.reduce((acc, curr, index) => acc + `${index === 1 ? `_${indexKeys[acc]}` : ''}_${curr}_${indexKeys[curr]}`)
+    : `${keys[0]}_${indexKeys[keys[0]]}`;
 };
 
 /**
@@ -32,9 +32,10 @@ module.exports = {
    * }
    * @param {Object} options - the possible indexing options
    */
-  ensureIndexExists: async(collection, indexesKeys, options) => {
+  ensureIndexExists: async (collection, indexesKeys, options) => {
     const indexName = options && options.name ? options.name : generateIndexName(indexesKeys);
     const doesExist = await collection.indexExists(indexName);
+
     if (doesExist) {
       return doesExist;
     } else {
@@ -51,9 +52,10 @@ module.exports = {
    * } (make sure to include the name within the options here if a name is specified above)
    * @param {Object} options - the possible options
    */
-  ensureIndexRemoved: async(collection, indexesKeys, options) => {
+  ensureIndexRemoved: async (collection, indexesKeys, options) => {
     const indexName = options && options.name ? options.name : generateIndexName(indexesKeys);
     const doesExist = await collection.indexExists(indexName);
+
     if (!doesExist) {
       return doesExist;
     } else {
