@@ -9,17 +9,19 @@ import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
 import config from 'config';
 
-export default async (
-  logger: typeof LoggerContext,
-  message: GenericObjectInterface,
-  metadata: GenericObjectInterface,
-  callback: (error?: Error) => void
-): Promise<void> => {
-  process(logger, message)
-    .then(() => IncomingDomainEvents.create(message))
-    .then(() => callback())
-    .catch((err) => callback(err));
-};
+const getEventMeta = async (logger: typeof LoggerContext, token: string): Promise<EventMetaInterface> =>
+  new Promise((resolve, reject) =>
+    JWTSecurityHelper.jwtVerification(token, config.get<string>('api_token'), (err, response) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve({
+        user_id: response.decoded.sub || 'system',
+        client_id: response.decoded.client_id,
+        context: response.decoded.context
+      });
+    })
+  );
 
 const process = async (logger: typeof LoggerContext, message: GenericObjectInterface) => {
   const eventName = (message.event as GenericObjectInterface).name as string;
@@ -48,16 +50,15 @@ const process = async (logger: typeof LoggerContext, message: GenericObjectInter
       logger.info('UnHandled Agency Client Event', {event_name: eventName});
   }
 };
-const getEventMeta = async (logger: typeof LoggerContext, token: string): Promise<EventMetaInterface> =>
-  new Promise((resolve, reject) =>
-    JWTSecurityHelper.jwtVerification(token, config.get<string>('api_token'), (err, response) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve({
-        user_id: response.decoded.sub || 'system',
-        client_id: response.decoded.client_id,
-        context: response.decoded.context
-      });
-    })
-  );
+
+module.exports = async (
+  logger: typeof LoggerContext,
+  message: GenericObjectInterface,
+  metadata: GenericObjectInterface,
+  callback: (error?: Error) => void
+): Promise<void> => {
+  process(logger, message)
+    .then(() => IncomingDomainEvents.create(message))
+    .then(() => callback())
+    .catch((err) => callback(err));
+};
