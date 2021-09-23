@@ -3,6 +3,9 @@ import {SwaggerRequest} from 'SwaggerRequest';
 import {get} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyCommandBusFactory} from "../factories/AgencyCommandBusFactory";
+import {LocationHelper} from "../helpers/LocationHelper";
+import {AgencyCommandEnums} from "../Agency/AgencyEnums";
+import {ObjectID} from "mongodb";
 const {ResourceNotFoundError} = require('a24-node-error-utils');
 
 /**
@@ -15,24 +18,27 @@ const {ResourceNotFoundError} = require('a24-node-error-utils');
 module.exports.addAgencyConsultantRole = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
   const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const command_type = get(req, 'swagger.operation.x-octophant-event', '');
+  const command_type = AgencyCommandEnums.ADD_AGENCY_CONSULTANT_ROLE;
 
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
   const agencyCommandBus = AgencyCommandBusFactory.getAgencyCommandBus(repository)
-
+  const roleId = (new ObjectID).toString();
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
     type: command_type,
-    data: payload
+    data: {
+      ... payload,
+      id: roleId
+    }
   };
 
   try {
     // Passing in the agency id here feels strange
     await agencyCommandBus.execute(agencyId, command);
     // This needs to be centralised and done better
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
+    res.statusCode = 202;
+    res.setHeader('Location', LocationHelper.getRelativeLocation(`/agency/${agencyId}/consultant-roles/${roleId}`));
+    res.end();
   } catch (err) {
     // This needs to be centralised and done better
     console.log('ERR THERE WAS', err);

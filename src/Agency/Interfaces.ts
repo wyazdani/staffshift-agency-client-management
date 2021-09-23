@@ -25,6 +25,7 @@ export interface AgencyEvent extends AggregateEvent {
 }
 
 export interface AddAgencyConsultantRoleCommandData {
+  id: string,
   name: string;
   description: string;
   max_consultants: number

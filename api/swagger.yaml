@@ -205,7 +205,6 @@ paths:
       - $ref: "#/parameters/agency_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
-      x-octophant-event: "addAgencyConsultantRole"
       operationId: "addAgencyConsultantRole"
       security:
         - jwt: []
@@ -214,8 +213,10 @@ paths:
       responses:
         200:
           description: "Creates an Agency Consultant Role"
-          schema:
-            $ref: "#/definitions/agency_consultant_role_item_def"
+          headers:
+            Location:
+              description: "URL to retrieve the created Agency Consultant Role"
+              type: string
         default:
           $ref: "#/responses/server_error_model"
       summary: "Creates an Agency Consultant Role"
