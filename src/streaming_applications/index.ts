@@ -1,5 +1,6 @@
+import AgencyClientConsultant from './AgencyClientConsultant/watch';
+import AgencyClientsProjection from './AgencyClientsProjection/watch';
+import AgencyClientEventLogProjection from './AgencyClientEventLogProjection/watch';
+const watcherListing = [AgencyClientConsultant, AgencyClientsProjection, AgencyClientEventLogProjection];
 
-const AgencyClientConsultant = require('./AgencyClientConsultant/watch');
-const AgencyClientsProjection = require('./AgencyClientsProjection/watch');
-const watcherListing = [AgencyClientConsultant, AgencyClientsProjection];
 export default watcherListing;

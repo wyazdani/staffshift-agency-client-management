@@ -1,4 +1,3 @@
-
 'use strict';
 const config = require('config');
 const keyFile = config.get('tracing.key_file');
@@ -23,6 +22,7 @@ function setSpanName(span, request) {
 }
 
 const provider = new NodeTracerProvider();
+
 provider.register();
 registerInstrumentations({
   tracerProvider: provider,
@@ -38,6 +38,7 @@ registerInstrumentations({
   ]
 });
 const exporter = new TraceExporter({
-  ... keyFile && {keyFile}
+  ...(keyFile && {keyFile})
 });
+
 provider.addSpanProcessor(new BatchSpanProcessor(exporter));

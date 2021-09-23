@@ -3,23 +3,27 @@ import ZSchema from 'z-schema';
 import {AgencyClientsProjectionScenarios} from './scenarios/AgencyClientsProjectionScenarios';
 import {assert} from 'chai';
 import {api} from '../tools/TestUtilsApi';
-import {getJWT} from "../tools/TestUtilsJwt";
+import {getJWT} from '../tools/TestUtilsJwt';
+
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
-describe('/agency/{agency_id}/clients', function () {
+
+describe('/agency/{agency_id}/clients', () => {
   const jwtToken = getJWT();
   const headers = {
     'x-request-jwt': jwtToken,
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
     'X-Request-Id': '123'
   };
-  describe('get', function () {
+
+  describe('get', () => {
     const agencyId = '6141caa0d51653b8f4000001';
-    beforeEach(async function () {
+
+    beforeEach(async () => {
       await AgencyClientsProjectionScenarios.removeAll();
     });
-    it('should respond with 200 success response.', async function () {
+    it('should respond with 200 success response.', async () => {
       /*eslint-disable*/
       const schema = {
         "type": "array",
@@ -66,12 +70,13 @@ describe('/agency/{agency_id}/clients', function () {
           "additionalProperties": false
         }
       };
+
       /*eslint-enable*/
       await AgencyClientsProjectionScenarios.createRecord({
         agency_id: agencyId
       });
-      const res = await api.get(`/agency/${agencyId}/clients`)
-        .set(headers);
+      const res = await api.get(`/agency/${agencyId}/clients`).set(headers);
+
       res.statusCode.should.to.equal(200);
       validator.validate(res.body, schema).should.to.be.true;
       assert.equal(res.body[0].agency_id, agencyId);

@@ -1,10 +1,21 @@
-import {LoggerContext, LogLevel} from "a24-logzio-winston";
+import {LoggerContext, LogLevel} from 'a24-logzio-winston';
 import {SinonSpy} from 'sinon';
 
-class Logger implements LoggerContext {
-  constructor(private logSpy: SinonSpy) {
-  }
-  readonly logLevels: { INFO: "info"; CRITICAL: "crit"; ERROR: "error"; WARN: "warning"; NOTICE: "notice"; DEBUG: "debug"; EMERGENCY: "emerg"; ALERT: "alert" };
+type LoggerContextType = typeof LoggerContext;
+
+class Logger implements LoggerContextType {
+  constructor(private logSpy: SinonSpy) {}
+
+  readonly logLevels: {
+    INFO: 'info';
+    CRITICAL: 'crit';
+    ERROR: 'error';
+    WARN: 'warning';
+    NOTICE: 'notice';
+    DEBUG: 'debug';
+    EMERGENCY: 'emerg';
+    ALERT: 'alert';
+  };
   readonly requestId: string;
 
   alert(message: string, object?: any): void {
@@ -31,11 +42,11 @@ class Logger implements LoggerContext {
     this.logSpy(message, object);
   }
 
-  log(level: LogLevel, message: string, object?: any): void {
+  log(level: typeof LogLevel, message: string, object?: any): void {
     this.logSpy(message, object);
   }
 
-  logAction(level: LogLevel, message: string, object?: any): void {
+  logAction(level: typeof LogLevel, message: string, object?: any): void {
     this.logSpy(message, object);
   }
 
@@ -46,11 +57,10 @@ class Logger implements LoggerContext {
   warning(message: string, object?: any): void {
     this.logSpy(message, object);
   }
-
 }
 
 export class TestUtilsLogger {
-  static getLogger(logSpy: SinonSpy): LoggerContext {
+  static getLogger(logSpy: SinonSpy): typeof LoggerContext {
     return new Logger(logSpy);
   }
 }

@@ -1,9 +1,9 @@
 import {Transform, TransformCallback, TransformOptions} from 'stream';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 /**
  * Convert a standard delta change stream event into an upsert structure that can be used
  */
 export class EventStoreTransformer extends Transform {
-
   constructor(opts: TransformOptions) {
     // We only cater for object mode
     opts.objectMode = true;
@@ -13,8 +13,10 @@ export class EventStoreTransformer extends Transform {
   /**
    *
    * @param {Object} data - The chunk to be transformed. Will be object since we operate in object mode
-   * @param {*} encoding - If the chunk is a string, then this is the encoding type. If data is a buffer, then this is the special value - 'buffer', ignore it in this case.
-   * @param {function} callback A callback function (optionally with an error argument and data) to be called after the supplied data has been processed.
+   * @param {*} encoding - If the chunk is a string, then this is the encoding type.
+   * If data is a buffer, then this is the special value - 'buffer', ignore it in this case.
+   * @param {function} callback A callback function (optionally with an error argument and data) to be called
+   * after the supplied data has been processed.
    *
    * @returns {Object} - The transformed event in the format
    * {
@@ -22,12 +24,12 @@ export class EventStoreTransformer extends Transform {
    *  event: <full document>
    * }
    */
-  _transform(data: any, encoding: any, callback: TransformCallback) {
+  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
     let newData = {};
+
     // What should we do if we get a non-insert operation type
     // data.operationType !== 'insert'
     if (data.operationType !== 'insert') {
-      console.log('WE ARE ONLY DEALING WITH INSERT EVENTS');
       newData = {
         _id: data._id,
         event: {

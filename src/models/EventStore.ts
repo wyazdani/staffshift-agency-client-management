@@ -1,14 +1,16 @@
 import {Document, Schema, model} from 'mongoose';
-export type EventStoreDocument = Document & {
-  type: string,
-  aggregate_id: Object,
-  data: Object,
-  sequence_id: number,
-  created_at: Date,
-  updated_at: Date
+import {GenericObjectInterface} from 'GenericObjectInterface';
+
+export type EventStoreDocumentType = Document & {
+  type: string;
+  aggregate_id: GenericObjectInterface;
+  data: GenericObjectInterface;
+  sequence_id: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
-const contextSchema = new Schema<EventStoreDocument>(
+const contextSchema = new Schema<EventStoreDocumentType>(
   {
     type: {
       type: String,
@@ -25,8 +27,7 @@ const contextSchema = new Schema<EventStoreDocument>(
     _id: false
   }
 );
-
-const eventMetaDataSchema = new Schema<EventStoreDocument>(
+const eventMetaDataSchema = new Schema<EventStoreDocumentType>(
   {
     user_id: {
       type: String,
@@ -48,8 +49,7 @@ const eventMetaDataSchema = new Schema<EventStoreDocument>(
     _id: false
   }
 );
-
-const eventStoreSchema = new Schema<EventStoreDocument>(
+const eventStoreSchema = new Schema<EventStoreDocumentType>(
   {
     type: {
       type: String,
@@ -95,4 +95,4 @@ const eventStoreSchema = new Schema<EventStoreDocument>(
 /**
  * Defines the model for the Event Store
  */
-export const EventStore = model<EventStoreDocument>('EventStore', eventStoreSchema);
+export const EventStore = model<EventStoreDocumentType>('EventStore', eventStoreSchema);
