@@ -1,0 +1,10 @@
+import {AddAgencyConsultantRoleCommandDataInterface} from './AddAgencyConsultantRoleCommandDataInterface';
+import {DisableAgencyConsultantRoleCommandDataInterface} from './DisableAgencyConsultantRoleCommandDataInterface';
+import {EnableAgencyConsultantRoleCommandDataInterface} from './EnableAgencyConsultantRoleCommandDataInterface';
+import {UpdateAgencyConsultantRoleCommandDataInterface} from './UpdateAgencyConsultantRoleCommandDataInterface';
+export {
+  AddAgencyConsultantRoleCommandDataInterface,
+  DisableAgencyConsultantRoleCommandDataInterface,
+  EnableAgencyConsultantRoleCommandDataInterface,
+  UpdateAgencyConsultantRoleCommandDataInterface
+};

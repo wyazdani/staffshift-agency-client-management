@@ -1,7 +1,7 @@
 import {ObjectID} from 'mongodb';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
-import {AddAgencyConsultantRoleCommandDataInterface} from '../types/AddAgencyConsultantRoleCommandDataInterface';
+import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {AgencyCommandEnum, AgencyEventEnum} from '../types';
 
 export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {

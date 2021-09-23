@@ -1,7 +1,7 @@
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AgencyCommandEnum, AgencyEventEnum} from '../types';
-import {UpdateAgencyConsultantRoleCommandDataInterface} from '../types/UpdateAgencyConsultantRoleCommandDataInterface';
+import {UpdateAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 
 export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
   public commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;

@@ -1,16 +1,5 @@
 import {AgencyClientCommandEnum} from './AgencyClientCommandEnum';
-import {LinkAgencyClientCommandDataInterface} from './LinkAgencyClientCommandDataInterface';
-import {UnlinkAgencyClientCommandDataInterface} from './UnlinkAgencyClientCommandDataInterface';
-import {AddAgencyClientConsultantCommandDataInterface} from './AddAgencyClientConsultantCommandDataInterface';
-import {RemoveAgencyClientConsultantCommandDataInterface} from './RemoveAgencyClientConsultantCommandDataInterface';
-import {SyncAgencyClientCommandDataInterface} from './SyncAgencyClientCommandDataInterface';
-
-type AgencyClientCommandDataType =
-  | LinkAgencyClientCommandDataInterface
-  | UnlinkAgencyClientCommandDataInterface
-  | AddAgencyClientConsultantCommandDataInterface
-  | RemoveAgencyClientConsultantCommandDataInterface
-  | SyncAgencyClientCommandDataInterface;
+import {AgencyClientCommandDataType} from './AgencyClientCommandDataType';
 
 export interface AgencyClientCommandInterface {
   type: AgencyClientCommandEnum;

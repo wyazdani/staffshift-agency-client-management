@@ -1,8 +1,8 @@
-import {AddAgencyClientConsultantCommandDataInterface} from './AddAgencyClientConsultantCommandDataInterface';
-import {LinkAgencyClientCommandDataInterface} from './LinkAgencyClientCommandDataInterface';
-import {RemoveAgencyClientConsultantCommandDataInterface} from './RemoveAgencyClientConsultantCommandDataInterface';
-import {SyncAgencyClientCommandDataInterface} from './SyncAgencyClientCommandDataInterface';
-import {UnlinkAgencyClientCommandDataInterface} from './UnlinkAgencyClientCommandDataInterface';
+import {AddAgencyClientConsultantCommandDataInterface} from './CommandDataTypes/AddAgencyClientConsultantCommandDataInterface';
+import {LinkAgencyClientCommandDataInterface} from './CommandDataTypes/LinkAgencyClientCommandDataInterface';
+import {RemoveAgencyClientConsultantCommandDataInterface} from './CommandDataTypes/RemoveAgencyClientConsultantCommandDataInterface';
+import {SyncAgencyClientCommandDataInterface} from './CommandDataTypes/SyncAgencyClientCommandDataInterface';
+import {UnlinkAgencyClientCommandDataInterface} from './CommandDataTypes/UnlinkAgencyClientCommandDataInterface';
 
 export type AgencyClientCommandDataType =
   | AddAgencyClientConsultantCommandDataInterface

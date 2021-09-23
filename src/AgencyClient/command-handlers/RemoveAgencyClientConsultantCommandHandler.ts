@@ -1,10 +1,7 @@
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
-import {
-  AgencyClientCommandEnum,
-  AgencyClientEventEnum,
-  RemoveAgencyClientConsultantCommandDataInterface
-} from '../types';
+import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
+import {RemoveAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
 
 export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
