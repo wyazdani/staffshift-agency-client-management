@@ -5,6 +5,7 @@ import {JWTSecurityHelper} from '../helpers/JWTSecurityHelper';
 import {EventMeta, EventRepository} from '../EventRepository';
 import {v4 as uuidv4} from 'uuid';
 import {EventStore} from '../models/EventStore';
+import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
 const config = require('config');
 
 module.exports = async (logger: LoggerContext, message: any, metadata: any, callback: Function) => {
@@ -33,7 +34,8 @@ async function process(logger: LoggerContext, message: any) {
     case 'agency_organisation_site_ward_link_created':
     case 'agency_organisation_site_ward_link_deleted':
     case 'agency_organisation_site_ward_link_status_changed': {
-      const handler = new AgencyClientLinkStatus(logger, eventRepository);
+      const agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository);
+      const handler = new AgencyClientLinkStatus(logger, agencyClientCommandBus);
       return handler.apply(message);
     }
     default:

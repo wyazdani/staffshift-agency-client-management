@@ -7,7 +7,7 @@ export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHa
 
     constructor(private agencyRepository: AgencyRepository) {}
 
-    async execute(agencyId: string, commandData: UpdateAgencyConsultantRoleCommandData) {
+    async execute(agencyId: string, commandData: UpdateAgencyConsultantRoleCommandData): Promise<void> {
         const aggregate = await this.agencyRepository.getAggregate(agencyId);
         const eventId = aggregate.getLastEventId();
         await this.agencyRepository.save([{

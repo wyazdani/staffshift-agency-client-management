@@ -1,9 +1,8 @@
 const config = require('config');
 const Logger = require('a24-logzio-winston');
+import {AgencyClientCommandBusFactory} from '../../factories/AgencyClientCommandBusFactory';
 import {FacadeClientHelper} from '../../helpers/FacadeClientHelper';
-import {AgencyClientRepository} from '../../AgencyClient/AgencyClientRepository';
 import {EventStore} from '../../models/EventStore';
-import {AgencyClientCommandHandler} from '../../AgencyClient/AgencyClientCommandHandler';
 import {connect, disconnect} from 'mongoose';
 import {AgencyClientCommand} from '../../AgencyClient/Interfaces';
 import {AgencyClientCommandEnum} from '../../AgencyClient/AgencyClientEnums';
@@ -13,8 +12,7 @@ Logger.setup(config.logger);
 const loggerContext = Logger.getContext();
 const client = new FacadeClientHelper(loggerContext);
 const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
-const repository = new AgencyClientRepository(eventRepository);
-const handler = new AgencyClientCommandHandler(repository);
+const commandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository)
 
 const itemsPerPage = 100;
 
@@ -65,7 +63,7 @@ const syncAgencyClients = async (page: number): Promise<number> => {
   const response = await client.getAgencyClientDetailsListing(options);
   for (const item of response) {
     const details = getSyncCommandDetails(item);
-    await handler.apply(item.agency_id, details.clientId, details.command);
+    await commandBus.execute(item.agency_id, details.clientId, details.command);
   }
   return response.length;
 };
@@ -78,42 +76,46 @@ const syncAgencyClients = async (page: number): Promise<number> => {
  * @returns A single SyncCommand
  */
 const getSyncCommandDetails = (agencyClientLink: any): SyncCommand => {
-  const details: SyncCommand = {
-    command: {
-      type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
-      data: {}
-    },
-    clientId: ''
-  };
-
   switch (agencyClientLink.agency_org_type) {
     case 'organisation':
-      details.command.data = {
-        client_type: 'organisation',
-        linked: agencyClientLink.agency_linked,
-        linked_at: new Date(agencyClientLink.created_at)
+      return {
+        command: {
+          type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
+          data: {
+            client_type: 'organisation',
+            linked: agencyClientLink.agency_linked,
+            linked_at: new Date(agencyClientLink.created_at)
+          }
+        },
+        clientId: agencyClientLink.organisation_id
       };
-      details.clientId = agencyClientLink.organisation_id;
-      return details;
     case 'site':
-      details.command.data = {
-        organisation_id: agencyClientLink.organisation_id,
-        client_type: 'site',
-        linked: agencyClientLink.agency_linked,
-        linked_at: new Date(agencyClientLink.created_at)
+      return {
+        command: {
+          type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
+          data: {
+            organisation_id: agencyClientLink.organisation_id,
+            client_type: 'site',
+            linked: agencyClientLink.agency_linked,
+            linked_at: new Date(agencyClientLink.created_at)
+          }
+        },
+        clientId: agencyClientLink.site_id
       };
-      details.clientId = agencyClientLink.site_id;
-      return details;
     case 'ward':
-      details.command.data = {
-        organisation_id: agencyClientLink.organisation_id,
-        site_id: agencyClientLink.site_id,
-        client_type: 'ward',
-        linked: agencyClientLink.agency_linked,
-        linked_at: new Date(agencyClientLink.created_at)
+      return {
+        command: {
+          type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
+          data: {
+            organisation_id: agencyClientLink.organisation_id,
+            site_id: agencyClientLink.site_id,
+            client_type: 'ward',
+            linked: agencyClientLink.agency_linked,
+            linked_at: new Date(agencyClientLink.created_at)
+          }
+        },
+        clientId: agencyClientLink.ward_id
       };
-      details.clientId = agencyClientLink.ward_id;
-      return details;
     default:
       throw new Error(`Unexpected agency organisation type received: ${agencyClientLink.agency_org_type}`);
   }

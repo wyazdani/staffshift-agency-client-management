@@ -1,16 +1,15 @@
-import {AgencyAggregate} from '../AgencyAggregate';
 import {ObjectID} from 'mongodb';
 import {AgencyEventEnums} from '../AgencyEnums';
 import {AgencyCommandEnums} from '../AgencyEnums';
-import {AddAgencyConsultantRoleCommandData, AgencyCommandHandlerInterface} from "../Interfaces";
-import {AgencyRepository} from "../AgencyRepository";
+import {AddAgencyConsultantRoleCommandData, AgencyCommandHandlerInterface} from '../Interfaces';
+import {AgencyRepository} from '../AgencyRepository';
 
 export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
     public commandType = AgencyCommandEnums.ADD_AGENCY_CONSULTANT_ROLE;
 
     constructor(private agencyRepository: AgencyRepository) {}
 
-    async execute(agencyId: string, commandData: AddAgencyConsultantRoleCommandData) {
+    async execute(agencyId: string, commandData: AddAgencyConsultantRoleCommandData): Promise<void> {
         const aggregate = await this.agencyRepository.getAggregate(agencyId);
         let eventId = aggregate.getLastEventId();
         // We are looking to auto enable newly created consultant roles hence the two events

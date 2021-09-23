@@ -1,5 +1,6 @@
 import {AggregateEvent} from '../EventRepository';
 import {AgencyClientCommandEnum, AgencyClientEventType} from './AgencyClientEnums';
+import {AgencyCommandEnums} from '../Agency/AgencyEnums';
 export interface AgencyClientConsultant {
   _id: string,
   consultant_role_id: string,
@@ -23,7 +24,36 @@ export interface AgencyClientEvent extends AggregateEvent {
   data: object,
   sequence_id: number
 }
+
+export interface LinkAgencyClientCommandData {
+  client_type: string;
+  organisation_id?: string;
+  site_id?: string;
+}
+
+export interface UnlinkAgencyClientCommandData {
+  client_type: string;
+  organisation_id?: string;
+  site_id?: string;
+}
+
+export interface SyncAgencyClientCommandData {
+  client_type: string;
+  linked: boolean;
+  linked_at: Date;
+  organisation_id?: string;
+  site_id?: string;
+}
+
+export type AgencyClientCommandData = LinkAgencyClientCommandData | UnlinkAgencyClientCommandData |
+    SyncAgencyClientCommandData | AgencyClientConsultant;
+
 export interface AgencyClientCommand {
-  type: AgencyClientCommandEnum
-  data: object
+  type: string
+  data: AgencyClientCommandData
+}
+
+export interface AgencyClientCommandHandlerInterface {
+  commandType: string;
+  execute(agencyId: string, clientId: string, commandData: AgencyClientCommandData): Promise<void>;
 }

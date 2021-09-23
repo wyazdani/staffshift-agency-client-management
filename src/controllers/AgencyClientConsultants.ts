@@ -1,11 +1,10 @@
-import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
-import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import _ from 'lodash';
 import {ServerResponse} from 'http';
 import {GenericRepository} from '../GenericRepository';
 import {AgencyClientConsultants} from '../models/AgencyClientConsultants';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequest} from 'SwaggerRequest';
+import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
 const {QueryHelper} = require('a24-node-query-utils');
 
 /**
@@ -17,22 +16,20 @@ const {QueryHelper} = require('a24-node-query-utils');
  */
 module.exports.addAgencyClientConsultant = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
   const payload = _.get(req, 'swagger.params.assign_client_consultant_payload.value', {});
-  const agency_id = _.get(req, 'swagger.params.agency_id.value', '');
-  const client_id = _.get(req, 'swagger.params.client_id.value', '');
-  const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
+  const agencyId = _.get(req, 'swagger.params.agency_id.value', '');
+  const clientId = _.get(req, 'swagger.params.client_id.value', '');
+  const commandType = _.get(req, 'swagger.operation.x-octophant-event', '');
 
-  const repository = new AgencyClientRepository(_.get(req, 'eventRepository', undefined));
-  const handler = new AgencyClientCommandHandler(repository);
-
+  const commandBus = AgencyClientCommandBusFactory.getCommandBus(_.get(req, 'eventRepository'))
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
-    type: command_type,
+    type: commandType,
     data: payload
   };
 
   try {
     // Passing in the agency and client ids here feels strange
-    await handler.apply(agency_id, client_id, command);
+    await commandBus.execute(agencyId, clientId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -54,22 +51,24 @@ module.exports.addAgencyClientConsultant = async (req: SwaggerRequest, res: Serv
  * @param {function} next - The callback used to pass control to the next action/middleware
  */
 module.exports.removeAgencyClientConsultant = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
-  const agency_id = _.get(req, 'swagger.params.agency_id.value', '');
-  const client_id = _.get(req, 'swagger.params.client_id.value', '');
+  const agencyId = _.get(req, 'swagger.params.agency_id.value', '');
+  const clientId = _.get(req, 'swagger.params.client_id.value', '');
   const consultant_id = _.get(req, 'swagger.params.consultant_id.value', '');
-  const command_type = _.get(req, 'swagger.operation.x-octophant-event', '');
-
-  const repository = new AgencyClientRepository(_.get(req, 'eventRepository', undefined));
-  const handler = new AgencyClientCommandHandler(repository);
+  const commandType = _.get(req, 'swagger.operation.x-octophant-event', '');
+  const commandBus = AgencyClientCommandBusFactory.getCommandBus(_.get(req, 'eventRepository'))
 
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
-    type: command_type,
-    data: {_id: consultant_id}
+    type: commandType,
+    data: {
+      _id: consultant_id,
+      consultant_id: 'test', // remove
+      consultant_role_id: 'blah' // remove
+    }
   };
 
   try {
-    await handler.apply(agency_id, client_id, command);
+    await commandBus.execute(agencyId, clientId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

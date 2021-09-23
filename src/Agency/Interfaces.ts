@@ -53,5 +53,5 @@ export interface AgencyCommand {
 
 export interface AgencyCommandHandlerInterface {
   commandType: string;
-  execute(agencyId: string, commandData: AgencyCommandData): Promise<any>;
+  execute(agencyId: string, commandData: AgencyCommandData): Promise<void>;
 }
