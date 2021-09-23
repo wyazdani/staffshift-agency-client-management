@@ -39,6 +39,9 @@ Use the website https://jwt.io/ to validate your jwt. The secret you need to use
 ## Running the project
 This project has a couple of moving parts. This is a typescript project, config can be found in the `tsconfig.json` file. You will need to execute `npm run build-ts` to transpile to JS code, which is located in the `outDir`.
 
+### Development
+* You can use `nodemon` during the development phase, there is currently a default config file `nodemon.json` in the repo which only runs the API portion of the application.
+
 ### Database
 * `npm run migrate`
 

@@ -21,8 +21,8 @@
     ],
     "padding-line-between-statements": [
       "error",
-      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*"},
-      { "blankLine": "any",    "prev": ["const", "let", "var"], "next": ["const", "let", "var"]}
+      { "blankLine": "always", "prev": ["const", "let"], "next": "*"},
+      { "blankLine": "any",    "prev": ["const", "let"], "next": ["const", "let"]}
     ],
     "sort-imports": ["error", {
       "ignoreCase": true,
@@ -60,6 +60,7 @@
     "prefer-arrow-callback": "error",
     "arrow-body-style": ["error", "as-needed"],
     "no-unused-vars": "off",
+    "no-var": "error",
     "prefer-arrow/prefer-arrow-functions": [
       "error",
       {

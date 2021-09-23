@@ -34,7 +34,6 @@ module.exports = {
    */
   ensureIndexExists: async (collection, indexesKeys, options) => {
     const indexName = options && options.name ? options.name : generateIndexName(indexesKeys);
-
     const doesExist = await collection.indexExists(indexName);
 
     if (doesExist) {
@@ -55,7 +54,6 @@ module.exports = {
    */
   ensureIndexRemoved: async (collection, indexesKeys, options) => {
     const indexName = options && options.name ? options.name : generateIndexName(indexesKeys);
-
     const doesExist = await collection.indexExists(indexName);
 
     if (!doesExist) {

@@ -1,24 +1,14 @@
 'use strict';
 const config = require('config');
-
 const keyFile = config.get('tracing.key_file');
-
 const enhancedMongodbReporting = config.get('tracing.enhanced_mongodb_reporting');
-
 const serviceName = require('./package.json').name;
-
 const ignorePaths = ['/v1/status'];
-
 const {TraceExporter} = require('@google-cloud/opentelemetry-cloud-trace-exporter');
-
 const {registerInstrumentations} = require('@opentelemetry/instrumentation');
-
 const {HttpInstrumentation} = require('@opentelemetry/instrumentation-http');
-
 const {MongoDBInstrumentation} = require('@opentelemetry/instrumentation-mongodb');
-
 const {NodeTracerProvider} = require('@opentelemetry/node');
-
 const {BatchSpanProcessor} = require('@opentelemetry/tracing');
 
 function setSpanName(span, request) {
