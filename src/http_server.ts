@@ -14,7 +14,6 @@ import A24ErrorUtils, {RuntimeError, ErrorHandler} from 'a24-node-error-utils';
 import Logger from 'a24-logzio-winston';
 import Url from 'url';
 import {MessagePublisher} from 'a24-node-pubsub';
-import {Auditor} from 'a24-node-octophant-utils';
 import {createHttpTerminator} from 'http-terminator';
 import mongoose, {Error} from 'mongoose';
 import {LinkHeaderHelper} from 'a24-node-query-utils';
@@ -120,20 +119,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
       // operation not supported, lets return.swagger will handle with 405.
       return next();
     }
-    // Make sure octophant-event is configured correctly
-    if (!req.swagger.operation['x-octophant-event'] && isEmpty(req.swagger.operation['x-octophant-event'])) {
-      return next(new RuntimeError('x-octophant-event is expected to be configured for operation, but is not'));
-    }
-    const publisher = new MessagePublisher(req.Logger);
 
-    req.octophant = Auditor.getAuditorContext(
-      req,
-      jwtToken,
-      req.Logger,
-      publisher,
-      config.get('octophant_audit'),
-      req.swagger.operation['x-octophant-event']
-    );
     next();
   });
 
@@ -207,6 +193,8 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
       for (const key in used) {
         memoryLog += ` ${key}: ${Math.round((+used[key] / 1024 / 1024) * 100) / 100}MB`;
       }
+
+      console.info(memoryLog);
       process.exit(0);
     } catch (err) {
       logger.log('error', 'could not do graceful shutdown in the specified time, exiting forcefully', err);

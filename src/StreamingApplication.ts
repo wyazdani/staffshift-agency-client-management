@@ -127,6 +127,8 @@ const shutdown = async () => {
     for (const key in used) {
       memoryLog += ` ${key}: ${Math.round((used[key] / 1024 / 1024) * 100) / 100}MB`;
     }
+
+    console.info(memoryLog);
     process.exit(0);
   } catch (err) {
     logger.error('could not do graceful shutdown in the specified time, exiting forcefully', err);
