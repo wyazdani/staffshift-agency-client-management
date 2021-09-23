@@ -1,41 +1,37 @@
 import {ServerResponse} from 'http';
-import {SwaggerRequest} from 'SwaggerRequest';
+import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyCommandBusFactory} from "../factories/AgencyCommandBusFactory";
-const {ResourceNotFoundError} = require('a24-node-error-utils');
+import {ResourceNotFoundError} from 'a24-node-error-utils';
+import {Error} from 'mongoose';
+import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
 
 /**
  * Add Agency Consultant Role
  *
  * @param req - The http request object
  * @param res - The http response object
- * @param next - The callback used to pass control to the next middleware
  */
-module.exports.addAgencyConsultantRole = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
+export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const command_type = get(req, 'swagger.operation.x-octophant-event', '');
-
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const agencyCommandBus = AgencyCommandBusFactory.getAgencyCommandBus(repository)
-
+  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
-    type: command_type,
+    type: commandType,
     data: payload
   };
 
   try {
     // Passing in the agency id here feels strange
-    await agencyCommandBus.execute(agencyId, command);
+    await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.log('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -44,35 +40,31 @@ module.exports.addAgencyConsultantRole = async (req: SwaggerRequest, res: Server
 
 /**
  * Update the details of a Agency Consultant Role
+ *
  * @param req - The http request object
  * @param res - The http response object
- * @param next - The callback used to pass control to the next middleware
  */
-module.exports.updateAgencyConsultantRole = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
+export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const payload = get(req, 'swagger.params.agency_consultant_role_update_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const command_type = get(req, 'swagger.operation.x-octophant-event', '');
-
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const agencyCommandBus = AgencyCommandBusFactory.getAgencyCommandBus(repository)
-
+  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
-    type: command_type,
+    type: commandType,
     data: {...payload, _id: consultantRoleId}
   };
 
   try {
     // Passing in the agency id here feels strange
-    await agencyCommandBus.execute(agencyId, command);
+    await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.log('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -81,34 +73,33 @@ module.exports.updateAgencyConsultantRole = async (req: SwaggerRequest, res: Ser
 
 /**
  * Changes the status of the Agency Consultant Role
+ *
  * @param req - The http request object
  * @param res - The http response object
- * @param next - The callback used to pass control to the next middleware
  */
-module.exports.changeStatusAgencyConsultantRole = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
+export const changeStatusAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse
+): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const command_type = get(req, 'swagger.operation.x-octophant-event', '');
-
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const agencyCommandBus = AgencyCommandBusFactory.getAgencyCommandBus(repository)
-
+  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
-    type: command_type,
+    type: commandType,
     data: {_id: consultantRoleId}
   };
 
   try {
     // Passing in the agency id here feels strange
-    await agencyCommandBus.execute(agencyId, command);
+    await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.log('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -121,10 +112,13 @@ module.exports.changeStatusAgencyConsultantRole = async (req: SwaggerRequest, re
  * @param res - The http response object
  * @param next - The callback used to pass control to the next middleware
  */
-module.exports.getAgencyConsultantRole = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
+export const getAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error?: Error) => void
+): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-
   // Consider using a builder | respository pattern
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
 
@@ -138,12 +132,17 @@ module.exports.getAgencyConsultantRole = async (req: SwaggerRequest, res: Server
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(consultantRole));
+
       return;
     }
-    return next (new ResourceNotFoundError(`No agency consultant role found for agency: ${agencyId} and consultant: ${consultantRoleId}`));
+
+    return next(
+      new ResourceNotFoundError(
+        `No agency consultant role found for agency: ${agencyId} and consultant: ${consultantRoleId}`
+      )
+    );
   } catch (err) {
     // This needs to be centralised and done better
-    console.log('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -152,13 +151,12 @@ module.exports.getAgencyConsultantRole = async (req: SwaggerRequest, res: Server
 
 /**
  * List Agency Consultant Role
+ *
  * @param req - The http request object
  * @param res - The http response object
- * @param next - The callback used to pass control to the next middleware
  */
-module.exports.listAgencyConsultantRoles = async (req: SwaggerRequest, res: ServerResponse, next: Function): Promise<void> => {
+export const listAgencyConsultantRoles = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
-
   // Consider using a builder | respository pattern
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
 
@@ -173,13 +171,13 @@ module.exports.listAgencyConsultantRoles = async (req: SwaggerRequest, res: Serv
       res.setHeader('x-result-count', consultantRoles.length);
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(consultantRoles));
+
       return;
     }
     res.statusCode = 204;
     res.end();
   } catch (err) {
     // This needs to be centralised and done better
-    console.log('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));

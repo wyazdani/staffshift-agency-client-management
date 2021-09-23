@@ -1,18 +1,17 @@
 import {Transform, TransformCallback, TransformOptions} from 'stream';
 import {LoggerContext} from 'a24-logzio-winston';
 import {CallbackError, FilterQuery, Model} from 'mongoose';
-import {Events} from '../../../Events';
 import {EventRepository} from '../../../EventRepository';
+import {EventsEnum} from '../../../Events';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
-const events = [
-  Events.AGENCY_CLIENT_LINKED, Events.AGENCY_CLIENT_UNLINKED, Events.AGENCY_CLIENT_SYNCED
-];
+const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_UNLINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
-interface ProjectionTransformerOptions extends TransformOptions {
-  eventRepository: EventRepository,
-  model: Model<any>,
-  pipeline: string,
-  logger: LoggerContext
+interface ProjectionTransformerOptionsInterface extends TransformOptions {
+  eventRepository: EventRepository;
+  model: Model<any>;
+  pipeline: string;
+  logger: typeof LoggerContext;
 }
 
 /**
@@ -22,9 +21,9 @@ export class AgencyClientsProjectionTransformer extends Transform {
   private readonly eventRepository: EventRepository;
   private model: Model<any>;
   private pipeline: string;
-  private logger: LoggerContext;
+  private logger: typeof LoggerContext;
 
-  constructor(opts: ProjectionTransformerOptions) {
+  constructor(opts: ProjectionTransformerOptionsInterface) {
     // We only cater for object mode
     opts.objectMode = true;
     super(opts);
@@ -34,9 +33,10 @@ export class AgencyClientsProjectionTransformer extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: any, encoding: any, callback: TransformCallback) {
+  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
     if (!events.includes(data.event.type)) {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
+
       return callback(null, data);
     }
     this.logger.debug('Processing the incoming event', {event: data.event.type});
@@ -45,13 +45,14 @@ export class AgencyClientsProjectionTransformer extends Transform {
       agency_id: event.aggregate_id.agency_id,
       client_id: event.aggregate_id.client_id
     };
+
     if (event.data.organisation_id) {
       criteria.organisation_id = event.data.organisation_id;
     }
     if (event.data.site_id) {
       criteria.site_id = event.data.site_id;
     }
-    if (Events.AGENCY_CLIENT_LINKED === data.event.type) {
+    if (EventsEnum.AGENCY_CLIENT_LINKED === data.event.type) {
       this.model.findOneAndUpdate(
         criteria,
         {
@@ -59,11 +60,9 @@ export class AgencyClientsProjectionTransformer extends Transform {
           linked: true
         },
         {upsert: true},
-        (err: CallbackError) => {
-          return callback(err, data);
-        }
+        (err: CallbackError) => callback(err, data)
       );
-    } else if (Events.AGENCY_CLIENT_UNLINKED === data.event.type) {
+    } else if (EventsEnum.AGENCY_CLIENT_UNLINKED === data.event.type) {
       this.model.findOneAndUpdate(
         criteria,
         {
@@ -71,11 +70,9 @@ export class AgencyClientsProjectionTransformer extends Transform {
           linked: false
         },
         {upsert: true},
-        (err: CallbackError) => {
-          return callback(err, data);
-        }
+        (err: CallbackError) => callback(err, data)
       );
-    } else if (Events.AGENCY_CLIENT_SYNCED === data.event.type) {
+    } else if (EventsEnum.AGENCY_CLIENT_SYNCED === data.event.type) {
       this.model.findOneAndUpdate(
         criteria,
         {
@@ -83,9 +80,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
           linked: event.data.linked
         },
         {upsert: true},
-        (err: CallbackError) => {
-          return callback(err, data);
-        }
+        (err: CallbackError) => callback(err, data)
       );
     }
     // Should we be adding something here since this is a possible "hanging" issue

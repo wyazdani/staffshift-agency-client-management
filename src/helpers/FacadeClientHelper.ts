@@ -1,32 +1,32 @@
-
 import {LoggerContext} from 'a24-logzio-winston';
+import config from 'config';
+import StaffshiftFacadeClient from 'a24-node-staffshift-facade-client';
+import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
+import {GenericObjectInterface} from 'GenericObjectInterface';
 
-const config = require('config');
-const StaffshiftFacadeClient = require('a24-node-staffshift-facade-client');
-const {ValidationError, AuthorizationError, RuntimeError} = require('a24-node-error-utils');
-const clientConfig = config.get('a24-staffshift-facade');
+const clientConfig = config.get<GenericObjectInterface>('a24-staffshift-facade');
 
-export interface FacadeClientRecord {
-  _id: string,
-  organisation_name: string,
-  organisation_id: string,
-  agency_name: string,
-  agency_id: string,
-  agency_org_type: string,
-  agency_linked?: boolean
+export interface FacadeClientRecordInterface {
+  _id: string;
+  organisation_name: string;
+  organisation_id: string;
+  agency_name: string;
+  agency_id: string;
+  agency_org_type: string;
+  agency_linked?: boolean;
   //There are a lot of fields in the response. but i only added required and the ones that we used in code
 }
 
-interface GetAgencyClientDetailsOptions {
-  xRequestId: string,
-  agencyId?: string,
-  organisationId?: string,
-  agencyOrgType?: string,
-  siteId?: string,
-  wardId?: string
-  sortBy?: string[],
-  page?: number,
-  itemsPerPage?: number
+interface GetAgencyClientDetailsOptionsInterface {
+  xRequestId: string;
+  agencyId?: string;
+  organisationId?: string;
+  agencyOrgType?: string;
+  siteId?: string;
+  wardId?: string;
+  sortBy?: string[];
+  page?: number;
+  itemsPerPage?: number;
 }
 
 /**
@@ -40,8 +40,7 @@ export class FacadeClientHelper {
    *
    * @param {LoggerContext} logger - A logger object
    */
-  constructor(private logger: LoggerContext) {
-  }
+  constructor(private logger: typeof LoggerContext) {}
 
   /**
    * Retrieve the agency ward client details
@@ -54,19 +53,27 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetails(agencyId: string, organisationId: string, siteId?: string, wardId?: string, options?: GetAgencyClientDetailsOptions): Promise<FacadeClientRecord[]> {
+  async getAgencyClientDetails(
+    agencyId: string,
+    organisationId: string,
+    siteId?: string,
+    wardId?: string,
+    options?: GetAgencyClientDetailsOptionsInterface
+  ): Promise<FacadeClientRecordInterface[]> {
     if (!options) {
       options = {
-        'xRequestId': this.logger.requestId,
+        xRequestId: this.logger.requestId,
         agencyId: agencyId,
         organisationId: organisationId,
         agencyOrgType: 'organisation'
       };
     }
+
     if (siteId) {
       options['siteId'] = siteId;
       options['agencyOrgType'] = 'site';
     }
+
     if (wardId) {
       options['wardId'] = wardId;
       options['agencyOrgType'] = 'ward';
@@ -75,22 +82,24 @@ export class FacadeClientHelper {
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
     const authorization = `token ${clientConfig.api_token}`;
+
     this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
-    return new Promise((resolve: Function, reject: Function) => {
+
+    return new Promise((resolve: (body?: FacadeClientRecordInterface[]) => void, reject: (error?: Error) => void) => {
       api.listAgencyOrganisationLink(authorization, options, (error: any, data: any, response: any) => {
         let item = null;
+
         if (error) {
           if (response) {
             if (response.statusCode === 400) {
               item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
-              const validationError = new ValidationError(
-                item.message,
-                item.errors
-              );
+              const validationError = new ValidationError(item.message, item.errors);
+
               return reject(validationError);
             }
             if (response.statusCode === 401) {
               const authorizationError = new AuthorizationError('Invalid token specified');
+
               return reject(authorizationError);
             }
 
@@ -99,15 +108,17 @@ export class FacadeClientHelper {
             }
 
             item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
+
             return reject(item);
           }
           item = new RuntimeError('An error occurred during the agency client data get call', error);
+
           return reject(item);
         }
-        this.logger.debug(
-          'The agency client GET call to staffshift facade service has been completed successfully',
-          {body: response.body}
-        );
+        this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
+          body: response.body
+        });
+
         return resolve(response.body);
       });
     });
@@ -118,27 +129,29 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-   async getAgencyClientDetailsListing(options?: GetAgencyClientDetailsOptions): Promise<any> {
-    options = {...options, 'xRequestId': this.logger.requestId};
+  async getAgencyClientDetailsListing(options?: GetAgencyClientDetailsOptionsInterface): Promise<any> {
+    options = {...options, xRequestId: this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
     const authorization = `token ${clientConfig.api_token}`;
+
     this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
-    return new Promise((resolve: (results?: FacadeClientRecord[]) => void, reject: (error: Error) => void) => {
+
+    return new Promise((resolve: (results?: FacadeClientRecordInterface[]) => void, reject: (error: Error) => void) => {
       api.listAgencyOrganisationLink(authorization, options, (error: any, data: any, response: any) => {
         let item = null;
+
         if (error) {
           if (response) {
             if (response.statusCode === 400) {
               item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
-              const validationError = new ValidationError(
-                item.message,
-                item.errors
-              );
+              const validationError = new ValidationError(item.message, item.errors);
+
               return reject(validationError);
             }
             if (response.statusCode === 401) {
               const authorizationError = new AuthorizationError('Invalid token specified');
+
               return reject(authorizationError);
             }
 
@@ -147,24 +160,30 @@ export class FacadeClientHelper {
             }
 
             item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
+
             return reject(item);
           }
           item = new RuntimeError('An error occurred during the agency client data get call', error);
+
           return reject(item);
         }
-        this.logger.debug(
-          'The agency client GET call to staffshift facade service has been completed successfully',
-          {body: response.body}
-        );
+        this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
+          body: response.body
+        });
+
         return resolve(response.body);
       });
     });
   }
 
-  static getInstance() {
+  static getInstance(): any {
     const client = new StaffshiftFacadeClient.ApiClient();
-    const requestOptions = clientConfig.request_options;
-    client.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
+    const requestOptions = clientConfig.request_options as GenericObjectInterface;
+
+    client.basePath = `${requestOptions.protocol as string}://${requestOptions.host as string}:${
+      requestOptions.port as string
+    }/${requestOptions.version as string}`;
+
     return client;
   }
 }

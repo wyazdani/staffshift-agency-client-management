@@ -7,15 +7,16 @@ import {UnlinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 
 export class AgencyClientCommandBusFactory {
-    static getCommandBus(eventRepository: EventRepository): AgencyClientCommandBus {
-        const agencyClientRepository = new AgencyClientRepository(eventRepository);
-        const commandBus = new AgencyClientCommandBus();
-        commandBus
-            .addHandler(new AddAgencyClientConsultantCommandHandler(agencyClientRepository))
-            .addHandler(new LinkAgencyClientCommandHandler(agencyClientRepository))
-            .addHandler(new AddAgencyClientConsultantCommandHandler(agencyClientRepository))
-            .addHandler(new SyncAgencyClientCommandHandler(agencyClientRepository))
-            .addHandler(new UnlinkAgencyClientCommandHandler(agencyClientRepository));
-        return commandBus;
-    }
+  static getCommandBus(eventRepository: EventRepository): AgencyClientCommandBus {
+    const agencyClientRepository = new AgencyClientRepository(eventRepository);
+    const commandBus = new AgencyClientCommandBus();
+
+    commandBus
+      .addHandler(new AddAgencyClientConsultantCommandHandler(agencyClientRepository))
+      .addHandler(new LinkAgencyClientCommandHandler(agencyClientRepository))
+      .addHandler(new AddAgencyClientConsultantCommandHandler(agencyClientRepository))
+      .addHandler(new SyncAgencyClientCommandHandler(agencyClientRepository))
+      .addHandler(new UnlinkAgencyClientCommandHandler(agencyClientRepository));
+    return commandBus;
+  }
 }
