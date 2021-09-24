@@ -1,6 +1,7 @@
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
-import {AgencyClientCommandEnum, AgencyClientEventEnum, SyncAgencyClientCommandDataInterface} from '../types';
+import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
+import {SyncAgencyClientCommandDataInterface} from '../types/CommandDataTypes';
 
 export class SyncAgencyClientCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.SYNC_AGENCY_CLIENT;

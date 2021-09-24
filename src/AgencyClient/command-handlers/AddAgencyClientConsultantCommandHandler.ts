@@ -1,7 +1,8 @@
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {ObjectID} from 'mongodb';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
-import {AddAgencyClientConsultantCommandDataInterface, AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
+import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
+import {AddAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
 
 export class AddAgencyClientConsultantCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;

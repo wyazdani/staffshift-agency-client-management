@@ -1,6 +1,7 @@
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
-import {AgencyClientCommandEnum, AgencyClientEventEnum, UnlinkAgencyClientCommandDataInterface} from '../types';
+import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
+import {UnlinkAgencyClientCommandDataInterface} from '../types/CommandDataTypes';
 
 export class UnlinkAgencyClientCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT;

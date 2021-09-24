@@ -80,8 +80,7 @@
     }
   },
   "pubSubAuth": {
-    "projectId": "staffshift-dev-env",
-    "credentials": {}
+    "projectId": "staffshift-dev-env"
   },
   "pubsub_log_level": "notice",
   "app_domain": "ss",

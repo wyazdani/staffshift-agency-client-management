@@ -24,11 +24,11 @@ mongoose.connection.on('error', (error: Error) => {
 // Setup message processor
 const processorConfig = {
   env: process.env.NODE_ENV || 'development',
-  auth: config.get('pubSubAuth'),
-  topics: config.get('ss_domain_event.ss_domain_event_topics'),
-  domain: config.get('app_domain'),
-  app_name: config.get('app_name'),
-  log_level: config.get('pubsub_log_level')
+  auth: config.get<GenericObjectInterface>('pubSubAuth'),
+  topics: config.get<GenericObjectInterface[]>('ss_domain_event.ss_domain_event_topics'),
+  domain: config.get<string>('app_domain'),
+  app_name: config.get<string>('app_name'),
+  log_level: config.get<string>('pubsub_log_level')
 };
 const mp = new MessageProcessor(processorConfig);
 

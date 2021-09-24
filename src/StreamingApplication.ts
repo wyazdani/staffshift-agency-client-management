@@ -2,9 +2,9 @@ import {MongoClients} from './streaming_applications/core/MongoClients';
 import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from './streaming_applications/DatabaseConfigKeys';
 import {ResumeTokenCollectionManager} from './streaming_applications/core/ResumeTokenCollectionManager';
 import {isString} from 'lodash';
-import mongoose, {ConnectOptions} from 'mongoose';
+import mongoose from 'mongoose';
 import StreamingApplications from './streaming_applications';
-import * as config from 'config';
+import config from 'config';
 import Logger from 'a24-logzio-winston';
 import arg from 'arg';
 import {GenericObjectInterface} from 'GenericObjectInterface';
@@ -17,22 +17,18 @@ mongoose.plugin((schema: GenericObjectInterface) => {
 });
 mongoose.Promise = global.Promise;
 
-const mongooseErrorCallback = (error: Error) => {
+mongoose.connect(
+  config.get<GenericObjectInterface>('mongo').database_host,
+  config.get<GenericObjectInterface>('mongo').options
+);
+
+mongoose.connection.on('error', (error: Error) => {
   const loggerContext = Logger.getContext('startup');
 
   loggerContext.error('MongoDB connection error', error);
 
   return process.exit(1);
-};
-
-mongoose
-  .connect(
-    config.get<GenericObjectInterface>('mongo').database_host,
-    config.get<GenericObjectInterface>('mongo').options as ConnectOptions
-  )
-  .catch(mongooseErrorCallback);
-
-mongoose.connection.on('error', mongooseErrorCallback);
+});
 
 const args = arg(
   {

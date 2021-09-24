@@ -5,6 +5,7 @@ import {LinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers/L
 import {SyncAgencyClientCommandHandler} from '../AgencyClient/command-handlers/SyncAgencyClientCommandHandler';
 import {UnlinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers/UnlinkAgencyClientCommandHandler';
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
+import {RemoveAgencyClientConsultantCommandHandler} from '../AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
 
 export class AgencyClientCommandBusFactory {
   static getCommandBus(eventRepository: EventRepository): AgencyClientCommandBus {
@@ -14,7 +15,7 @@ export class AgencyClientCommandBusFactory {
     commandBus
       .addHandler(new AddAgencyClientConsultantCommandHandler(agencyClientRepository))
       .addHandler(new LinkAgencyClientCommandHandler(agencyClientRepository))
-      .addHandler(new AddAgencyClientConsultantCommandHandler(agencyClientRepository))
+      .addHandler(new RemoveAgencyClientConsultantCommandHandler(agencyClientRepository))
       .addHandler(new SyncAgencyClientCommandHandler(agencyClientRepository))
       .addHandler(new UnlinkAgencyClientCommandHandler(agencyClientRepository));
     return commandBus;

@@ -1,6 +1,6 @@
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandEnum, AgencyEventEnum} from '../types';
-import {DisableAgencyConsultantRoleCommandDataInterface} from '../types/DisableAgencyConsultantRoleCommandDataInterface';
+import {DisableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 
 export class DisableAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
