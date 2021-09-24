@@ -122,11 +122,14 @@ const shutdown = async () => {
     }
     await Logger.close();
     let memoryLog = 'Memory Usage: ';
-    const used: any = process.memoryUsage();
+    const used: NodeJS.MemoryUsage = process.memoryUsage();
 
     for (const key in used) {
-      memoryLog += ` ${key}: ${Math.round((used[key] / 1024 / 1024) * 100) / 100}MB`;
+      memoryLog += ` ${key}: ${Math.round((used[key as keyof NodeJS.MemoryUsage] / 1024 / 1024) * 100) / 100}MB`;
     }
+
+    // eslint-disable-next-line no-console
+    console.info(memoryLog);
     process.exit(0);
   } catch (err) {
     logger.error('could not do graceful shutdown in the specified time, exiting forcefully', err);

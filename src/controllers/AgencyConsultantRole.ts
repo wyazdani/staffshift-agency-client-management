@@ -5,6 +5,7 @@ import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyCommandHandler} from '../Agency/AgencyCommandHandler';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
+import {AgencyCommandEnum} from '../Agency/types';
 
 /**
  * Add Agency Consultant Role
@@ -15,7 +16,7 @@ import {Error} from 'mongoose';
 export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandType = AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE;
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
   const handler = new AgencyCommandHandler(repository);
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -49,7 +50,7 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
   const payload = get(req, 'swagger.params.agency_consultant_role_update_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
   const handler = new AgencyCommandHandler(repository);
   // Decide how auth / audit data gets from here to the event in the event store.
@@ -74,18 +75,54 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
 };
 
 /**
- * Changes the status of the Agency Consultant Role
+ * Enable the status of the Agency Consultant Role
  *
  * @param req - The http request object
  * @param res - The http response object
  */
-export const changeStatusAgencyConsultantRole = async (
+export const enableAgencyConsultantRole = async (
   req: SwaggerRequestInterface,
   res: ServerResponse
 ): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
+  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
+  const handler = new AgencyCommandHandler(repository);
+  // Decide how auth / audit data gets from here to the event in the event store.
+  const command = {
+    type: commandType,
+    data: {_id: consultantRoleId}
+  };
+
+  try {
+    // Passing in the agency id here feels strange
+    await handler.apply(agencyId, command);
+    // This needs to be centralised and done better
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({status: 'completed'}));
+  } catch (err) {
+    // This needs to be centralised and done better
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({message: err.message}));
+  }
+};
+
+/**
+ * Disable the status of the Agency Consultant Role
+ *
+ * @param req - The http request object
+ * @param res - The http response object
+ */
+export const disableAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse
+): Promise<void> => {
+  const agencyId = get(req, 'swagger.params.agency_id.value', '');
+  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+  const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
   const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
   const handler = new AgencyCommandHandler(repository);
   // Decide how auth / audit data gets from here to the event in the event store.
