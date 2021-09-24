@@ -284,7 +284,7 @@ paths:
       - $ref: "#/parameters/consultant_role_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
-      operationId: "changeStatusAgencyConsultantRole"
+      operationId: "enableAgencyConsultantRole"
       security:
         - jwt: []
       parameters:
@@ -307,7 +307,7 @@ paths:
       - $ref: "#/parameters/consultant_role_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
-      operationId: "changeStatusAgencyConsultantRole"
+      operationId: "disableAgencyConsultantRole"
       security:
         - jwt: []
       parameters:
