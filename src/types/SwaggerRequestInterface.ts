@@ -12,7 +12,7 @@ export interface SwaggerRequestInterface extends IncomingMessage {
       'x-public-operation'?: boolean;
     };
   };
-  octophant: GenericObjectInterface;
+  octophant?: GenericObjectInterface;
   eventRepository: EventRepository;
   basePathName: string;
 }
