@@ -528,7 +528,6 @@ definitions:
     properties:
       name:
         type: string
-        minLength: 3
       description:
         type: string
         minLength: 1
@@ -658,7 +657,6 @@ definitions:
               type: "string"
               enum:
                 - "INVALID_TYPE"
-                - "MIN_LENGTH"
                 - "MINIMUM"
                 - "OBJECT_ADDITIONAL_PROPERTIES"
                 - "OBJECT_MISSING_REQUIRED_PROPERTY"
