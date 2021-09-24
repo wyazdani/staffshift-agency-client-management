@@ -38,7 +38,6 @@ export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, re
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.error('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -75,7 +74,6 @@ export const removeAgencyClientConsultant = async (
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.error('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));

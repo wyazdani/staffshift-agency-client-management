@@ -187,13 +187,14 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
       await httpTerminator.terminate();
       logger.log('info', 'server stopped gracefully');
       await Logger.close();
-      const used: any = process.memoryUsage();
+      const used: NodeJS.MemoryUsage = process.memoryUsage();
       let memoryLog = 'Memory Usage: ';
 
       for (const key in used) {
-        memoryLog += ` ${key}: ${Math.round((+used[key] / 1024 / 1024) * 100) / 100}MB`;
+        memoryLog += ` ${key}: ${Math.round((used[key as keyof NodeJS.MemoryUsage] / 1024 / 1024) * 100) / 100}MB`;
       }
 
+      // eslint-disable-next-line no-console
       console.info(memoryLog);
       process.exit(0);
     } catch (err) {

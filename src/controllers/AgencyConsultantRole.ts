@@ -34,7 +34,6 @@ export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res:
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.error('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -69,7 +68,6 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.error('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -106,7 +104,6 @@ export const changeStatusAgencyConsultantRole = async (
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
     // This needs to be centralised and done better
-    console.error('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -150,7 +147,6 @@ export const getAgencyConsultantRole = async (
     );
   } catch (err) {
     // This needs to be centralised and done better
-    console.error('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
@@ -186,7 +182,6 @@ export const listAgencyConsultantRoles = async (req: SwaggerRequestInterface, re
     res.end();
   } catch (err) {
     // This needs to be centralised and done better
-    console.error('ERR THERE WAS', err);
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));

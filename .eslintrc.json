@@ -31,7 +31,7 @@
       "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
       "allowSeparatedGroups": true
     }],
-    "no-console": ["error", { "allow": ["info", "error"] }],
+    "no-console": "error",
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": ["error", "always"],
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
