@@ -15,6 +15,7 @@ By making a contribution to this project, I certify that:
 * [Onboarding Documentation](https://github.com/A24Group/big-book-of-information/tree/master/onboarding)
 * [Project Design Reference Material](https://github.com/A24Group/big-book-of-information/tree/master/ddd_cqrs_eventsourcing)
 * [Running the project](#running-the-project)
+* [Test Cases](#test-cases)
 * [VS Code Settings](#vs-code-settings)
 
 
@@ -55,6 +56,9 @@ Before starting any of the applications entry points you will need to run the da
 
 ### Streaming Applications
 * `npm run start-streaming-application-core`
+
+## Test Cases
+* https://mochajs.org/#arrow-functions
 
 ## VS Code Settings
 These are settings that are applied to the workspace, they line-up with our linting rules. These are not committed as each developer may have additional workspace configuration specific to them, IE Custom Colors per project.
