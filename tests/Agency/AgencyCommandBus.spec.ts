@@ -7,16 +7,18 @@ import {AddAgencyConsultantRoleCommandHandler} from '../../src/Agency/command-ha
 import {AgencyRepository} from '../../src/Agency/AgencyRepository';
 import {AgencyCommandEnum} from '../../src/Agency/types';
 import {DisableAgencyConsultantRoleCommandHandler} from '../../src/Agency/command-handlers/DisableAgencyConsultantRoleCommandHandler';
+import {EventRepository} from '../../src/EventRepository';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('AgencyCommandBus', () => {
   let logger: typeof LoggerContext;
   let agencyCommandBus: AgencyCommandBus;
-  let agencyRepository: any;
+  let agencyRepository: AgencyRepository;
 
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
     agencyCommandBus = new AgencyCommandBus();
-    agencyRepository = sinon.createStubInstance(AgencyRepository);
+    agencyRepository = new AgencyRepository(new EventRepository(EventStore, 'some-id'));
   });
 
   afterEach(() => {

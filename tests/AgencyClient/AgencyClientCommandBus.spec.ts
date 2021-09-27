@@ -7,16 +7,18 @@ import {AgencyClientRepository} from '../../src/AgencyClient/AgencyClientReposit
 import {AgencyClientCommandBus} from '../../src/AgencyClient/AgencyClientCommandBus';
 import {AgencyClientCommandEnum} from '../../src/AgencyClient/types';
 import {RemoveAgencyClientConsultantCommandHandler} from '../../src/AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
+import {EventRepository} from '../../src/EventRepository';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('AgencyClientCommandBus', () => {
   let logger: typeof LoggerContext;
   let agencyClientCommandBus: AgencyClientCommandBus;
-  let agencyClientRepository: any;
+  let agencyClientRepository: AgencyClientRepository;
 
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
     agencyClientCommandBus = new AgencyClientCommandBus();
-    agencyClientRepository = sinon.createStubInstance(AgencyClientRepository);
+    agencyClientRepository = new AgencyClientRepository(new EventRepository(EventStore, 'some-id'));
   });
 
   afterEach(() => {
