@@ -3,11 +3,17 @@ import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandH
 import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
 import {RemoveAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
 
+/**
+ * Class responsible for handling removeAgencyClientConsultant command
+ */
 export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
 
   constructor(private agencyClientRepository: AgencyClientRepository) {}
 
+  /**
+   * Build and save event caused by removeAgencyClientConsultant command
+   */
   async execute(
     agencyId: string,
     clientId: string,

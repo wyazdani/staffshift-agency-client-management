@@ -3,11 +3,17 @@ import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandH
 import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
 import {UnlinkAgencyClientCommandDataInterface} from '../types/CommandDataTypes';
 
+/**
+ * Class responsible for handling unlinkAgencyClient command
+ */
 export class UnlinkAgencyClientCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT;
 
   constructor(private agencyClientRepository: AgencyClientRepository) {}
 
+  /**
+   * Build and save event caused by unlinkAgencyClient command
+   */
   async execute(
     agencyId: string,
     clientId: string,
