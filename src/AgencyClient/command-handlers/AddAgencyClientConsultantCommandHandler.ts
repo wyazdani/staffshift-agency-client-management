@@ -4,11 +4,17 @@ import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandH
 import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
 import {AddAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
 
+/**
+ * Class responsible for handling addAgencyClientConsultant command
+ */
 export class AddAgencyClientConsultantCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
 
   constructor(private agencyClientRepository: AgencyClientRepository) {}
 
+  /**
+   * Build and save event caused by addAgencyClientConsultant command
+   */
   async execute(
     agencyId: string,
     clientId: string,

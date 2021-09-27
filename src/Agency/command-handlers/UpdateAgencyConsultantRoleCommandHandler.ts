@@ -3,11 +3,17 @@ import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterf
 import {AgencyCommandEnum, AgencyEventEnum} from '../types';
 import {UpdateAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 
+/**
+ * Class responsible for handling updateAgencyConsultantRole command
+ */
 export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
   public commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;
 
   constructor(private agencyRepository: AgencyRepository) {}
 
+  /**
+   * Build and save event caused by updateAgencyConsultantRole command
+   */
   async execute(agencyId: string, commandData: UpdateAgencyConsultantRoleCommandDataInterface): Promise<void> {
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
     const eventId = aggregate.getLastEventId();

@@ -3,11 +3,17 @@ import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandH
 import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
 import {SyncAgencyClientCommandDataInterface} from '../types/CommandDataTypes';
 
+/**
+ * Class responsible for handling syncAgencyClient command
+ */
 export class SyncAgencyClientCommandHandler implements AgencyClientCommandHandlerInterface {
   public commandType = AgencyClientCommandEnum.SYNC_AGENCY_CLIENT;
 
   constructor(private agencyClientRepository: AgencyClientRepository) {}
 
+  /**
+   * Build and save event caused by syncAgencyClient command
+   */
   async execute(agencyId: string, clientId: string, commandData: SyncAgencyClientCommandDataInterface): Promise<void> {
     const aggregate = await this.agencyClientRepository.getAggregate(agencyId, clientId);
 

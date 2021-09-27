@@ -4,11 +4,17 @@ import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterf
 import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {AgencyCommandEnum, AgencyEventEnum} from '../types';
 
+/**
+ * Class responsible for handling addAgencyConsultantRole command
+ */
 export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
   public commandType = AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE;
 
   constructor(private agencyRepository: AgencyRepository) {}
 
+  /**
+   * Build and save events caused by disableAgencyConsultantRole command
+   */
   async execute(agencyId: string, commandData: AddAgencyConsultantRoleCommandDataInterface): Promise<void> {
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
     let eventId = aggregate.getLastEventId();

@@ -7,7 +7,13 @@ import {UnlinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 import {RemoveAgencyClientConsultantCommandHandler} from '../AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
 
+/**
+ * Factory class responsible for building an AgencyClientCommandBus configured with supported command handlers
+ */
 export class AgencyClientCommandBusFactory {
+  /**
+   * Returns an instance of AgencyClientCommandBus with a list of supported command handlers configured
+   */
   static getCommandBus(eventRepository: EventRepository): AgencyClientCommandBus {
     const agencyClientRepository = new AgencyClientRepository(eventRepository);
     const commandBus = new AgencyClientCommandBus();
