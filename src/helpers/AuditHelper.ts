@@ -12,7 +12,7 @@ interface AuditInterface {
  * Assists with doing the audit for the given resource
  */
 export class AuditHelper {
-  constructor(private logger: typeof LoggerContext, private auditor: any) {}
+  constructor(private logger: LoggerContext, private auditor: any) {}
   /**
    * Produce audit using the passed in configuration object
    *

@@ -55,31 +55,32 @@ export const addAgencyConsultantRole = async (
  *
  * @param req - The http request object
  * @param res - The http response object
+ * @param next - The next function
  */
-export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
-  const payload = get(req, 'swagger.params.agency_consultant_role_update_payload.value', {});
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;
-  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
-  // Decide how auth / audit data gets from here to the event in the event store.
-  const command: UpdateAgencyConsultantRoleCommandInterface = {
-    type: commandType,
-    data: {...payload, _id: consultantRoleId}
-  };
-
+export const updateAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   try {
-    // Passing in the agency id here feels strange
+    const payload = get(req, 'swagger.params.agency_consultant_role_update_payload.value', {});
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+    const commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;
+    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const command: UpdateAgencyConsultantRoleCommandInterface = {
+      type: commandType,
+      data: {...payload, _id: consultantRoleId}
+    };
+
     await commandBus.execute(agencyId, command);
-    // This needs to be centralised and done better
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
+    res.statusCode = 202;
+    res.end();
   } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+    if (!(err instanceof ResourceNotFoundError)) {
+      req.Logger.error('unknown error in updateAgencyConsultantRole', err);
+    }
+    next(err);
   }
 };
 
@@ -89,10 +90,7 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
  * @param req - The http request object
  * @param res - The http response object
  */
-export const enableAgencyConsultantRole = async (
-  req: SwaggerRequestInterface,
-  res: ServerResponse
-): Promise<void> => {
+export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
@@ -124,10 +122,7 @@ export const enableAgencyConsultantRole = async (
  * @param req - The http request object
  * @param res - The http response object
  */
-export const disableAgencyConsultantRole = async (
-  req: SwaggerRequestInterface,
-  res: ServerResponse
-): Promise<void> => {
+export const disableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;

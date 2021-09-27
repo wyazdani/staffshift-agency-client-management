@@ -13,7 +13,7 @@ import {ServerResponse} from 'http';
  * @param opts
  */
 export const fakeRequest = (opts: {
-  logger?: typeof LoggerContext;
+  logger?: LoggerContext;
   swaggerParams: {[key in string]: unknown};
   eventRepository?: EventRepository;
   basePathName?: string;

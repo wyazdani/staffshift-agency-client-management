@@ -5,9 +5,16 @@ import {
   AgencyConsultantRoleEnum,
   AgencyConsultantRoleInterface
 } from './types';
+import {ResourceNotFoundError} from 'a24-node-error-utils';
 
 export class AgencyAggregate {
   constructor(private id: AgencyAggregateIdInterface, private aggregate: AgencyAggregateRecordInterface) {}
+
+  validateConsultantRoleExists(consultantRoleId: string): void {
+    if (!find(this.aggregate.consultant_roles, {_id: consultantRoleId})) {
+      throw new ResourceNotFoundError('consultant role not found');
+    }
+  }
 
   getConsultantRole(consultantRoleId: string): AgencyConsultantRoleInterface {
     return find(this.aggregate.consultant_roles, {_id: consultantRoleId});

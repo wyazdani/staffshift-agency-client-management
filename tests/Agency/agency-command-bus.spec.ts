@@ -9,7 +9,7 @@ import {AgencyCommandEnum} from '../../src/Agency/types';
 import {DisableAgencyConsultantRoleCommandHandler} from '../../src/Agency/command-handlers/DisableAgencyConsultantRoleCommandHandler';
 
 describe('AgencyCommandBus', () => {
-  let logger: typeof LoggerContext;
+  let logger: LoggerContext;
   let agencyCommandBus: AgencyCommandBus;
   let agencyRepository: any;
 

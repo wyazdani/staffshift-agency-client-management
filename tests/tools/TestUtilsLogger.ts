@@ -1,7 +1,7 @@
 import {LoggerContext, LogLevel} from 'a24-logzio-winston';
 import {SinonSpy} from 'sinon';
 
-type LoggerContextType = typeof LoggerContext;
+type LoggerContextType = LoggerContext;
 
 class Logger implements LoggerContextType {
   constructor(private logSpy: SinonSpy) {}
@@ -60,7 +60,7 @@ class Logger implements LoggerContextType {
 }
 
 export class TestUtilsLogger {
-  static getLogger(logSpy: SinonSpy): typeof LoggerContext {
+  static getLogger(logSpy: SinonSpy): LoggerContext {
     return new Logger(logSpy);
   }
 }

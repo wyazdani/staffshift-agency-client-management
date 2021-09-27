@@ -6,7 +6,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import StaffshiftFacadeClient from 'a24-node-staffshift-facade-client';
 
 describe('FacadeClientHelper Class', () => {
-  let logger: typeof LoggerContext;
+  let logger: LoggerContext;
 
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());

@@ -74,7 +74,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
     let loggerContext = null;
 
     if (!isEmpty(req.headers) && !isEmpty(req.headers['x-request-id'])) {
-      loggerContext = Logger.getContext(req.headers['x-request-id']);
+      loggerContext = Logger.getContext(req.headers['x-request-id'].toString());
     } else {
       loggerContext = Logger.getContext();
     }

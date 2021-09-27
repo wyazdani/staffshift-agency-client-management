@@ -10,7 +10,7 @@ import {GenericObjectInterface} from 'GenericObjectInterface';
  *  IE a mixin concept / parasitic inheritance / Based on interfaces?
  */
 export class GenericRepository {
-  constructor(private logger: typeof LoggerContext, private store: Model<any>) {}
+  constructor(private logger: LoggerContext, private store: Model<any>) {}
 
   /**
    * Retrieves a list of all records for the given params
