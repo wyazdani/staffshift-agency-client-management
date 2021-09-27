@@ -52,7 +52,7 @@ describe('AgencyConsultantRole', () => {
           {
             type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
             data: {
-              id: roleId,
+              _id: roleId,
               name: 'sample_name',
               description: 'some description',
               max_consultants: 2
@@ -96,7 +96,7 @@ describe('AgencyConsultantRole', () => {
           {
             type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
             data: {
-              id: roleId,
+              _id: roleId,
               name: 'sample_name',
               description: 'some description',
               max_consultants: 2

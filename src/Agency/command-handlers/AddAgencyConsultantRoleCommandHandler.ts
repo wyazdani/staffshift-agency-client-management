@@ -24,7 +24,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
         type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData.id,
+          _id: commandData._id,
           name: commandData.name,
           description: commandData.description,
           max_consultants: commandData.max_consultants
@@ -35,7 +35,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
         type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData.id
+          _id: commandData._id
         },
         sequence_id: ++eventId
       }

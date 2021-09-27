@@ -16,7 +16,7 @@ describe('AddAgencyConsultantRoleCommandHandler', () => {
     it('Test correct events are persisted', async () => {
       const agencyId = 'agency id';
       const commandData = {
-        id: 'some-id',
+        _id: 'some-id',
         name: 'some name',
         description: 'description',
         max_consultants: 2
