@@ -8,7 +8,6 @@ export interface SwaggerRequestInterface extends IncomingMessage {
   swagger: {
     params: {[key: string]: unknown};
     operation: {
-      'x-octophant-event'?: string;
       'x-public-operation'?: boolean;
     };
   };

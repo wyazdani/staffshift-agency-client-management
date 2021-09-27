@@ -36,6 +36,7 @@ export class AgencyAggregate {
 
     return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED;
   }
+
   getId(): AgencyAggregateIdInterface {
     return this.id;
   }

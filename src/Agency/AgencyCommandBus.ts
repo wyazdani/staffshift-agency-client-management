@@ -1,6 +1,9 @@
 import {AgencyCommandHandlerInterface} from './types/AgencyCommandHandlerInterface';
 import {AgencyCommandInterface} from './types';
 
+/**
+ * Responsible for routing all agency related commands to their corresponding handlers
+ */
 export class AgencyCommandBus {
   private commandHandlers: AgencyCommandHandlerInterface[] = [];
 
