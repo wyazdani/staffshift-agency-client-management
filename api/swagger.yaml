@@ -48,7 +48,6 @@ paths:
       - $ref: "#/parameters/agency_id"
     get:
       x-swagger-router-controller: "AgencyClients"
-      x-octophant-event: "listAgencyClients"
       operationId: "listAgencyClients"
       security:
         - jwt: []
@@ -87,7 +86,6 @@ paths:
       - $ref: "#/parameters/client_id"
     get:
       x-swagger-router-controller: "AgencyClients"
-      x-octophant-event: "getAgencyClient"
       operationId: "getAgencyClient"
       security:
         - jwt: []
@@ -113,7 +111,6 @@ paths:
       - $ref: "#/parameters/client_id"
     get:
       x-swagger-router-controller: "AgencyClientEventLogs"
-      x-octophant-event: "listAgencyClientEventLogs"
       operationId: "listAgencyClientEventLogs"
       security:
         - jwt: []
@@ -139,7 +136,6 @@ paths:
       - $ref: "#/parameters/client_id"
     post:
       x-swagger-router-controller: "AgencyClientConsultants"
-      x-octophant-event: "addAgencyClientConsultant"
       operationId: "addAgencyClientConsultant"
       security:
         - jwt: []
@@ -157,7 +153,6 @@ paths:
         - "Agency Client Consultants"
     get:
       x-swagger-router-controller: "AgencyClientConsultants"
-      x-octophant-event: "listAgencyClientConsultants"
       operationId: "listAgencyClientConsultants"
       security:
         - jwt: []
@@ -184,7 +179,6 @@ paths:
       - $ref: "#/parameters/consultant_id"
     delete:
       x-swagger-router-controller: "AgencyClientConsultants"
-      x-octophant-event: "removeAgencyClientConsultant"
       operationId: "removeAgencyClientConsultant"
       security:
         - jwt: []
@@ -205,7 +199,6 @@ paths:
       - $ref: "#/parameters/agency_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
-      x-octophant-event: "addAgencyConsultantRole"
       operationId: "addAgencyConsultantRole"
       security:
         - jwt: []
@@ -223,7 +216,6 @@ paths:
         - "Agency Consultant Roles"
     get:
       x-swagger-router-controller: "AgencyConsultantRole"
-      x-octophant-event: "listAgencyConsultantRoles"
       operationId: "listAgencyConsultantRoles"
       security:
         - jwt: []
@@ -254,7 +246,6 @@ paths:
       - $ref: "#/parameters/consultant_role_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
-      x-octophant-event: "updateAgencyConsultantRole"
       operationId: "updateAgencyConsultantRole"
       security:
         - jwt: []
@@ -272,7 +263,6 @@ paths:
         - "Agency Consultant Roles"
     get:
       x-swagger-router-controller: "AgencyConsultantRole"
-      x-octophant-event: "getAgencyConsultantRole"
       operationId: "getAgencyConsultantRole"
       security:
         - jwt: []
@@ -294,8 +284,7 @@ paths:
       - $ref: "#/parameters/consultant_role_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
-      x-octophant-event: "enableAgencyConsultantRole"
-      operationId: "changeStatusAgencyConsultantRole"
+      operationId: "enableAgencyConsultantRole"
       security:
         - jwt: []
       parameters:
@@ -318,8 +307,7 @@ paths:
       - $ref: "#/parameters/consultant_role_id"
     post:
       x-swagger-router-controller: "AgencyConsultantRole"
-      x-octophant-event: "disableAgencyConsultantRole"
-      operationId: "changeStatusAgencyConsultantRole"
+      operationId: "disableAgencyConsultantRole"
       security:
         - jwt: []
       parameters:

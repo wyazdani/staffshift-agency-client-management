@@ -1,5 +1,6 @@
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
+import {AgencyClientCommandEnum} from '../AgencyClient/types';
 import {GenericRepository} from '../GenericRepository';
 import {AgencyClientConsultants} from '../models/AgencyClientConsultants';
 import {PaginationHelper} from '../helpers/PaginationHelper';
@@ -18,7 +19,7 @@ export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, re
   const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const clientId = get(req, 'swagger.params.client_id.value', '');
-  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
   const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
@@ -54,7 +55,7 @@ export const removeAgencyClientConsultant = async (
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const clientId = get(req, 'swagger.params.client_id.value', '');
   const consultantId = get(req, 'swagger.params.consultant_id.value', '');
-  const commandType = get(req, 'swagger.operation.x-octophant-event', '');
+  const commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
   const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
   const command = {
