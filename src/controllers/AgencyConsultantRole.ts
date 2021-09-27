@@ -5,6 +5,12 @@ import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
 import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
+import {
+  AddAgencyConsultantRoleCommandInterface,
+  DisableAgencyConsultantRoleCommandInterface,
+  EnableAgencyConsultantRoleCommandInterface,
+  UpdateAgencyConsultantRoleCommandInterface
+} from '../Agency/types/CommandTypes';
 
 /**
  * Add Agency Consultant Role
@@ -18,7 +24,7 @@ export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res:
   const commandType = get(req, 'swagger.operation.x-octophant-event', '');
   const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: AddAgencyConsultantRoleCommandInterface = {
     type: commandType,
     data: payload
   };
@@ -51,7 +57,7 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
   const commandType = get(req, 'swagger.operation.x-octophant-event', '');
   const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: UpdateAgencyConsultantRoleCommandInterface = {
     type: commandType,
     data: {...payload, _id: consultantRoleId}
   };
@@ -85,8 +91,9 @@ export const changeStatusAgencyConsultantRole = async (
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = get(req, 'swagger.operation.x-octophant-event', '');
   const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: EnableAgencyConsultantRoleCommandInterface | DisableAgencyConsultantRoleCommandInterface = {
     type: commandType,
     data: {_id: consultantRoleId}
   };

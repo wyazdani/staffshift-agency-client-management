@@ -1,7 +1,9 @@
-import {AddAgencyConsultantRoleCommandDataInterface} from './CommandDataTypes/AddAgencyConsultantRoleCommandDataInterface';
-import {UpdateAgencyConsultantRoleCommandDataInterface} from './CommandDataTypes/UpdateAgencyConsultantRoleCommandDataInterface';
-import {EnableAgencyConsultantRoleCommandDataInterface} from './CommandDataTypes/EnableAgencyConsultantRoleCommandDataInterface';
-import {DisableAgencyConsultantRoleCommandDataInterface} from './CommandDataTypes/DisableAgencyConsultantRoleCommandDataInterface';
+import {
+  AddAgencyConsultantRoleCommandDataInterface,
+  UpdateAgencyConsultantRoleCommandDataInterface,
+  EnableAgencyConsultantRoleCommandDataInterface,
+  DisableAgencyConsultantRoleCommandDataInterface
+} from './CommandDataTypes';
 
 export type AgencyCommandDataType =
   | AddAgencyConsultantRoleCommandDataInterface
