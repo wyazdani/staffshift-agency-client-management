@@ -84,10 +84,7 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
  * @param req - The http request object
  * @param res - The http response object
  */
-export const enableAgencyConsultantRole = async (
-  req: SwaggerRequestInterface,
-  res: ServerResponse
-): Promise<void> => {
+export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
@@ -119,10 +116,7 @@ export const enableAgencyConsultantRole = async (
  * @param req - The http request object
  * @param res - The http response object
  */
-export const disableAgencyConsultantRole = async (
-  req: SwaggerRequestInterface,
-  res: ServerResponse
-): Promise<void> => {
+export const disableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
