@@ -1,4 +1,5 @@
 import {countBy, find} from 'lodash';
+import {ValidationError} from 'a24-node-error-utils';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {
   AgencyClientAggregateIdInterface,
@@ -16,7 +17,10 @@ export class AgencyClientAggregate {
   isLinked(): boolean {
     return !!this.aggregate.linked;
   }
-  // Business Logic that should be applied
+
+  /**
+   * This ensures integrity of the agency client aggregate when a new client consultant is added
+   */
   async validateAddClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
     // Should this be another aggregate?
@@ -25,17 +29,18 @@ export class AgencyClientAggregate {
       countBy(this.aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
 
     if (!consultantRole) {
-      throw new Error(`CONSULTANT ROLE ${consultant.consultant_role_id} NOT DEFINED`);
+      throw new ValidationError(`Consultant role ${consultant.consultant_role_id} does not not exist`);
     }
 
     if (currentCount + 1 > consultantRole.max_consultants) {
-      throw new Error(`TOO MANY CONSULTANTS FOR THE ROLE ${consultant.consultant_role_id}`);
+      throw new ValidationError(`Too many consultants for the role ${consultant.consultant_role_id}`);
     }
 
     if (consultantRole.status != 'enabled') {
-      throw new Error(`CONSULTANT ROLE ${consultant.consultant_role_id} IS NOT ENABLED`);
+      throw new ValidationError(`Consultant role ${consultant.consultant_role_id} is not enabled`);
     }
   }
+
   async validateRemoveClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
     // prevent us from deleting something that does not exist
     if (find(this.aggregate.consultants, {_id: consultant._id}) === undefined) {

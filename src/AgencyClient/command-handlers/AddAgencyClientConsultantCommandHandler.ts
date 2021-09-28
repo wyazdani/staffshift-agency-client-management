@@ -30,7 +30,7 @@ export class AddAgencyClientConsultantCommandHandler implements AgencyClientComm
         type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: new ObjectID().toString(),
+          _id: commandData._id,
           consultant_role_id: commandData.consultant_role_id,
           consultant_id: commandData.consultant_id
         },

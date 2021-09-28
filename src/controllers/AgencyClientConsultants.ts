@@ -1,3 +1,4 @@
+import {ObjectID} from 'mongodb';
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../AgencyClient/types';
@@ -16,33 +17,31 @@ import {
 /**
  * Add Agency Client Consultant
  *
- * @param {ClientRequest} req - The http request object
- * @param {IncomingMessage} res - The http response object
+ * @param req - The http request object
+ * @param res - The http response object
+ * @param next - Function used to pass control to the next middleware
  */
-export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
+export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, res: ServerResponse, next: (error: Error) => void): Promise<void> => {
   const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const clientId = get(req, 'swagger.params.client_id.value', '');
   const commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
   const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
-  // Decide how auth / audit data gets from here to the event in the event store.
   const command: AddAgencyClientConsultantCommandInterface = {
     type: commandType,
-    data: payload
+    data: {
+      ...payload,
+      _id: new ObjectID().toString()
+    }
   };
 
   try {
-    // Passing in the agency and client ids here feels strange
     await commandBus.execute(agencyId, clientId, command);
-    // This needs to be centralised and done better
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
-  } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+    res.statusCode = 202;
+    res.setHeader('Location', `${req.basePathName}/${payload.consultant_id}`);
+    res.end();
+  } catch (error) {
+    next(error);
   }
 };
 
