@@ -1,4 +1,5 @@
 import sinon from 'sinon';
+import {stubConstructor} from 'ts-sinon';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 import {assert} from 'chai';
@@ -7,8 +8,6 @@ import {AgencyClientRepository} from '../../src/AgencyClient/AgencyClientReposit
 import {AgencyClientCommandBus} from '../../src/AgencyClient/AgencyClientCommandBus';
 import {AgencyClientCommandEnum} from '../../src/AgencyClient/types';
 import {RemoveAgencyClientConsultantCommandHandler} from '../../src/AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
-import {EventRepository} from '../../src/EventRepository';
-import {EventStore} from '../../src/models/EventStore';
 
 describe('AgencyClientCommandBus', () => {
   let logger: typeof LoggerContext;
@@ -18,7 +17,7 @@ describe('AgencyClientCommandBus', () => {
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
     agencyClientCommandBus = new AgencyClientCommandBus();
-    agencyClientRepository = new AgencyClientRepository(new EventRepository(EventStore, 'some-id'));
+    agencyClientRepository = stubConstructor(AgencyClientRepository);
   });
 
   afterEach(() => {

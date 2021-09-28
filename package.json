@@ -85,6 +85,7 @@
     "supertest": "6.1.4",
     "swagger-test-templates": "1.6.0",
     "ts-node": "10.2.1",
+    "ts-sinon": "^2.0.2",
     "typescript": "4.4.2",
     "z-schema": "4.2.4"
   }
