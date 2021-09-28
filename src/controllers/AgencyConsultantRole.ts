@@ -2,9 +2,15 @@ import {ServerResponse} from 'http';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyCommandHandler} from '../Agency/AgencyCommandHandler';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
+import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
+import {
+  AddAgencyConsultantRoleCommandInterface,
+  DisableAgencyConsultantRoleCommandInterface,
+  EnableAgencyConsultantRoleCommandInterface,
+  UpdateAgencyConsultantRoleCommandInterface
+} from '../Agency/types/CommandTypes';
 import {AgencyCommandEnum} from '../Agency/types';
 
 /**
@@ -17,17 +23,16 @@ export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res:
   const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const commandType = AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE;
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyCommandHandler(repository);
+  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: AddAgencyConsultantRoleCommandInterface = {
     type: commandType,
     data: payload
   };
 
   try {
     // Passing in the agency id here feels strange
-    await handler.apply(agencyId, command);
+    await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -51,17 +56,16 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyCommandHandler(repository);
+  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: UpdateAgencyConsultantRoleCommandInterface = {
     type: commandType,
     data: {...payload, _id: consultantRoleId}
   };
 
   try {
     // Passing in the agency id here feels strange
-    await handler.apply(agencyId, command);
+    await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -80,24 +84,20 @@ export const updateAgencyConsultantRole = async (req: SwaggerRequestInterface, r
  * @param req - The http request object
  * @param res - The http response object
  */
-export const enableAgencyConsultantRole = async (
-  req: SwaggerRequestInterface,
-  res: ServerResponse
-): Promise<void> => {
+export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyCommandHandler(repository);
+  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: EnableAgencyConsultantRoleCommandInterface = {
     type: commandType,
     data: {_id: consultantRoleId}
   };
 
   try {
     // Passing in the agency id here feels strange
-    await handler.apply(agencyId, command);
+    await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -116,24 +116,20 @@ export const enableAgencyConsultantRole = async (
  * @param req - The http request object
  * @param res - The http response object
  */
-export const disableAgencyConsultantRole = async (
-  req: SwaggerRequestInterface,
-  res: ServerResponse
-): Promise<void> => {
+export const disableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyCommandHandler(repository);
+  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: DisableAgencyConsultantRoleCommandInterface = {
     type: commandType,
     data: {_id: consultantRoleId}
   };
 
   try {
     // Passing in the agency id here feels strange
-    await handler.apply(agencyId, command);
+    await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

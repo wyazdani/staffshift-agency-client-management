@@ -1,5 +1,3 @@
-import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
-import {AgencyClientCommandHandler} from '../AgencyClient/AgencyClientCommandHandler';
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../AgencyClient/types';
@@ -9,6 +7,11 @@ import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {QueryHelper} from 'a24-node-query-utils';
 import {Error} from 'mongoose';
+import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
+import {
+  AddAgencyClientConsultantCommandInterface,
+  RemoveAgencyClientConsultantCommandInterface
+} from '../AgencyClient/types/CommandTypes';
 
 /**
  * Add Agency Client Consultant
@@ -21,17 +24,16 @@ export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, re
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const clientId = get(req, 'swagger.params.client_id.value', '');
   const commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
-  const repository = new AgencyClientRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyClientCommandHandler(repository);
+  const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: AddAgencyClientConsultantCommandInterface = {
     type: commandType,
     data: payload
   };
 
   try {
     // Passing in the agency and client ids here feels strange
-    await handler.apply(agencyId, clientId, command);
+    await commandBus.execute(agencyId, clientId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -58,16 +60,15 @@ export const removeAgencyClientConsultant = async (
   const clientId = get(req, 'swagger.params.client_id.value', '');
   const consultantId = get(req, 'swagger.params.consultant_id.value', '');
   const commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
-  const repository = new AgencyClientRepository(get(req, 'eventRepository', undefined));
-  const handler = new AgencyClientCommandHandler(repository);
+  const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: RemoveAgencyClientConsultantCommandInterface = {
     type: commandType,
     data: {_id: consultantId}
   };
 
   try {
-    await handler.apply(agencyId, clientId, command);
+    await commandBus.execute(agencyId, clientId, command);
     // This needs to be centralised and done better
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

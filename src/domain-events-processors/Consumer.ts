@@ -6,6 +6,7 @@ import {JWTSecurityHelper} from '../helpers/JWTSecurityHelper';
 import {EventMetaInterface, EventRepository} from '../EventRepository';
 import {v4 as uuidv4} from 'uuid';
 import {EventStore} from '../models/EventStore';
+import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
 import config from 'config';
 
 const getEventMeta = async (logger: typeof LoggerContext, token: string): Promise<EventMetaInterface> =>
@@ -40,7 +41,8 @@ const process = async (logger: typeof LoggerContext, message: GenericObjectInter
     case 'agency_organisation_site_ward_link_created':
     case 'agency_organisation_site_ward_link_deleted':
     case 'agency_organisation_site_ward_link_status_changed': {
-      const handler = new AgencyClientLinkStatus(logger, eventRepository);
+      const agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository);
+      const handler = new AgencyClientLinkStatus(logger, agencyClientCommandBus);
 
       return handler.apply(message);
     }
@@ -57,10 +59,6 @@ module.exports = async (
 ): Promise<void> => {
   process(logger, message)
     .then(() => IncomingDomainEvents.create(message))
-    .then(() => {
-      callback();
-    })
-    .catch((err) => {
-      callback(err);
-    });
+    .then(() => callback())
+    .catch((err) => callback(err));
 };

@@ -1,7 +1,7 @@
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {AgencyCommandEnum} from './AgencyCommandEnum';
+import {AgencyCommandDataType} from './AgencyCommandDataType';
 
 export interface AgencyCommandInterface {
   type: AgencyCommandEnum;
-  data: GenericObjectInterface;
+  data: AgencyCommandDataType;
 }

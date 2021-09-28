@@ -1,7 +1,7 @@
 import {AgencyClientCommandEnum} from './AgencyClientCommandEnum';
-import {AgencyClientConsultantInterface} from './AgencyClientConsultantInterface';
+import {AgencyClientCommandDataType} from './AgencyClientCommandDataType';
 
 export interface AgencyClientCommandInterface {
   type: AgencyClientCommandEnum;
-  data: AgencyClientConsultantInterface;
+  data: AgencyClientCommandDataType;
 }
