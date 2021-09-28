@@ -3,7 +3,7 @@
     "stack": {
       "app": "staffshift-agency-client-management"
     },
-    "level": "debug"
+    "level": "none"
   },
   "mongo": {
     "database_host": "mongodb://database:27017/staffshiftagencyclientmanagementCI"

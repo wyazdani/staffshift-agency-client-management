@@ -2,7 +2,7 @@ import {promise} from '../src/http_server';
 export const mochaHooks = {
   before: (done: () => void) => {
     // eslint-disable-next-line no-console
-    console.log('------------------------------PROMISE');
+    console.log('Waiting for http server to run');
     promise.then(done);
   }
 };
