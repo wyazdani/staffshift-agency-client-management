@@ -1,4 +1,5 @@
 import sinon from 'sinon';
+import {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 import {LoggerContext} from 'a24-logzio-winston';
@@ -11,12 +12,12 @@ import {DisableAgencyConsultantRoleCommandHandler} from '../../src/Agency/comman
 describe('AgencyCommandBus', () => {
   let logger: LoggerContext;
   let agencyCommandBus: AgencyCommandBus;
-  let agencyRepository: any;
+  let agencyRepository: AgencyRepository;
 
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
     agencyCommandBus = new AgencyCommandBus();
-    agencyRepository = sinon.createStubInstance(AgencyRepository);
+    agencyRepository = stubConstructor(AgencyRepository);
   });
 
   afterEach(() => {
