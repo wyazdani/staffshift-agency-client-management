@@ -36,8 +36,8 @@ export const addAgencyConsultantRole = async (
     const command: AddAgencyConsultantRoleCommandInterface = {
       type: commandType,
       data: {
-        ...payload,
-        id: roleId
+        _id: roleId,
+        ...payload
       }
     };
 

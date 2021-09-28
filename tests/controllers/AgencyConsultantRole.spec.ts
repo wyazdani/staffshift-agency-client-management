@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import {addAgencyConsultantRole} from '../../src/controllers/AgencyConsultantRole';
+import {addAgencyConsultantRole, updateAgencyConsultantRole} from '../../src/controllers/AgencyConsultantRole';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {LocationHelper} from '../../src/helpers/LocationHelper';
@@ -52,7 +52,7 @@ describe('AgencyConsultantRole', () => {
           {
             type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
             data: {
-              id: roleId,
+              _id: roleId,
               name: 'sample_name',
               description: 'some description',
               max_consultants: 2
@@ -96,7 +96,7 @@ describe('AgencyConsultantRole', () => {
           {
             type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
             data: {
-              id: roleId,
+              _id: roleId,
               name: 'sample_name',
               description: 'some description',
               max_consultants: 2
@@ -107,4 +107,5 @@ describe('AgencyConsultantRole', () => {
       );
     });
   });
+
 });

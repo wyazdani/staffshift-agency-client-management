@@ -8,6 +8,10 @@ import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {QueryHelper} from 'a24-node-query-utils';
 import {Error} from 'mongoose';
 import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
+import {
+  AddAgencyClientConsultantCommandInterface,
+  RemoveAgencyClientConsultantCommandInterface
+} from '../AgencyClient/types/CommandTypes';
 
 /**
  * Add Agency Client Consultant
@@ -22,7 +26,7 @@ export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, re
   const commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
   const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: AddAgencyClientConsultantCommandInterface = {
     type: commandType,
     data: payload
   };
@@ -58,7 +62,7 @@ export const removeAgencyClientConsultant = async (
   const commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
   const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
   // Decide how auth / audit data gets from here to the event in the event store.
-  const command = {
+  const command: RemoveAgencyClientConsultantCommandInterface = {
     type: commandType,
     data: {_id: consultantId}
   };

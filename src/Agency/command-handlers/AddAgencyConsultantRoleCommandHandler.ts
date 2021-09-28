@@ -3,11 +3,17 @@ import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterf
 import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {AgencyCommandEnum, AgencyEventEnum} from '../types';
 
+/**
+ * Class responsible for handling addAgencyConsultantRole command
+ */
 export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandlerInterface {
   public commandType = AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE;
 
   constructor(private agencyRepository: AgencyRepository) {}
 
+  /**
+   * Build and save events caused by disableAgencyConsultantRole command
+   */
   async execute(agencyId: string, commandData: AddAgencyConsultantRoleCommandDataInterface): Promise<void> {
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
     let eventId = aggregate.getLastEventId();
@@ -18,7 +24,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
         type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData.id,
+          _id: commandData._id,
           name: commandData.name,
           description: commandData.description,
           max_consultants: commandData.max_consultants
@@ -29,7 +35,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
         type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData.id
+          _id: commandData._id
         },
         sequence_id: ++eventId
       }

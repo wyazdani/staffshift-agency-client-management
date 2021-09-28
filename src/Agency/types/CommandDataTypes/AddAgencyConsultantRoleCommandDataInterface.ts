@@ -1,5 +1,5 @@
 export interface AddAgencyConsultantRoleCommandDataInterface {
-  id: string; //Agency Consultant Role Id
+  _id: string;
   name: string;
   description: string;
   max_consultants: number;

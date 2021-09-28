@@ -205,7 +205,7 @@ paths:
       parameters:
         - $ref: "#/parameters/agency_consultant_role_payload"
       responses:
-        200:
+        202:
           description: "Creates an Agency Consultant Role"
           headers:
             Location:
