@@ -1,14 +1,11 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
+import {stubConstructor} from 'ts-sinon';
 import {AgencyAggregate} from '../../../src/Agency/AgencyAggregate';
 import {AgencyRepository} from '../../../src/Agency/AgencyRepository';
 import {UpdateAgencyConsultantRoleCommandHandler} from '../../../src/Agency/command-handlers/UpdateAgencyConsultantRoleCommandHandler';
 import {AgencyCommandEnum, AgencyEventEnum} from '../../../src/Agency/types';
-import {
-  UpdateAgencyConsultantRoleCommandDataInterface
-} from '../../../src/Agency/types/CommandDataTypes';
-import {EventRepository} from '../../../src/EventRepository';
-import {EventStore} from '../../../src/models/EventStore';
+import {UpdateAgencyConsultantRoleCommandDataInterface} from '../../../src/Agency/types/CommandDataTypes';
 
 describe('UpdateAgencyConsultantRoleCommandHandler', () => {
   afterEach(() => {
@@ -17,23 +14,23 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
   describe('execute()', () => {
     it('Test correct events are persisted', async () => {
       const agencyId = 'agency id';
+      const roleId = 'some-id';
       const commandData = {
-        _id: 'some-id',
+        _id: roleId,
         name: 'some name',
         description: 'description',
         max_consultants: 2
       } as UpdateAgencyConsultantRoleCommandDataInterface;
-      const eventRepository = new EventRepository(EventStore, 'sample');
-      const agencyRepository = new AgencyRepository(eventRepository);
-      const save = sinon.stub(agencyRepository, 'save');
-      const getAggregate = sinon.stub(agencyRepository, 'getAggregate').returns(new AgencyAggregate({agency_id: agencyId}, {
-        consultant_roles: [],
-        last_sequence_id: 10
-      }));
+      const agencyRepository = stubConstructor(AgencyRepository);
+      const aggregate = stubConstructor(AgencyAggregate);
+
+      agencyRepository.save.resolves();
+      agencyRepository.getAggregate.resolves(aggregate);
+      aggregate.getLastEventId.returns(100);
+      aggregate.getId.returns({agency_id: agencyId});
+      aggregate.validateConsultantRoleExists.returns();
       const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
 
-      sinon.stub(AgencyAggregate.prototype, 'getLastEventId').returns(100);
-      sinon.stub(AgencyAggregate.prototype, 'getId').returns({agency_id: agencyId});
       assert.equal(
         handler.commandType,
         AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
@@ -41,7 +38,7 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
       );
       await handler.execute(agencyId, commandData);
 
-      save.should.have.been.calledWith([
+      agencyRepository.save.should.have.been.calledWith([
         {
           type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
           aggregate_id: {agency_id: agencyId},
@@ -49,6 +46,31 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
           sequence_id: 101
         }
       ]);
+      agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
+      aggregate.validateConsultantRoleExists.should.have.calledOnceWith(roleId);
+    });
+
+    it('Test exception is thrown for validate consultant role', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'some-id';
+      const commandData = {
+        _id: roleId,
+        name: 'some name',
+        description: 'description',
+        max_consultants: 2
+      } as UpdateAgencyConsultantRoleCommandDataInterface;
+      const agencyRepository = stubConstructor(AgencyRepository);
+      const aggregate = stubConstructor(AgencyAggregate);
+      const error = new Error('sample error');
+
+      agencyRepository.getAggregate.resolves(aggregate);
+      aggregate.validateConsultantRoleExists.throws(error);
+      const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
+
+      await handler.execute(agencyId, commandData).should.be.rejectedWith(error);
+
+      aggregate.validateConsultantRoleExists.should.have.been.calledOnce;
+      agencyRepository.save.should.not.have.been.called;
     });
   });
 });

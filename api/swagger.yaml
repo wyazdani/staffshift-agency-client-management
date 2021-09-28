@@ -262,8 +262,6 @@ paths:
       responses:
         202:
           description: "Updates an Agency Consultant Role"
-          schema:
-            $ref: "#/definitions/agency_consultant_role_item_def"
         400:
           description: "Validation Error. Usually caused by a missing or invalid parameter."
           schema:
@@ -672,6 +670,11 @@ definitions:
     properties:
       code:
         type: string
+        enum:
+          - "SCHEMA_VALIDATION_FAILED"
+          - "MODEL_VALIDATION_FAILED"
+          - "PATTERN"
+          - "REQUIRED"
       message:
         type: string
       errors:

@@ -74,7 +74,7 @@ export const updateAgencyConsultantRole = async (
     };
 
     if (isEmpty(payload)) {
-      throw new ValidationError('Nothing to update');
+      throw new ValidationError('Nothing to update, you need to put at least one property to update');
     }
 
     await commandBus.execute(agencyId, command);
