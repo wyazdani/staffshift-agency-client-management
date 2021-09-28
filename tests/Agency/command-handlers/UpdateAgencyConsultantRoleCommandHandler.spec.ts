@@ -2,11 +2,9 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import {AgencyAggregate} from '../../../src/Agency/AgencyAggregate';
 import {AgencyRepository} from '../../../src/Agency/AgencyRepository';
-import {AddAgencyConsultantRoleCommandHandler} from '../../../src/Agency/command-handlers/AddAgencyConsultantRoleCommandHandler';
 import {UpdateAgencyConsultantRoleCommandHandler} from '../../../src/Agency/command-handlers/UpdateAgencyConsultantRoleCommandHandler';
 import {AgencyCommandEnum, AgencyEventEnum} from '../../../src/Agency/types';
 import {
-  AddAgencyConsultantRoleCommandDataInterface,
   UpdateAgencyConsultantRoleCommandDataInterface
 } from '../../../src/Agency/types/CommandDataTypes';
 import {EventRepository} from '../../../src/EventRepository';
@@ -28,6 +26,10 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
       const eventRepository = new EventRepository(EventStore, 'sample');
       const agencyRepository = new AgencyRepository(eventRepository);
       const save = sinon.stub(agencyRepository, 'save');
+      const getAggregate = sinon.stub(agencyRepository, 'getAggregate').returns(new AgencyAggregate({agency_id: agencyId}, {
+        consultant_roles: [],
+        last_sequence_id: 10
+      }));
       const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
 
       sinon.stub(AgencyAggregate.prototype, 'getLastEventId').returns(100);

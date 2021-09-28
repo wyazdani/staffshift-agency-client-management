@@ -42,11 +42,11 @@ class Logger implements LoggerContextType {
     this.logSpy(message, object);
   }
 
-  log(level: typeof LogLevel, message: string, object?: any): void {
+  log(level: LogLevel, message: string, object?: any): void {
     this.logSpy(message, object);
   }
 
-  logAction(level: typeof LogLevel, message: string, object?: any): void {
+  logAction(level: LogLevel, message: string, object?: any): void {
     this.logSpy(message, object);
   }
 

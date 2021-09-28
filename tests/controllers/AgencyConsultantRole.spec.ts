@@ -6,6 +6,7 @@ import {LocationHelper} from '../../src/helpers/LocationHelper';
 import {ObjectID} from 'mongodb';
 import {AgencyCommandBus} from '../../src/Agency/AgencyCommandBus';
 import {AgencyCommandEnum} from '../../src/Agency/types';
+import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 
 describe('AgencyConsultantRole', () => {
   afterEach(() => {
@@ -108,4 +109,136 @@ describe('AgencyConsultantRole', () => {
     });
   });
 
+  describe('updateAgencyConsultantRole()', () => {
+    it('success scenario', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: roleId},
+        agency_consultant_role_update_payload: {
+          value: {
+            name: 'sample_name',
+            description: 'some description',
+            max_consultants: 2
+          }
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const execute = sinon.stub(AgencyCommandBus.prototype, 'execute').resolves();
+
+      await updateAgencyConsultantRole(req, res, next);
+      assert.equal(res.statusCode, 202, 'status code expected to be 202');
+      assert.equal(end.callCount, 1, 'Expected end to be called');
+      assert.equal(next.callCount, 0, 'Expected next to not be called');
+      execute.should.have.been.calledWith(agencyId, {
+        type: AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
+        data: {
+          _id: roleId,
+          name: 'sample_name',
+          description: 'some description',
+          max_consultants: 2
+        }
+      });
+    });
+
+    it('success scenario, partial update', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: roleId},
+        agency_consultant_role_update_payload: {
+          value: {
+            max_consultants: 2
+          }
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const execute = sinon.stub(AgencyCommandBus.prototype, 'execute').resolves();
+
+      await updateAgencyConsultantRole(req, res, next);
+      assert.equal(res.statusCode, 202, 'status code expected to be 202');
+      assert.equal(end.callCount, 1, 'Expected end to be called');
+      assert.equal(next.callCount, 0, 'Expected next to not be called');
+      execute.should.have.been.calledWith(agencyId, {
+        type: AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
+        data: {
+          _id: roleId,
+          max_consultants: 2
+        }
+      });
+    });
+
+    it('validation error for nothing to update', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: roleId},
+        agency_consultant_role_update_payload: {
+          value: {}
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const execute = sinon.stub(AgencyCommandBus.prototype, 'execute');
+
+      await updateAgencyConsultantRole(req, res, next);
+      assert.equal(end.callCount, 0, 'Expected end not to be called');
+      assert.equal(next.callCount, 1, 'Expected next to be called');
+      assert.equal(execute.callCount, 0, 'Expected execute to not be called');
+      execute.should.not.have.been.called;
+      assert.instanceOf(next.getCall(0).args[0], ValidationError, 'Expected error to be instance of Validation error');
+    });
+
+    it('failure scenario, ResourceNotFoundError', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: roleId},
+        agency_consultant_role_update_payload: {
+          value: {
+            name: 'sample_name',
+            description: 'some description',
+            max_consultants: 2
+          }
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const error = new ResourceNotFoundError('sample');
+      const execute = sinon.stub(AgencyCommandBus.prototype, 'execute').rejects(error);
+
+      await updateAgencyConsultantRole(req, res, next);
+      next.should.have.been.calledWith(error);
+      execute.should.have.been.calledWith(agencyId, {
+        type: AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
+        data: {
+          _id: roleId,
+          name: 'sample_name',
+          description: 'some description',
+          max_consultants: 2
+        }
+      });
+    });
+  });
 });

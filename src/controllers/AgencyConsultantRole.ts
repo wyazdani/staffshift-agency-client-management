@@ -1,9 +1,9 @@
 import {ServerResponse} from 'http';
 import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
-import {get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {ResourceNotFoundError} from 'a24-node-error-utils';
+import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
 import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
 import {
@@ -73,11 +73,15 @@ export const updateAgencyConsultantRole = async (
       data: {...payload, _id: consultantRoleId}
     };
 
+    if (isEmpty(payload)) {
+      throw new ValidationError('Nothing to update');
+    }
+
     await commandBus.execute(agencyId, command);
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ResourceNotFoundError)) {
+    if (!(err instanceof ResourceNotFoundError) && !(err instanceof ValidationError)) {
       req.Logger.error('unknown error in updateAgencyConsultantRole', err);
     }
     next(err);
