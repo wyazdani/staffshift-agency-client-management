@@ -14,12 +14,15 @@ export class AgencyClientAggregate {
     private agencyRepository: AgencyRepository
   ) {}
 
+  /**
+   * Check if agency client is linked or not
+   */
   isLinked(): boolean {
     return !!this.aggregate.linked;
   }
 
   /**
-   * This ensures integrity of the agency client aggregate when a new client consultant is added
+   * Check all invariants of the agency client aggregate before adding a new agency client consultant
    */
   async validateAddClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
@@ -41,21 +44,32 @@ export class AgencyClientAggregate {
     }
   }
 
+  /**
+   * Check all invariants of the agency client aggregate before removing an agency client consultant
+   */
   async validateRemoveClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
-    // prevent us from deleting something that does not exist
     if (find(this.aggregate.consultants, {_id: consultant._id}) === undefined) {
-      throw new Error('CONSULTANT NOT FOUND');
+      throw new ValidationError('Consultant that was supposed to be removed does not exist');
     }
   }
 
+  /**
+   * Return a list of agency client consultants
+   */
   getConsultants(): AgencyClientConsultantInterface[] {
     return this.aggregate.consultants;
   }
 
+  /**
+   * Return the agency client aggregate ID
+   */
   getId(): AgencyClientAggregateIdInterface {
     return this.id;
   }
 
+  /**
+   * Return the previous agency client aggregate ID
+   */
   getLastEventId(): number {
     return this.aggregate.last_sequence_id;
   }

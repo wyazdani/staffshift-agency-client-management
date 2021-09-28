@@ -21,24 +21,29 @@ import {
  * @param res - The http response object
  * @param next - Function used to pass control to the next middleware
  */
-export const addAgencyClientConsultant = async (req: SwaggerRequestInterface, res: ServerResponse, next: (error: Error) => void): Promise<void> => {
+export const addAgencyClientConsultant = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const clientId = get(req, 'swagger.params.client_id.value', '');
   const commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
   const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+  const agencyClientConsultantId = new ObjectID().toString();
   const command: AddAgencyClientConsultantCommandInterface = {
     type: commandType,
     data: {
       ...payload,
-      _id: new ObjectID().toString()
+      _id: agencyClientConsultantId
     }
   };
 
   try {
     await commandBus.execute(agencyId, clientId, command);
     res.statusCode = 202;
-    res.setHeader('Location', `${req.basePathName}/${payload.consultant_id}`);
+    res.setHeader('Location', `${req.basePathName}/${agencyClientConsultantId}`);
     res.end();
   } catch (error) {
     next(error);

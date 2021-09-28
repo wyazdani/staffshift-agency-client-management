@@ -39,6 +39,7 @@ describe('AgencyClientCommandBus', () => {
     const command = {
       type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
       data: {
+        _id: 'some id',
         consultant_role_id: '6141d9cb9fb4b44d5346914d',
         consultant_id: '6141d9cb9fb4b44d5346914e'
       }
