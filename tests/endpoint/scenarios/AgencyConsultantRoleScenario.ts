@@ -6,6 +6,9 @@ import {AbstractScenario} from './Scenario';
  * Responsible for triggering agency consultant role commands
  */
 export class AgencyConsultantRoleScenario extends AbstractScenario {
+  /**
+   * Trigger addAgencyConsultantRole command
+   */
   async addAgencyConsultantRole(agencyId: string, roleId: string) {
     await AgencyCommandBusFactory.getCommandBus(this.eventRepository).execute(agencyId, {
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,

@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import ZSchema from 'z-schema';
+import {cloneDeep} from 'lodash';
+import Zschema from 'z-schema';
 import {TestUtilsZSchemaFormatter} from '../tools/TestUtilsZSchemaFormatter';
 import {assert} from 'chai';
 import {api} from '../tools/TestUtilsApi';
@@ -8,9 +8,9 @@ import {AgencyClientScenario} from './scenarios/AgencyClientScenario';
 import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScenario';
 
 TestUtilsZSchemaFormatter.format();
-const validator = new ZSchema({});
+const validator = new Zschema({});
 
-describe.only('/agency/{agency_id}/clients/{client_id}/consultants', () => {
+describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const jwtToken = getJWT({
     sub: '5ff6e098fb83732f8e23dc92',
     name: 'John Doe',
@@ -29,8 +29,8 @@ describe.only('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario();
 
   beforeEach(async () => {
+    await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, roleId);
     await agencyClientScenario.linkAgencyClient(agencyId, clientId);
-    await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, clientId);
   });
 
   afterEach(async () => {
@@ -116,7 +116,7 @@ describe.only('/agency/{agency_id}/clients/{client_id}/consultants', () => {
           }
         }
       };
-      const headersClone = _.cloneDeep(headers);
+      const headersClone = cloneDeep(headers);
 
       headersClone['x-request-jwt'] = 'invalid';
       const res = await api.post(`/agency/${agencyId}/clients/${clientId}/consultants`).set(headersClone).send({

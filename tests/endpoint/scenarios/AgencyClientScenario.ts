@@ -6,7 +6,10 @@ import {AbstractScenario} from './Scenario';
  * Responsible for triggering agency client commands
  */
 export class AgencyClientScenario extends AbstractScenario {
-  async linkAgencyClient(agencyId, clientId) {
+  /**
+   * Trigger linkAgencyClient command
+   */
+  async linkAgencyClient(agencyId: string, clientId: string) {
     await AgencyClientCommandBusFactory.getCommandBus(this.eventRepository).execute(agencyId, clientId, {
       type: AgencyClientCommandEnum.LINK_AGENCY_CLIENT,
       data: {
