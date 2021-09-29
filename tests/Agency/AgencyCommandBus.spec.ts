@@ -20,10 +20,6 @@ describe('AgencyCommandBus', () => {
     agencyRepository = stubConstructor(AgencyRepository);
   });
 
-  afterEach(() => {
-    sinon.restore();
-  });
-
   describe('addHandler()', () => {
     it('should return class instance', () => {
       const instance = agencyCommandBus.addHandler(new AddAgencyConsultantRoleCommandHandler(agencyRepository));

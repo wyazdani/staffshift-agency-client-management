@@ -20,10 +20,6 @@ describe('AgencyClientCommandBus', () => {
     agencyClientRepository = stubConstructor(AgencyClientRepository);
   });
 
-  afterEach(() => {
-    sinon.restore();
-  });
-
   describe('addHandler()', () => {
     it('should return class instance', () => {
       const instance = agencyClientCommandBus.addHandler(
