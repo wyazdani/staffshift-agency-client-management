@@ -35,21 +35,21 @@ describe('AddAgencyClientConsultantCommandHandler', () => {
   });
 
   describe('execute()', () => {
-    it('test that correct event is saved', async () => {
-      const commandData = {
-        _id: 'some id',
-        consultant_role_id: 'role id',
-        consultant_id: 'consultant id'
-      };
-      const expectedEvents = [
-        {
-          type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
-          aggregate_id: aggregateId,
-          data: commandData,
-          sequence_id: 2
-        }
-      ];
+    const commandData = {
+      _id: 'some id',
+      consultant_role_id: 'role id',
+      consultant_id: 'consultant id'
+    };
+    const expectedEvents = [
+      {
+        type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        aggregate_id: aggregateId,
+        data: commandData,
+        sequence_id: 2
+      }
+    ];
 
+    it('test that correct event is saved', async () => {
       const agencyClientAggregateStub = stubObject<AgencyClientAggregate>(agencyClientAggregate);
       const agencyClientRepositoryStub = stubObject<AgencyClientRepository>(agencyClientRepository);
 
@@ -71,20 +71,6 @@ describe('AddAgencyClientConsultantCommandHandler', () => {
     });
 
     it('should throw an error when the save operation fails', async () => {
-      const commandData = {
-        _id: 'some id',
-        consultant_role_id: 'role id',
-        consultant_id: 'consultant id'
-      };
-      const expectedEvents = [
-        {
-          type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
-          aggregate_id: aggregateId,
-          data: commandData,
-          sequence_id: 2
-        }
-      ];
-
       const agencyClientAggregateStub = stubObject<AgencyClientAggregate>(agencyClientAggregate);
       const agencyClientRepositoryStub = stubObject<AgencyClientRepository>(agencyClientRepository);
 
@@ -107,11 +93,6 @@ describe('AddAgencyClientConsultantCommandHandler', () => {
     });
 
     it('should throw an error when the call to retrieve the aggregate fails', async () => {
-      const commandData = {
-        _id: 'some id',
-        consultant_role_id: 'role id',
-        consultant_id: 'consultant id'
-      };
       const agencyClientRepositoryStub = stubObject<AgencyClientRepository>(agencyClientRepository);
 
       agencyClientRepositoryStub.getAggregate.rejects(new Error('some error here'));
@@ -125,7 +106,7 @@ describe('AddAgencyClientConsultantCommandHandler', () => {
       );
       await handler.execute(agencyId, clientId, commandData).should.be.rejectedWith(Error, 'some error here');
 
-      assert.equal(agencyClientRepositoryStub.save.callCount, 1, 'no events should be saved');
+      assert.equal(agencyClientRepositoryStub.save.callCount, 0, 'no events should be saved');
     });
   });
 });
