@@ -1,16 +1,16 @@
-import {TestUtilsZSchemaFormatter} from '../tools/TestUtilsZSchemaFormatter';
+import _ from 'lodash';
 import ZSchema from 'z-schema';
+import {TestUtilsZSchemaFormatter} from '../tools/TestUtilsZSchemaFormatter';
 import {assert} from 'chai';
 import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
-import _ from 'lodash';
-import {CreateAgencyClientLinkScenario} from './scenarios/CreateAgencyClientLinkScenario';
-import {CreateAgencyConsultantRoleScenario} from './scenarios/CreateAgencyConsultantRoleScenario';
+import {AgencyClientScenario} from './scenarios/AgencyClientScenario';
+import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScenario';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
 
-describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
+describe.only('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const jwtToken = getJWT({
     sub: '5ff6e098fb83732f8e23dc92',
     name: 'John Doe',
@@ -25,15 +25,16 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const agencyId = '6141caa0d51653b8f4000001';
   const clientId = '6141d9cb9fb4b44d53469159';
   const roleId = '6151ada2ff873ad464bdd33c';
+  const agencyClientScenario = new AgencyClientScenario();
+  const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario();
 
   beforeEach(async () => {
-    await CreateAgencyConsultantRoleScenario.createAggregateEvents(agencyId, roleId);
-    await CreateAgencyClientLinkScenario.createAggregateEvents(agencyId, clientId);
+    await agencyClientScenario.linkAgencyClient(agencyId, clientId);
+    await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, clientId);
   });
 
   afterEach(async () => {
-    await CreateAgencyConsultantRoleScenario.removeAggregateEvents(agencyId);
-    await CreateAgencyClientLinkScenario.removeAggregateEvents(agencyId, clientId);
+    await agencyClientScenario.deleteAllEvents();
   });
 
   describe('post', () => {
