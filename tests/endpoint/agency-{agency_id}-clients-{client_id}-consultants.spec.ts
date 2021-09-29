@@ -10,7 +10,7 @@ import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScen
 TestUtilsZSchemaFormatter.format();
 const validator = new Zschema({});
 
-describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
+describe.only('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const jwtToken = getJWT({
     sub: '5ff6e098fb83732f8e23dc92',
     name: 'John Doe',
@@ -30,7 +30,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
 
   beforeEach(async () => {
     await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, roleId);
-    await agencyClientScenario.linkAgencyClient(agencyId, clientId);
   });
 
   afterEach(async () => {
