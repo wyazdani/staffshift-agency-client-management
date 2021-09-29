@@ -10,7 +10,7 @@ import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScen
 TestUtilsZSchemaFormatter.format();
 const validator = new Zschema({});
 
-describe.only('/agency/{agency_id}/clients/{client_id}/consultants', () => {
+describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const jwtToken = getJWT({
     sub: '5ff6e098fb83732f8e23dc92',
     name: 'John Doe',
