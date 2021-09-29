@@ -151,7 +151,7 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/add_agency_client_consultant_validation_error_model"
+            $ref: "#/definitions/assign_agency_client_consultant_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         default:
@@ -664,7 +664,7 @@ definitions:
                 type: "string"
             description:
               type: "string"
-  add_agency_client_consultant_validation_error_model:
+  assign_agency_client_consultant_validation_error_model:
     type: object
     required:
       - code
@@ -676,6 +676,7 @@ definitions:
           - REQUIRED
           - MODEL_VALIDATION_FAILED
           - SCHEMA_VALIDATION_FAILED
+          - PATTERN
       message:
         type: string
       errors:
