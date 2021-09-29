@@ -6,7 +6,10 @@
     "level": "none"
   },
   "mongo": {
-    "database_host": "mongodb://database:27017/staffshiftagencyclientmanagementCI"
+    "database_host": "mongodb://database:27017/staffshiftagencyclientmanagementCI",
+    "options": {
+      "serverSelectionTimeoutMS": 60000
+    }
   },
   "mounteBank": {
     "host": "mountebank",
