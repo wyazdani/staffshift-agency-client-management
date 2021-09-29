@@ -1,6 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {IncomingMessage} from 'http';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../EventRepository';
 
 export interface SwaggerRequestInterface extends IncomingMessage {
@@ -11,7 +10,6 @@ export interface SwaggerRequestInterface extends IncomingMessage {
       'x-public-operation'?: boolean;
     };
   };
-  octophant: GenericObjectInterface;
   eventRepository: EventRepository;
   basePathName: string;
 }
