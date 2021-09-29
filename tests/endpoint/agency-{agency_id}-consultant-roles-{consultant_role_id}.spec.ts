@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
 import _ from 'lodash';
-import {EventStoreScenarios} from './scenarios/EventStoreScenarios';
+import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScenario';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
@@ -21,24 +21,17 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
     'Content-Type': 'application/json',
     'X-Request-Id': '123'
   };
+  const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario();
 
   describe('patch', () => {
     const agencyId = '6141caa0d51653b8f4000001';
     const roleId = '6152f82071c29edaa4000001';
 
-    beforeEach(async () => {
-      await EventStoreScenarios.removeAll();
+    afterEach(async () => {
+      await agencyConsultantRoleScenario.deleteAllEvents();
     });
     it('should respond with 202 Updates an Agency Consultant Role', async () => {
-      //First create the consultant role and then patch it
-      const res = await api.post(`/agency/${agencyId}/consultant-roles`).set(headers).send({
-        name: 'ok',
-        description: 'description',
-        max_consultants: 2
-      });
-
-      res.statusCode.should.to.equal(202);
-      const roleId = _.last(res.get('Location').split('/'));
+      await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, roleId);
       const resEndpoint = await api.patch(`/agency/${agencyId}/consultant-roles/${roleId}`).set(headers).send({
         name: 'ok',
         description: 'description',
