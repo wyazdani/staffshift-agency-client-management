@@ -37,6 +37,7 @@ describe('AgencyCommandBus', () => {
     const command = {
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
       data: {
+        _id: 'some id',
         name: 'OOH',
         description: 'out of hours consultants',
         max_consultants: 5
