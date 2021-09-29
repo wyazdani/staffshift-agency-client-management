@@ -28,7 +28,7 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.getAggregate.resolves(aggregate);
       aggregate.getLastEventId.returns(100);
       aggregate.getId.returns({agency_id: agencyId});
-      aggregate.validateConsultantRoleExists.returns();
+      aggregate.validateUpdateConsultantRole.returns();
       const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
 
       assert.equal(
@@ -47,7 +47,7 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
         }
       ]);
       agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
-      aggregate.validateConsultantRoleExists.should.have.calledOnceWith(roleId);
+      aggregate.validateUpdateConsultantRole.should.have.calledOnceWith(roleId);
     });
 
     it('Test exception is thrown for validate consultant role', async () => {
@@ -64,12 +64,12 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
       const error = new Error('sample error');
 
       agencyRepository.getAggregate.resolves(aggregate);
-      aggregate.validateConsultantRoleExists.throws(error);
+      aggregate.validateUpdateConsultantRole.throws(error);
       const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
 
       await handler.execute(agencyId, commandData).should.be.rejectedWith(error);
 
-      aggregate.validateConsultantRoleExists.should.have.been.calledOnce;
+      aggregate.validateUpdateConsultantRole.should.have.been.calledOnce;
       agencyRepository.save.should.not.have.been.called;
     });
   });

@@ -18,7 +18,7 @@ export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHa
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
 
     //do validation check to see if the role exists
-    aggregate.validateConsultantRoleExists(commandData._id);
+    aggregate.validateUpdateConsultantRole(commandData._id);
 
     const eventId = aggregate.getLastEventId();
 

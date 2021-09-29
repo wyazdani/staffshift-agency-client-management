@@ -20,7 +20,7 @@ describe('AgencyAggregate class', () => {
         }
       );
 
-      aggregate.validateConsultantRoleExists('some-id');
+      aggregate.validateUpdateConsultantRole('some-id');
     });
 
     it('Test failure scenario', () => {
@@ -39,7 +39,7 @@ describe('AgencyAggregate class', () => {
         }
       );
 
-      assert.throws(() => aggregate.validateConsultantRoleExists('some-id'), ResourceNotFoundError);
+      assert.throws(() => aggregate.validateUpdateConsultantRole('some-id'), ResourceNotFoundError);
     });
   });
 });
