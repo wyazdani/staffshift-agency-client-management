@@ -2,7 +2,6 @@ import {ServerResponse} from 'http';
 import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get, isEmpty} from 'lodash';
-import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
 import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
