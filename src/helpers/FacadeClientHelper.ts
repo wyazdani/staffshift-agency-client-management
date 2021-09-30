@@ -40,7 +40,7 @@ export class FacadeClientHelper {
    *
    * @param {LoggerContext} logger - A logger object
    */
-  constructor(private logger: typeof LoggerContext) {}
+  constructor(private logger: LoggerContext) {}
 
   /**
    * Retrieve the agency ward client details

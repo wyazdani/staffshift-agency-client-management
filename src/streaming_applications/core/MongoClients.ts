@@ -25,7 +25,7 @@ export class MongoClients {
    *
    * @returns {MongoClient.db}
    */
-  async getClientDatabase(logger: typeof LoggerContext, configKey: string): Promise<Db> {
+  async getClientDatabase(logger: LoggerContext, configKey: string): Promise<Db> {
     const client = await this.getClient(logger, configKey);
 
     return client.db();
@@ -39,7 +39,7 @@ export class MongoClients {
    *
    * @returns {MongoClient}
    */
-  async getClient(logger: typeof LoggerContext, configKey: string): Promise<MongoClient> {
+  async getClient(logger: LoggerContext, configKey: string): Promise<MongoClient> {
     if (clients[configKey]) {
       return clients[configKey];
     }
