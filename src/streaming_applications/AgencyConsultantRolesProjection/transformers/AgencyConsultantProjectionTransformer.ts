@@ -4,6 +4,7 @@ import {CallbackError, FilterQuery, Model} from 'mongoose';
 import {EventRepository} from '../../../EventRepository';
 import {EventsEnum} from '../../../Events';
 import {GenericObjectInterface} from 'GenericObjectInterface';
+import {AgencyConsultantRolesProjectionDocumentType} from '../../../models/AgencyConsultantRolesProjection';
 
 const events = [
   EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
@@ -14,7 +15,7 @@ const events = [
 
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
-  model: Model<any>;
+  model: Model<AgencyConsultantRolesProjectionDocumentType>;
   pipeline: string;
   logger: typeof LoggerContext;
 }
@@ -24,7 +25,7 @@ interface ProjectionTransformerOptionsInterface extends TransformOptions {
  */
 export class AgencyConsultantProjectionTransformer extends Transform {
   private readonly eventRepository: EventRepository;
-  private model: Model<any>;
+  private model: Model<AgencyConsultantRolesProjectionDocumentType>;
   private pipeline: string;
   private logger: typeof LoggerContext;
 
@@ -47,59 +48,103 @@ export class AgencyConsultantProjectionTransformer extends Transform {
     this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
 
-    const criteria: FilterQuery<any> = {
+    const criteria: FilterQuery<AgencyConsultantRolesProjectionDocumentType> = {
       agency_id: event.aggregate_id.agency_id
     };
 
     if (event.data._id) {
       criteria._id = event.data._id;
     }
-    if (EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED === data.event.type) {
-      const consultantRoleProjection = new this.model({
-        agency_id: event.aggregate_id.agency_id,
-        name: event.data.name,
-        description: event.data.description,
-        max_consultants: event.data.max_consultants,
-        _id: event.data._id
-      });
 
-      consultantRoleProjection.save((err: Error) => {
-        if (err) {
-          return callback(err);
-        }
-
-        return callback(null, data);
-      });
-    } else if (EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED === data.event.type) {
-      this.model.findOneAndUpdate(
-        criteria,
-        {
-          status: 'enabled'
-        },
-        {upsert: true},
-        (err: CallbackError) => callback(err, data)
-      );
-    } else if (EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED === data.event.type) {
-      this.model.findOneAndUpdate(
-        criteria,
-        {
-          status: 'disabled'
-        },
-        {upsert: true},
-        (err: CallbackError) => callback(err, data)
-      );
-    } else if (EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED === data.event.type) {
-      this.model.findOneAndUpdate(
-        criteria,
-        {
-          agency_id: event.aggregate_id.agency_id,
-          name: event.data.name,
-          description: event.data.description,
-          max_consultants: event.data.max_consultants
-        },
-        {upsert: true},
-        (err: CallbackError) => callback(err, data)
-      );
+    switch (data.event.type) {
+      case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED:
+        this.addRecord(this.logger, this.model, data, callback);
+        break;
+      case EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED:
+        this.findAndUpdateRecord(this.logger, this.model, criteria, {status: 'enabled'}, data, callback);
+        break;
+      case EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED:
+        this.findAndUpdateRecord(this.logger, this.model, criteria, {status: 'disabled'}, data, callback);
+        break;
+      case EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED:
+        this.findAndUpdateRecord(
+          this.logger,
+          this.model,
+          criteria,
+          {
+            agency_id: event.aggregate_id.agency_id,
+            name: event.data.name,
+            description: event.data.description,
+            max_consultants: event.data.max_consultants
+          },
+          data,
+          callback
+        );
+        break;
+      default:
+        //This is never expected, because we already do an initial check to allow only these 4 events
+        return callback(new Error(`Unsupported event ${data.event.type} in AgencyConsultantProjectionTransformer`));
     }
+  }
+
+  /**
+   * Adds a new record to the projection collection
+   *
+   * @param logger - logger
+   * @param model - The projection model
+   * @param data - Data object the transformer received
+   * @param callback - the callback
+   */
+  addRecord(
+    logger: typeof LoggerContext,
+    model: Model<AgencyConsultantRolesProjectionDocumentType>,
+    data: GenericObjectInterface,
+    callback: TransformCallback
+  ): void {
+    const consultantRoleProjection = new model({
+      agency_id: data.event.aggregate_id.agency_id,
+      name: data.event.data.name,
+      description: data.event.data.description,
+      max_consultants: data.event.data.max_consultants,
+      _id: data.event.data._id
+    });
+
+    consultantRoleProjection.save((err: Error) => {
+      if (err) {
+        logger.error('Error saving a record to the consultant role projection', err, {
+          model: consultantRoleProjection.toObject()
+        });
+        return callback(err);
+      }
+
+      return callback(null, data);
+    });
+  }
+
+  /**
+   * Updates an existing record in the projection collection
+   *
+   * @param logger - logger
+   * @param model - The projection model
+   * @param query - query to find record
+   * @param updateObject - object to update with
+   * @param data - Data object the transformer received
+   * @param callback - the callback
+   */
+  findAndUpdateRecord(
+    logger: typeof LoggerContext,
+    model: Model<AgencyConsultantRolesProjectionDocumentType>,
+    query: FilterQuery<AgencyConsultantRolesProjectionDocumentType>,
+    updateObject: GenericObjectInterface,
+    data: GenericObjectInterface,
+    callback: TransformCallback
+  ): void {
+    model.findOneAndUpdate(query, updateObject, {upsert: true}, (err: CallbackError) => {
+      if (err) {
+        logger.error('Error updating a record to the consultant role projection', err, query, updateObject);
+        return callback(err);
+      }
+      callback(null, data);
+    });
   }
 }

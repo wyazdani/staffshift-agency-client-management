@@ -41,8 +41,6 @@ const agencyConsultantRoles = new Schema<AgencyConsultantRolesProjectionDocument
   // What does created_at AND updated_at represent?
   // This is a projection, does it indicate when the entries where added / updated on the projection?
   {
-    // We will most likely need to keep the version key to apply optimistic locks
-    versionKey: false,
     timestamps: {
       createdAt: 'created_at',
       updatedAt: 'updated_at'

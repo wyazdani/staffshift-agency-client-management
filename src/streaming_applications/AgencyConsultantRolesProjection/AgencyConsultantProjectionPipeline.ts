@@ -17,7 +17,7 @@ const HIGH_WATER_MARK = 5;
 /**
  * Responsible for aggregating agency candidate details
  */
-export class EventStorePipeline implements PipelineInterface {
+export class AgencyConsultantProjectionPipeline implements PipelineInterface {
   getID(): string {
     return 'agency_consultant_roles_event_store';
   }
