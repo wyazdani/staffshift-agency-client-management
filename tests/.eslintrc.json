@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "prefer-arrow-callback": "error",
+    "arrow-body-style": ["error", "as-needed"],
+    "prefer-arrow/prefer-arrow-functions": [
+      "off"
+    ]
+  }
+}

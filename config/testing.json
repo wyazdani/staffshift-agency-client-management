@@ -12,7 +12,10 @@
     "version": "v1"
   },
   "mongo": {
-    "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementTesting"
+    "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementTesting",
+    "options": {
+      "serverSelectionTimeoutMS": 60000
+    }
   },
   "mounteBank": {
     "host": "127.0.0.1",

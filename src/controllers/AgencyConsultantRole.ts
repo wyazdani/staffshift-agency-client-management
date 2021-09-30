@@ -1,4 +1,5 @@
 import {ServerResponse} from 'http';
+import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
@@ -12,36 +13,40 @@ import {
   UpdateAgencyConsultantRoleCommandInterface
 } from '../Agency/types/CommandTypes';
 import {AgencyCommandEnum} from '../Agency/types';
+import {LocationHelper} from '../helpers/LocationHelper';
 
 /**
  * Add Agency Consultant Role
  *
  * @param req - The http request object
  * @param res - The http response object
+ * @param next - The next function
  */
-export const addAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
-  const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const commandType = AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE;
-  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
-  // Decide how auth / audit data gets from here to the event in the event store.
-  const command: AddAgencyConsultantRoleCommandInterface = {
-    type: commandType,
-    data: payload
-  };
-
+export const addAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   try {
-    // Passing in the agency id here feels strange
+    const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const commandType = AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE;
+    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const roleId = new ObjectID().toString();
+    const command: AddAgencyConsultantRoleCommandInterface = {
+      type: commandType,
+      data: {
+        _id: roleId,
+        ...payload
+      }
+    };
+
     await commandBus.execute(agencyId, command);
-    // This needs to be centralised and done better
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
+    res.statusCode = 202;
+    res.setHeader('Location', LocationHelper.getRelativeLocation(`/agency/${agencyId}/consultant-roles/${roleId}`));
+    res.end();
   } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+    next(err);
   }
 };
 

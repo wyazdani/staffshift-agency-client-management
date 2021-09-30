@@ -1,4 +1,3 @@
-import {ObjectID} from 'mongodb';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
@@ -19,14 +18,13 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
     let eventId = aggregate.getLastEventId();
     // We are looking to auto enable newly created consultant roles hence the two events
-    const consultantId = new ObjectID().toString();
 
     await this.agencyRepository.save([
       {
         type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: consultantId,
+          _id: commandData._id,
           name: commandData.name,
           description: commandData.description,
           max_consultants: commandData.max_consultants
@@ -37,7 +35,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
         type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: consultantId
+          _id: commandData._id
         },
         sequence_id: ++eventId
       }

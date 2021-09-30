@@ -11,9 +11,6 @@ describe('FacadeClientHelper Class', () => {
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
   });
-  afterEach(() => {
-    sinon.restore();
-  });
 
   describe('getAgencyClientDetails()', () => {
     it('success scenario', async () => {
