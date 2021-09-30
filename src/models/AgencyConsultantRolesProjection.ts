@@ -1,7 +1,7 @@
 import {Document, Schema, model} from 'mongoose';
 
 export type AgencyConsultantRolesProjectionDocumentType = Document & {
-  _id: string
+  _id: string;
   agency_id: string;
   name: string;
   description: string;
@@ -35,10 +35,7 @@ const agencyConsultantRoles = new Schema<AgencyConsultantRolesProjectionDocument
       type: String,
       required: false,
       description: 'The consultant role status',
-      enum: [
-        'enabled',
-        'disabled'
-      ]
+      enum: ['enabled', 'disabled']
     }
   },
   // What does created_at AND updated_at represent?

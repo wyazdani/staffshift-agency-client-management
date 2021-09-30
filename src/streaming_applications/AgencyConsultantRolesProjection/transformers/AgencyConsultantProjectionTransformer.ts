@@ -5,7 +5,12 @@ import {EventRepository} from '../../../EventRepository';
 import {EventsEnum} from '../../../Events';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 
-const events = [EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED, EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED, EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED, EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED];
+const events = [
+  EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+  EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
+  EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
+  EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
+];
 
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;

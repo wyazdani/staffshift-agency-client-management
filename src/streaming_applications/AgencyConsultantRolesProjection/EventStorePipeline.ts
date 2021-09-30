@@ -53,7 +53,10 @@ export class EventStorePipeline implements PipelineInterface {
     tokenManager: ResumeTokenCollectionManager
   ): Promise<WatchHandlerInterface> {
     const eventRepository = new EventRepository(EventStore, logger.requestId);
-    const watchOptions: WatchOptionsInterface = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES_ENUM.WATCH);
+    const watchOptions: WatchOptionsInterface = await tokenManager.setResumeAfterWatchOptions(
+      this.getID(),
+      STREAM_TYPES_ENUM.WATCH
+    );
     const watchDb: Db = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
 
