@@ -82,7 +82,10 @@ export const updateAgencyConsultantRole = async (
     res.end();
   } catch (err) {
     if (!(err instanceof ResourceNotFoundError) && !(err instanceof ValidationError)) {
-      req.Logger.error('unknown error in updateAgencyConsultantRole', err);
+      req.Logger.error('unknown error in updateAgencyConsultantRole', {
+        err,
+        payload: get(req, 'swagger.params.agency_consultant_role_update_payload.value')
+      });
     }
     next(err);
   }
