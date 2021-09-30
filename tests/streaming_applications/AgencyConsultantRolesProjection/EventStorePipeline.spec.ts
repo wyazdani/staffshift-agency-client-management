@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import {assert} from 'chai';
-import {EventStorePipeline} from '../../../src/streaming_applications/AgencyConsultantRolesProjection/EventStorePipeline';
+import {AgencyConsultantProjectionPipeline} from '../../../src/streaming_applications/AgencyConsultantRolesProjection/AgencyConsultantProjectionPipeline';
 import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from '../../../src/streaming_applications/DatabaseConfigKeys';
 import {MongoClients} from '../../../src/streaming_applications/core/MongoClients';
 import {LoggerContext} from 'a24-logzio-winston';
@@ -11,12 +11,12 @@ import {EventStoreTransformer} from '../../../src/streaming_applications/core/st
 import {AgencyConsultantProjectionTransformer} from '../../../src/streaming_applications/AgencyConsultantRolesProjection/transformers/AgencyConsultantProjectionTransformer';
 import {STREAM_TYPES_ENUM} from '../../../src/streaming_applications/core/ChangeStreamEnums';
 
-describe('EventStorePipeline', () => {
-  let logger: typeof LoggerContext;
-  let eventStorePipeline: EventStorePipeline;
+describe('AgencyConsultantProjectionPipeline', () => {
+  let logger: LoggerContext;
+  let agencyConsultantProjectionPipeline: AgencyConsultantProjectionPipeline;
 
   beforeEach(() => {
-    eventStorePipeline = new EventStorePipeline();
+    agencyConsultantProjectionPipeline = new AgencyConsultantProjectionPipeline();
     logger = TestUtilsLogger.getLogger(sinon.spy());
   });
 
@@ -26,7 +26,7 @@ describe('EventStorePipeline', () => {
 
   describe('getID()', () => {
     it('should return id', () => {
-      const id = eventStorePipeline.getID();
+      const id = agencyConsultantProjectionPipeline.getID();
       const expectedId = 'agency_consultant_roles_event_store';
 
       assert.deepEqual(id, expectedId, 'Expected id not returned');
@@ -35,7 +35,7 @@ describe('EventStorePipeline', () => {
 
   describe('getMongoClientConfigKeys()', () => {
     it('should return client config keys', () => {
-      const keys = eventStorePipeline.getMongoClientConfigKeys();
+      const keys = agencyConsultantProjectionPipeline.getMongoClientConfigKeys();
       const expectedKeys = [AGENCY_CLIENT_MANAGEMENT_DB_KEY];
 
       assert.deepEqual(keys, expectedKeys, 'Expected keys not returned');
@@ -68,7 +68,7 @@ describe('EventStorePipeline', () => {
 
       clientManager.getClientDatabase.resolves(dbObject);
 
-      await eventStorePipeline.watch(logger, clientManager, tokenManager);
+      await agencyConsultantProjectionPipeline.watch(logger, clientManager, tokenManager);
 
       assert.equal(pipeSpy.callCount, 3, 'Expected 3 components to be attached to watch stream');
 
@@ -81,7 +81,7 @@ describe('EventStorePipeline', () => {
       assert.instanceOf(projectionTransformerCallArgs[0], AgencyConsultantProjectionTransformer);
       assert.deepEqual(
         tokenWriterStreamCallArgs[0],
-        tokenManager.getResumeTokenWriterStream(eventStorePipeline.getID(), STREAM_TYPES_ENUM.WATCH, {highWaterMark: 5})
+        tokenManager.getResumeTokenWriterStream(agencyConsultantProjectionPipeline.getID(), STREAM_TYPES_ENUM.WATCH, {highWaterMark: 5})
       );
     });
   });

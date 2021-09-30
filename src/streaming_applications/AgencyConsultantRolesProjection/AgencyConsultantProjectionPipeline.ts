@@ -17,7 +17,7 @@ const HIGH_WATER_MARK = 5;
 /**
  * Responsible for aggregating agency candidate details
  */
-export class EventStorePipeline implements PipelineInterface {
+export class AgencyConsultantProjectionPipeline implements PipelineInterface {
   getID(): string {
     return 'agency_consultant_roles_event_store';
   }
@@ -48,12 +48,15 @@ export class EventStorePipeline implements PipelineInterface {
    * @param {ResumeTokenCollectionManager} tokenManager - Instance of ResumeTokenCollectionManager class
    */
   async watch(
-    logger: typeof LoggerContext,
+    logger: LoggerContext,
     clientManager: MongoClients,
     tokenManager: ResumeTokenCollectionManager
   ): Promise<WatchHandlerInterface> {
     const eventRepository = new EventRepository(EventStore, logger.requestId);
-    const watchOptions: WatchOptionsInterface = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES_ENUM.WATCH);
+    const watchOptions: WatchOptionsInterface = await tokenManager.setResumeAfterWatchOptions(
+      this.getID(),
+      STREAM_TYPES_ENUM.WATCH
+    );
     const watchDb: Db = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
 

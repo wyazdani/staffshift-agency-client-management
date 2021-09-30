@@ -4,6 +4,7 @@
     "arrow-body-style": ["error", "as-needed"],
     "prefer-arrow/prefer-arrow-functions": [
       "off"
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": 0
   }
 }

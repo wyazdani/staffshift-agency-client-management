@@ -1,7 +1,7 @@
 import {Document, Schema, model} from 'mongoose';
 
 export type AgencyConsultantRolesProjectionDocumentType = Document & {
-  _id: string
+  _id: string;
   agency_id: string;
   name: string;
   description: string;
@@ -35,17 +35,12 @@ const agencyConsultantRoles = new Schema<AgencyConsultantRolesProjectionDocument
       type: String,
       required: false,
       description: 'The consultant role status',
-      enum: [
-        'enabled',
-        'disabled'
-      ]
+      enum: ['enabled', 'disabled']
     }
   },
   // What does created_at AND updated_at represent?
   // This is a projection, does it indicate when the entries where added / updated on the projection?
   {
-    // We will most likely need to keep the version key to apply optimistic locks
-    versionKey: false,
     timestamps: {
       createdAt: 'created_at',
       updatedAt: 'updated_at'
