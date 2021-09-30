@@ -7,7 +7,7 @@ import {AgencyRepository} from '../../../Agency/AgencyRepository';
  * TODO
  */
 export class AgencyClientConsultantAssignedEventHandler implements EventHandlerInterface {
-  constructor(protected agencyRepository: AgencyRepository) {}
+  constructor(private agencyRepository: AgencyRepository) {}
 
   async handle(event: AgencyClientConsultantAssignedEventDataInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
@@ -18,7 +18,8 @@ export class AgencyClientConsultantAssignedEventHandler implements EventHandlerI
       client_id: event.aggregate_id.client_id,
       consultant_role_id: event.data.consultant_role_id,
       consultant_role_name: role.name,
-      consultant_id: event.data.consultant_id
+      consultant_id: event.data.consultant_id,
+      last_sequence_id: agencyAggregate.getLastEventId()
     });
 
     await agencyClientConsultant.save();

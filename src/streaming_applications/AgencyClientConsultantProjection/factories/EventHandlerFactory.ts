@@ -26,8 +26,8 @@ export class EventHandlerFactory {
       case AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED:
         return new AgencyConsultantRoleDetailsUpdatedEventHandler();
       default:
-        logger.info('No configured handler found for the this event', {eventType});
-        throw new RuntimeError('No configured handler found for the this event');
+        logger.info('No configured handler found for this event', {eventType});
+        throw new RuntimeError('No configured handler found for this event');
     }
   }
 }

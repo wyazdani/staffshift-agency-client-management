@@ -3,7 +3,7 @@ import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../AgencyClient/types';
 import {GenericRepository} from '../GenericRepository';
-import {AgencyClientConsultants} from '../models/AgencyClientConsultantsProjection';
+import {AgencyClientConsultantsProjection} from '../models/AgencyClientConsultantsProjection';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {QueryHelper} from 'a24-node-query-utils';
@@ -106,7 +106,7 @@ export const listAgencyClientConsultants = async (
 
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
   query.client_id = get(req, 'swagger.params.client_id.value', '');
-  const service = new GenericRepository(logger, AgencyClientConsultants);
+  const service = new GenericRepository(logger, AgencyClientConsultantsProjection);
 
   try {
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
