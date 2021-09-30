@@ -48,7 +48,7 @@ export class AgencyConsultantProjectionPipeline implements PipelineInterface {
    * @param {ResumeTokenCollectionManager} tokenManager - Instance of ResumeTokenCollectionManager class
    */
   async watch(
-    logger: typeof LoggerContext,
+    logger: LoggerContext,
     clientManager: MongoClients,
     tokenManager: ResumeTokenCollectionManager
   ): Promise<WatchHandlerInterface> {

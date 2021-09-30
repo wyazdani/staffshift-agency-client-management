@@ -14,11 +14,11 @@ interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
   model: Model<any>;
   pipeline: string;
-  logger: typeof LoggerContext;
+  logger: LoggerContext;
 }
 
 describe('AgencyConsultantProjectionTransformer', () => {
-  let logger: typeof LoggerContext;
+  let logger: LoggerContext;
   let opts: ProjectionTransformerOptionsInterface;
   let eventRepository: EventRepository;
   let model: any;

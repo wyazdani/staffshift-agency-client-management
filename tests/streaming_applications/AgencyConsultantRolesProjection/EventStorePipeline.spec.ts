@@ -12,7 +12,7 @@ import {AgencyConsultantProjectionTransformer} from '../../../src/streaming_appl
 import {STREAM_TYPES_ENUM} from '../../../src/streaming_applications/core/ChangeStreamEnums';
 
 describe('AgencyConsultantProjectionPipeline', () => {
-  let logger: typeof LoggerContext;
+  let logger: LoggerContext;
   let agencyConsultantProjectionPipeline: AgencyConsultantProjectionPipeline;
 
   beforeEach(() => {

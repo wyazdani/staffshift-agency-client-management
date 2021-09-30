@@ -17,7 +17,7 @@ interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
   model: Model<AgencyConsultantRolesProjectionDocumentType>;
   pipeline: string;
-  logger: typeof LoggerContext;
+  logger: LoggerContext;
 }
 
 /**
@@ -27,7 +27,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
   private readonly eventRepository: EventRepository;
   private model: Model<AgencyConsultantRolesProjectionDocumentType>;
   private pipeline: string;
-  private logger: typeof LoggerContext;
+  private logger: LoggerContext;
 
   constructor(opts: ProjectionTransformerOptionsInterface) {
     // We only cater for object mode
@@ -96,7 +96,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
    * @param callback - the callback
    */
   addRecord(
-    logger: typeof LoggerContext,
+    logger: LoggerContext,
     model: Model<AgencyConsultantRolesProjectionDocumentType>,
     data: GenericObjectInterface,
     callback: TransformCallback
@@ -111,8 +111,9 @@ export class AgencyConsultantProjectionTransformer extends Transform {
 
     consultantRoleProjection.save((err: Error) => {
       if (err) {
-        logger.error('Error saving a record to the consultant role projection', err, {
-          model: consultantRoleProjection.toObject()
+        logger.error('Error saving a record to the consultant role projection', {
+          model: consultantRoleProjection.toObject(),
+          originalError: err
         });
         return callback(err);
       }
@@ -132,7 +133,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
    * @param callback - the callback
    */
   findAndUpdateRecord(
-    logger: typeof LoggerContext,
+    logger: LoggerContext,
     model: Model<AgencyConsultantRolesProjectionDocumentType>,
     query: FilterQuery<AgencyConsultantRolesProjectionDocumentType>,
     updateObject: GenericObjectInterface,
@@ -141,7 +142,11 @@ export class AgencyConsultantProjectionTransformer extends Transform {
   ): void {
     model.findOneAndUpdate(query, updateObject, {upsert: true}, (err: CallbackError) => {
       if (err) {
-        logger.error('Error updating a record to the consultant role projection', err, query, updateObject);
+        logger.error('Error updating a record to the consultant role projection', {
+          originalError: err,
+          query,
+          updateObject
+        });
         return callback(err);
       }
       callback(null, data);
