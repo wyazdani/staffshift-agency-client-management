@@ -9,7 +9,7 @@ import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
 import config from 'config';
 
-const getEventMeta = async (logger: typeof LoggerContext, token: string): Promise<EventMetaInterface> =>
+const getEventMeta = async (logger: LoggerContext, token: string): Promise<EventMetaInterface> =>
   new Promise((resolve, reject) =>
     JWTSecurityHelper.jwtVerification(token, config.get<string>('api_token'), (err, response) => {
       if (err) {
@@ -23,7 +23,7 @@ const getEventMeta = async (logger: typeof LoggerContext, token: string): Promis
     })
   );
 
-const process = async (logger: typeof LoggerContext, message: GenericObjectInterface) => {
+const process = async (logger: LoggerContext, message: GenericObjectInterface) => {
   const eventName = (message.event as GenericObjectInterface).name as string;
   const correlationId = uuidv4();
   const eventMeta = await getEventMeta(logger, message.application_jwt);
@@ -52,7 +52,7 @@ const process = async (logger: typeof LoggerContext, message: GenericObjectInter
 };
 
 module.exports = async (
-  logger: typeof LoggerContext,
+  logger: LoggerContext,
   message: GenericObjectInterface,
   metadata: GenericObjectInterface,
   callback: (error?: Error) => void

@@ -252,7 +252,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/consultant_role_id"
-    post:
+    patch:
       x-swagger-router-controller: "AgencyConsultantRole"
       operationId: "updateAgencyConsultantRole"
       security:
@@ -260,10 +260,16 @@ paths:
       parameters:
         - $ref: "#/parameters/agency_consultant_role_update_payload"
       responses:
-        200:
+        202:
           description: "Updates an Agency Consultant Role"
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/agency_consultant_role_item_def"
+            $ref: "#/definitions/update_consultant_roles_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Updates an Agency Consultant Role"
@@ -382,7 +388,7 @@ parameters:
     name: agency_consultant_role_update_payload
     in: body
     required: true
-    description: "The payload used to create an agency consultant role"
+    description: "The payload used to update an agency consultant role"
     schema:
       $ref: "#/definitions/agency_consultant_role_update_payload"
   assign_client_consultant_payload:
@@ -648,6 +654,44 @@ definitions:
                 - "MINIMUM"
                 - "OBJECT_ADDITIONAL_PROPERTIES"
                 - "OBJECT_MISSING_REQUIRED_PROPERTY"
+            message:
+              type: "string"
+            path:
+              type: "array"
+              items:
+                type: "string"
+            description:
+              type: "string"
+  update_consultant_roles_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - "SCHEMA_VALIDATION_FAILED"
+          - "MODEL_VALIDATION_FAILED"
+          - "PATTERN"
+          - "REQUIRED"
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: "string"
+              enum:
+                - "INVALID_TYPE"
+                - "MINIMUM"
+                - "OBJECT_ADDITIONAL_PROPERTIES"
             message:
               type: "string"
             path:
