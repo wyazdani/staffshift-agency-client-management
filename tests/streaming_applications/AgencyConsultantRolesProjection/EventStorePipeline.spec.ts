@@ -3,7 +3,6 @@ import {assert} from 'chai';
 import {EventStorePipeline} from '../../../src/streaming_applications/AgencyConsultantRolesProjection/EventStorePipeline';
 import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from '../../../src/streaming_applications/DatabaseConfigKeys';
 import {MongoClients} from '../../../src/streaming_applications/core/MongoClients';
-import {Db} from 'mongodb';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 import {stubConstructor} from 'ts-sinon';
@@ -45,12 +44,19 @@ describe('EventStorePipeline', () => {
 
   describe('watch() test scenarios', () => {
     const watchStream: any = {
-      pipe: (component: any) => this
+      on: () => this,
+      pipe: (component: any) => watchStream
     };
-    const dbObject = stubConstructor(Db);
-
-    dbObject.watch.returns(watchStream);
+    const dbObject: any = {
+      collection: (collection: string) => dbObject,
+      watch: (options: any) => watchStream
+    };
+    const writerStream: any = {
+      on: () => this
+    };
     const tokenManager = stubConstructor(ResumeTokenCollectionManager);
+
+    tokenManager.getResumeTokenWriterStream.returns(writerStream);
 
     afterEach(() => {
       sinon.restore();
