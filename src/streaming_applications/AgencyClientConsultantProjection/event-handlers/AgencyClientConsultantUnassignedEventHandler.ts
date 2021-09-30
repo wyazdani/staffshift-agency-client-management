@@ -7,6 +7,6 @@ import {AgencyClientConsultantUnassignedEventDataInterface} from '../types/Event
  */
 export class AgencyClientConsultantUnassignedEventHandler implements EventHandlerInterface {
   async handle(event: AgencyClientConsultantUnassignedEventDataInterface): Promise<void> {
-    await AgencyClientConsultantsProjection.remove({_id: event.data._id});
+    await AgencyClientConsultantsProjection.deleteOne({_id: event.data._id});
   }
 }

@@ -13,11 +13,7 @@ import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/
  * TODO
  */
 export class EventHandlerFactory {
-  static getHandler(
-    eventType: string,
-    eventRepository: EventRepository,
-    logger: typeof LoggerContext
-  ): EventHandlerInterface {
+  static getHandler(eventType: string, eventRepository: EventRepository, logger: LoggerContext): EventHandlerInterface {
     switch (eventType) {
       case AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED:
         return new AgencyClientConsultantAssignedEventHandler(new AgencyRepository(eventRepository));

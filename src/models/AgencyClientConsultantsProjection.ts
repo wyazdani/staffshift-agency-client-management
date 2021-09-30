@@ -6,7 +6,7 @@ export type AgencyClientConsultantDocumentType = Document & {
   consultant_role_id: string;
   consultant_role_name: string;
   consultant_id: string;
-  last_sequence_id: string;
+  last_sequence_id: number;
   created_at: Date;
   updated_at: Date;
 };
@@ -39,7 +39,7 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocumentT
       description: 'The consultant id, a reference to the staffshift user_id'
     },
     last_sequence_id: {
-      type: String,
+      type: Number,
       required: true,
       description: 'Last sequence id'
     }
@@ -52,6 +52,14 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocumentT
     collection: 'AgencyClientConsultantsProjection'
   }
 );
+
+const toJSONConfig = {
+  transform: (doc: AgencyClientConsultantDocumentType, ret: AgencyClientConsultantDocumentType) => {
+    ret._id = ret._id.toString();
+  }
+};
+
+agencyClientConsultantsSchema.set('toJSON', toJSONConfig);
 
 /**
  * Defines the model for the AgencyClientConsultants Read Projection

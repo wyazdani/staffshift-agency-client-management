@@ -4,11 +4,14 @@ import {AgencyClientConsultantAssignedEventDataInterface} from '../types/EventDa
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
 
 /**
- * TODO
+ * Responsible for handling AgencyClientConsultantAssigned event
  */
 export class AgencyClientConsultantAssignedEventHandler implements EventHandlerInterface {
   constructor(private agencyRepository: AgencyRepository) {}
 
+  /**
+   * Create a new agency client consultant record
+   */
   async handle(event: AgencyClientConsultantAssignedEventDataInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
     const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
