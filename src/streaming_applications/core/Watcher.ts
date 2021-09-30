@@ -33,7 +33,7 @@ export class WatcherContext {
 
   async watch(
     type: PIPELINE_TYPES_ENUM,
-    logger: typeof LoggerContext,
+    logger: LoggerContext,
     clientManager: MongoClients,
     tokenManager: ResumeTokenCollectionManager
   ): Promise<void> {

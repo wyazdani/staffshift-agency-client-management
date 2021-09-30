@@ -12,7 +12,7 @@ export interface PipelineInterface {
   getType(): PIPELINE_TYPES_ENUM;
   getMongoClientConfigKeys(): string[];
   watch(
-    logger: typeof LoggerContext,
+    logger: LoggerContext,
     clientManager: MongoClients,
     tokenManager: ResumeTokenCollectionManager
   ): Promise<WatchHandlerInterface>;
