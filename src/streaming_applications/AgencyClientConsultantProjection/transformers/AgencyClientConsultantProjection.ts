@@ -13,12 +13,12 @@ const events = [
 
 interface OptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
-  logger: typeof LoggerContext;
+  logger: LoggerContext;
 }
 
 export class AgencyClientConsultantProjection extends Transform {
   private readonly eventRepository: EventRepository;
-  private logger: typeof LoggerContext;
+  private logger: LoggerContext;
   constructor(opts: OptionsInterface) {
     // We only cater for object mode
     opts.objectMode = true;

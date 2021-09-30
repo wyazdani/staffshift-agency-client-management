@@ -4,7 +4,7 @@ import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 import {GenericObjectInterface} from 'GenericObjectInterface';
 
 export class AgencyClientLinkStatus {
-  constructor(private logger: typeof LoggerContext, private agencyClientCommandBus: AgencyClientCommandBus) {}
+  constructor(private logger: LoggerContext, private agencyClientCommandBus: AgencyClientCommandBus) {}
 
   /**
    * Will apply the Triage Domain Event to the related aggregate

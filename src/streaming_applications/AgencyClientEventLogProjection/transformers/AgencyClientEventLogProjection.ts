@@ -12,7 +12,7 @@ interface ProjectionOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
   model: Model<any>;
   pipeline: string;
-  logger: typeof LoggerContext;
+  logger: LoggerContext;
 }
 
 /**
@@ -22,7 +22,7 @@ export class AgencyClientEventLogProjection extends Transform {
   private readonly eventRepository: EventRepository;
   private model: Model<any>;
   private pipeline: string;
-  private logger: typeof LoggerContext;
+  private logger: LoggerContext;
   constructor(opts: ProjectionOptionsInterface) {
     // We only cater for object mode
     opts.objectMode = true;

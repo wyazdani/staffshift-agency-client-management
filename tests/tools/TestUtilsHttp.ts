@@ -13,13 +13,13 @@ import {ServerResponse} from 'http';
  * @param opts
  */
 export const fakeRequest = (opts: {
-  logger?: typeof LoggerContext;
+  Logger?: LoggerContext;
   swaggerParams: {[key in string]: unknown};
   eventRepository?: EventRepository;
   basePathName?: string;
 }): SwaggerRequestInterface =>
   createRequest<SwaggerRequestInterface>({
-    Logger: opts.logger || TestUtilsLogger.getLogger(sinon.spy()),
+    Logger: opts.Logger || TestUtilsLogger.getLogger(sinon.spy()),
     swagger: {
       params: opts.swaggerParams,
       operation: {}
