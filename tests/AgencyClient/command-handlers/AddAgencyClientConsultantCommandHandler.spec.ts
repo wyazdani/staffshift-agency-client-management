@@ -3,13 +3,9 @@ import {AgencyClientRepository} from '../../../src/AgencyClient/AgencyClientRepo
 import {AddAgencyClientConsultantCommandHandler} from '../../../src/AgencyClient/command-handlers/AddAgencyClientConsultantCommandHandler';
 import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../../../src/AgencyClient/types';
 import {AgencyClientAggregate} from '../../../src/AgencyClient/AgencyClientAggregate';
-import sinon, {stubConstructor} from 'ts-sinon';
+import {stubConstructor} from 'ts-sinon';
 
 describe('AddAgencyClientConsultantCommandHandler', () => {
-  afterEach(() => {
-    sinon.restore();
-  });
-
   describe('execute()', () => {
     const agencyId = '6141d9cb9fb4b44d53469145';
     const clientId = '6141d9cb9fb4b44d53469146';

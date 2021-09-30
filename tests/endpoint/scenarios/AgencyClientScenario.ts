@@ -1,6 +1,6 @@
 import {AgencyClientCommandEnum} from '../../../src/AgencyClient/types';
 import {AgencyClientCommandBusFactory} from '../../../src/factories/AgencyClientCommandBusFactory';
-import {AbstractScenario} from './Scenario';
+import {AbstractScenario} from './AbstractScenario';
 
 /**
  * Responsible for triggering agency client commands
