@@ -6,6 +6,7 @@ export type AgencyClientConsultantDocumentType = Document & {
   consultant_role_id: string;
   consultant_role_name: string;
   consultant_id: string;
+  last_sequence_id: string;
   created_at: Date;
   updated_at: Date;
 };
@@ -36,25 +37,27 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocumentT
       type: String,
       required: true,
       description: 'The consultant id, a reference to the staffshift user_id'
+    },
+    last_sequence_id: {
+      type: String,
+      required: true,
+      description: 'Last sequence id'
     }
   },
-  // What does created_at AND updated_at represent?
-  // This is a projection, does it indicate when the entries where added / updated on the projection?
   {
-    // We will most likely need to keep the version key to apply optimistic locks
     versionKey: false,
     timestamps: {
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     },
-    collection: 'AgencyClientConsultants'
+    collection: 'AgencyClientConsultantsProjection'
   }
 );
 
 /**
  * Defines the model for the AgencyClientConsultants Read Projection
  */
-export const AgencyClientConsultants = model<AgencyClientConsultantDocumentType>(
-  'AgencyClientConsultants',
+export const AgencyClientConsultantsProjection = model<AgencyClientConsultantDocumentType>(
+  'AgencyClientConsultantsProjection',
   agencyClientConsultantsSchema
 );

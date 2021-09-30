@@ -3,7 +3,7 @@ import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../AgencyClient/types';
 import {GenericRepository} from '../GenericRepository';
-import {AgencyClientConsultants} from '../models/AgencyClientConsultants';
+import {AgencyClientConsultants} from '../models/AgencyClientConsultantsProjection';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {QueryHelper} from 'a24-node-query-utils';
