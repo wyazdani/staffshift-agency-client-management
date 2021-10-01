@@ -109,7 +109,7 @@ export class FacadeClientHelper {
 
             item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
 
-            return reject(item);
+            return reject(new RuntimeError(item.message, error));
           }
           item = new RuntimeError('An error occurred during the agency client data get call', error);
 
