@@ -95,7 +95,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
    * @param data - Data object the transformer received
    * @param callback - the callback
    */
-  addRecord(
+  private addRecord(
     logger: LoggerContext,
     model: Model<AgencyConsultantRolesProjectionDocumentType>,
     data: GenericObjectInterface,
@@ -132,7 +132,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
    * @param data - Data object the transformer received
    * @param callback - the callback
    */
-  findAndUpdateRecord(
+  private findAndUpdateRecord(
     logger: LoggerContext,
     model: Model<AgencyConsultantRolesProjectionDocumentType>,
     query: FilterQuery<AgencyConsultantRolesProjectionDocumentType>,
