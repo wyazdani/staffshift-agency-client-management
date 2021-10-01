@@ -6,6 +6,7 @@ import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
 import {AgencyClientScenario} from './scenarios/AgencyClientScenario';
 import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScenario';
+import {AgencyClientConsultantsProjectionScenarios} from './scenarios/AgencyClientConsultantsProjectionScenarios';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new Zschema({});
@@ -125,6 +126,144 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
 
       assert.equal(res.statusCode, 401);
       assert.isTrue(validator.validate(res.body, schema), 'response does not match expected schema');
+    });
+  });
+
+  describe('get', () => {
+    it('should respond with 200 List Agency Client...', async () => {
+      /*eslint-disable*/
+      const schema = {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "_id",
+            "agency_id",
+            "client_id",
+            "consultant_role_id",
+            "consultant_role_name",
+            "consultant_id",
+            "last_sequence_id",
+            "created_at",
+            "updated_at",
+            "__v"
+          ],
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "agency_id": {
+              "type": "string"
+            },
+            "client_id": {
+              "type": "string"
+            },
+            "consultant_role_id": {
+              "type": "string"
+            },
+            "consultant_role_name": {
+              "type": "string"
+            },
+            "consultant_id": {
+              "type": "string"
+            },
+            "last_sequence_id": {
+              "type": "number"
+            },
+            "created_at": {
+              "type": "string"
+            },
+            "updated_at": {
+              "type": "string"
+            },
+            "__v": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        }
+      };
+
+      await AgencyClientConsultantsProjectionScenarios.createRecord({
+        agency_id: agencyId,
+        client_id: clientId
+      });
+      const res = await api.get(`/agency/${agencyId}/clients/${clientId}/consultants`).set(headers);
+
+      res.statusCode.should.to.equal(200);
+      validator.validate(res.body, schema);
+      assert.equal(res.body[0].agency_id, agencyId);
+      assert.equal(res.body[0].client_id, clientId);
+    });
+
+    it('should respond with 204 No Content. There were no...', async () => {
+      await AgencyClientConsultantsProjectionScenarios.removeAll();
+      const res = await api.get(`/agency/${agencyId}/clients/${clientId}/consultants`).set(headers);
+
+      res.statusCode.should.to.equal(204);
+    });
+
+    it('should respond with 400 Validation Error. Usually...', async () => {
+      /*eslint-disable*/
+      var schema = {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "PATTERN",
+              "INVALID_TYPE",
+              "REQUIRED"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      };
+
+      /*eslint-enable*/
+      const res = await api.get(`/agency/${agencyId}/clients/123/consultants`).set(headers);
+
+      res.statusCode.should.to.equal(400);
+      validator.validate(res.body, schema);
+    });
+
+    it('should respond with 401 Failed to authenticate the...', async () => {
+      /*eslint-disable*/
+      var schema = {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "UNAUTHORIZED"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      };
+
+      /*eslint-enable*/
+      const res = await api.get(`/agency/${agencyId}/clients/${clientId}/consultants`).set({
+        'x-request-jwt': jwtToken + '123',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-Request-Id': '123'
+      });
+
+      res.statusCode.should.to.equal(401);
+      validator.validate(res.body, schema);
     });
   });
 });

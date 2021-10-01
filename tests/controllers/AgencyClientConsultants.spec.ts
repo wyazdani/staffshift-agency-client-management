@@ -1,10 +1,13 @@
 import sinon from 'sinon';
-import {addAgencyClientConsultant} from '../../src/controllers/AgencyClientConsultants';
+import {addAgencyClientConsultant, listAgencyClientConsultants} from '../../src/controllers/AgencyClientConsultants';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {ObjectID} from 'mongodb';
 import {AgencyClientCommandEnum} from '../../src/AgencyClient/types';
 import {AgencyClientCommandBus} from '../../src/AgencyClient/AgencyClientCommandBus';
+import {GenericRepository} from '../../src/GenericRepository';
+import {QueryHelper} from 'a24-node-query-utils';
+import {PaginationHelper} from '../../src/helpers/PaginationHelper';
 
 describe('AgencyClientConsultants', () => {
   afterEach(() => {
@@ -93,6 +96,95 @@ describe('AgencyClientConsultants', () => {
         ],
         'AgencyClientCommandBus.execute expected parameters failed'
       );
+    });
+  });
+
+  describe('listAgencyClientConsultants()', () => {
+    const agencyId = 'agency id';
+    const clientId = 'client id';
+    const agencyClientConsultantId = 'client consultant id';
+    const consultantRoleId = 'consultant role id';
+    const consultantId = 'consultant id';
+    const params = {
+      agency_id: {value: agencyId},
+      client_id: {value: clientId}
+    };
+
+    it('success scenario', async () => {
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const records: any = [
+        {
+          _id: agencyClientConsultantId,
+          agency_id: agencyId,
+          consultant_role_id: consultantRoleId,
+          consultant_role_name: 'some name',
+          consultant_id: consultantId,
+          last_sequence_id: 1,
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      ];
+      const listResponse = {
+        count: 1,
+        data: records
+      };
+      const listResources = sinon.stub(GenericRepository.prototype, 'listResources').resolves(listResponse);
+
+      sinon.stub(QueryHelper, 'getItemsPerPage').returns(25);
+      sinon.stub(QueryHelper, 'getSkipValue').returns(0);
+      sinon.stub(QueryHelper, 'getSortParams').returns({});
+      sinon.stub(QueryHelper, 'getQuery').returns({});
+      sinon.stub(PaginationHelper, 'setPaginationHeaders').resolves();
+
+      await listAgencyClientConsultants(req, res, next);
+      listResources.should.have.been.calledWith(
+        {
+          client_id: clientId,
+          agency_id: agencyId
+        },
+        25,
+        0,
+        {}
+      );
+      end.should.have.been.calledWith(JSON.stringify(records));
+    });
+
+    it('empty scenario', async () => {
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const records: any = [];
+      const listResponse = {
+        count: 1,
+        data: records
+      };
+      const listResources = sinon.stub(GenericRepository.prototype, 'listResources').resolves(listResponse);
+
+      sinon.stub(QueryHelper, 'getItemsPerPage').returns(25);
+      sinon.stub(QueryHelper, 'getSkipValue').returns(0);
+      sinon.stub(QueryHelper, 'getSortParams').returns({});
+      sinon.stub(QueryHelper, 'getQuery').returns({});
+      sinon.stub(PaginationHelper, 'setPaginationHeaders').resolves();
+
+      await listAgencyClientConsultants(req, res, next);
+      listResources.should.have.been.calledWith(
+        {
+          client_id: clientId,
+          agency_id: agencyId
+        },
+        25,
+        0,
+        {}
+      );
+      end.should.have.been.calledWith();
     });
   });
 });

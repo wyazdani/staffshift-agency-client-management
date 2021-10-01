@@ -168,11 +168,27 @@ paths:
         - $ref: "#/parameters/page_filter"
         - $ref: "#/parameters/items_per_page_filter"
         - $ref: "#/parameters/query_consultant_role_id"
+        - $ref: "#/parameters/query_consultant_id"
       responses:
         200:
           description: "List Agency Client Consultants"
+          headers:
+            link:
+              type: string
+            x-result-count:
+              type: integer
           schema:
-            $ref: "#/definitions/list_agency_client_consultant_response_def"
+            type: array
+            items:
+              $ref: "#/definitions/agency_client_consultant_response_def"
+        204:
+          $ref: "#/responses/no_content"
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/list_agency_client_consultant_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
         default:
           $ref: "#/responses/server_error_model"
       summary: "List Agency Client Consultants"
@@ -372,6 +388,12 @@ parameters:
     pattern: ^[0-9a-fA-F]{24}$
     description: "The consultant role id"
     type: string
+  query_consultant_id:
+    name: consultant_id
+    in: query
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "The consultant id"
+    type: string
   query_event:
     name: event
     in: query
@@ -492,7 +514,7 @@ definitions:
       updated_at:
         type: string
     additionalProperties: false
-  list_agency_client_consultant_response_def:
+  agency_client_consultant_response_def:
     type: object
     required:
       - _id
@@ -501,8 +523,10 @@ definitions:
       - consultant_role_id
       - consultant_role_name
       - consultant_id
+      - last_sequence_id
       - created_at
       - updated_at
+      - __v
     properties:
       _id:
         type: string
@@ -516,11 +540,29 @@ definitions:
         type: string
       consultant_id:
         type: string
+      last_sequence_id:
+        type: number
       created_at:
         type: string
       updated_at:
         type: string
+      __v:
+        type: number
     additionalProperties: false
+  list_agency_client_consultant_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PATTERN
+          - INVALID_TYPE
+          - REQUIRED
+      message:
+        type: string
   agency_consultant_role_payload_def:
     type: object
     required:
