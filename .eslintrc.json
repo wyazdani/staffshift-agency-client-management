@@ -91,7 +91,7 @@
       },
       {
         "selector": "typeParameter",
-        "format": ["snake_case", "camelCase"]
+        "format": ["snake_case", "camelCase", "PascalCase"]
       },
       {
         "selector": "enum",

@@ -1,3 +1,15 @@
+import {
+  AgencyClientConsultantAssignedEventDataInterface,
+  AgencyClientConsultantUnassignedEventDataInterface,
+  AgencyConsultantRoleDetailsUpdatedEventDataInterface
+} from './EventDataTypes';
+import {EventInterface} from './EventInterface';
+
+export type EventDataType =
+  | AgencyClientConsultantAssignedEventDataInterface
+  | AgencyClientConsultantUnassignedEventDataInterface
+  | AgencyConsultantRoleDetailsUpdatedEventDataInterface;
+
 export interface EventHandlerInterface {
-  handle(event: any): Promise<void>;
+  handle(event: EventInterface<EventDataType>): Promise<void>;
 }

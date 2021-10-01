@@ -1,9 +1,5 @@
-import {AgencyClientAggregateIdInterface} from '../../../../AgencyClient/types';
-import {AddAgencyClientConsultantCommandDataInterface} from '../../../../AgencyClient/types/CommandDataTypes';
-
 export interface AgencyClientConsultantAssignedEventDataInterface {
-  type: string;
-  sequence_id: number;
-  aggregate_id: AgencyClientAggregateIdInterface;
-  data: AddAgencyClientConsultantCommandDataInterface;
+  _id: string;
+  consultant_role_id: string;
+  consultant_id: string;
 }
