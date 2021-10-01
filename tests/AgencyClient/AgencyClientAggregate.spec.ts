@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {AgencyClientAggregate} from '../../src/AgencyClient/AgencyClientAggregate';
-import sinon, {stubConstructor} from 'ts-sinon';
+import {stubConstructor} from 'ts-sinon';
 import {AgencyRepository} from '../../src/Agency/AgencyRepository';
 import {AgencyAggregate} from '../../src/Agency/AgencyAggregate';
 import {ValidationError} from 'a24-node-error-utils';
@@ -8,10 +8,6 @@ import {AgencyConsultantRoleEnum} from '../../src/Agency/types';
 import {AgencyClientConsultantInterface} from '../../src/AgencyClient/types';
 
 describe('AgencyClientAggregate', () => {
-  afterEach(() => {
-    sinon.restore();
-  });
-
   describe('validateAddClientConsultant()', () => {
     const agencyId = '333';
     const roleId = '2020';
