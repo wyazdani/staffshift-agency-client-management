@@ -21,8 +21,7 @@ export class AgencyClientConsultantAssignedEventHandler implements EventHandlerI
       client_id: event.aggregate_id.client_id,
       consultant_role_id: event.data.consultant_role_id,
       consultant_role_name: role.name,
-      consultant_id: event.data.consultant_id,
-      last_sequence_id: agencyAggregate.getLastEventId()
+      consultant_id: event.data.consultant_id
     });
 
     await agencyClientConsultant.save();

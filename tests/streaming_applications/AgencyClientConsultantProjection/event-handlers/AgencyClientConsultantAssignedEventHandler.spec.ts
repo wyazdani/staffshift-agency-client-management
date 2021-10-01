@@ -46,8 +46,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
         client_id: event.aggregate_id.client_id,
         consultant_role_id: event.data.consultant_role_id,
         consultant_role_name: consultantRole.name,
-        consultant_id: event.data.consultant_id,
-        last_sequence_id: 3
+        consultant_id: event.data.consultant_id
       };
       const saveStub = sinon.stub(AgencyClientConsultantsProjection.prototype, 'save');
 
@@ -64,7 +63,6 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
 
       agencyRepositoryStub.getAggregate.resolves(agencyAggregateStub);
       agencyAggregateStub.getConsultantRole.returns(consultantRole);
-      agencyAggregateStub.getLastEventId.returns(3);
 
       await handler.handle(event);
       assert.equal(saveStub.callCount, 1, 'save should be called once');
@@ -111,8 +109,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
         client_id: event.aggregate_id.client_id,
         consultant_role_id: event.data.consultant_role_id,
         consultant_role_name: consultantRole.name,
-        consultant_id: event.data.consultant_id,
-        last_sequence_id: 3
+        consultant_id: event.data.consultant_id
       };
       const saveStub = sinon.stub(AgencyClientConsultantsProjection.prototype, 'save');
 
@@ -129,7 +126,6 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
 
       agencyRepositoryStub.getAggregate.resolves(agencyAggregateStub);
       agencyAggregateStub.getConsultantRole.returns(consultantRole);
-      agencyAggregateStub.getLastEventId.returns(3);
 
       await handler.handle(event).should.be.rejectedWith(Error, 'weird error');
       assert.equal(saveStub.callCount, 1, 'save should be called once');
