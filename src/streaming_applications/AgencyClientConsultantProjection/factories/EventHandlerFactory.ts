@@ -10,9 +10,12 @@ import {AgencyClientConsultantUnassignedEventHandler} from '../event-handlers/Ag
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 
 /**
- * TODO
+ * Responsible for building different event handlers
  */
 export class EventHandlerFactory {
+  /**
+   * Return event handler based on the event type
+   */
   static getHandler(eventType: string, eventRepository: EventRepository, logger: LoggerContext): EventHandlerInterface {
     switch (eventType) {
       case AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED:
@@ -23,7 +26,7 @@ export class EventHandlerFactory {
         return new AgencyConsultantRoleDetailsUpdatedEventHandler();
       default:
         logger.info('No configured handler found for this event', {eventType});
-        throw new RuntimeError('No configured handler found for this event');
+        throw new RuntimeError(`No configured handler found for this event: ${eventType}`);
     }
   }
 }

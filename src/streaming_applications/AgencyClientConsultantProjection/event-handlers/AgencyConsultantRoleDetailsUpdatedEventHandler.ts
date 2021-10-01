@@ -3,9 +3,13 @@ import {AgencyClientConsultantsProjection} from '../../../models/AgencyClientCon
 import {AgencyConsultantRoleDetailsUpdatedEventDataInterface} from '../types/EventDataTypes';
 
 /**
- * TODO
+ * Responsible for handling AgencyConsultantRoleDetailsUpdated event
  */
 export class AgencyConsultantRoleDetailsUpdatedEventHandler implements EventHandlerInterface {
+  /**
+   * Update consultant role name for all agency client consultants with that role
+   * @param event
+   */
   async handle(event: AgencyConsultantRoleDetailsUpdatedEventDataInterface): Promise<void> {
     await AgencyClientConsultantsProjection.updateMany(
       {consultant_role_id: event.data._id},

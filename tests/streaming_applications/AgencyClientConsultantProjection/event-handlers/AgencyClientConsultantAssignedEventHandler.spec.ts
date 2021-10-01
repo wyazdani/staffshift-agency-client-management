@@ -1,11 +1,11 @@
 import sinon, {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
-import {AgencyRepository} from '../../../src/Agency/AgencyRepository';
-import {AgencyClientConsultantAssignedEventHandler} from '../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyClientConsultantAssignedEventHandler';
-import {AgencyClientEventEnum} from '../../../src/AgencyClient/types';
-import {AgencyAggregate} from '../../../src/Agency/AgencyAggregate';
-import {AgencyConsultantRoleEnum} from '../../../src/Agency/types';
-import {AgencyClientConsultantsProjection} from '../../../src/models/AgencyClientConsultantsProjection';
+import {AgencyRepository} from '../../../../src/Agency/AgencyRepository';
+import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyClientConsultantAssignedEventHandler';
+import {AgencyClientEventEnum} from '../../../../src/AgencyClient/types';
+import {AgencyAggregate} from '../../../../src/Agency/AgencyAggregate';
+import {AgencyConsultantRoleEnum} from '../../../../src/Agency/types';
+import {AgencyClientConsultantsProjection} from '../../../../src/models/AgencyClientConsultantsProjection';
 
 describe('AgencyClientConsultantAssignedEventHandler', () => {
   afterEach(() => {

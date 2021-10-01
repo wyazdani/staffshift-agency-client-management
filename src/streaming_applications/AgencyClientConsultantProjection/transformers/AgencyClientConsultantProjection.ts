@@ -16,9 +16,13 @@ interface OptionsInterface extends TransformOptions {
   logger: LoggerContext;
 }
 
+/**
+ * Responsible for building agency client consultant projection by delegating each supported
+ * event to the correct event handler
+ */
 export class AgencyClientConsultantProjection extends Transform {
   private readonly eventRepository: EventRepository;
-  private logger: LoggerContext;
+  private readonly logger: LoggerContext;
   constructor(opts: OptionsInterface) {
     // We only cater for object mode
     opts.objectMode = true;
@@ -33,7 +37,6 @@ export class AgencyClientConsultantProjection extends Transform {
 
     if (!events.includes(eventType)) {
       this.logger.debug('Incoming event ignored', {eventType, event});
-
       return callback(null, data);
     }
 

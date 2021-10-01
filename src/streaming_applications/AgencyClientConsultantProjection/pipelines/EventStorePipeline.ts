@@ -13,18 +13,20 @@ import {EventRepository} from '../../../EventRepository';
 const HIGH_WATER_MARK = 5;
 
 /**
- * TODO
+ * Responsible for listening to changes on EventStore collection
+ * For each change it build the agency client consultant projection
  */
 export class EventStorePipeline implements PipelineInterface {
+  /**
+   * Return change stream pipeline id
+   */
   getID(): string {
     return 'agency_client_consultant_event_store';
   }
 
   /**
-   * Return pipeline type
-   *
-   * @returns {String}
-   */
+   * Return change stream pipeline type
+   **/
   getType(): PIPELINE_TYPES_ENUM {
     return PIPELINE_TYPES_ENUM.CORE;
   }
