@@ -201,7 +201,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
 
     it('should respond with 400 Validation Error. Usually...', async () => {
       /*eslint-disable*/
-      var schema = {
+      const schema = {
         "type": "object",
         "required": [
           "code",
@@ -231,7 +231,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
 
     it('should respond with 401 Failed to authenticate the...', async () => {
       /*eslint-disable*/
-      var schema = {
+      const schema = {
         "type": "object",
         "required": [
           "code",
