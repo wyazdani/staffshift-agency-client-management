@@ -10,7 +10,7 @@ module.exports = {
         return cb(error);
       }
 
-      if (!collections.map((item) => item.name).includes(collectionName)) {
+      if (!(collections.map((item) => item.name).includes(collectionName))) {
         return cb();
       }
 
