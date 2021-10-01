@@ -143,7 +143,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
             "consultant_role_id",
             "consultant_role_name",
             "consultant_id",
-            "last_sequence_id",
             "created_at",
             "updated_at",
             "__v"
@@ -166,9 +165,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
             },
             "consultant_id": {
               "type": "string"
-            },
-            "last_sequence_id": {
-              "type": "number"
             },
             "created_at": {
               "type": "string"
