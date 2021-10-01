@@ -65,31 +65,6 @@ describe('agency-{agency_id}-clients-{client_id}-consultants-{consultant_id}', (
           },
           message: {
             type: 'string'
-          },
-          errors: {
-            type: 'array',
-            items: {
-              type: 'object',
-              required: ['code', 'message', 'path'],
-              properties: {
-                code: {
-                  type: 'string',
-                  enum: ['PATTERN']
-                },
-                message: {
-                  type: 'string'
-                },
-                path: {
-                  type: 'array',
-                  items: {
-                    type: 'string'
-                  }
-                },
-                description: {
-                  type: 'string'
-                }
-              }
-            }
           }
         }
       };
