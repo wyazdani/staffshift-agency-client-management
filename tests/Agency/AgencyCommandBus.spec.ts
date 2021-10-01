@@ -10,7 +10,7 @@ import {AgencyCommandEnum} from '../../src/Agency/types';
 import {DisableAgencyConsultantRoleCommandHandler} from '../../src/Agency/command-handlers/DisableAgencyConsultantRoleCommandHandler';
 
 describe('AgencyCommandBus', () => {
-  let logger: typeof LoggerContext;
+  let logger: LoggerContext;
   let agencyCommandBus: AgencyCommandBus;
   let agencyRepository: AgencyRepository;
 
@@ -18,10 +18,6 @@ describe('AgencyCommandBus', () => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
     agencyCommandBus = new AgencyCommandBus();
     agencyRepository = stubConstructor(AgencyRepository);
-  });
-
-  afterEach(() => {
-    sinon.restore();
   });
 
   describe('addHandler()', () => {

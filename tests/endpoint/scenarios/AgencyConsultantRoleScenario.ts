@@ -1,6 +1,6 @@
 import {AgencyCommandEnum} from '../../../src/Agency/types';
 import {AgencyCommandBusFactory} from '../../../src/factories/AgencyCommandBusFactory';
-import {AbstractScenario} from './Scenario';
+import {AbstractScenario} from './AbstractScenario';
 
 /**
  * Responsible for triggering agency consultant role commands

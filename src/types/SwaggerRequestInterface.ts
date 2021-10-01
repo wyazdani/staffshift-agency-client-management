@@ -3,7 +3,7 @@ import {IncomingMessage} from 'http';
 import {EventRepository} from '../EventRepository';
 
 export interface SwaggerRequestInterface extends IncomingMessage {
-  Logger: typeof LoggerContext;
+  Logger: LoggerContext;
   swagger: {
     params: {[key: string]: unknown};
     operation: {

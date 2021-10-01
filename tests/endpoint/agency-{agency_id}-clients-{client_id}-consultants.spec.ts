@@ -30,7 +30,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
 
   beforeEach(async () => {
     await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, roleId);
-    await agencyClientScenario.linkAgencyClient(agencyId, clientId);
   });
 
   afterEach(async () => {
@@ -61,7 +60,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
         properties: {
           code: {
             type: 'string',
-            enum: ['REQUIRED', 'SCHEMA_VALIDATION_FAILED']
+            enum: ['REQUIRED', 'SCHEMA_VALIDATION_FAILED', 'MODEL_VALIDATION_FAILED', 'PATTERN']
           },
           message: {
             type: 'string'

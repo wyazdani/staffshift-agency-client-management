@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {AgencyClientAggregate} from '../../src/AgencyClient/AgencyClientAggregate';
-import sinon, {stubObject, stubConstructor} from 'ts-sinon';
+import {stubConstructor} from 'ts-sinon';
 import {AgencyRepository} from '../../src/Agency/AgencyRepository';
 import {AgencyAggregate} from '../../src/Agency/AgencyAggregate';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
@@ -8,16 +8,6 @@ import {AgencyConsultantRoleEnum} from '../../src/Agency/types';
 import {AgencyClientConsultantInterface} from '../../src/AgencyClient/types';
 
 describe('AgencyClientAggregate', () => {
-  let agencyRepository: AgencyRepository;
-
-  beforeEach(() => {
-    agencyRepository = stubConstructor(AgencyRepository);
-  });
-
-  afterEach(() => {
-    sinon.restore();
-  });
-
   describe('validateAddClientConsultant()', () => {
     const agencyId = '333';
     const roleId = '2020';
@@ -40,7 +30,7 @@ describe('AgencyClientAggregate', () => {
 
     it('should return validation error when consultant role is not found', async () => {
       const AgencyAggregateStub = stubConstructor(AgencyAggregate);
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
 
       agencyRepositoryStub.getAggregate.resolves(AgencyAggregateStub);
       AgencyAggregateStub.getConsultantRole.returns(undefined);
@@ -67,7 +57,7 @@ describe('AgencyClientAggregate', () => {
       };
 
       const AgencyAggregateStub = stubConstructor(AgencyAggregate);
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
 
       agencyRepositoryStub.getAggregate.resolves(AgencyAggregateStub);
       AgencyAggregateStub.getConsultantRole.returns(consultantRole);
@@ -104,7 +94,7 @@ describe('AgencyClientAggregate', () => {
       };
 
       const AgencyAggregateStub = stubConstructor(AgencyAggregate);
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
 
       agencyRepositoryStub.getAggregate.resolves(AgencyAggregateStub);
       AgencyAggregateStub.getConsultantRole.returns(consultantRole);
@@ -145,7 +135,7 @@ describe('AgencyClientAggregate', () => {
         client_type: 'site',
         consultants: [] as AgencyClientConsultantInterface[]
       };
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
 
       await agencyClientAggregate
@@ -171,7 +161,7 @@ describe('AgencyClientAggregate', () => {
         client_type: 'site',
         consultants: [consultant]
       };
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
 
       await agencyClientAggregate.validateRemoveClientConsultant(consultant);
@@ -197,7 +187,7 @@ describe('AgencyClientAggregate', () => {
         client_type: 'site',
         consultants: [consultant]
       };
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
       const results = agencyClientAggregate.getConsultants();
 
@@ -224,7 +214,7 @@ describe('AgencyClientAggregate', () => {
         client_type: 'site',
         consultants: [consultant]
       };
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
       const id = agencyClientAggregate.getId();
 
@@ -251,7 +241,7 @@ describe('AgencyClientAggregate', () => {
         client_type: 'site',
         consultants: [consultant]
       };
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
       const id = agencyClientAggregate.getLastEventId();
 
@@ -278,7 +268,7 @@ describe('AgencyClientAggregate', () => {
         client_type: 'site',
         consultants: [consultant]
       };
-      const agencyRepositoryStub = stubObject<AgencyRepository>(agencyRepository);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
       const aggregateObj = agencyClientAggregate.toJSON();
 
