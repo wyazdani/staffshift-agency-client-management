@@ -6,7 +6,6 @@ export type AgencyClientConsultantDocumentType = Document & {
   consultant_role_id: string;
   consultant_role_name: string;
   consultant_id: string;
-  last_sequence_id: number;
   created_at: Date;
   updated_at: Date;
 };
@@ -37,11 +36,6 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocumentT
       type: String,
       required: true,
       description: 'The consultant id, a reference to the staffshift user_id'
-    },
-    last_sequence_id: {
-      type: Number,
-      required: true,
-      description: 'Last sequence id'
     }
   },
   {

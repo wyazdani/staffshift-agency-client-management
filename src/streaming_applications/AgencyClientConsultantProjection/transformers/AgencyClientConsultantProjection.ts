@@ -1,9 +1,9 @@
 import {Transform, TransformCallback, TransformOptions} from 'stream';
 import {EventsEnum} from '../../../Events';
 import {LoggerContext} from 'a24-logzio-winston';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../../../EventRepository';
 import {EventHandlerFactory} from '../factories/EventHandlerFactory';
+import {TransformChangeStreamDataInterface} from '../types/TransformChangeStreamDataInterface';
 
 const events = [
   EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
@@ -31,7 +31,7 @@ export class AgencyClientConsultantProjection extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
+  _transform(data: TransformChangeStreamDataInterface, encoding: BufferEncoding, callback: TransformCallback): void {
     const event = data.event;
     const eventType = event.type;
 
