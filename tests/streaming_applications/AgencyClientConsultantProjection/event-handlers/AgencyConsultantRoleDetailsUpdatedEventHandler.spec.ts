@@ -1,7 +1,7 @@
 import sinon from 'ts-sinon';
 import {AgencyClientConsultantsProjection} from '../../../../src/models/AgencyClientConsultantsProjection';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
-import {AgencyEventEnum} from '../../../../src/Agency/types';
+import {EventsEnum} from '../../../../src/Events';
 
 describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
   afterEach(() => {
@@ -12,7 +12,7 @@ describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
     const agencyId = '5b16b824e8a73a752c42d848';
     const clientId = '6155c39a2dff5a83f7b7bc6c';
     const event = {
-      type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
+      type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
       sequence_id: 1,
       aggregate_id: {
         agency_id: agencyId,

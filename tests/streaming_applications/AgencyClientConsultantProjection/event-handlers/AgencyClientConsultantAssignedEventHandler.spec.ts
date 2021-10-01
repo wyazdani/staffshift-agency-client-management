@@ -2,10 +2,10 @@ import sinon, {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
 import {AgencyRepository} from '../../../../src/Agency/AgencyRepository';
 import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyClientConsultantAssignedEventHandler';
-import {AgencyClientEventEnum} from '../../../../src/AgencyClient/types';
 import {AgencyAggregate} from '../../../../src/Agency/AgencyAggregate';
 import {AgencyConsultantRoleEnum} from '../../../../src/Agency/types';
 import {AgencyClientConsultantsProjection} from '../../../../src/models/AgencyClientConsultantsProjection';
+import {EventsEnum} from '../../../../src/Events';
 
 describe('AgencyClientConsultantAssignedEventHandler', () => {
   afterEach(() => {
@@ -16,7 +16,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
     const agencyId = '5b16b824e8a73a752c42d848';
     const clientId = '6155c39a2dff5a83f7b7bc6c';
     const event = {
-      type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+      type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
       sequence_id: 1,
       aggregate_id: {
         agency_id: agencyId,

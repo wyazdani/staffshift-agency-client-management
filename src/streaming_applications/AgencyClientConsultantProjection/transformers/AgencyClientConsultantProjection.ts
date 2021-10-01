@@ -3,7 +3,6 @@ import {EventsEnum} from '../../../Events';
 import {LoggerContext} from 'a24-logzio-winston';
 import {EventRepository} from '../../../EventRepository';
 import {EventHandlerFactory} from '../factories/EventHandlerFactory';
-import {callbackify} from 'util';
 import {TransformChangeStreamDataInterface} from '../types/TransformChangeStreamDataInterface';
 
 const events = [
@@ -44,6 +43,9 @@ export class AgencyClientConsultantProjection extends Transform {
     this.logger.debug('Processing the incoming event', {event});
     const eventHandler = EventHandlerFactory.getHandler(eventType, this.eventRepository, this.logger);
 
-    callbackify(eventHandler.handle).call(eventHandler, event, callback);
+    eventHandler
+      .handle(event)
+      .then(() => callback(null, data))
+      .catch((error) => callback(error));
   }
 }
