@@ -397,7 +397,7 @@ describe('AgencyConsultantRole', () => {
         count: 0,
         data
       });
-      const setPaginationHeaders = sinon.stub(PaginationHelper, 'setPaginationHeaders').resolves();
+      const setPaginationHeaders = sinon.stub(PaginationHelper, 'setPaginationHeaders');
 
       await listAgencyConsultantRoles(req, res, next);
       getItemsPerPage.should.have.been.calledWith(params);
@@ -414,8 +414,8 @@ describe('AgencyConsultantRole', () => {
         sortBy
       );
       res.statusCode.should.to.equal(204);
-      setPaginationHeaders.should.have.been.calledWith(req, res, 0);
-      end.should.have.been.calledWith(JSON.stringify(data));
+      setPaginationHeaders.should.not.have.been.called;
+      end.should.have.been.calledWith();
       next.should.not.have.been.called;
     });
 

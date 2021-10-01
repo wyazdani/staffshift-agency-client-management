@@ -598,6 +598,11 @@ definitions:
         type: string
       description:
         type: string
+      status:
+        type: string
+        enum:
+          - enabled
+          - disabled
       max_consultants:
         type: integer
         minimum: 1

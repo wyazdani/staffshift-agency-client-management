@@ -217,9 +217,13 @@ export const listAgencyConsultantRoles = async (
     const service = new GenericRepository(req.Logger, AgencyConsultantRolesProjection);
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
 
-    res.statusCode = isEmpty(data) ? 204 : 200;
-    await PaginationHelper.setPaginationHeaders(req, res, count);
-    res.end(JSON.stringify(data));
+    if (isEmpty(data)) {
+      res.statusCode = 204;
+      res.end();
+    } else {
+      await PaginationHelper.setPaginationHeaders(req, res, count);
+      res.end(JSON.stringify(data));
+    }
     req.Logger.info('listAgencyConsultantRoles completed', {statusCode: res.statusCode});
   } catch (err) {
     req.Logger.error('listAgencyConsultantRoles unknown error', {err});
