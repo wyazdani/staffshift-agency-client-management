@@ -276,7 +276,7 @@ describe('AgencyConsultantRole', () => {
         status: 'enabled',
         toJSON: () => record
       };
-      const findOne = sinon.stub(AgencyConsultantRolesProjection, 'findOne').resolves(record);
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves(record);
 
       await getAgencyConsultantRole(req, res, next);
       findOne.should.have.been.calledWith({
@@ -301,7 +301,7 @@ describe('AgencyConsultantRole', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
       const setHeader = sinon.stub(res, 'setHeader');
-      const findOne = sinon.stub(AgencyConsultantRolesProjection, 'findOne').resolves();
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves();
 
       await getAgencyConsultantRole(req, res, next);
       findOne.should.have.been.calledWith({

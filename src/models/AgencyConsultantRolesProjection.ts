@@ -14,7 +14,8 @@ const agencyConsultantRoles = new Schema<AgencyConsultantRolesProjectionDocument
     agency_id: {
       type: String,
       required: true,
-      description: 'The agency id'
+      description: 'The agency id',
+      http_hidden: true
     },
     name: {
       type: String,

@@ -173,7 +173,8 @@ export const getAgencyConsultantRole = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-    const record = await AgencyConsultantRolesProjection.findOne({
+    const repository = new GenericRepository(req.Logger, AgencyConsultantRolesProjection);
+    const record = await repository.findOne({
       _id: consultantRoleId,
       agency_id: agencyId
     });

@@ -131,10 +131,6 @@ describe('/agency/{agency_id}/consultant-roles', () => {
               type: 'string',
               pattern: '^[0-9a-fA-F]{24}$'
             },
-            agency_id: {
-              type: 'string',
-              pattern: '^[0-9a-fA-F]{24}$'
-            },
             name: {
               type: 'string'
             },

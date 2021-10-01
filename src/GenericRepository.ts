@@ -2,6 +2,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {FilterQuery, Model} from 'mongoose';
 import {RuntimeError} from 'a24-node-error-utils';
 import {GenericObjectInterface} from 'GenericObjectInterface';
+import {forIn, forEach} from 'lodash';
 
 /**
  * GenericRepository
@@ -42,6 +43,15 @@ export class GenericRepository {
   }
 
   /**
+   * find only one record
+   *
+   * @param query - query to filter
+   */
+  async findOne(query: FilterQuery<any>): Promise<any> {
+    return this.store.findOne(query, this.getProjection());
+  }
+
+  /**
    * Gets the count of records that matches a given query
    *
    * @param {FilterQuery} query - The query to match
@@ -72,9 +82,39 @@ export class GenericRepository {
    */
   private async getListing(query: FilterQuery<any>, skip: number, limit: number, sortBy: GenericObjectInterface) {
     try {
-      return await this.store.find(query).skip(skip).limit(limit).sort(sortBy).lean().exec();
+      return await this.store.find(query, this.getProjection()).skip(skip).limit(limit).sort(sortBy).lean().exec();
     } catch (dbError) {
       throw new RuntimeError(`An error occurred while listing the records for ${this.store.modelName}`, {dbError});
     }
+  }
+
+  /**
+   * get projection object, we exclude fields that we enabled `http_hidden`
+   *
+   * @private
+   */
+  private getProjection(): {[key: string]: number} {
+    const result: {[key: string]: number} = {};
+
+    forEach<string[]>(this.getHiddenFields(), (value: string) => {
+      result[value] = 0;
+    });
+    return result;
+  }
+
+  /**
+   * get list of hidden fields from the model schema
+   *
+   * @private
+   */
+  private getHiddenFields(): string[] {
+    const excludes: string[] = [];
+
+    forIn(this.store.schema.obj, (config, field) => {
+      if (config.http_hidden) {
+        excludes.push(field);
+      }
+    });
+    return excludes;
   }
 }
