@@ -58,7 +58,7 @@ const mongoConfig = config.get<GenericObjectInterface>('mongo');
 mongoose.connection.on('error', (error: Error) => {
   const loggerContext = Logger.getContext('MongoConnection');
 
-  loggerContext.crit('MongoDB connection error', error);
+  loggerContext.crit('MongoDB connection error', {error, reason: error.reason});
   process.exit(1);
 });
 export const promise = new Promise<void>((resolve) => {
