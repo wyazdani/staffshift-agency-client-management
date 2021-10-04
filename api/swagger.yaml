@@ -193,8 +193,14 @@ paths:
       responses:
         200:
           description: "Removes an Agency Client Consultant"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/assign_client_consultant_payload_def"
+            $ref: "#/definitions/remove_agency_client_consultant_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Removes an Agency Client Consultant"
@@ -747,6 +753,19 @@ definitions:
                 type: string
             description:
               type: string
+  remove_agency_client_consultant_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - PATTERN
+      message:
+        type: string
 responses:
   unauthorize_error_model:
     description: "Failed to authenticate the incoming request"
