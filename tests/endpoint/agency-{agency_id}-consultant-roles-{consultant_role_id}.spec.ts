@@ -200,7 +200,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
         properties: {
           code: {
             type: 'string',
-            enum: ['PATTERN', 'ENUM_MISMATCH', 'INVALID_TYPE', 'REQUIRED']
+            enum: ['PATTERN', 'REQUIRED']
           },
           message: {
             type: 'string'

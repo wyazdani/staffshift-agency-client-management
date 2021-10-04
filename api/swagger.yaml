@@ -848,8 +848,6 @@ definitions:
         type: string
         enum:
           - PATTERN
-          - ENUM_MISMATCH
-          - INVALID_TYPE
           - REQUIRED
       message:
         type: string
