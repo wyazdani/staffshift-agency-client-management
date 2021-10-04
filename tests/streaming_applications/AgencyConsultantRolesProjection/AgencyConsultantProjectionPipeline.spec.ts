@@ -81,7 +81,9 @@ describe('AgencyConsultantProjectionPipeline', () => {
       assert.instanceOf(projectionTransformerCallArgs[0], AgencyConsultantProjectionTransformer);
       assert.deepEqual(
         tokenWriterStreamCallArgs[0],
-        tokenManager.getResumeTokenWriterStream(agencyConsultantProjectionPipeline.getID(), STREAM_TYPES_ENUM.WATCH, {highWaterMark: 5})
+        tokenManager.getResumeTokenWriterStream(agencyConsultantProjectionPipeline.getID(), STREAM_TYPES_ENUM.WATCH, {
+          highWaterMark: 5
+        })
       );
     });
   });

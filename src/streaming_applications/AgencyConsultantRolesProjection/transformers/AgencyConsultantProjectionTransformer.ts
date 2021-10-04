@@ -61,25 +61,13 @@ export class AgencyConsultantProjectionTransformer extends Transform {
         this.addRecord(this.logger, this.model, data, callback);
         break;
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED:
-        this.findAndUpdateRecord(this.logger, this.model, criteria, {status: 'enabled'}, data, callback);
+        this.updateRecord(this.logger, this.model, criteria, {status: 'enabled'}, data, callback);
         break;
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED:
-        this.findAndUpdateRecord(this.logger, this.model, criteria, {status: 'disabled'}, data, callback);
+        this.updateRecord(this.logger, this.model, criteria, {status: 'disabled'}, data, callback);
         break;
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED:
-        this.findAndUpdateRecord(
-          this.logger,
-          this.model,
-          criteria,
-          {
-            agency_id: event.aggregate_id.agency_id,
-            name: event.data.name,
-            description: event.data.description,
-            max_consultants: event.data.max_consultants
-          },
-          data,
-          callback
-        );
+        this.updateRecord(this.logger, this.model, criteria, event.data, data, callback);
         break;
       default:
         //This is never expected, because we already do an initial check to allow only these 4 events
@@ -132,7 +120,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
    * @param data - Data object the transformer received
    * @param callback - the callback
    */
-  private findAndUpdateRecord(
+  private updateRecord(
     logger: LoggerContext,
     model: Model<AgencyConsultantRolesProjectionDocumentType>,
     query: FilterQuery<AgencyConsultantRolesProjectionDocumentType>,
@@ -140,7 +128,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
     data: GenericObjectInterface,
     callback: TransformCallback
   ): void {
-    model.findOneAndUpdate(query, updateObject, {upsert: true}, (err: CallbackError) => {
+    model.updateOne(query, {$set: updateObject}, {upsert: true}, (err: CallbackError) => {
       if (err) {
         logger.error('Error updating a record to the consultant role projection', {
           originalError: err,
