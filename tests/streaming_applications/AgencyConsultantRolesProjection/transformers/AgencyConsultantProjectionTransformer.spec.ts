@@ -194,7 +194,7 @@ describe('AgencyConsultantProjectionTransformer', () => {
       updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, {$set: {status: 'enabled'}}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(null, record, testData);
         return null;
       });
@@ -243,7 +243,7 @@ describe('AgencyConsultantProjectionTransformer', () => {
       updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, {$set: {status: 'enabled'}}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(error);
         return null;
       });
@@ -295,7 +295,7 @@ describe('AgencyConsultantProjectionTransformer', () => {
       updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, {$set: {status: 'disabled'}}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(null, record, testData);
         return null;
       });
@@ -344,7 +344,7 @@ describe('AgencyConsultantProjectionTransformer', () => {
       updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, {$set: {status: 'disabled'}}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(error);
         return null;
       });
@@ -399,7 +399,7 @@ describe('AgencyConsultantProjectionTransformer', () => {
       updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, updateObject, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(null, record, testData);
         return null;
       });
@@ -451,7 +451,7 @@ describe('AgencyConsultantProjectionTransformer', () => {
       updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, updateObject, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(error);
         return null;
       });

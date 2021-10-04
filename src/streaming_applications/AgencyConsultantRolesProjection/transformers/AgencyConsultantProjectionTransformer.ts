@@ -128,7 +128,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
     data: GenericObjectInterface,
     callback: TransformCallback
   ): void {
-    model.updateOne(query, {$set: updateObject}, {upsert: true}, (err: CallbackError) => {
+    model.updateOne(query, {$set: updateObject}, {}, (err: CallbackError) => {
       if (err) {
         logger.error('Error updating a record to the consultant role projection', {
           originalError: err,
