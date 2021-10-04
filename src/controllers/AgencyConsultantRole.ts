@@ -2,7 +2,6 @@ import {ServerResponse} from 'http';
 import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get, isEmpty} from 'lodash';
-import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
 import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
@@ -13,7 +12,11 @@ import {
   UpdateAgencyConsultantRoleCommandInterface
 } from '../Agency/types/CommandTypes';
 import {AgencyCommandEnum} from '../Agency/types';
+import {GenericRepository} from '../GenericRepository';
 import {LocationHelper} from '../helpers/LocationHelper';
+import {QueryHelper} from 'a24-node-query-utils';
+import {PaginationHelper} from '../helpers/PaginationHelper';
+import {AgencyConsultantRolesProjection} from '../models/AgencyConsultantRolesProjection';
 
 /**
  * Add Agency Consultant Role
@@ -157,6 +160,7 @@ export const disableAgencyConsultantRole = async (req: SwaggerRequestInterface, 
 
 /**
  * Get Agency Consultant Role
+ *
  * @param req - The http request object
  * @param res - The http response object
  * @param next - The callback used to pass control to the next middleware
@@ -166,35 +170,27 @@ export const getAgencyConsultantRole = async (
   res: ServerResponse,
   next: (error?: Error) => void
 ): Promise<void> => {
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  // Consider using a builder | respository pattern
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-
   try {
-    // This will most likely need to project only the section we are working with based on the route
-    const aggregate = await repository.getAggregate(agencyId);
-    const consultantRole = aggregate.getConsultantRole(consultantRoleId);
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+    const repository = new GenericRepository(req.Logger, AgencyConsultantRolesProjection);
+    const record = await repository.findOne({
+      _id: consultantRoleId,
+      agency_id: agencyId
+    });
 
-    // This needs to be centralised and done better
-    if (consultantRole) {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(consultantRole));
-
-      return;
+    if (!record) {
+      return next(new ResourceNotFoundError('No agency consultant role found'));
     }
-
-    return next(
-      new ResourceNotFoundError(
-        `No agency consultant role found for agency: ${agencyId} and consultant: ${consultantRoleId}`
-      )
-    );
-  } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
+    res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+    res.end(JSON.stringify(record.toJSON()));
+  } catch (err) {
+    req.Logger.error('getAgencyConsultantRole unknown error', {
+      err,
+      consultantRoleId: get(req, 'swagger.params.consultant_role_id.value')
+    });
+    next(err);
   }
 };
 
@@ -203,32 +199,35 @@ export const getAgencyConsultantRole = async (
  *
  * @param req - The http request object
  * @param res - The http response object
+ * @param next - The next function
  */
-export const listAgencyConsultantRoles = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  // Consider using a builder | respository pattern
-  const repository = new AgencyRepository(get(req, 'eventRepository', undefined));
-
+export const listAgencyConsultantRoles = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   try {
-    // This will most likely need to project only the section we are working with based on the route
-    const aggregate = await repository.getAggregate(agencyId);
-    const consultantRoles = aggregate.getConsultantRoles();
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const swaggerParams = req.swagger.params || {};
+    const limit = QueryHelper.getItemsPerPage(swaggerParams);
+    const skip = QueryHelper.getSkipValue(swaggerParams, limit);
+    const sortBy = QueryHelper.getSortParams(swaggerParams);
+    const query = QueryHelper.getQuery(swaggerParams);
 
-    // This needs to be centralised and done better
-    if (consultantRoles && consultantRoles.length > 0) {
-      res.statusCode = 200;
-      res.setHeader('x-result-count', consultantRoles.length);
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(consultantRoles));
+    query.agency_id = agencyId;
+    const service = new GenericRepository(req.Logger, AgencyConsultantRolesProjection);
+    const {count, data} = await service.listResources(query, limit, skip, sortBy);
 
-      return;
+    if (isEmpty(data)) {
+      res.statusCode = 204;
+      res.end();
+    } else {
+      await PaginationHelper.setPaginationHeaders(req, res, count);
+      res.end(JSON.stringify(data));
     }
-    res.statusCode = 204;
-    res.end();
+    req.Logger.info('listAgencyConsultantRoles completed', {statusCode: res.statusCode});
   } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+    req.Logger.error('listAgencyConsultantRoles unknown error', {err});
+    next(err);
   }
 };
