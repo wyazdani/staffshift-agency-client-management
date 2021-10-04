@@ -27,7 +27,6 @@ export const addAgencyClientConsultant = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-
   try {
     const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
