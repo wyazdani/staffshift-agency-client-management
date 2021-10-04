@@ -39,8 +39,6 @@ const agencyConsultantRoles = new Schema<AgencyConsultantRolesProjectionDocument
       enum: ['enabled', 'disabled']
     }
   },
-  // What does created_at AND updated_at represent?
-  // This is a projection, does it indicate when the entries where added / updated on the projection?
   {
     timestamps: {
       createdAt: 'created_at',
@@ -51,7 +49,7 @@ const agencyConsultantRoles = new Schema<AgencyConsultantRolesProjectionDocument
 );
 
 /**
- * Defines the model for the AgencyClients Read Projection
+ * Defines the model for the AgencyConsultant roles Read Projection
  */
 export const AgencyConsultantRolesProjection = model<AgencyConsultantRolesProjectionDocumentType>(
   'AgencyConsultantRolesProjection',

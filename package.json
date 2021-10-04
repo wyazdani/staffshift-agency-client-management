@@ -1,6 +1,6 @@
 {
   "name": "staffshift-agency-client-management",
-  "version": "1.7.0",
+  "version": "1.10.2",
   "description": "Micro service for managing staffshift agency clients",
   "main": "src/http_server.ts",
   "scripts": {
@@ -74,6 +74,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "json-schema-deref": "0.5.0",
     "mocha": "9.0.3",
+    "node-mocks-http": "1.11.0",
     "nyc": "15.1.0",
     "pre-commit": "^1.2.2",
     "prettier": "^2.4.1",
@@ -87,7 +88,6 @@
     "ts-node": "10.2.1",
     "ts-sinon": "^2.0.2",
     "typescript": "4.4.2",
-    "z-schema": "4.2.4",
-    "node-mocks-http": "1.11.0"
+    "z-schema": "4.2.4"
   }
 }

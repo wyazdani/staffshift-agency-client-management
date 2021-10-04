@@ -189,12 +189,12 @@ describe('AgencyConsultantProjectionTransformer', () => {
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
 
-      const findOneAndUpdateStub = sinon.stub(AgencyConsultantRolesProjection, 'findOneAndUpdate');
+      const updateOneStub = sinon.stub(AgencyConsultantRolesProjection, 'updateOne');
 
-      findOneAndUpdateStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
+      updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
-        assert.deepEqual(update, {status: 'enabled'}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(update, {$set: {status: 'enabled'}}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(null, record, testData);
         return null;
       });
@@ -238,12 +238,12 @@ describe('AgencyConsultantProjectionTransformer', () => {
       const outputStream = new PassThrough(options);
 
       const error = new Error('my error');
-      const findOneAndUpdateStub = sinon.stub(AgencyConsultantRolesProjection, 'findOneAndUpdate');
+      const updateOneStub = sinon.stub(AgencyConsultantRolesProjection, 'updateOne');
 
-      findOneAndUpdateStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
+      updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
-        assert.deepEqual(update, {status: 'enabled'}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(update, {$set: {status: 'enabled'}}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(error);
         return null;
       });
@@ -290,12 +290,12 @@ describe('AgencyConsultantProjectionTransformer', () => {
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
 
-      const findOneAndUpdateStub = sinon.stub(AgencyConsultantRolesProjection, 'findOneAndUpdate');
+      const updateOneStub = sinon.stub(AgencyConsultantRolesProjection, 'updateOne');
 
-      findOneAndUpdateStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
+      updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
-        assert.deepEqual(update, {status: 'disabled'}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(update, {$set: {status: 'disabled'}}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(null, record, testData);
         return null;
       });
@@ -339,12 +339,12 @@ describe('AgencyConsultantProjectionTransformer', () => {
       const outputStream = new PassThrough(options);
 
       const error = new Error('my error');
-      const findOneAndUpdateStub = sinon.stub(AgencyConsultantRolesProjection, 'findOneAndUpdate');
+      const updateOneStub = sinon.stub(AgencyConsultantRolesProjection, 'updateOne');
 
-      findOneAndUpdateStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
+      updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
-        assert.deepEqual(update, {status: 'disabled'}, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(update, {$set: {status: 'disabled'}}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(error);
         return null;
       });
@@ -384,10 +384,7 @@ describe('AgencyConsultantProjectionTransformer', () => {
         _id: testData.event.data._id
       });
       const updateObject = {
-        agency_id: testData.event.aggregate_id.agency_id,
-        name: testData.event.data.name,
-        description: testData.event.data.description,
-        max_consultants: testData.event.data.max_consultants
+        $set: testData.event.data
       };
       const options = {
         objectMode: true,
@@ -397,12 +394,12 @@ describe('AgencyConsultantProjectionTransformer', () => {
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
 
-      const findOneAndUpdateStub = sinon.stub(AgencyConsultantRolesProjection, 'findOneAndUpdate');
+      const updateOneStub = sinon.stub(AgencyConsultantRolesProjection, 'updateOne');
 
-      findOneAndUpdateStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
+      updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, updateObject, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(null, record, testData);
         return null;
       });
@@ -443,21 +440,18 @@ describe('AgencyConsultantProjectionTransformer', () => {
         version: '3.6.3'
       };
       const updateObject = {
-        agency_id: testData.event.aggregate_id.agency_id,
-        name: testData.event.data.name,
-        description: testData.event.data.description,
-        max_consultants: testData.event.data.max_consultants
+        $set: testData.event.data
       };
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
 
       const error = new Error('my error');
-      const findOneAndUpdateStub = sinon.stub(AgencyConsultantRolesProjection, 'findOneAndUpdate');
+      const updateOneStub = sinon.stub(AgencyConsultantRolesProjection, 'updateOne');
 
-      findOneAndUpdateStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
+      updateOneStub.callsFake((filter: any, update: any, options: any, callback: any): any => {
         assert.deepEqual(filter, {_id: consultantRoleId, agency_id: agencyId}, 'Expected query does not matched');
         assert.deepEqual(update, updateObject, 'Expected record does not matched');
-        assert.deepEqual(options, {upsert: true}, 'Expected record does not matched');
+        assert.deepEqual(options, {}, 'Expected record does not matched');
         callback(error);
         return null;
       });

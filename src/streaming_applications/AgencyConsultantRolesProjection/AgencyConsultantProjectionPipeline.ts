@@ -15,7 +15,7 @@ import {Db} from 'mongodb';
 const HIGH_WATER_MARK = 5;
 
 /**
- * Responsible for aggregating agency candidate details
+ * Responsible for aggregating agency consultant details
  */
 export class AgencyConsultantProjectionPipeline implements PipelineInterface {
   getID(): string {

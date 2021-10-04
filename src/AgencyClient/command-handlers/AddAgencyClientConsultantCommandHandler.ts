@@ -1,5 +1,4 @@
 import {AgencyClientRepository} from '../AgencyClientRepository';
-import {ObjectID} from 'mongodb';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
 import {AddAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
@@ -29,11 +28,7 @@ export class AddAgencyClientConsultantCommandHandler implements AgencyClientComm
       {
         type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: aggregate.getId(),
-        data: {
-          _id: new ObjectID().toString(),
-          consultant_role_id: commandData.consultant_role_id,
-          consultant_id: commandData.consultant_id
-        },
+        data: commandData,
         sequence_id: eventId + 1
       }
     ]);

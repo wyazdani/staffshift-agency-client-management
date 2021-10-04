@@ -142,13 +142,21 @@ paths:
       parameters:
         - $ref: "#/parameters/assign_client_consultant_payload"
       responses:
-        200:
-          description: "Adds an Agency Client Consultant"
+        202:
+          description: "Assign an agency client consultant"
+          headers:
+            Location:
+              description: "URL to retrieve the created agency client consultant"
+              type: string
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/assign_client_consultant_payload_def"
+            $ref: "#/definitions/assign_agency_client_consultant_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Adds an Agency Client Consultant"
+      summary: "Assign an agency client consultant"
       tags:
         - "Agency Client Consultants"
     get:
@@ -185,8 +193,14 @@ paths:
       responses:
         200:
           description: "Removes an Agency Client Consultant"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/assign_client_consultant_payload_def"
+            $ref: "#/definitions/remove_agency_client_consultant_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Removes an Agency Client Consultant"
@@ -757,6 +771,58 @@ definitions:
                 type: "string"
             description:
               type: "string"
+  assign_agency_client_consultant_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - OBJECT_MISSING_REQUIRED_PROPERTY
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+  remove_agency_client_consultant_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - PATTERN
+      message:
+        type: string
   get_consultant_role_list_validation_error_model:
     type: object
     required:
