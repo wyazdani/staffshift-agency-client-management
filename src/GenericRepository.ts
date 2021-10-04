@@ -56,8 +56,6 @@ export class GenericRepository {
    *
    * @param {FilterQuery} query - The query to match
    *
-   * @private
-   *
    * @return Promise<Number>
    */
   private async getCount(query: FilterQuery<any>): Promise<number> {
@@ -76,8 +74,6 @@ export class GenericRepository {
    * @param {Number} limit - The item per page value
    * @param {Object} sortBy - The sortBy parameters
    *
-   * @private
-   *
    * @return Promise<Array<Object>>
    */
   private async getListing(query: FilterQuery<any>, skip: number, limit: number, sortBy: GenericObjectInterface) {
@@ -90,8 +86,6 @@ export class GenericRepository {
 
   /**
    * get projection object, we exclude fields that we enabled `http_hidden`
-   *
-   * @private
    */
   private getProjection(): {[key: string]: number} {
     const result: {[key: string]: number} = {};
@@ -104,8 +98,6 @@ export class GenericRepository {
 
   /**
    * get list of hidden fields from the model schema
-   *
-   * @private
    */
   private getHiddenFields(): string[] {
     const excludes: string[] = [];
