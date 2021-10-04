@@ -5,6 +5,7 @@ import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
 import _ from 'lodash';
 import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScenario';
+import {AgencyConsultantRolesProjectionScenarios} from './scenarios/AgencyConsultantRolesProjectionScenarios';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
@@ -21,15 +22,16 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
     'Content-Type': 'application/json',
     'X-Request-Id': '123'
   };
+  const agencyId = '6141caa0d51653b8f4000001';
+  const roleId = '6152f82071c29edaa4000001';
   const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario();
 
-  describe('patch', () => {
-    const agencyId = '6141caa0d51653b8f4000001';
-    const roleId = '6152f82071c29edaa4000001';
+  afterEach(async () => {
+    await agencyConsultantRoleScenario.deleteAllEvents();
+    await AgencyConsultantRolesProjectionScenarios.removeAll();
+  });
 
-    afterEach(async () => {
-      await agencyConsultantRoleScenario.deleteAllEvents();
-    });
+  describe('patch', () => {
     it('should respond with 202 Updates an Agency Consultant Role', async () => {
       await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, roleId);
       const resEndpoint = await api.patch(`/agency/${agencyId}/consultant-roles/${roleId}`).set(headers).send({
@@ -137,6 +139,121 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
         description: 'description',
         max_consultants: 2
       });
+
+      assert.equal(res.statusCode, 404);
+      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
+    });
+  });
+  describe('get', () => {
+    it('should respond with 200 Retrieves a single Agency Consultant Role', async () => {
+      const schema = {
+        type: 'object',
+        required: ['_id', 'name', 'description', 'max_consultants', 'updated_at', 'created_at', '__v'],
+        properties: {
+          _id: {
+            type: 'string',
+            pattern: '^[0-9a-fA-F]{24}$'
+          },
+          name: {
+            type: 'string'
+          },
+          description: {
+            type: 'string'
+          },
+          max_consultants: {
+            type: 'integer',
+            minimum: 1
+          },
+          status: {
+            type: 'string',
+            enum: ['enabled', 'disabled']
+          },
+          updated_at: {
+            type: 'string',
+            format: 'date-time'
+          },
+          created_at: {
+            type: 'string',
+            format: 'date-time'
+          },
+          __v: {
+            type: 'integer'
+          }
+        },
+        additionalProperties: false
+      };
+
+      await AgencyConsultantRolesProjectionScenarios.create({
+        _id: roleId,
+        agency_id: agencyId
+      });
+      const res = await api.get(`/agency/${agencyId}/consultant-roles/${roleId}`).set(headers).send();
+
+      assert.equal(res.statusCode, 200);
+      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
+    });
+
+    it('should respond with 400 Validation error', async () => {
+      const schema = {
+        type: 'object',
+        required: ['code', 'message'],
+        properties: {
+          code: {
+            type: 'string',
+            enum: ['PATTERN', 'REQUIRED']
+          },
+          message: {
+            type: 'string'
+          }
+        }
+      };
+
+      const res = await api.get(`/agency/${agencyId}/consultant-roles/sample`).set(headers).send();
+
+      assert.equal(res.statusCode, 400);
+      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
+    });
+
+    it('should respond with 401', async () => {
+      const schema = {
+        type: 'object',
+        required: ['code', 'message'],
+        properties: {
+          code: {
+            type: 'string',
+            enum: ['UNAUTHORIZED']
+          },
+          message: {
+            type: 'string'
+          }
+        }
+      };
+      const otherHeaders = _.cloneDeep(headers);
+
+      otherHeaders['x-request-jwt'] = 'invalid';
+      const res = await api.get(`/agency/${agencyId}/consultant-roles/${roleId}`).set(otherHeaders).send();
+
+      assert.equal(res.statusCode, 401);
+      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
+    });
+
+    it('should respond with 404', async () => {
+      const schema = {
+        description: 'No resource found',
+        type: 'object',
+        required: ['code', 'message'],
+        properties: {
+          code: {
+            type: 'string',
+            enum: ['RESOURCE_NOT_FOUND']
+          },
+          message: {
+            type: 'string'
+          }
+        }
+      };
+
+      const res = await api.get(`/agency/${agencyId}/consultant-roles/${roleId}`).set(headers).send();
 
       assert.equal(res.statusCode, 404);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');

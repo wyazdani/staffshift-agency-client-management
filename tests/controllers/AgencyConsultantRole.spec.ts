@@ -1,5 +1,13 @@
 import sinon from 'sinon';
-import {addAgencyConsultantRole, updateAgencyConsultantRole} from '../../src/controllers/AgencyConsultantRole';
+import {
+  addAgencyConsultantRole,
+  updateAgencyConsultantRole,
+  getAgencyConsultantRole,
+  listAgencyConsultantRoles
+} from '../../src/controllers/AgencyConsultantRole';
+import {GenericRepository} from '../../src/GenericRepository';
+import {AgencyConsultantRolesProjection} from '../../src/models/AgencyConsultantRolesProjection';
+import {GenericObjectInterface} from '../../src/types/GenericObjectInterface';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {LocationHelper} from '../../src/helpers/LocationHelper';
@@ -7,6 +15,8 @@ import {ObjectID} from 'mongodb';
 import {AgencyCommandBus} from '../../src/Agency/AgencyCommandBus';
 import {AgencyCommandEnum} from '../../src/Agency/types';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
+import {QueryHelper} from 'a24-node-query-utils';
+import {PaginationHelper} from '../../src/helpers/PaginationHelper';
 
 describe('AgencyConsultantRole', () => {
   afterEach(() => {
@@ -239,6 +249,218 @@ describe('AgencyConsultantRole', () => {
           max_consultants: 2
         }
       });
+    });
+  });
+
+  describe('getAgencyConsultantRole()', () => {
+    it('success scenario', async () => {
+      const agencyId = 'agency id';
+      const consultantRoleId = 'consultant role id';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: consultantRoleId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
+      const record: any = {
+        _id: consultantRoleId,
+        agency_id: agencyId,
+        name: 'name',
+        description: 'description',
+        max_consultants: 2,
+        status: 'enabled',
+        toJSON: () => record
+      };
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves(record);
+
+      await getAgencyConsultantRole(req, res, next);
+      findOne.should.have.been.calledWith({
+        _id: consultantRoleId,
+        agency_id: agencyId
+      });
+      setHeader.should.have.been.calledWith('Content-Type', 'application/json');
+      end.should.have.been.calledWith(JSON.stringify(record));
+    });
+
+    it('resource not found scenario', async () => {
+      const agencyId = 'agency id';
+      const consultantRoleId = 'consultant role id';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: consultantRoleId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves();
+
+      await getAgencyConsultantRole(req, res, next);
+      findOne.should.have.been.calledWith({
+        _id: consultantRoleId,
+        agency_id: agencyId
+      });
+      setHeader.should.not.have.been.called;
+      end.should.not.have.been.called;
+      next.getCall(0).args[0].should.to.be.instanceOf(ResourceNotFoundError);
+    });
+  });
+
+  describe('listAgencyConsultantRoles()', () => {
+    it('success scenario 200', async () => {
+      const agencyId = 'agency id';
+      const params = {
+        agency_id: {
+          value: agencyId
+        },
+        status: {
+          value: 'enabled'
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+
+      const limit = 2;
+      const skip = 10;
+      const sortBy = ['name'];
+      const query = {sampleQuery: 'ok'};
+      const data = [{sample: 'ok'}];
+      const getItemsPerPage = sinon.stub(QueryHelper, 'getItemsPerPage').returns(limit);
+      const getSkipValue = sinon.stub(QueryHelper, 'getSkipValue').returns(skip);
+      const getSortParams = sinon.stub(QueryHelper, 'getSortParams').returns(sortBy);
+      const getQuery = sinon.stub(QueryHelper, 'getQuery').returns(query);
+      const listResources = sinon.stub(GenericRepository.prototype, 'listResources').resolves({
+        count: 1,
+        data
+      });
+      const setPaginationHeaders = sinon.stub(PaginationHelper, 'setPaginationHeaders').resolves();
+
+      await listAgencyConsultantRoles(req, res, next);
+      getItemsPerPage.should.have.been.calledWith(params);
+      getSkipValue.should.have.been.calledWith(params);
+      getSortParams.should.have.been.calledWith(params);
+      getQuery.should.have.been.calledWith(params);
+      listResources.should.have.been.calledWith(
+        {
+          ...query,
+          agency_id: agencyId
+        },
+        limit,
+        skip,
+        sortBy
+      );
+      res.statusCode.should.to.equal(200);
+      setPaginationHeaders.should.have.been.calledWith(req, res, 1);
+      end.should.have.been.calledWith(JSON.stringify(data));
+      next.should.not.have.been.called;
+    });
+
+    it('success scenario 204', async () => {
+      const agencyId = 'agency id';
+      const params = {
+        agency_id: {
+          value: agencyId
+        },
+        status: {
+          value: 'enabled'
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+
+      const limit = 2;
+      const skip = 10;
+      const sortBy = ['name'];
+      const query = {sampleQuery: 'ok'};
+      const data: GenericObjectInterface[] = [];
+      const getItemsPerPage = sinon.stub(QueryHelper, 'getItemsPerPage').returns(limit);
+      const getSkipValue = sinon.stub(QueryHelper, 'getSkipValue').returns(skip);
+      const getSortParams = sinon.stub(QueryHelper, 'getSortParams').returns(sortBy);
+      const getQuery = sinon.stub(QueryHelper, 'getQuery').returns(query);
+      const listResources = sinon.stub(GenericRepository.prototype, 'listResources').resolves({
+        count: 0,
+        data
+      });
+      const setPaginationHeaders = sinon.stub(PaginationHelper, 'setPaginationHeaders');
+
+      await listAgencyConsultantRoles(req, res, next);
+      getItemsPerPage.should.have.been.calledWith(params);
+      getSkipValue.should.have.been.calledWith(params);
+      getSortParams.should.have.been.calledWith(params);
+      getQuery.should.have.been.calledWith(params);
+      listResources.should.have.been.calledWith(
+        {
+          ...query,
+          agency_id: agencyId
+        },
+        limit,
+        skip,
+        sortBy
+      );
+      res.statusCode.should.to.equal(204);
+      setPaginationHeaders.should.not.have.been.called;
+      end.should.have.been.calledWith();
+      next.should.not.have.been.called;
+    });
+
+    it('failure scenario', async () => {
+      const agencyId = 'agency id';
+      const params = {
+        agency_id: {
+          value: agencyId
+        },
+        status: {
+          value: 'enabled'
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+
+      const limit = 2;
+      const skip = 10;
+      const sortBy = ['name'];
+      const query = {sampleQuery: 'ok'};
+      const getItemsPerPage = sinon.stub(QueryHelper, 'getItemsPerPage').returns(limit);
+      const getSkipValue = sinon.stub(QueryHelper, 'getSkipValue').returns(skip);
+      const getSortParams = sinon.stub(QueryHelper, 'getSortParams').returns(sortBy);
+      const getQuery = sinon.stub(QueryHelper, 'getQuery').returns(query);
+      const error = new Error('some error');
+      const listResources = sinon.stub(GenericRepository.prototype, 'listResources').rejects(error);
+
+      await listAgencyConsultantRoles(req, res, next);
+      getItemsPerPage.should.have.been.calledWith(params);
+      getSkipValue.should.have.been.calledWith(params);
+      getSortParams.should.have.been.calledWith(params);
+      getQuery.should.have.been.calledWith(params);
+      listResources.should.have.been.calledWith(
+        {
+          ...query,
+          agency_id: agencyId
+        },
+        limit,
+        skip,
+        sortBy
+      );
+      next.should.have.been.calledWith(error);
     });
   });
 });
