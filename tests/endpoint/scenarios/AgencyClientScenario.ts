@@ -17,4 +17,24 @@ export class AgencyClientScenario extends AbstractScenario {
       }
     });
   }
+
+  /**
+   * Trigger addAgencyClientConsultant command
+   */
+  async addAgencyClientConsultant(record: {
+    agencyId: string;
+    clientId: string;
+    consultantId: string;
+    consultantRoleId: string;
+    consultantRecordId: string;
+  }): Promise<void> {
+    await AgencyClientCommandBusFactory.getCommandBus(this.eventRepository).execute(record.agencyId, record.clientId, {
+      type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
+      data: {
+        _id: record.consultantRecordId,
+        consultant_role_id: record.consultantRoleId,
+        consultant_id: record.consultantId
+      }
+    });
+  }
 }
