@@ -241,6 +241,11 @@ paths:
       operationId: "listAgencyConsultantRoles"
       security:
         - jwt: []
+      parameters:
+        - $ref: "#/parameters/page_filter"
+        - $ref: "#/parameters/items_per_page_filter"
+        - $ref: "#/parameters/query_consultant_role_status"
+        - $ref: "#/parameters/list_consultant_role_sorting"
       responses:
         200:
           description: "List Agency Consultant Roles"
@@ -255,6 +260,12 @@ paths:
               $ref: "#/definitions/agency_consultant_role_item_def"
         204:
           $ref: "#/responses/no_content"
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/get_consultant_role_list_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
         default:
           $ref: "#/responses/server_error_model"
       summary: "List Agency Consultant Roles"
@@ -299,6 +310,14 @@ paths:
           description: "Retrieves a single Agency Consultant Role"
           schema:
             $ref: "#/definitions/agency_consultant_role_item_def"
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/get_consultant_role_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Retrieves a single Agency Consultant Role"
@@ -383,6 +402,24 @@ parameters:
     in: query
     description: "The event that should be filtered on"
     type: string
+  query_consultant_role_status:
+    name: status
+    in: query
+    description: "The consultant role status that should be filtered on"
+    type: string
+    enum:
+      - enabled
+      - disabled
+  list_consultant_role_sorting:
+    name: sortBy
+    in: query
+    required: false
+    type: array
+    items:
+      type: "string"
+      enum:
+        - "name"
+        - "-name"
  # Route PARAMS
   empty_payload:
     name: empty_payload
@@ -557,17 +594,37 @@ definitions:
   agency_consultant_role_item_def:
     type: object
     required:
+      - _id
       - name
       - description
       - max_consultants
+      - updated_at
+      - created_at
+      - __v
     properties:
+      _id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
       name:
         type: string
       description:
         type: string
+      status:
+        type: string
+        enum:
+          - enabled
+          - disabled
       max_consultants:
         type: integer
         minimum: 1
+      updated_at:
+        type: string
+        format: date-time
+      created_at:
+        type: string
+        format: date-time
+      __v:
+        type: integer
     additionalProperties: false
   assign_client_consultant_payload_def:
     type: object
@@ -764,6 +821,34 @@ definitions:
         enum:
           - REQUIRED
           - PATTERN
+      message:
+        type: string
+  get_consultant_role_list_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PATTERN
+          - ENUM_MISMATCH
+          - INVALID_TYPE
+          - REQUIRED
+      message:
+        type: string
+  get_consultant_role_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PATTERN
+          - REQUIRED
       message:
         type: string
 responses:
