@@ -18,6 +18,7 @@ import {createHttpTerminator} from 'http-terminator';
 import mongoose, {Error} from 'mongoose';
 import {LinkHeaderHelper} from 'a24-node-query-utils';
 import {GenericObjectInterface} from 'GenericObjectInterface';
+import {MongoTimeoutError} from 'mongodb';
 
 mongoose.plugin((schema: any) => {
   schema.options.usePushEach = true;
@@ -67,6 +68,10 @@ export const promise = new Promise<void>((resolve) => {
       const loggerContext = Logger.getContext('startup');
 
       loggerContext.crit('MongoDB connection error', error);
+
+      if (error instanceof MongoTimeoutError) {
+        loggerContext.crit('MongoDB connection timeout error', {errorReason: error.reason});
+      }
       process.exit(1);
     }
     // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
