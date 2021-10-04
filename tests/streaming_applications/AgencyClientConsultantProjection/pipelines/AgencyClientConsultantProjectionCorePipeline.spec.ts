@@ -2,16 +2,16 @@ import sinon, {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {LoggerContext} from 'a24-logzio-winston';
-import {EventStorePipeline} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/pipelines/EventStorePipeline';
+import {AgencyClientConsultantProjectionCorePipeline} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/pipelines/AgencyClientConsultantProjectionCorePipeline';
 import {PIPELINE_TYPES_ENUM, STREAM_TYPES_ENUM} from '../../../../src/streaming_applications/core/ChangeStreamEnums';
 import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from '../../../../src/streaming_applications/DatabaseConfigKeys';
 import {Readable, Writable} from 'stream';
 import {ResumeTokenCollectionManager} from '../../../../src/streaming_applications/core/ResumeTokenCollectionManager';
 import {MongoClients} from '../../../../src/streaming_applications/core/MongoClients';
 import {EventStoreTransformer} from '../../../../src/streaming_applications/core/streams/EventStoreTransformer';
-import {AgencyClientConsultantProjection} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/transformers/AgencyClientConsultantProjection';
+import {AgencyClientConsultantProjectionTransformer} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/transformers/AgencyClientConsultantProjectionTransformer';
 
-describe('EventStorePipeline', () => {
+describe('AgencyClientConsultantProjectionCorePipeline', () => {
   let testLogger: LoggerContext;
 
   let resumeTokenManager: any;
@@ -31,7 +31,7 @@ describe('EventStorePipeline', () => {
 
   describe('getID()', () => {
     it('Test that expected pipeline id is returned', () => {
-      const eventStorePipeline = new EventStorePipeline();
+      const eventStorePipeline = new AgencyClientConsultantProjectionCorePipeline();
       const pipelineId = eventStorePipeline.getID();
 
       assert.equal(pipelineId, 'agency_client_consultant_event_store', 'Expected pipeline id was not returned');
@@ -40,7 +40,7 @@ describe('EventStorePipeline', () => {
 
   describe('getType()', () => {
     it('Test that expected pipeline type is returned', () => {
-      const eventStorePipeline = new EventStorePipeline();
+      const eventStorePipeline = new AgencyClientConsultantProjectionCorePipeline();
       const pipelineType = eventStorePipeline.getType();
 
       assert.equal(pipelineType, PIPELINE_TYPES_ENUM.CORE, 'Expected pipeline type was not returned');
@@ -49,7 +49,7 @@ describe('EventStorePipeline', () => {
 
   describe('getMongoClientConfigKeys()', () => {
     it('Test that expected pipeline mongo client config keys are returned', () => {
-      const eventStorePipeline = new EventStorePipeline();
+      const eventStorePipeline = new AgencyClientConsultantProjectionCorePipeline();
       const pipelineConfigKeys = eventStorePipeline.getMongoClientConfigKeys();
 
       assert.deepEqual(pipelineConfigKeys, [AGENCY_CLIENT_MANAGEMENT_DB_KEY], 'Expected config keys were not returned');
@@ -71,7 +71,7 @@ describe('EventStorePipeline', () => {
       resumeTokenManager.getResumeTokenWriterStream.returns(writableStream);
       clientManager.getClientDatabase.resolves(dbObject);
 
-      const pipeline = new EventStorePipeline();
+      const pipeline = new AgencyClientConsultantProjectionCorePipeline();
 
       await pipeline.watch(testLogger, clientManager, resumeTokenManager);
 
@@ -79,7 +79,7 @@ describe('EventStorePipeline', () => {
 
       // Assert that each step is attached in the correct sequence with the correct object
       assert.instanceOf(readableStream.pipe.getCall(0).args[0], EventStoreTransformer);
-      assert.instanceOf(readableStream.pipe.getCall(1).args[0], AgencyClientConsultantProjection);
+      assert.instanceOf(readableStream.pipe.getCall(1).args[0], AgencyClientConsultantProjectionTransformer);
       assert.deepEqual(
         readableStream.pipe.getCall(2).args[0],
         resumeTokenManager.getResumeTokenWriterStream(pipeline.getID(), STREAM_TYPES_ENUM.WATCH, {highWaterMark: 5})

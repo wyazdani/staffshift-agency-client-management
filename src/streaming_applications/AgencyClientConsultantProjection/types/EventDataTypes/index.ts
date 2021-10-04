@@ -1,9 +1,0 @@
-import {AgencyClientConsultantAssignedEventDataInterface} from './AgencyClientConsultantAssignedEventDataInterface';
-import {AgencyClientConsultantUnassignedEventDataInterface} from './AgencyClientConsultantUnassignedEventDataInterface';
-import {AgencyConsultantRoleDetailsUpdatedEventDataInterface} from './AgencyConsultantRoleDetailsUpdatedEventDataInterface';
-
-export {
-  AgencyClientConsultantAssignedEventDataInterface,
-  AgencyClientConsultantUnassignedEventDataInterface,
-  AgencyConsultantRoleDetailsUpdatedEventDataInterface
-};

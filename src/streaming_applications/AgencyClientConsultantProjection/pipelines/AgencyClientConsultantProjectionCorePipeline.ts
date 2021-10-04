@@ -6,7 +6,7 @@ import {MongoClients} from '../../core/MongoClients';
 import {ResumeTokenCollectionManager} from '../../core/ResumeTokenCollectionManager';
 import {EventStore} from '../../../models/EventStore';
 import {EventStoreTransformer} from '../../core/streams/EventStoreTransformer';
-import {AgencyClientConsultantProjection} from '../transformers/AgencyClientConsultantProjection';
+import {AgencyClientConsultantProjectionTransformer} from '../transformers/AgencyClientConsultantProjectionTransformer';
 import {StreamEventHandlers} from '../../core/StreamEventHandlers';
 import {EventRepository} from '../../../EventRepository';
 
@@ -16,7 +16,7 @@ const HIGH_WATER_MARK = 5;
  * Responsible for listening to changes on EventStore collection
  * For each change it build the agency client consultant projection
  */
-export class EventStorePipeline implements PipelineInterface {
+export class AgencyClientConsultantProjectionCorePipeline implements PipelineInterface {
   /**
    * Return change stream pipeline id
    */
@@ -70,7 +70,7 @@ export class EventStorePipeline implements PipelineInterface {
       eventRepository,
       highWaterMark: HIGH_WATER_MARK
     };
-    const projectionTransformer = new AgencyClientConsultantProjection(opts);
+    const projectionTransformer = new AgencyClientConsultantProjectionTransformer(opts);
     const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES_ENUM.WATCH, {
       highWaterMark: HIGH_WATER_MARK
     });
