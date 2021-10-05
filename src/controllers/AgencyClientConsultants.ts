@@ -66,12 +66,12 @@ export const removeAgencyClientConsultant = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const consultantId = get(req, 'swagger.params.consultant_id.value', '');
+    const clientConsultantId = get(req, 'swagger.params.client_consultant_id.value', '');
     const commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
     const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
     const command: RemoveAgencyClientConsultantCommandInterface = {
       type: commandType,
-      data: {_id: consultantId}
+      data: {_id: clientConsultantId}
     };
 
     await commandBus.execute(agencyId, clientId, command);

@@ -178,13 +178,13 @@ paths:
       summary: "List Agency Client Consultants"
       tags:
         - "Agency Client Consultants"
-  /agency/{agency_id}/clients/{client_id}/consultants/{consultant_id}:
+  /agency/{agency_id}/clients/{client_id}/consultants/{client_consultant_id}:
     parameters:
       - $ref: "#/parameters/x_request_id"
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
-      - $ref: "#/parameters/consultant_id"
+      - $ref: "#/parameters/client_consultant_id"
     delete:
       x-swagger-router-controller: "AgencyClientConsultants"
       operationId: "removeAgencyClientConsultant"
@@ -480,6 +480,13 @@ parameters:
     required: true
     pattern: ^[0-9a-fA-F]{24}$
     description: "Consultant ID"
+    type: string
+  client_consultant_id:
+    name: client_consultant_id
+    in: path
+    required: true
+    pattern: ^[0-9a-fA-F]{24}$
+    description: "Agency client consultant ID"
     type: string
   consultant_role_id:
     name: consultant_role_id

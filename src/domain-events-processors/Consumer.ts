@@ -1,7 +1,6 @@
 import {IncomingDomainEvents} from '../models/IncomingDomainEvents';
 import {AgencyClientLinkStatus} from './AgencyClientLinkStatus';
 import {LoggerContext} from 'a24-logzio-winston';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {JWTSecurityHelper} from '../helpers/JWTSecurityHelper';
 import {EventMetaInterface, EventRepository} from '../EventRepository';
 import {v4 as uuidv4} from 'uuid';
@@ -9,6 +8,9 @@ import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import config from 'config';
+import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEventDataInterface';
+import {DomainEventMessageInterface} from 'DomainEventMessageInterface';
+import {PubSubMessageMetaDataInterface} from 'PubSubMessageMetaDataInterface';
 
 const getEventMeta = async (logger: LoggerContext, token: string): Promise<EventMetaInterface> =>
   new Promise((resolve, reject) =>
@@ -24,8 +26,11 @@ const getEventMeta = async (logger: LoggerContext, token: string): Promise<Event
     })
   );
 
-const process = async (logger: LoggerContext, message: GenericObjectInterface) => {
-  const eventName = (message.event as GenericObjectInterface).name as string;
+const process = async (
+  logger: LoggerContext,
+  message: DomainEventMessageInterface<AgencyClientLinkDomainEventDataInterface>
+) => {
+  const eventName = message.event.name;
   const correlationId = uuidv4();
   const eventMeta = await getEventMeta(logger, message.application_jwt);
   const eventRepository = new EventRepository(EventStore, correlationId, eventMeta);
@@ -55,8 +60,8 @@ const process = async (logger: LoggerContext, message: GenericObjectInterface) =
 
 module.exports = async (
   logger: LoggerContext,
-  message: GenericObjectInterface,
-  metadata: GenericObjectInterface,
+  message: DomainEventMessageInterface<AgencyClientLinkDomainEventDataInterface>,
+  metadata: PubSubMessageMetaDataInterface,
   callback: (error?: Error) => void
 ): Promise<void> => {
   process(logger, message)
