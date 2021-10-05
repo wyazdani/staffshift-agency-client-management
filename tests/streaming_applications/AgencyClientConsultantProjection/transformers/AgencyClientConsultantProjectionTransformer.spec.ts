@@ -1,5 +1,5 @@
 import sinon, {stubConstructor} from 'ts-sinon';
-import {AgencyClientConsultantProjection} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/transformers/AgencyClientConsultantProjection';
+import {AgencyClientConsultantProjectionTransformer} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/transformers/AgencyClientConsultantProjectionTransformer';
 import {assert} from 'chai';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
@@ -12,7 +12,7 @@ import {AgencyClientConsultantUnassignedEventHandler} from '../../../../src/stre
 import {AgencyEventEnum} from '../../../../src/Agency/types';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 
-describe('AgencyClientConsultantProjection', () => {
+describe('AgencyClientConsultantProjectionTransformer', () => {
   let logger: LoggerContext;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('AgencyClientConsultantProjection', () => {
       };
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
-      const transformStream = new AgencyClientConsultantProjection(options);
+      const transformStream = new AgencyClientConsultantProjectionTransformer(options);
       const handlerStub = stubConstructor(AgencyClientConsultantAssignedEventHandler);
       const getHandlerStub = sinon.stub(EventHandlerFactory, 'getHandler');
       let outputCount = 0;
@@ -75,7 +75,7 @@ describe('AgencyClientConsultantProjection', () => {
       };
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
-      const transformStream = new AgencyClientConsultantProjection(options);
+      const transformStream = new AgencyClientConsultantProjectionTransformer(options);
       const handlerStub = stubConstructor(AgencyClientConsultantAssignedEventHandler);
       const getHandlerStub = sinon.stub(EventHandlerFactory, 'getHandler');
       let outputCount = 0;
@@ -112,7 +112,7 @@ describe('AgencyClientConsultantProjection', () => {
       };
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
-      const transformStream = new AgencyClientConsultantProjection(options);
+      const transformStream = new AgencyClientConsultantProjectionTransformer(options);
       const handlerStub = stubConstructor(AgencyClientConsultantUnassignedEventHandler);
       const getHandlerStub = sinon.stub(EventHandlerFactory, 'getHandler');
       let outputCount = 0;
@@ -149,7 +149,7 @@ describe('AgencyClientConsultantProjection', () => {
       };
       const inputStream = new PassThrough(options);
       const outputStream = new PassThrough(options);
-      const transformStream = new AgencyClientConsultantProjection(options);
+      const transformStream = new AgencyClientConsultantProjectionTransformer(options);
       const handlerStub = stubConstructor(AgencyConsultantRoleDetailsUpdatedEventHandler);
       const getHandlerStub = sinon.stub(EventHandlerFactory, 'getHandler');
       let outputCount = 0;

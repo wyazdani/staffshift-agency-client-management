@@ -3,7 +3,7 @@ import {AgencyClientAggregate} from '../../src/AgencyClient/AgencyClientAggregat
 import {stubConstructor} from 'ts-sinon';
 import {AgencyRepository} from '../../src/Agency/AgencyRepository';
 import {AgencyAggregate} from '../../src/Agency/AgencyAggregate';
-import {ValidationError} from 'a24-node-error-utils';
+import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {AgencyConsultantRoleEnum} from '../../src/Agency/types';
 import {AgencyClientConsultantInterface} from '../../src/AgencyClient/types';
 
@@ -117,7 +117,7 @@ describe('AgencyClientAggregate', () => {
   });
 
   describe('validateRemoveClientConsultant()', () => {
-    it('should throw validation error when the consultant to be removed is not found', async () => {
+    it('should throw resource not found error when the consultant to be removed is not found', async () => {
       const aggregateId = {
         agency_id: '45',
         client_id: '12'
@@ -140,7 +140,7 @@ describe('AgencyClientAggregate', () => {
 
       await agencyClientAggregate
         .validateRemoveClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Consultant that was supposed to be removed does not exist');
+        .should.be.rejectedWith(ResourceNotFoundError, 'Consultant that was supposed to be removed does not exist');
     });
 
     it('should resolve successfully when the consultant to be removed is found', async () => {

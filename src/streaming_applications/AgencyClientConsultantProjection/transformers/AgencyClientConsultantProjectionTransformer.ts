@@ -20,7 +20,7 @@ interface OptionsInterface extends TransformOptions {
  * Responsible for building agency client consultant projection by delegating each supported
  * event to the correct event handler
  */
-export class AgencyClientConsultantProjection extends Transform {
+export class AgencyClientConsultantProjectionTransformer extends Transform {
   private readonly eventRepository: EventRepository;
   private readonly logger: LoggerContext;
   constructor(opts: OptionsInterface) {

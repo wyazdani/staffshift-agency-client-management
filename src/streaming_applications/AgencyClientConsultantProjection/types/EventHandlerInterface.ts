@@ -1,14 +1,14 @@
-import {
-  AgencyClientConsultantAssignedEventDataInterface,
-  AgencyClientConsultantUnassignedEventDataInterface,
-  AgencyConsultantRoleDetailsUpdatedEventDataInterface
-} from './EventDataTypes';
 import {EventInterface} from './EventInterface';
+import {
+  AddAgencyClientConsultantCommandDataInterface,
+  RemoveAgencyClientConsultantCommandDataInterface
+} from '../../../AgencyClient/types/CommandDataTypes';
+import {UpdateAgencyConsultantRoleCommandDataInterface} from '../../../Agency/types/CommandDataTypes';
 
 export type EventDataType =
-  | AgencyClientConsultantAssignedEventDataInterface
-  | AgencyClientConsultantUnassignedEventDataInterface
-  | AgencyConsultantRoleDetailsUpdatedEventDataInterface;
+  | AddAgencyClientConsultantCommandDataInterface
+  | RemoveAgencyClientConsultantCommandDataInterface
+  | UpdateAgencyConsultantRoleCommandDataInterface;
 
 export interface EventHandlerInterface {
   handle(event: EventInterface<EventDataType>): Promise<void>;

@@ -1,5 +1,5 @@
 import {countBy, find} from 'lodash';
-import {ValidationError} from 'a24-node-error-utils';
+import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {
   AgencyClientAggregateIdInterface,
@@ -49,7 +49,7 @@ export class AgencyClientAggregate {
    */
   async validateRemoveClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
     if (find(this.aggregate.consultants, {_id: consultant._id}) === undefined) {
-      throw new ValidationError('Consultant that was supposed to be removed does not exist');
+      throw new ResourceNotFoundError('Consultant that was supposed to be removed does not exist');
     }
   }
 
