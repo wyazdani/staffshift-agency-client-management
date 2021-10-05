@@ -1,10 +1,13 @@
 import sinon from 'sinon';
-import {startServer} from '../src/http_server';
 
 export const mochaHooks = {
   beforeAll: (done: () => void) => {
     // eslint-disable-next-line no-console
     console.log('Waiting for http server to run');
+    /*eslint-disable*/
+    const {startServer} = require('../src/http_server');
+
+    /*eslint-enable*/
     startServer.then(done);
   },
   afterEach: (): void => {
