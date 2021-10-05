@@ -63,16 +63,13 @@ mongoose.connection.on('error', (error: Error) => {
   process.exit(1);
 });
 
-export const promise = () =>
+export const startServer = () =>
   new Promise<void>((resolve) => {
-    // eslint-disable-next-line no-console
-    console.log('server promise started');
-    mongoose.connect(mongoConfig.database_host, mongoConfig.options, (error: MongoTimeoutError) => {
+    mongoose.connect(mongoConfig.database_host, mongoConfig.options, (error) => {
       if (error) {
         const loggerContext = Logger.getContext('startup');
 
         loggerContext.crit('MongoDB connection error', error);
-        loggerContext.crit('MongoDB connection timeout error', {errorReason: error.reason});
         process.exit(1);
       }
       // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
