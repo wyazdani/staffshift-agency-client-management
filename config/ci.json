@@ -8,9 +8,7 @@
   "mongo": {
     "database_host": "mongodb://database:27017/staffshiftagencyclientmanagementCI",
     "options": {
-      "serverSelectionTimeoutMS": 60000,
-      "readPreference": "primary",
-      "family": 4
+      "serverSelectionTimeoutMS": 60000
     }
   },
   "mounteBank": {

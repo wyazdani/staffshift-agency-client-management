@@ -2,6 +2,6 @@
   "extension": ["ts"],
   "spec": "tests/**/*.spec.ts",
   "reporter": "spec",
-  "require": ["ts-node/register", "source-map-support/register", "tests/global-setup-fixtures.ts", "tests/hooks.ts", "tests/prepare.ts"],
+  "require": ["ts-node/register", "source-map-support/register", "tests/hooks.ts", "tests/prepare.ts"],
   "exit": true
 }

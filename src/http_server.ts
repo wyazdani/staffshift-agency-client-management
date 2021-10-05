@@ -18,7 +18,6 @@ import {createHttpTerminator} from 'http-terminator';
 import mongoose, {Error} from 'mongoose';
 import {LinkHeaderHelper} from 'a24-node-query-utils';
 import {GenericObjectInterface} from 'GenericObjectInterface';
-import {MongoTimeoutError} from 'mongodb';
 
 mongoose.plugin((schema: any) => {
   schema.options.usePushEach = true;
