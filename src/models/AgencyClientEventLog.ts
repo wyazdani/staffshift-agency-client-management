@@ -1,11 +1,11 @@
 import {Document, Schema, model} from 'mongoose';
-import {GenericObjectInterface} from 'GenericObjectInterface';
+import {AgencyClientConsultantInterface} from '../AgencyClient/types';
 
 export type AgencyClientEventLogDocumentType = Document & {
   agency_id: string;
   client_id: string;
   event_type: string;
-  snapshot: GenericObjectInterface;
+  snapshot: AgencyClientConsultantInterface[];
   evented_at: Date;
   created_at: Date;
   updated_at: Date;
@@ -39,8 +39,6 @@ const agencyClientEventLog = new Schema<AgencyClientEventLogDocumentType>(
       description: 'Indicates the time the event took place, not related to this collection'
     }
   },
-  // What does created_at AND updated_at represent?
-  // This is a projection, does it indicate when the entries where added / updated on the projection?
   {
     // We will most likely need to keep the version key to apply optimistic locks
     versionKey: false,

@@ -1,7 +1,7 @@
-import {AgencyWriteProjection} from './AgencyWriteProjection';
 import {AgencyAggregate} from './AgencyAggregate';
 import {EventRepository} from '../EventRepository';
 import {AgencyAggregateRecordInterface, AgencyEventInterface} from './types';
+import {EventStoreDocumentType} from '../models/EventStore';
 
 /**
  * Class responsible for interacting with agency aggregate data source
@@ -14,7 +14,6 @@ export class AgencyRepository {
    */
   async getAggregate(agencyId: string, sequenceId: number = undefined): Promise<AgencyAggregate> {
     const projection: AgencyAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
-      AgencyWriteProjection,
       {agency_id: agencyId},
       sequenceId
     );
@@ -25,7 +24,7 @@ export class AgencyRepository {
   /**
    * Persist agency related events into event store
    */
-  async save(events: AgencyEventInterface[]): Promise<any[]> {
-    return this.eventRepository.save(events);
+  async save(events: AgencyEventInterface[]): Promise<EventStoreDocumentType[]> {
+    return this.eventRepository.save<AgencyEventInterface>(events);
   }
 }

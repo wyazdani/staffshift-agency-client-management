@@ -6,18 +6,25 @@ import {
   AgencyConsultantRoleEnum,
   AgencyConsultantRoleInterface
 } from './types';
+import {
+  AddAgencyConsultantRoleCommandDataInterface,
+  DisableAgencyConsultantRoleCommandDataInterface,
+  EnableAgencyConsultantRoleCommandDataInterface,
+  UpdateAgencyConsultantRoleCommandDataInterface
+} from './types/CommandDataTypes';
+import {AgencyCommandDataType} from './types/AgencyCommandDataType';
 
-type AgencyWriteProjectionType = {
+export type AgencyWriteProjectionType = {
   [key in AgencyEventEnum]: (
     aggregate: AgencyAggregateRecordInterface,
-    event: AgencyEventInterface
+    event: AgencyEventInterface<AgencyCommandDataType>
   ) => AgencyAggregateRecordInterface;
 };
 
 export const AgencyWriteProjection: AgencyWriteProjectionType = {
   [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED]: (
     aggregate: AgencyAggregateRecordInterface,
-    event: AgencyEventInterface
+    event: AgencyEventInterface<AddAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
     const consultantRole: AgencyConsultantRoleInterface = {
       _id: event.data._id as string,
@@ -34,7 +41,7 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
   },
   [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED]: (
     aggregate: AgencyAggregateRecordInterface,
-    event: AgencyEventInterface
+    event: AgencyEventInterface<UpdateAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
     aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
@@ -48,7 +55,7 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
   },
   [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED]: (
     aggregate: AgencyAggregateRecordInterface,
-    event: AgencyEventInterface
+    event: AgencyEventInterface<EnableAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
     aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
@@ -62,7 +69,7 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
   },
   [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DISABLED]: (
     aggregate: AgencyAggregateRecordInterface,
-    event: AgencyEventInterface
+    event: AgencyEventInterface<DisableAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
     aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
       if (item._id == event.data._id) {
