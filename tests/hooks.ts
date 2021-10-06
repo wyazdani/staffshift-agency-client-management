@@ -1,10 +1,15 @@
 import sinon from 'sinon';
-import {promise} from '../src/http_server';
+
 export const mochaHooks = {
-  before: (done: () => void) => {
+  beforeAll: function beforeAll(done: () => void) {
+    this.timeout(65000);
     // eslint-disable-next-line no-console
     console.log('Waiting for http server to run');
-    promise.then(done);
+    /*eslint-disable*/
+    const {startServer} = require('../src/http_server');
+
+    /*eslint-enable*/
+    startServer.then(done);
   },
   afterEach: (): void => {
     sinon.restore();
