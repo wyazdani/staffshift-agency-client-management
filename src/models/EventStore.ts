@@ -1,8 +1,9 @@
 import {Document, Schema, model} from 'mongoose';
 import {GenericObjectInterface} from 'GenericObjectInterface';
+import {EventsEnum} from '../Events';
 
 export type EventStoreDocumentType = Document & {
-  type: string;
+  type: EventsEnum;
   aggregate_id: GenericObjectInterface;
   data: GenericObjectInterface;
   sequence_id: number;

@@ -38,23 +38,27 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocumentT
       description: 'The consultant id, a reference to the staffshift user_id'
     }
   },
-  // What does created_at AND updated_at represent?
-  // This is a projection, does it indicate when the entries where added / updated on the projection?
   {
-    // We will most likely need to keep the version key to apply optimistic locks
-    versionKey: false,
     timestamps: {
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     },
-    collection: 'AgencyClientConsultants'
+    collection: 'AgencyClientConsultantsProjection'
   }
 );
+
+const toJSONConfig = {
+  transform: (doc: AgencyClientConsultantDocumentType, ret: AgencyClientConsultantDocumentType) => {
+    ret._id = ret._id.toString();
+  }
+};
+
+agencyClientConsultantsSchema.set('toJSON', toJSONConfig);
 
 /**
  * Defines the model for the AgencyClientConsultants Read Projection
  */
-export const AgencyClientConsultants = model<AgencyClientConsultantDocumentType>(
-  'AgencyClientConsultants',
+export const AgencyClientConsultantsProjection = model<AgencyClientConsultantDocumentType>(
+  'AgencyClientConsultantsProjection',
   agencyClientConsultantsSchema
 );

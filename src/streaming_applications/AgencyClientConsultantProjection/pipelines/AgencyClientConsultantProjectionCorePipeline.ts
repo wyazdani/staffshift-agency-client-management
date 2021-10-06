@@ -1,31 +1,32 @@
-import {PipelineInterface, WatchHandlerInterface} from '../core/Pipeline';
-import {PIPELINE_TYPES_ENUM, STREAM_TYPES_ENUM} from '../core/ChangeStreamEnums';
-import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from '../DatabaseConfigKeys';
+import {PipelineInterface, WatchHandlerInterface} from '../../core/Pipeline';
+import {PIPELINE_TYPES_ENUM, STREAM_TYPES_ENUM} from '../../core/ChangeStreamEnums';
+import {AGENCY_CLIENT_MANAGEMENT_DB_KEY} from '../../DatabaseConfigKeys';
 import {LoggerContext} from 'a24-logzio-winston';
-import {MongoClients} from '../core/MongoClients';
-import {ResumeTokenCollectionManager} from '../core/ResumeTokenCollectionManager';
-import {EventStore} from '../../models/EventStore';
-import {EventStoreTransformer} from '../core/streams/EventStoreTransformer';
-import {AgencyClientConsultants} from '../../models/AgencyClientConsultants';
-import {AgencyClientConsultantProjection} from './transformers/AgencyClientConsultantProjection';
-import {StreamEventHandlers} from '../core/StreamEventHandlers';
-import {EventRepository} from '../../EventRepository';
+import {MongoClients} from '../../core/MongoClients';
+import {ResumeTokenCollectionManager} from '../../core/ResumeTokenCollectionManager';
+import {EventStore} from '../../../models/EventStore';
+import {EventStoreTransformer} from '../../core/streams/EventStoreTransformer';
+import {AgencyClientConsultantProjectionTransformer} from '../transformers/AgencyClientConsultantProjectionTransformer';
+import {StreamEventHandlers} from '../../core/StreamEventHandlers';
+import {EventRepository} from '../../../EventRepository';
 
 const HIGH_WATER_MARK = 5;
 
 /**
- * Responsible for aggregating agency candidate details
+ * Responsible for listening to changes on EventStore collection
+ * For each change it build the agency client consultant projection
  */
-export class EventStorePipeline implements PipelineInterface {
+export class AgencyClientConsultantProjectionCorePipeline implements PipelineInterface {
+  /**
+   * Return change stream pipeline id
+   */
   getID(): string {
     return 'agency_client_consultant_event_store';
   }
 
   /**
-   * Return pipeline type
-   *
-   * @returns {String}
-   */
+   * Return change stream pipeline type
+   **/
   getType(): PIPELINE_TYPES_ENUM {
     return PIPELINE_TYPES_ENUM.CORE;
   }
@@ -65,19 +66,16 @@ export class EventStorePipeline implements PipelineInterface {
     const eventStoreTransformer = new EventStoreTransformer({highWaterMark: HIGH_WATER_MARK});
     //set options to initialize streams
     const opts = {
-      highWaterMark: HIGH_WATER_MARK,
-      eventRepository: eventRepository,
-      model: AgencyClientConsultants,
-      pipeline: this.getID(),
-      logger: logger
+      logger,
+      eventRepository,
+      highWaterMark: HIGH_WATER_MARK
     };
-    const projectionTransformer = new AgencyClientConsultantProjection(opts);
+    const projectionTransformer = new AgencyClientConsultantProjectionTransformer(opts);
     const tokenWriterStream = tokenManager.getResumeTokenWriterStream(this.getID(), STREAM_TYPES_ENUM.WATCH, {
       highWaterMark: HIGH_WATER_MARK
     });
 
     StreamEventHandlers.attachEventHandlers(logger, watchStream);
-
     watchStream
       .pipe(StreamEventHandlers.attachEventHandlers(logger, eventStoreTransformer))
       .pipe(StreamEventHandlers.attachEventHandlers(logger, projectionTransformer))

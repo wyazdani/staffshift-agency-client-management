@@ -61,7 +61,8 @@ mongoose.connection.on('error', (error: Error) => {
   loggerContext.crit('MongoDB connection error', error);
   process.exit(1);
 });
-export const promise = new Promise<void>((resolve) => {
+
+export const startServer = new Promise<void>((resolve) => {
   mongoose.connect(mongoConfig.database_host, mongoConfig.options, (error) => {
     if (error) {
       const loggerContext = Logger.getContext('startup');
