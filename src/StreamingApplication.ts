@@ -7,19 +7,20 @@ import StreamingApplications from './streaming_applications';
 import config from 'config';
 import Logger from 'a24-logzio-winston';
 import arg from 'arg';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {PIPELINE_TYPES_ENUM} from './streaming_applications/core/ChangeStreamEnums';
+import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
+import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurationInterface';
 
 const StreamTracker = 'StreamTracker';
 
-mongoose.plugin((schema: GenericObjectInterface) => {
+mongoose.plugin((schema: any) => {
   schema.options.usePushEach = true;
 });
 mongoose.Promise = global.Promise;
 
 mongoose.connect(
-  config.get<GenericObjectInterface>('mongo').database_host,
-  config.get<GenericObjectInterface>('mongo').options
+  config.get<MongoConfigurationInterface>('mongo').database_host,
+  config.get<MongoConfigurationInterface>('mongo').options
 );
 
 mongoose.connection.on('error', (error: Error) => {
@@ -109,7 +110,7 @@ const shutdown = async () => {
       new Promise((resolve) =>
         setTimeout(
           () => resolve('can\'t exit in specified time'),
-          config.get<GenericObjectInterface>('graceful_shutdown').changestream.server_close_timeout
+          config.get<GracefulShutdownConfigurationInterface>('graceful_shutdown').changestream.server_close_timeout
         )
       )
     ]);
@@ -137,6 +138,6 @@ const shutdown = async () => {
   }
 };
 
-for (const signal of config.get<GenericObjectInterface>('graceful_shutdown').signals) {
+for (const signal of config.get<GracefulShutdownConfigurationInterface>('graceful_shutdown').signals) {
   process.on(signal, shutdown);
 }

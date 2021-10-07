@@ -1,15 +1,17 @@
 import config from 'config';
 import Logger from 'a24-logzio-winston';
 import {MessageProcessor} from 'a24-node-pubsub';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import mongoose from 'mongoose';
+import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
+import {PubSubAuthConfigurationInterface} from 'PubSubAuthConfigurationInterface';
+import {DomainEventTopics} from 'DomainEventConfigurationInterface';
 
 Logger.setup(config.get('logger')); // Setup logger
 const loggerContext = Logger.getContext('startup');
 
 mongoose.Promise = global.Promise;
 
-const mongoConfig = config.get<GenericObjectInterface>('mongo');
+const mongoConfig = config.get<MongoConfigurationInterface>('mongo');
 
 mongoose.connect(mongoConfig.database_host, mongoConfig.options);
 
@@ -24,8 +26,8 @@ mongoose.connection.on('error', (error: Error) => {
 // Setup message processor
 const processorConfig = {
   env: process.env.NODE_ENV || 'development',
-  auth: config.get<GenericObjectInterface>('pubSubAuth'),
-  topics: config.get<GenericObjectInterface[]>('ss_domain_event.ss_domain_event_topics'),
+  auth: config.get<PubSubAuthConfigurationInterface>('pubSubAuth'),
+  topics: config.get<DomainEventTopics[]>('ss_domain_event.ss_domain_event_topics'),
   domain: config.get<string>('app_domain'),
   app_name: config.get<string>('app_name'),
   log_level: config.get<string>('pubsub_log_level')

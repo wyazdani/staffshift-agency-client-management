@@ -6,8 +6,6 @@ import {
   listAgencyConsultantRoles
 } from '../../src/controllers/AgencyConsultantRole';
 import {GenericRepository} from '../../src/GenericRepository';
-import {AgencyConsultantRolesProjection} from '../../src/models/AgencyConsultantRolesProjection';
-import {GenericObjectInterface} from '../../src/types/GenericObjectInterface';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {LocationHelper} from '../../src/helpers/LocationHelper';
@@ -388,7 +386,7 @@ describe('AgencyConsultantRole', () => {
       const skip = 10;
       const sortBy = ['name'];
       const query = {sampleQuery: 'ok'};
-      const data: GenericObjectInterface[] = [];
+      const data: any[] = [];
       const getItemsPerPage = sinon.stub(QueryHelper, 'getItemsPerPage').returns(limit);
       const getSkipValue = sinon.stub(QueryHelper, 'getSkipValue').returns(skip);
       const getSortParams = sinon.stub(QueryHelper, 'getSortParams').returns(sortBy);
