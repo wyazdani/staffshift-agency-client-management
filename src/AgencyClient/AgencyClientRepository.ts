@@ -1,7 +1,6 @@
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyClientWriteProjection, AgencyClientWriteProjectionType} from './AgencyClientWriteProjection';
-import {EventRepository, EventStoreDocumentInterfaceType} from '../EventRepository';
+import {EventRepository} from '../EventRepository';
 import {
   AgencyClientAggregateIdInterface,
   AgencyClientAggregateRecordInterface,

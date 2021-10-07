@@ -8,8 +8,7 @@ import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
 /**
  * Responsible for handling AgencyClientConsultantAssigned event
  */
-export class AgencyClientConsultantAssignedEventHandler
-implements EventHandlerInterface<AddAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface> {
+export class AgencyClientConsultantAssignedEventHandler implements EventHandlerInterface {
   constructor(private agencyRepository: AgencyRepository) {}
 
   /**

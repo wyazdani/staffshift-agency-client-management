@@ -3,7 +3,7 @@ import config from 'config';
 import StaffshiftFacadeClient, {
   AgencyOrganisationLinkDataType,
   ApiClient,
-  listAgencyOrgLinkOptionsType
+  ListAgencyOrgLinkOptionsType
 } from 'a24-node-staffshift-facade-client';
 import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
 import {HttpServiceConfigurationInterface} from 'HttpServiceConfigurationInterface';
@@ -39,7 +39,7 @@ export class FacadeClientHelper {
     organisationId: string,
     siteId?: string,
     wardId?: string,
-    options?: listAgencyOrgLinkOptionsType
+    options?: ListAgencyOrgLinkOptionsType
   ): Promise<AgencyOrganisationLinkDataType[]> {
     if (!options) {
       options = {
@@ -112,7 +112,7 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetailsListing(options?: listAgencyOrgLinkOptionsType): Promise<any> {
+  async getAgencyClientDetailsListing(options?: ListAgencyOrgLinkOptionsType): Promise<any> {
     options = {...options, xRequestId: this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);

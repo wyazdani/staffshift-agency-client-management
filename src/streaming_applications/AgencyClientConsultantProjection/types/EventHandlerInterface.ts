@@ -10,6 +10,6 @@ export type EventDataType =
   | RemoveAgencyClientConsultantCommandDataInterface
   | UpdateAgencyConsultantRoleCommandDataInterface;
 
-export interface EventHandlerInterface<T, P> {
-  handle(event: EventStoreDocumentType<T, P>): Promise<void>;
+export interface EventHandlerInterface {
+  handle(event: EventStoreDocumentType): Promise<void>;
 }

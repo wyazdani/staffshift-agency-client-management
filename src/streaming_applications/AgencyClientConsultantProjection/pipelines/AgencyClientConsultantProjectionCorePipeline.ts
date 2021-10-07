@@ -55,9 +55,9 @@ export class AgencyClientConsultantProjectionCorePipeline implements PipelineInt
     const eventRepository = new EventRepository(EventStore, logger.requestId);
     const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES_ENUM.WATCH);
     const watchDb = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
-    const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
+    const watchStream: any = watchDb.collection(EventStore.collection.name).watch(undefined, watchOptions);
 
-    logger.info('Collection watch initiated', {
+    logger.info('Collection watch ixnitiated', {
       collection: EventStore.collection.name,
       pipeline_id: this.getID(),
       stream_type: STREAM_TYPES_ENUM.WATCH

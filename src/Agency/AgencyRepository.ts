@@ -2,6 +2,7 @@ import {AgencyAggregate} from './AgencyAggregate';
 import {EventRepository} from '../EventRepository';
 import {AgencyAggregateRecordInterface, AgencyEventInterface} from './types';
 import {EventStoreDocumentType} from '../models/EventStore';
+import {AgencyCommandDataType} from './types/AgencyCommandDataType';
 
 /**
  * Class responsible for interacting with agency aggregate data source
@@ -24,7 +25,7 @@ export class AgencyRepository {
   /**
    * Persist agency related events into event store
    */
-  async save(events: AgencyEventInterface[]): Promise<EventStoreDocumentType[]> {
-    return this.eventRepository.save<AgencyEventInterface>(events);
+  async save(events: AgencyEventInterface<AgencyCommandDataType>[]): Promise<EventStoreDocumentType[]> {
+    return this.eventRepository.save<AgencyEventInterface<AgencyCommandDataType>>(events);
   }
 }
