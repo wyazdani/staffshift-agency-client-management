@@ -4,6 +4,7 @@ import {AgencyClientEventEnum} from '../../../AgencyClient/types';
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
 import {EventRepository} from '../../../EventRepository';
 import {AgencyEventEnum} from '../../../Agency/types';
+import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
 import {AgencyClientConsultantAssignedEventHandler} from '../event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {AgencyClientConsultantUnassignedEventHandler} from '../event-handlers/AgencyClientConsultantUnassignedEventHandler';
@@ -17,9 +18,15 @@ export class EventHandlerFactory {
    * Return event handler based on the event type
    */
   static getHandler(eventType: string, eventRepository: EventRepository, logger: LoggerContext): EventHandlerInterface {
+    const facadeClientHelper = new FacadeClientHelper(logger);
+
     switch (eventType) {
       case AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED:
-        return new AgencyClientConsultantAssignedEventHandler(new AgencyRepository(eventRepository));
+        return new AgencyClientConsultantAssignedEventHandler(
+          logger,
+          new AgencyRepository(eventRepository),
+          facadeClientHelper
+        );
       case AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED:
         return new AgencyClientConsultantUnassignedEventHandler();
       case AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED:
