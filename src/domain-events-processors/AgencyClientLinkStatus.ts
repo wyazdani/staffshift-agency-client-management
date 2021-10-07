@@ -2,9 +2,18 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 import {GenericObjectInterface} from 'GenericObjectInterface';
+import {RuntimeError} from 'a24-node-error-utils';
 
+/**
+ * Responsible for handling triage domain events and trigger the relevant commands
+ * based off the event.
+ */
 export class AgencyClientLinkStatus {
-  constructor(private logger: LoggerContext, private agencyClientCommandBus: AgencyClientCommandBus) {}
+  constructor(
+    private logger: LoggerContext,
+    private agencyClientCommandBus: AgencyClientCommandBus,
+    private facadeClientHelper: FacadeClientHelper
+  ) {}
 
   /**
    * Will apply the Triage Domain Event to the related aggregate
@@ -117,9 +126,7 @@ export class AgencyClientLinkStatus {
    * @returns {String} - The command that should be applied
    */
   private async getCommand(data: GenericObjectInterface): Promise<string> {
-    const client = new FacadeClientHelper(this.logger);
-    // Need try catch
-    const response = await client.getAgencyClientDetails(
+    const response = await this.facadeClientHelper.getAgencyClientDetails(
       data.agency_id,
       data.organisation_id,
       data.site_id,
@@ -127,7 +134,7 @@ export class AgencyClientLinkStatus {
     );
 
     if (response && response.length > 1) {
-      throw new Error('We are only expecting a single agency client entry to be returned');
+      throw new RuntimeError('We are only expecting a single agency client entry to be returned');
     }
     // Default to unlinked, we only need to now assert if a response was returned
     let command = 'unlinkAgencyClient';

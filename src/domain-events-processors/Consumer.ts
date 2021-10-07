@@ -7,6 +7,7 @@ import {EventMetaInterface, EventRepository} from '../EventRepository';
 import {v4 as uuidv4} from 'uuid';
 import {EventStore} from '../models/EventStore';
 import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
+import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import config from 'config';
 
 const getEventMeta = async (logger: LoggerContext, token: string): Promise<EventMetaInterface> =>
@@ -42,7 +43,8 @@ const process = async (logger: LoggerContext, message: GenericObjectInterface) =
     case 'agency_organisation_site_ward_link_deleted':
     case 'agency_organisation_site_ward_link_status_changed': {
       const agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository);
-      const handler = new AgencyClientLinkStatus(logger, agencyClientCommandBus);
+      const facadeClientHelper = new FacadeClientHelper(logger);
+      const handler = new AgencyClientLinkStatus(logger, agencyClientCommandBus, facadeClientHelper);
 
       return handler.apply(message);
     }
