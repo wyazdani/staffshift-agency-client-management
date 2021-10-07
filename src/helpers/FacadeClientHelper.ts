@@ -214,7 +214,7 @@ export class FacadeClientHelper {
           return reject(item);
         }
 
-        return resolve(res.body);
+        return resolve(response.body);
       });
     });
   }

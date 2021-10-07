@@ -11,10 +11,11 @@ import config from 'config';
 import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEventDataInterface';
 import {DomainEventMessageInterface} from 'DomainEventMessageInterface';
 import {PubSubMessageMetaDataInterface} from 'PubSubMessageMetaDataInterface';
+import {ConsultantNameChangeProcessor} from './ConsultantNameChangeProcessor';
 
 const getEventMeta = async (logger: LoggerContext, token: string): Promise<EventMetaInterface> =>
   new Promise((resolve, reject) =>
-    JWTSecurityHelper.jwtVerification(token, config.get<string>('api_token'), (err, response) => {
+    JWTSecurityHelper.jwtVerification(token, config.get<string>('ss_domain_event.jwt_secret'), (err, response) => {
       if (err) {
         return reject(err);
       }
@@ -32,8 +33,6 @@ const process = async (
 ) => {
   const eventName = message.event.name;
   const correlationId = uuidv4();
-  const eventMeta = await getEventMeta(logger, message.application_jwt);
-  const eventRepository = new EventRepository(EventStore, correlationId, eventMeta);
 
   logger.info('Handling incoming domain event', {correlation_id: correlationId, event_id: message.event.id});
 
@@ -47,12 +46,20 @@ const process = async (
     case 'agency_organisation_site_ward_link_created':
     case 'agency_organisation_site_ward_link_deleted':
     case 'agency_organisation_site_ward_link_status_changed': {
+      const eventMeta = await getEventMeta(logger, message.application_jwt);
+      const eventRepository = new EventRepository(EventStore, correlationId, eventMeta);
       const agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository);
       const facadeClientHelper = new FacadeClientHelper(logger);
       const handler = new AgencyClientLinkStatus(logger, agencyClientCommandBus, facadeClientHelper);
 
       return handler.apply(message);
     }
+    case 'user_updated':
+    case 'user_sync':
+      const facadeClientHelper = new FacadeClientHelper(logger);
+      const handler = new ConsultantNameChangeProcessor(logger, facadeClientHelper);
+
+      return await handler.process(message);
     default:
       logger.info('UnHandled Agency Client Event', {event_name: eventName});
   }
