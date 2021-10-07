@@ -4,7 +4,7 @@ import {MessageProcessor} from 'a24-node-pubsub';
 import mongoose from 'mongoose';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import {PubSubAuthConfigurationInterface} from 'PubSubAuthConfigurationInterface';
-import {DomainEventTopics} from 'DomainEventConfigurationInterface';
+import {DomainEventTopicsInterface} from 'DomainEventConfigurationInterface';
 
 Logger.setup(config.get('logger')); // Setup logger
 const loggerContext = Logger.getContext('startup');
@@ -27,7 +27,7 @@ mongoose.connection.on('error', (error: Error) => {
 const processorConfig = {
   env: process.env.NODE_ENV || 'development',
   auth: config.get<PubSubAuthConfigurationInterface>('pubSubAuth'),
-  topics: config.get<DomainEventTopics[]>('ss_domain_event.ss_domain_event_topics'),
+  topics: config.get<DomainEventTopicsInterface[]>('ss_domain_event.ss_domain_event_topics'),
   domain: config.get<string>('app_domain'),
   app_name: config.get<string>('app_name'),
   log_level: config.get<string>('pubsub_log_level')
