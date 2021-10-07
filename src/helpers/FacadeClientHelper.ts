@@ -3,9 +3,10 @@ import config from 'config';
 import StaffshiftFacadeClient, {
   AgencyOrganisationLinkDataType,
   ApiClient,
-  listAgencyOrgLinkOptionsType
+  ListAgencyOrgLinkOptionsType,
+  UserDetailsDataType
 } from 'a24-node-staffshift-facade-client';
-import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
+import {ValidationError, AuthorizationError, RuntimeError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {HttpServiceConfigurationInterface} from 'HttpServiceConfigurationInterface';
 
 const clientConfig = config.get<HttpServiceConfigurationInterface>('a24-staffshift-facade');
@@ -39,7 +40,7 @@ export class FacadeClientHelper {
     organisationId: string,
     siteId?: string,
     wardId?: string,
-    options?: listAgencyOrgLinkOptionsType
+    options?: ListAgencyOrgLinkOptionsType
   ): Promise<AgencyOrganisationLinkDataType[]> {
     if (!options) {
       options = {
@@ -112,7 +113,7 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetailsListing(options?: listAgencyOrgLinkOptionsType): Promise<any> {
+  async getAgencyClientDetailsListing(options?: ListAgencyOrgLinkOptionsType): Promise<any> {
     options = {...options, xRequestId: this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
@@ -177,7 +178,7 @@ export class FacadeClientHelper {
    *
    * @param userId - user id
    */
-  private getUserDetails(userId: string): Promise<any> {
+  private getUserDetails(userId: string): Promise<UserDetailsDataType> {
     const options = {xRequestId: this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.UserApi(client);
@@ -185,7 +186,7 @@ export class FacadeClientHelper {
 
     this.logger.info('The user details GET call to staffshift facade service has started', {userId});
     return new Promise((resolve, reject) => {
-      api.getUserDetails(userId, tokenAuthorization, options, (error: Error, data: any, response: any) => {
+      api.getUserDetails(userId, tokenAuthorization, options, (error: Error, data, response) => {
         let item = null;
 
         if (error) {

@@ -129,7 +129,7 @@
         "subscribers": [
           {
             "name": "user",
-            "processor": "./domain-events-processors/Consumer",
+            "processor": "./domain-events-processors/UserConsumer",
             "maxPullMessages": 4,
             "maxConcurrentMessages": 2
           }
