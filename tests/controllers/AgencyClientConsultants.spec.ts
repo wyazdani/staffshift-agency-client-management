@@ -114,7 +114,7 @@ describe('AgencyClientConsultants', () => {
       client_id: {
         value: clientId
       },
-      consultant_id: {
+      client_consultant_id: {
         value: id
       }
     };

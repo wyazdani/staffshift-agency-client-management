@@ -5,11 +5,11 @@ import {AgencyClientWriteProjection} from '../AgencyClient/AgencyClientWriteProj
 
 export class WriteProjectionEventHandlerFactory {
   static getHandler(type: string): (acc: unknown, eventStoreDocument: unknown) => unknown {
-    if (type in AgencyClientEventEnum) {
+    if ((Object.values(AgencyClientEventEnum) as string[]).includes(type)) {
       return AgencyClientWriteProjection[type as AgencyClientEventEnum];
     }
 
-    if (type in AgencyEventEnum) {
+    if ((Object.values(AgencyEventEnum) as string[]).includes(type)) {
       return AgencyWriteProjection[type as AgencyEventEnum];
     }
 

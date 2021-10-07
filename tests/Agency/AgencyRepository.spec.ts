@@ -25,7 +25,7 @@ describe('AgencyRepository class', () => {
 
       const aggregate = await agencyRepository.getAggregate(agencyId);
 
-      leftFoldEvents.should.have.been.calledWith(AgencyWriteProjection, {agency_id: agencyId}, undefined);
+      leftFoldEvents.should.have.been.calledWith({agency_id: agencyId}, undefined);
       aggregate.getId().agency_id.should.to.equal(agencyId);
     });
   });
@@ -39,7 +39,9 @@ describe('AgencyRepository class', () => {
         {
           type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED,
           aggregate_id: {agency_id: agencyId},
-          data: {},
+          data: {
+            _id: 'some id'
+          },
           sequence_id: 10
         }
       ];

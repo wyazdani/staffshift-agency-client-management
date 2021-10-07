@@ -96,7 +96,7 @@ export class AgencyClientLinkStatus {
             data: {client_type: 'organisation'}
           },
           agency_id: data.agency_id,
-          client_id: data.ward_id
+          client_id: data.organisation_id
         };
       }
 
