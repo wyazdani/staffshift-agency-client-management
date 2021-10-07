@@ -1,8 +1,14 @@
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyClientWriteProjection} from './AgencyClientWriteProjection';
-import {EventRepository} from '../EventRepository';
-import {AgencyClientAggregateRecordInterface, AgencyClientEventInterface} from './types';
+import {AgencyClientWriteProjection, AgencyClientWriteProjectionType} from './AgencyClientWriteProjection';
+import {EventRepository, EventStoreDocumentInterfaceType} from '../EventRepository';
+import {
+  AgencyClientAggregateIdInterface,
+  AgencyClientAggregateRecordInterface,
+  AgencyClientEventInterface
+} from './types';
+import {AgencyClientCommandDataType} from './types/AgencyClientCommandDataType';
+import {EventStoreDocumentType} from '../models/EventStore';
 
 export class AgencyClientRepository {
   constructor(private eventRepository: EventRepository) {}
@@ -12,11 +18,10 @@ export class AgencyClientRepository {
     clientId: string,
     sequenceId: number = undefined
   ): Promise<AgencyClientAggregate> {
-    const projection: AgencyClientAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
-      AgencyClientWriteProjection,
-      {agency_id: agencyId, client_id: clientId},
-      sequenceId
-    );
+    const projection: AgencyClientAggregateRecordInterface = await this.eventRepository.leftFoldEvents<
+      AgencyClientAggregateIdInterface,
+      AgencyClientEventInterface<AgencyClientCommandDataType>
+    >({agency_id: agencyId, client_id: clientId}, sequenceId);
 
     return new AgencyClientAggregate(
       {agency_id: agencyId, client_id: clientId},
@@ -25,7 +30,7 @@ export class AgencyClientRepository {
     );
   }
 
-  async save(events: AgencyClientEventInterface[]): Promise<any[]> {
-    return this.eventRepository.save(events);
+  async save(events: AgencyClientEventInterface<AgencyClientCommandDataType>[]): Promise<EventStoreDocumentType[]> {
+    return this.eventRepository.save<AgencyClientEventInterface<AgencyClientCommandDataType>>(events);
   }
 }

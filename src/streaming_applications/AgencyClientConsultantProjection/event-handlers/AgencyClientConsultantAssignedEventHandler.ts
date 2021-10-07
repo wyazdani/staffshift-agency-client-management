@@ -3,24 +3,27 @@ import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
 import {AgencyClientConsultantsProjection} from '../../../models/AgencyClientConsultantsProjection';
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
-import {EventInterface} from '../types/EventInterface';
 import {AddAgencyClientConsultantCommandDataInterface} from '../../../AgencyClient/types/CommandDataTypes';
+import {EventStoreDocumentType} from '../../../models/EventStore';
+import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 
 /**
  * Responsible for handling AgencyClientConsultantAssigned event
  */
-export class AgencyClientConsultantAssignedEventHandler implements EventHandlerInterface {
+export class AgencyClientConsultantAssignedEventHandler
+implements EventHandlerInterface<AddAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface> {
   constructor(
     private logger: LoggerContext,
     private agencyRepository: AgencyRepository,
     private facadeClientHelper: FacadeClientHelper
   ) {}
-
   /**
    * Create a new agency client consultant record
    */
-  async handle(event: EventInterface<AddAgencyClientConsultantCommandDataInterface>): Promise<void> {
+  async handle(
+    event: EventStoreDocumentType<AddAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface>
+  ): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
     const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
     const agencyClientConsultant = new AgencyClientConsultantsProjection({
@@ -45,7 +48,7 @@ export class AgencyClientConsultantAssignedEventHandler implements EventHandlerI
   private async getFullName(consultantId: string): Promise<string> {
     try {
       return await this.facadeClientHelper.getUserFullName(consultantId);
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof ResourceNotFoundError) {
         this.logger.warning('there is no user with this consultant id', {consultantId});
         return 'Unknown Unknown';

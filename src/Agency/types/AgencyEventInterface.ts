@@ -1,11 +1,9 @@
-import {AggregateEventInterface} from '../../EventRepository';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {AgencyEventEnum} from './AgencyEventEnum';
 import {AgencyAggregateIdInterface} from './AgencyAggregateIdInterface';
 
-export interface AgencyEventInterface extends AggregateEventInterface {
+export interface AgencyEventInterface<EventDataType> {
   type: AgencyEventEnum;
   aggregate_id: AgencyAggregateIdInterface;
-  data: GenericObjectInterface;
+  data: EventDataType;
   sequence_id: number;
 }

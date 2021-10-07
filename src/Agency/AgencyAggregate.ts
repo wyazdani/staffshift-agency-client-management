@@ -28,7 +28,7 @@ export class AgencyAggregate {
     const role = find(this.aggregate.consultant_roles, {_id: consultantRoleId});
 
     if (!role) {
-      throw new Error('BOOM, THERE IS NO MATCHING ROLE');
+      throw new ResourceNotFoundError('Consultant role not found');
     }
 
     return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED;
@@ -38,7 +38,7 @@ export class AgencyAggregate {
     const role = find(this.aggregate.consultant_roles, {_id: consultantRoleId});
 
     if (!role) {
-      throw new Error('BOOM, THERE IS NO MATCHING ROLE');
+      throw new ResourceNotFoundError('Consultant role not found');
     }
 
     return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED;

@@ -1,17 +1,7 @@
 import {Document, Schema, model} from 'mongoose';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventsEnum} from '../Events';
 
-export type EventStoreDocumentType = Document & {
-  type: EventsEnum;
-  aggregate_id: GenericObjectInterface;
-  data: GenericObjectInterface;
-  sequence_id: number;
-  created_at: Date;
-  updated_at: Date;
-};
-
-const contextSchema = new Schema<EventStoreDocumentType>(
+const contextSchema = new Schema<Document>(
   {
     type: {
       type: String,
@@ -28,7 +18,8 @@ const contextSchema = new Schema<EventStoreDocumentType>(
     _id: false
   }
 );
-const eventMetaDataSchema = new Schema<EventStoreDocumentType>(
+
+const eventMetaDataSchema = new Schema(
   {
     user_id: {
       type: String,
@@ -50,7 +41,19 @@ const eventMetaDataSchema = new Schema<EventStoreDocumentType>(
     _id: false
   }
 );
-const eventStoreSchema = new Schema<EventStoreDocumentType>(
+
+export type EventStoreDocumentType<Data = unknown, AggregateId = unknown> = Document & {
+  type: EventsEnum;
+  aggregate_id: AggregateId;
+  data: Data;
+  sequence_id: number;
+  meta_data: typeof eventMetaDataSchema;
+  correlation_id: string;
+  created_at: Date;
+  updated_at: Date;
+};
+
+const eventStoreSchema = new Schema(
   {
     type: {
       type: String,
@@ -96,4 +99,4 @@ const eventStoreSchema = new Schema<EventStoreDocumentType>(
 /**
  * Defines the model for the Event Store
  */
-export const EventStore = model<EventStoreDocumentType>('EventStore', eventStoreSchema);
+export const EventStore = model<EventStoreDocumentType<unknown>>('EventStore', eventStoreSchema);

@@ -1,10 +1,9 @@
 import {Document, Schema, model} from 'mongoose';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 
 export type IncomingDomainEventDocumentType = Document & {
   type: string;
-  aggregate_id: GenericObjectInterface;
-  data: GenericObjectInterface;
+  aggregate_id: unknown;
+  data: unknown;
   sequence_id: number;
   created_at: Date;
   updated_at: Date;
