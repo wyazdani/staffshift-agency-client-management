@@ -11,8 +11,7 @@ import {ResourceNotFoundError} from 'a24-node-error-utils';
 /**
  * Responsible for handling AgencyClientConsultantAssigned event
  */
-export class AgencyClientConsultantAssignedEventHandler
-implements EventHandlerInterface<AddAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface> {
+export class AgencyClientConsultantAssignedEventHandler implements EventHandlerInterface {
   constructor(
     private logger: LoggerContext,
     private agencyRepository: AgencyRepository,
