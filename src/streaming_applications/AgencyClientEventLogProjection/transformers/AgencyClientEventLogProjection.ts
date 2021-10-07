@@ -3,14 +3,21 @@ import {Model} from 'mongoose';
 import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../../../AgencyClient/AgencyClientRepository';
 import {EventsEnum} from '../../../Events';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../../../EventRepository';
+import {AgencyClientEventLogDocumentType} from '../../../models/AgencyClientEventLog';
+import {
+  AddAgencyClientConsultantCommandDataInterface,
+  RemoveAgencyClientConsultantCommandDataInterface
+} from '../../../AgencyClient/types/CommandDataTypes';
+import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
+import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 
+type EventDataType = AddAgencyClientConsultantCommandDataInterface | RemoveAgencyClientConsultantCommandDataInterface;
 const events = [EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED];
 
 interface ProjectionOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
-  model: Model<any>;
+  model: Model<AgencyClientEventLogDocumentType>;
   pipeline: string;
   logger: LoggerContext;
 }
@@ -20,7 +27,7 @@ interface ProjectionOptionsInterface extends TransformOptions {
  */
 export class AgencyClientEventLogProjection extends Transform {
   private readonly eventRepository: EventRepository;
-  private model: Model<any>;
+  private model: Model<AgencyClientEventLogDocumentType>;
   private pipeline: string;
   private logger: LoggerContext;
   constructor(opts: ProjectionOptionsInterface) {
@@ -33,7 +40,11 @@ export class AgencyClientEventLogProjection extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
+  _transform(
+    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyClientAggregateIdInterface>,
+    encoding: BufferEncoding,
+    callback: TransformCallback
+  ): void {
     if (!events.includes(data.event.type)) {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
 

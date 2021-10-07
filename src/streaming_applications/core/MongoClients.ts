@@ -1,8 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {MongoClient, Db} from 'mongodb';
+import {MongoClient, Db, MongoClientOptions} from 'mongodb';
 import {isString} from 'lodash';
 import config from 'config';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 
 const configKeys: {[key in string]: number} = {};
 const clients: {[key in string]: MongoClient} = {};
@@ -45,9 +44,9 @@ export class MongoClients {
     }
     const options = {
       poolSize: configKeys[configKey] > 5 ? configKeys[configKey] : 5,
-      ...config.get<GenericObjectInterface>(`${configKey}.options`)
+      ...config.get<MongoClientOptions>(`${configKey}.options`)
     };
-    const client = new MongoClient(config.get(`${configKey}.database_host`), options);
+    const client = new MongoClient(config.get<string>(`${configKey}.database_host`), options);
 
     clients[configKey] = client;
     // Connect the client to the server

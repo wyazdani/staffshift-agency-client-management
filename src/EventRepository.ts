@@ -84,8 +84,7 @@ export class EventRepository {
 
     return reduce(
       events,
-      (aggregate: AggregateIdType, event) =>
-        WriteProjectionEventHandlerFactory.getHandler(event.type)(aggregate, event),
+      (aggregate, event) => WriteProjectionEventHandlerFactory.getHandler(event.type)(aggregate, event),
       {last_sequence_id: 0}
     );
   }

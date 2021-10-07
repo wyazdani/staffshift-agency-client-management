@@ -1,5 +1,6 @@
 import {Transform, TransformCallback, TransformOptions} from 'stream';
-import {GenericObjectInterface} from 'GenericObjectInterface';
+import {ChangeEvent} from 'mongodb';
+
 /**
  * Convert a standard delta change stream event into an upsert structure that can be used
  */
@@ -24,7 +25,7 @@ export class EventStoreTransformer extends Transform {
    *  event: <full document>
    * }
    */
-  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
+  _transform(data: ChangeEvent, encoding: BufferEncoding, callback: TransformCallback): void {
     let newData;
 
     if (data.operationType !== 'insert') {
