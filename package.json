@@ -8,7 +8,7 @@
     "start": "node dist/http_server",
     "start-tracing": "node -r ./tracing.js dist/http_server",
     "test": "node ./testfile-drop-database.js && npm run migrate && node_modules/.bin/nyc node_modules/.bin/mocha",
-    "lint": "./node_modules/.bin/eslint --ignore-path .gitignore .",
+    "lint": "./node_modules/.bin/eslint --fix --ignore-path .gitignore .",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
     "start-streaming-application-core": "node dist/StreamingApplication --type=core"
@@ -58,7 +58,6 @@
     "@types/js-yaml": "^4.0.3",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mocha": "9.0.0",
-    "@types/mongodb": "^4.0.7",
     "@types/node": "^16.10.2",
     "@types/sinon": "10.0.2",
     "@types/sinon-chai": "^3.2.5",

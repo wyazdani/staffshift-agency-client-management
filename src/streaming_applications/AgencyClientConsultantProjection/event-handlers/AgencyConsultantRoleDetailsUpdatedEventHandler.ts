@@ -7,8 +7,7 @@ import {AgencyAggregateIdInterface} from '../../../Agency/types';
 /**
  * Responsible for handling AgencyConsultantRoleDetailsUpdated event
  */
-export class AgencyConsultantRoleDetailsUpdatedEventHandler
-implements EventHandlerInterface<UpdateAgencyConsultantRoleCommandDataInterface, AgencyAggregateIdInterface> {
+export class AgencyConsultantRoleDetailsUpdatedEventHandler implements EventHandlerInterface {
   /**
    * Update consultant role name for all agency client consultants with that role
    */

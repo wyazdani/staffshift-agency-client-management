@@ -3,13 +3,6 @@ import {FilterQuery, Model} from 'mongoose';
 import {EventStoreDocumentType} from './models/EventStore';
 import {WriteProjectionEventHandlerFactory} from './factories/WriteProjectionEventHandlerFactory';
 
-export interface AggregateEventInterface<EventDataType, AggregateDataType> {
-  type: string;
-  aggregate_id: AggregateDataType;
-  data: EventDataType;
-  sequence_id: number;
-}
-
 // Might be worth having a UserEventMeta and SystemEventMeta concept
 export interface EventMetaInterface {
   user_id: string;
@@ -17,22 +10,6 @@ export interface EventMetaInterface {
   context?: {
     type: string;
     id?: string;
-  };
-}
-
-interface EventInterface<EventData, AggregateType> {
-  type: string;
-  aggregate_id: AggregateType;
-  data: EventData;
-  sequence_id: number;
-  correlation_id: string;
-  meta_data: {
-    user_id: string;
-    client_id?: string;
-    context?: {
-      type: string;
-      id?: string;
-    };
   };
 }
 
@@ -47,8 +24,6 @@ interface BaseEventInterface {
     };
   };
 }
-
-export type EventStoreDocumentInterfaceType<T> = BaseEventInterface & T;
 
 interface BaseProjectionInterface {
   last_sequence_id: number;
@@ -77,23 +52,25 @@ export class EventRepository {
       query['sequence_id'] = {$lte: sequenceId};
     }
 
-    const events: EventStoreDocumentInterfaceType<EventInterface<EventDataType, AggregateIdType>>[] = await this.store
+    const events: EventStoreDocumentType<EventDataType, AggregateIdType>[] = await this.store
       .find(query)
       .sort({sequence_id: 1})
       .lean();
 
-    return reduce(
+    const result = reduce(
       events,
       (aggregate, event) => WriteProjectionEventHandlerFactory.getHandler(event.type)(aggregate, event),
       {last_sequence_id: 0}
     );
+
+    return result as BaseProjectionInterface;
   }
 
   /**
    * Persist events into event store collection
    */
   async save<EventDataType>(events: EventDataType[]): Promise<EventStoreDocumentType[]> {
-    const enrichedEvents: EventStoreDocumentInterfaceType<EventDataType>[] = map(events, (aggEvent) => ({
+    const enrichedEvents: (BaseEventInterface & EventDataType)[] = map(events, (aggEvent) => ({
       ...aggEvent,
       correlation_id: this.correlation_id,
       meta_data: this.eventMeta

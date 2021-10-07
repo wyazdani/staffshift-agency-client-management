@@ -7,8 +7,7 @@ import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
 /**
  * Responsible for handling AgencyClientConsultantUnassigned event
  */
-export class AgencyClientConsultantUnassignedEventHandler
-implements EventHandlerInterface<RemoveAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface> {
+export class AgencyClientConsultantUnassignedEventHandler implements EventHandlerInterface {
   /**
    * Delete agency client consultant record
    */

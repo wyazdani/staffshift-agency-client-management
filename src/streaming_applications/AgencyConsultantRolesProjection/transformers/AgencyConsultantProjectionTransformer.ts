@@ -3,9 +3,21 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {CallbackError, FilterQuery, Model} from 'mongoose';
 import {EventRepository} from '../../../EventRepository';
 import {EventsEnum} from '../../../Events';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {AgencyConsultantRolesProjectionDocumentType} from '../../../models/AgencyConsultantRolesProjection';
+import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
+import {AgencyAggregateIdInterface} from '../../../Agency/types';
+import {
+  AddAgencyConsultantRoleCommandDataInterface,
+  DisableAgencyConsultantRoleCommandDataInterface,
+  EnableAgencyConsultantRoleCommandDataInterface,
+  UpdateAgencyConsultantRoleCommandDataInterface
+} from '../../../Agency/types/CommandDataTypes';
 
+type EventDataType =
+  | AddAgencyConsultantRoleCommandDataInterface
+  | EnableAgencyConsultantRoleCommandDataInterface
+  | UpdateAgencyConsultantRoleCommandDataInterface
+  | DisableAgencyConsultantRoleCommandDataInterface;
 const events = [
   EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
   EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
@@ -39,7 +51,11 @@ export class AgencyConsultantProjectionTransformer extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
+  _transform(
+    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyAggregateIdInterface>,
+    encoding: BufferEncoding,
+    callback: TransformCallback
+  ): void {
     if (!events.includes(data.event.type)) {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
 
@@ -56,18 +72,19 @@ export class AgencyConsultantProjectionTransformer extends Transform {
       criteria._id = event.data._id;
     }
 
+    type UpdateType = {status: string} | EventDataType;
     switch (data.event.type) {
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED:
         this.addRecord(this.logger, this.model, data, callback);
         break;
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED:
-        this.updateRecord(this.logger, this.model, criteria, {status: 'enabled'}, data, callback);
+        this.updateRecord<UpdateType>(this.logger, this.model, criteria, {status: 'enabled'}, data, callback);
         break;
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED:
-        this.updateRecord(this.logger, this.model, criteria, {status: 'disabled'}, data, callback);
+        this.updateRecord<UpdateType>(this.logger, this.model, criteria, {status: 'disabled'}, data, callback);
         break;
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED:
-        this.updateRecord(this.logger, this.model, criteria, event.data, data, callback);
+        this.updateRecord<UpdateType>(this.logger, this.model, criteria, event.data, data, callback);
         break;
       default:
         //This is never expected, because we already do an initial check to allow only these 4 events
@@ -86,15 +103,16 @@ export class AgencyConsultantProjectionTransformer extends Transform {
   private addRecord(
     logger: LoggerContext,
     model: Model<AgencyConsultantRolesProjectionDocumentType>,
-    data: GenericObjectInterface,
+    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyAggregateIdInterface>,
     callback: TransformCallback
   ): void {
+    const eventData = data.event.data as AddAgencyConsultantRoleCommandDataInterface;
     const consultantRoleProjection = new model({
       agency_id: data.event.aggregate_id.agency_id,
-      name: data.event.data.name,
-      description: data.event.data.description,
-      max_consultants: data.event.data.max_consultants,
-      _id: data.event.data._id
+      name: eventData.name,
+      description: eventData.description,
+      max_consultants: eventData.max_consultants,
+      _id: eventData._id
     });
 
     consultantRoleProjection.save((err: Error) => {
@@ -120,12 +138,12 @@ export class AgencyConsultantProjectionTransformer extends Transform {
    * @param data - Data object the transformer received
    * @param callback - the callback
    */
-  private updateRecord(
+  private updateRecord<UpdateType>(
     logger: LoggerContext,
     model: Model<AgencyConsultantRolesProjectionDocumentType>,
     query: FilterQuery<AgencyConsultantRolesProjectionDocumentType>,
-    updateObject: GenericObjectInterface,
-    data: GenericObjectInterface,
+    updateObject: UpdateType,
+    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyAggregateIdInterface>,
     callback: TransformCallback
   ): void {
     model.updateOne(query, {$set: updateObject}, {}, (err: CallbackError) => {

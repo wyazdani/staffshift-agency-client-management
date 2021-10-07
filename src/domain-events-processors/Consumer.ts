@@ -14,7 +14,7 @@ import {PubSubMessageMetaDataInterface} from 'PubSubMessageMetaDataInterface';
 
 const getEventMeta = async (logger: LoggerContext, token: string): Promise<EventMetaInterface> =>
   new Promise((resolve, reject) =>
-    JWTSecurityHelper.jwtVerification(token, config.get<string>('api_token'), (err, response) => {
+    JWTSecurityHelper.jwtVerification(token, config.get<string>('ss_domain_event.jwt_secret'), (err, response) => {
       if (err) {
         return reject(err);
       }

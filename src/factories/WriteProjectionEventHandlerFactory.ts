@@ -4,7 +4,7 @@ import {AgencyWriteProjection} from '../Agency/AgencyWriteProjection';
 import {AgencyClientWriteProjection} from '../AgencyClient/AgencyClientWriteProjection';
 
 export class WriteProjectionEventHandlerFactory {
-  static getHandler(type: string): any {
+  static getHandler(type: string): (acc: unknown, eventStoreDocument: unknown) => unknown {
     if (type in AgencyClientEventEnum) {
       return AgencyClientWriteProjection[type as AgencyClientEventEnum];
     }
