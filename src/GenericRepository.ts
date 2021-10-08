@@ -1,8 +1,11 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {FilterQuery, Model} from 'mongoose';
+import {FilterQuery, LeanDocument, Model} from 'mongoose';
 import {RuntimeError} from 'a24-node-error-utils';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {forIn, forEach} from 'lodash';
+
+type SortByType = {
+  [key: string]: string;
+};
 
 /**
  * GenericRepository
@@ -10,8 +13,8 @@ import {forIn, forEach} from 'lodash';
  *  Should this be injected into the well defined aggregates rather?
  *  IE a mixin concept / parasitic inheritance / Based on interfaces?
  */
-export class GenericRepository {
-  constructor(private logger: LoggerContext, private store: Model<any>) {}
+export class GenericRepository<SchemaType> {
+  constructor(private logger: LoggerContext, private store: Model<SchemaType>) {}
 
   /**
    * Retrieves a list of all records for the given params
@@ -24,17 +27,17 @@ export class GenericRepository {
    * @return Promise<Object>
    */
   async listResources(
-    query: FilterQuery<any>,
+    query: FilterQuery<SchemaType>,
     limit: number,
     skip: number,
-    sortBy: GenericObjectInterface
-  ): Promise<{count: number; data: any[]}> {
+    sortBy: SortByType
+  ): Promise<{count: number; data: LeanDocument<SchemaType>[]}> {
     try {
       const [count, data] = await Promise.all([this.getCount(query), this.getListing(query, skip, limit, sortBy)]);
 
       return {
         count,
-        data
+        data: data as LeanDocument<SchemaType>[]
       };
     } catch (error) {
       this.logger.error('The GET list call for tags failed', error);
@@ -47,7 +50,7 @@ export class GenericRepository {
    *
    * @param query - query to filter
    */
-  async findOne(query: FilterQuery<any>): Promise<any> {
+  async findOne(query: FilterQuery<SchemaType>): Promise<SchemaType> {
     return this.store.findOne(query, this.getProjection());
   }
 
@@ -58,7 +61,7 @@ export class GenericRepository {
    *
    * @return Promise<Number>
    */
-  private async getCount(query: FilterQuery<any>): Promise<number> {
+  private async getCount(query: FilterQuery<SchemaType>): Promise<number> {
     try {
       return await this.store.countDocuments(query);
     } catch (dbError) {
@@ -76,7 +79,7 @@ export class GenericRepository {
    *
    * @return Promise<Array<Object>>
    */
-  private async getListing(query: FilterQuery<any>, skip: number, limit: number, sortBy: GenericObjectInterface) {
+  private async getListing(query: FilterQuery<SchemaType>, skip: number, limit: number, sortBy: SortByType) {
     try {
       return await this.store.find(query, this.getProjection()).skip(skip).limit(limit).sort(sortBy).lean().exec();
     } catch (dbError) {

@@ -11,13 +11,14 @@ import {load} from 'js-yaml';
 import fs from 'fs';
 import config from 'config';
 import A24ErrorUtils, {RuntimeError, ErrorHandler} from 'a24-node-error-utils';
-import Logger from 'a24-logzio-winston';
+import Logger, {SetupOptions} from 'a24-logzio-winston';
 import Url from 'url';
 import {MessagePublisher} from 'a24-node-pubsub';
 import {createHttpTerminator} from 'http-terminator';
 import mongoose, {Error} from 'mongoose';
 import {LinkHeaderHelper} from 'a24-node-query-utils';
-import {GenericObjectInterface} from 'GenericObjectInterface';
+import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
+import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurationInterface';
 
 mongoose.plugin((schema: any) => {
   schema.options.usePushEach = true;
@@ -30,7 +31,7 @@ const pubsubAuditConfig = {
   topics: config.get('octophant_audit.pubsub_topics')
 };
 
-Logger.setup(config.get<GenericObjectInterface>('logger'));
+Logger.setup(config.get<SetupOptions>('logger'));
 const serverPort = config.has('server.port') ? config.get('server.port') : 3370;
 const app = connect();
 
@@ -53,7 +54,7 @@ const errorHandlerConfig = {
 
 A24ErrorUtils.configure(errorHandlerConfig);
 
-const mongoConfig = config.get<GenericObjectInterface>('mongo');
+const mongoConfig = config.get<MongoConfigurationInterface>('mongo');
 
 mongoose.connection.on('error', (error: Error) => {
   const loggerContext = Logger.getContext('MongoConnection');
@@ -214,7 +215,7 @@ export const startServer = new Promise<void>((resolve) => {
         }
       };
 
-      for (const signal of config.get<GenericObjectInterface>('graceful_shutdown').signals) {
+      for (const signal of config.get<GracefulShutdownConfigurationInterface>('graceful_shutdown').signals) {
         process.on(signal, shutdown);
       }
     });
