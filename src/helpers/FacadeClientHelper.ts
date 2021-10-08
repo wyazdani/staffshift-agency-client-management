@@ -205,11 +205,7 @@ export class FacadeClientHelper {
               return reject(new ResourceNotFoundError('User not found'));
             }
 
-            return reject(
-              new RuntimeError(
-                `Unexpected response code [${response.statusCode}] was returned while calling staffshift facade service`
-              )
-            );
+            return reject(new RuntimeError('An error occurred during getUserDetails get call', error));
           }
           item = new RuntimeError('Error occurred during user details GET call', error);
           return reject(item);
