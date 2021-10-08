@@ -1,4 +1,5 @@
 import {map} from 'lodash';
+import {WriteProjectionInterface} from '../WriteProjectionInterface';
 import {
   AgencyEventEnum,
   AgencyEventInterface,
@@ -86,12 +87,8 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
 };
 
 
-export class WriteProjection {
+export class WriteProjection implements WriteProjectionInterface<AgencyCommandDataType>{
   execute(type: EventsEnum, aggregate: AgencyAggregateRecordInterface, event: EventStoreDocumentType<AgencyAggregateIdInterface, AgencyCommandDataType>): AgencyAggregateRecordInterface {
-    return {last_sequence_id: 1}
-  }
-
-  private agencyConsultantRoleDisabled() {
-
+    return {last_sequence_id: 1};
   }
 }
