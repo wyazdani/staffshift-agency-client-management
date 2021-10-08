@@ -1,7 +1,7 @@
 import {AgencyClientConsultantInterface} from './AgencyClientConsultantInterface';
+import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
 
-export interface AgencyClientAggregateRecordInterface {
-  last_sequence_id: number;
+export interface AgencyClientAggregateRecordInterface extends BaseAggregateRecordInterface {
   linked?: boolean;
   client_type?: string;
   consultants?: AgencyClientConsultantInterface[];

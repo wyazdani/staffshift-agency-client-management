@@ -1,8 +1,8 @@
-import {AgencyEventEnum} from './AgencyEventEnum';
 import {AgencyAggregateIdInterface} from './AgencyAggregateIdInterface';
+import {EventsEnum} from '../../Events';
 
 export interface AgencyEventInterface<EventDataType> {
-  type: AgencyEventEnum;
+  type: EventsEnum;
   aggregate_id: AgencyAggregateIdInterface;
   data: EventDataType;
   sequence_id: number;

@@ -17,6 +17,8 @@ import {
   AddAgencyClientConsultantCommandInterface,
   RemoveAgencyClientConsultantCommandInterface
 } from '../AgencyClient/types/CommandTypes';
+import {AgencyRepository} from '../Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjection';
 
 /**
  * Add Agency Client Consultant
@@ -35,7 +37,9 @@ export const addAgencyClientConsultant = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
-    const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const eventRepository = get(req, 'eventRepository');
+    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
+    const commandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository, agencyRepository);
     const agencyClientConsultantId = new ObjectID().toString();
     const command: AddAgencyClientConsultantCommandInterface = {
       type: commandType,
@@ -71,7 +75,9 @@ export const removeAgencyClientConsultant = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const clientConsultantId = get(req, 'swagger.params.client_consultant_id.value', '');
     const commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
-    const commandBus = AgencyClientCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const eventRepository = get(req, 'eventRepository');
+    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
+    const commandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository, agencyRepository);
     const command: RemoveAgencyClientConsultantCommandInterface = {
       type: commandType,
       data: {_id: clientConsultantId}
