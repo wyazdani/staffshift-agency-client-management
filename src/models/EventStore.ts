@@ -42,10 +42,10 @@ const eventMetaDataSchema = new Schema(
   }
 );
 
-export type EventStoreDocumentType<Data = unknown, AggregateId = unknown> = Document & {
+export type EventStoreDocumentType<T, P> = Document & {
   type: EventsEnum;
-  aggregate_id: AggregateId;
-  data: Data;
+  aggregate_id: T;
+  data: P;
   sequence_id: number;
   meta_data: typeof eventMetaDataSchema;
   correlation_id: string;

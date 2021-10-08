@@ -8,7 +8,8 @@ import {AgencyCommandDataType} from './types/AgencyCommandDataType';
  * Class responsible for interacting with agency aggregate data source
  */
 export class AgencyRepository {
-  constructor(private eventRepository: EventRepository) {}
+  // <AggregateIdType, EventData, AggregateType extends AgencyAggregateRecordInterface>
+  constructor(private eventRepository: EventRepository<AgencyAggregateRecordInterface, AgencyCommandDataType>) {}
 
   /**
    * Build and return agency aggregate

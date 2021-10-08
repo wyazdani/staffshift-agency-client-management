@@ -4,7 +4,7 @@ import {
   AgencyEventInterface,
   AgencyAggregateRecordInterface,
   AgencyConsultantRoleEnum,
-  AgencyConsultantRoleInterface
+  AgencyConsultantRoleInterface, AgencyAggregateIdInterface
 } from './types';
 import {
   AddAgencyConsultantRoleCommandDataInterface,
@@ -13,16 +13,18 @@ import {
   UpdateAgencyConsultantRoleCommandDataInterface
 } from './types/CommandDataTypes';
 import {AgencyCommandDataType} from './types/AgencyCommandDataType';
+import {EventStoreDocumentType} from '../models/EventStore';
+import {EventsEnum} from '../Events';
 
 export type AgencyWriteProjectionType = {
-  [key in AgencyEventEnum]: (
+  [key in EventsEnum]: (
     aggregate: AgencyAggregateRecordInterface,
     event: AgencyEventInterface<AgencyCommandDataType>
   ) => AgencyAggregateRecordInterface;
 };
 
 export const AgencyWriteProjection: AgencyWriteProjectionType = {
-  [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED]: (
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED]: (
     aggregate: AgencyAggregateRecordInterface,
     event: AgencyEventInterface<AddAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
@@ -39,7 +41,7 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
 
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED]: (
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED]: (
     aggregate: AgencyAggregateRecordInterface,
     event: AgencyEventInterface<UpdateAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
@@ -53,7 +55,7 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
 
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED]: (
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED]: (
     aggregate: AgencyAggregateRecordInterface,
     event: AgencyEventInterface<EnableAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
@@ -67,7 +69,7 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
 
     return {...aggregate, last_sequence_id: event.sequence_id};
   },
-  [AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DISABLED]: (
+  [EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED]: (
     aggregate: AgencyAggregateRecordInterface,
     event: AgencyEventInterface<DisableAgencyConsultantRoleCommandDataInterface>
   ): AgencyAggregateRecordInterface => {
@@ -82,3 +84,14 @@ export const AgencyWriteProjection: AgencyWriteProjectionType = {
     return {...aggregate, last_sequence_id: event.sequence_id};
   }
 };
+
+
+export class WriteProjection {
+  execute(type: EventsEnum, aggregate: AgencyAggregateRecordInterface, event: EventStoreDocumentType<AgencyAggregateIdInterface, AgencyCommandDataType>): AgencyAggregateRecordInterface {
+    return {last_sequence_id: 1}
+  }
+
+  private agencyConsultantRoleDisabled() {
+
+  }
+}
