@@ -15,7 +15,7 @@ export class AgencyClientConsultantAssignedEventHandler implements EventHandlerI
    * Create a new agency client consultant record
    */
   async handle(
-    event: EventStoreDocumentType<AddAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface>
+    event: EventStoreDocumentType<AgencyClientAggregateIdInterface, AddAgencyClientConsultantCommandDataInterface>
   ): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
     const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);

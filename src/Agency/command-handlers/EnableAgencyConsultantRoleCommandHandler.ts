@@ -1,7 +1,8 @@
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
-import {AgencyCommandEnum, AgencyEventEnum} from '../types';
+import {AgencyCommandEnum} from '../types';
 import {EnableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
+import {EventsEnum} from '../../Events';
 
 /**
  * Class responsible for handling enableAgencyConsultantRole command
@@ -23,7 +24,7 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
     }
     await this.agencyRepository.save([
       {
-        type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id

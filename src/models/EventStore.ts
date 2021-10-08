@@ -1,8 +1,8 @@
 import {Document, Schema, model} from 'mongoose';
 import {EventsEnum} from '../Events';
-import {BaseAggregateIdInterface} from '../Agency/types/AgencyAggregateIdInterface';
 import {AgencyCommandDataType} from '../Agency/types/AgencyCommandDataType';
 import {AgencyClientCommandDataType} from '../AgencyClient/types/AgencyClientCommandDataType';
+import {BaseAggregateIdInterface} from 'BaseAggregateIdInterface';
 
 const contextSchema = new Schema<Document>(
   {

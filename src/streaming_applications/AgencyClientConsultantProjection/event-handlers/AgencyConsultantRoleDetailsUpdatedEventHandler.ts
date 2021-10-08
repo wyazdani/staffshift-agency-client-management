@@ -12,7 +12,7 @@ export class AgencyConsultantRoleDetailsUpdatedEventHandler implements EventHand
    * Update consultant role name for all agency client consultants with that role
    */
   async handle(
-    event: EventStoreDocumentType<UpdateAgencyConsultantRoleCommandDataInterface, AgencyAggregateIdInterface>
+    event: EventStoreDocumentType<AgencyAggregateIdInterface, UpdateAgencyConsultantRoleCommandDataInterface>
   ): Promise<void> {
     await AgencyClientConsultantsProjection.updateMany(
       {consultant_role_id: event.data._id},

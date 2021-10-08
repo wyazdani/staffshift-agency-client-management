@@ -12,7 +12,7 @@ export class AgencyClientConsultantUnassignedEventHandler implements EventHandle
    * Delete agency client consultant record
    */
   async handle(
-    event: EventStoreDocumentType<RemoveAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface>
+    event: EventStoreDocumentType<AgencyClientAggregateIdInterface, RemoveAgencyClientConsultantCommandDataInterface>
   ): Promise<void> {
     await AgencyClientConsultantsProjection.deleteOne({_id: event.data._id});
   }
