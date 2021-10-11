@@ -1,13 +1,8 @@
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {EventRepository} from '../EventRepository';
-import {
-  AgencyClientAggregateIdInterface,
-  AgencyClientAggregateRecordInterface,
-  AgencyClientEventInterface
-} from './types';
-import {AgencyClientCommandDataType} from './types/AgencyClientCommandDataType';
-import {EventStoreDocumentType} from '../models/EventStore';
+import {EventRepository, EventInterface} from '../EventRepository';
+import {AgencyClientAggregateRecordInterface} from './types';
+import {EventStoreModelInterface} from '../models/EventStore';
 import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionHandler';
 
 /**
@@ -15,11 +10,7 @@ import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionH
  */
 export class AgencyClientRepository {
   constructor(
-    private eventRepository: EventRepository<
-      AgencyClientAggregateIdInterface,
-      AgencyClientCommandDataType,
-      AgencyClientAggregateRecordInterface
-    >,
+    private eventRepository: EventRepository,
     private agencyClientWriteProjectionHandler: AgencyClientWriteProjectionHandler,
     private agencyRepository: AgencyRepository
   ) {}
@@ -40,9 +31,7 @@ export class AgencyClientRepository {
     return new AgencyClientAggregate({agency_id: agencyId, client_id: clientId}, projection, agencyAggregate);
   }
 
-  async save(
-    events: AgencyClientEventInterface<AgencyClientCommandDataType>[]
-  ): Promise<EventStoreDocumentType<AgencyClientAggregateIdInterface, AgencyClientCommandDataType>[]> {
+  async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
     return this.eventRepository.save(events);
   }
 }

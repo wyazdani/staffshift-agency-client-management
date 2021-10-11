@@ -1,9 +1,7 @@
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
 import {AgencyClientConsultantsProjection} from '../../../models/AgencyClientConsultantsProjection';
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
-import {AddAgencyClientConsultantCommandDataInterface} from '../../../AgencyClient/types/CommandDataTypes';
-import {EventStoreDocumentType} from '../../../models/EventStore';
-import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
+import {EventStoreModelInterface} from '../../../models/EventStore';
 
 /**
  * Responsible for handling AgencyClientConsultantAssigned event
@@ -14,9 +12,7 @@ export class AgencyClientConsultantAssignedEventHandler implements EventHandlerI
   /**
    * Create a new agency client consultant record
    */
-  async handle(
-    event: EventStoreDocumentType<AgencyClientAggregateIdInterface, AddAgencyClientConsultantCommandDataInterface>
-  ): Promise<void> {
+  async handle(event: EventStoreModelInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
     const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
     const agencyClientConsultant = new AgencyClientConsultantsProjection({

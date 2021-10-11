@@ -6,8 +6,6 @@ import {SyncAgencyClientCommandHandler} from '../AgencyClient/command-handlers/S
 import {UnlinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers/UnlinkAgencyClientCommandHandler';
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 import {RemoveAgencyClientConsultantCommandHandler} from '../AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
-import {AgencyClientAggregateIdInterface, AgencyClientAggregateRecordInterface} from '../AgencyClient/types';
-import {AgencyClientCommandDataType} from '../AgencyClient/types/AgencyClientCommandDataType';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyClientWriteProjectionHandler} from '../AgencyClient/AgencyClientWriteProjectionHandler';
 
@@ -18,14 +16,7 @@ export class AgencyClientCommandBusFactory {
   /**
    * Returns an instance of AgencyClientCommandBus with a list of supported command handlers configured
    */
-  static getCommandBus(
-    eventRepository: EventRepository<
-      AgencyClientAggregateIdInterface,
-      AgencyClientCommandDataType,
-      AgencyClientAggregateRecordInterface
-    >,
-    agencyRepository: AgencyRepository
-  ): AgencyClientCommandBus {
+  static getCommandBus(eventRepository: EventRepository, agencyRepository: AgencyRepository): AgencyClientCommandBus {
     const agencyClientRepository = new AgencyClientRepository(
       eventRepository,
       new AgencyClientWriteProjectionHandler(),

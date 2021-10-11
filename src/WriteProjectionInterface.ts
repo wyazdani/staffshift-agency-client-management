@@ -1,12 +1,7 @@
-import {BaseAggregateIdInterface} from './Agency/types/AgencyAggregateIdInterface';
-import {BaseAggregateRecordInterface} from './Agency/types/AgencyAggregateRecordInterface';
 import {EventsEnum} from './Events';
-import {EventStoreDocumentType} from './models/EventStore';
+import {EventStoreModelInterface} from './models/EventStore';
+import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
 
-export interface WriteProjectionInterface<CommandDataType> {
-  execute(
-    type: EventsEnum,
-    aggregate: BaseAggregateRecordInterface,
-    event: EventStoreDocumentType<BaseAggregateIdInterface, CommandDataType>
-  ): BaseAggregateRecordInterface;
+export interface WriteProjectionInterface<T extends BaseAggregateRecordInterface> {
+  execute(type: EventsEnum, aggregate: T, event: EventStoreModelInterface): T;
 }

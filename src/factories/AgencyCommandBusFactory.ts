@@ -6,8 +6,6 @@ import {EnableAgencyConsultantRoleCommandHandler} from '../Agency/command-handle
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {EventRepository} from '../EventRepository';
 import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjection';
-import {AgencyAggregateIdInterface, AgencyAggregateRecordInterface} from '../Agency/types';
-import {AgencyCommandDataType} from '../Agency/types/AgencyCommandDataType';
 
 /**
  * Factory class responsible for building an AgencyCommandBus configured with supported command handlers
@@ -20,9 +18,7 @@ export class AgencyCommandBusFactory {
    EventData extends AgencyCommandDataType | AgencyClientCommandDataType,
    AggregateType extends BaseAggregateRecordInterface
    */
-  static getCommandBus(
-    eventRepository: EventRepository<AgencyAggregateIdInterface, AgencyCommandDataType, AgencyAggregateRecordInterface>
-  ): AgencyCommandBus {
+  static getCommandBus(eventRepository: EventRepository): AgencyCommandBus {
     const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
     const commandBus = new AgencyCommandBus();
 

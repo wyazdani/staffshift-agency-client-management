@@ -3,7 +3,7 @@ import {
   RemoveAgencyClientConsultantCommandDataInterface
 } from '../../../AgencyClient/types/CommandDataTypes';
 import {UpdateAgencyConsultantRoleCommandDataInterface} from '../../../Agency/types/CommandDataTypes';
-import {EventStoreDocumentType} from '../../../models/EventStore';
+import {EventStoreModelInterface} from '../../../models/EventStore';
 
 export type EventDataType =
   | AddAgencyClientConsultantCommandDataInterface
@@ -11,5 +11,5 @@ export type EventDataType =
   | UpdateAgencyConsultantRoleCommandDataInterface;
 
 export interface EventHandlerInterface {
-  handle(event: EventStoreDocumentType): Promise<void>;
+  handle(event: EventStoreModelInterface): Promise<void>;
 }

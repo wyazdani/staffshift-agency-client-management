@@ -45,7 +45,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
   }
 
   _transform(
-    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyClientAggregateIdInterface>,
+    data: EventStoreChangeStreamFullDocumentInterface,
     encoding: BufferEncoding,
     callback: TransformCallback
   ): void {

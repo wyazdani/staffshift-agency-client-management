@@ -1,28 +1,24 @@
 import {differenceWith} from 'lodash';
-import {
-  AgencyClientAggregateIdInterface,
-  AgencyClientAggregateRecordInterface,
-  AgencyClientConsultantInterface
-} from './types';
+import {AgencyClientAggregateRecordInterface, AgencyClientConsultantInterface} from './types';
 import {
   AddAgencyClientConsultantCommandDataInterface,
   LinkAgencyClientCommandDataInterface,
   RemoveAgencyClientConsultantCommandDataInterface,
   SyncAgencyClientCommandDataInterface
 } from './types/CommandDataTypes';
-import {AgencyClientCommandDataType} from './types/AgencyClientCommandDataType';
 import {WriteProjectionInterface} from '../WriteProjectionInterface';
 import {EventsEnum} from '../Events';
-import {EventStoreDocumentType} from '../models/EventStore';
+import {EventStoreModelInterface} from '../models/EventStore';
 
 /**
  * TODO
  */
-export class AgencyClientWriteProjectionHandler implements WriteProjectionInterface<AgencyClientCommandDataType> {
+export class AgencyClientWriteProjectionHandler
+implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
   execute(
     type: EventsEnum,
     aggregate: AgencyClientAggregateRecordInterface,
-    event: EventStoreDocumentType<AgencyClientAggregateIdInterface, AgencyClientCommandDataType>
+    event: EventStoreModelInterface
   ): AgencyClientAggregateRecordInterface {
     switch (type) {
       case EventsEnum.AGENCY_CLIENT_LINKED:

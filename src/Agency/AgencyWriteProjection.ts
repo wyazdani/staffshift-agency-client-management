@@ -1,24 +1,18 @@
 import {map} from 'lodash';
 import {WriteProjectionInterface} from '../WriteProjectionInterface';
-import {
-  AgencyAggregateRecordInterface,
-  AgencyConsultantRoleEnum,
-  AgencyConsultantRoleInterface,
-  AgencyAggregateIdInterface
-} from './types';
+import {AgencyAggregateRecordInterface, AgencyConsultantRoleEnum, AgencyConsultantRoleInterface} from './types';
 import {AddAgencyConsultantRoleCommandDataInterface} from './types/CommandDataTypes';
-import {AgencyCommandDataType} from './types/AgencyCommandDataType';
-import {EventStoreDocumentType} from '../models/EventStore';
+import {EventStoreModelInterface} from '../models/EventStore';
 import {EventsEnum} from '../Events';
 
 /**
  * TODO
  */
-export class AgencyWriteProjectionHandler implements WriteProjectionInterface<AgencyCommandDataType> {
+export class AgencyWriteProjectionHandler implements WriteProjectionInterface<AgencyAggregateRecordInterface> {
   execute(
     type: EventsEnum,
     aggregate: AgencyAggregateRecordInterface,
-    event: EventStoreDocumentType<AgencyAggregateIdInterface, AgencyCommandDataType>
+    event: EventStoreModelInterface
   ): AgencyAggregateRecordInterface {
     switch (type) {
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED:

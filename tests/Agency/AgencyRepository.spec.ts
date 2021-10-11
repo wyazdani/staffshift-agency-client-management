@@ -1,9 +1,10 @@
 import sinon from 'sinon';
 import {AgencyRepository} from '../../src/Agency/AgencyRepository';
-import {AgencyWriteProjection} from '../../src/Agency/AgencyWriteProjection';
-import {AgencyAggregateRecordInterface, AgencyEventEnum} from '../../src/Agency/types';
+import {AgencyAggregateRecordInterface} from '../../src/Agency/types';
 import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
+import {EventsEnum} from '../../src/Events';
+import {AgencyWriteProjectionHandler} from '../../src/Agency/AgencyWriteProjection';
 
 describe('AgencyRepository class', () => {
   afterEach(() => {
@@ -14,7 +15,7 @@ describe('AgencyRepository class', () => {
   describe('getAggregate()', () => {
     it('Test calling AgencyAggregate', async () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
-      const agencyRepository = new AgencyRepository(eventRepository);
+      const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
 
       const projection: AgencyAggregateRecordInterface = {
         consultant_roles: [],
@@ -33,11 +34,11 @@ describe('AgencyRepository class', () => {
   describe('save()', () => {
     it('Test call eventRepository', async () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
-      const agencyRepository = new AgencyRepository(eventRepository);
+      const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
       const save = sinon.stub(eventRepository, 'save').resolves([]);
       const events = [
         {
-          type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
           aggregate_id: {agency_id: agencyId},
           data: {
             _id: 'some id'

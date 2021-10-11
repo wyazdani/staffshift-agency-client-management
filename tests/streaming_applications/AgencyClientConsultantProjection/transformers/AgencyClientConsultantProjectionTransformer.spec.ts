@@ -9,8 +9,8 @@ import {EventHandlerFactory} from '../../../../src/streaming_applications/Agency
 import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {PassThrough} from 'stream';
 import {AgencyClientConsultantUnassignedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyClientConsultantUnassignedEventHandler';
-import {AgencyEventEnum} from '../../../../src/Agency/types';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
+import {EventsEnum} from '../../../../src/Events';
 
 describe('AgencyClientConsultantProjectionTransformer', () => {
   let logger: LoggerContext;
@@ -138,7 +138,7 @@ describe('AgencyClientConsultantProjectionTransformer', () => {
     it('should call correct event handler for supported event: AgencyConsultantRoleDetailsUpdated', (done) => {
       const data = {
         event: {
-          type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
         }
       };
       const options = {
