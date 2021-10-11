@@ -8,6 +8,7 @@ describe('SwaggerValidator', () => {
   it('Test all objects schemas should have additionalProperties set', async () => {
     const api = await SwaggerParser.validate(swaggerFile);
     const apiObj: any = flat(api.paths);
+    const listOfErrors = [];
 
     for (const key in apiObj) {
       const typeKey = '.schema.type';
@@ -17,10 +18,14 @@ describe('SwaggerValidator', () => {
           const additionalKey = key.substring(0, key.length - typeKey.length) + '.schema.additionalProperties';
 
           if (!_.has(apiObj, additionalKey)) {
-            throw new Error(`additionalProperties not set in ${additionalKey}`);
+            listOfErrors.push(additionalKey);
           }
         }
       }
+    }
+
+    if (!_.isEmpty(listOfErrors)) {
+      throw new Error('These fields should be defined in swagger.yaml file: \n' + listOfErrors.join('\n'));
     }
   });
 });
