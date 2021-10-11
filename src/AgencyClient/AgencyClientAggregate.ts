@@ -1,11 +1,11 @@
 import {countBy, find} from 'lodash';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
+import {AgencyRepository} from '../Agency/AgencyRepository';
 import {
   AgencyClientAggregateIdInterface,
   AgencyClientAggregateRecordInterface,
   AgencyClientConsultantInterface
 } from './types';
-import {AgencyRepository} from '../Agency/AgencyRepository';
 
 export class AgencyClientAggregate {
   constructor(

@@ -18,7 +18,7 @@ import {
   RemoveAgencyClientConsultantCommandInterface
 } from '../AgencyClient/types/CommandTypes';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
 
 /**
  * Add Agency Client Consultant

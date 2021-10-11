@@ -8,7 +8,7 @@ import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../Agenc
 import {AgencyClientCommandBusFactory} from '../../factories/AgencyClientCommandBusFactory';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import {AgencyRepository} from '../../Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../../Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../../Agency/AgencyWriteProjectionHandler';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();

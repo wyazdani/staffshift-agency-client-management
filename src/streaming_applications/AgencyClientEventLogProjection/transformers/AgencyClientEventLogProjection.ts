@@ -8,7 +8,7 @@ import {AgencyClientEventLogDocumentType} from '../../../models/AgencyClientEven
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 import {AgencyClientWriteProjectionHandler} from '../../../AgencyClient/AgencyClientWriteProjectionHandler';
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjectionHandler';
 
 const events = [EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED];
 

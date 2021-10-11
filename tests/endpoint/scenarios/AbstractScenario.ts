@@ -1,7 +1,7 @@
 import {EventRepository} from '../../../src/EventRepository';
 import {EventStore} from '../../../src/models/EventStore';
 import {AgencyRepository} from '../../../src/Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../../../src/Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../../../src/Agency/AgencyWriteProjectionHandler';
 
 /**
  * All scenarios should extend this class

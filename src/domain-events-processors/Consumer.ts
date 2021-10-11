@@ -12,7 +12,7 @@ import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEv
 import {DomainEventMessageInterface} from 'DomainEventMessageInterface';
 import {PubSubMessageMetaDataInterface} from 'PubSubMessageMetaDataInterface';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
 
 const getEventMeta = async (logger: LoggerContext, token: string): Promise<EventMetaInterface> =>
   new Promise((resolve, reject) =>

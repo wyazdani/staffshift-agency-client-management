@@ -2,7 +2,7 @@ import {AgencyAggregate} from './AgencyAggregate';
 import {EventRepository, EventInterface} from '../EventRepository';
 import {AgencyAggregateRecordInterface} from './types';
 import {EventStoreModelInterface} from '../models/EventStore';
-import {AgencyWriteProjectionHandler} from './AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
 
 /**
  * Class responsible for interacting with agency aggregate data source

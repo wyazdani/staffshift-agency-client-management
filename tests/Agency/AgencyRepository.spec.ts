@@ -4,7 +4,7 @@ import {AgencyAggregateRecordInterface} from '../../src/Agency/types';
 import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
 import {EventsEnum} from '../../src/Events';
-import {AgencyWriteProjectionHandler} from '../../src/Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../../src/Agency/AgencyWriteProjectionHandler';
 
 describe('AgencyRepository class', () => {
   afterEach(() => {

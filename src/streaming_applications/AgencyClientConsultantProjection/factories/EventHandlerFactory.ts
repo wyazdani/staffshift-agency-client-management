@@ -7,7 +7,7 @@ import {EventHandlerInterface} from '../types/EventHandlerInterface';
 import {AgencyClientConsultantAssignedEventHandler} from '../event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {AgencyClientConsultantUnassignedEventHandler} from '../event-handlers/AgencyClientConsultantUnassignedEventHandler';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
-import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjectionHandler';
 import {EventsEnum} from '../../../Events';
 
 /**

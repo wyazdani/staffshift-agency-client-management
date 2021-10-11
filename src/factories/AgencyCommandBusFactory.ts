@@ -5,7 +5,7 @@ import {DisableAgencyConsultantRoleCommandHandler} from '../Agency/command-handl
 import {EnableAgencyConsultantRoleCommandHandler} from '../Agency/command-handlers/EnableAgencyConsultantRoleCommandHandler';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {EventRepository} from '../EventRepository';
-import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjection';
+import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
 
 /**
  * Factory class responsible for building an AgencyCommandBus configured with supported command handlers
