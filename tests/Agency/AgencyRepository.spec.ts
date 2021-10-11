@@ -15,7 +15,8 @@ describe('AgencyRepository class', () => {
   describe('getAggregate()', () => {
     it('Test calling AgencyAggregate', async () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
-      const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
+      const writeProjectionHandler = new AgencyWriteProjectionHandler();
+      const agencyRepository = new AgencyRepository(eventRepository, writeProjectionHandler);
 
       const projection: AgencyAggregateRecordInterface = {
         consultant_roles: [],
@@ -26,7 +27,7 @@ describe('AgencyRepository class', () => {
 
       const aggregate = await agencyRepository.getAggregate(agencyId);
 
-      leftFoldEvents.should.have.been.calledWith({agency_id: agencyId}, undefined);
+      leftFoldEvents.should.have.been.calledWith(writeProjectionHandler, {agency_id: agencyId}, undefined);
       aggregate.getId().agency_id.should.to.equal(agencyId);
     });
   });

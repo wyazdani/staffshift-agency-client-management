@@ -1,6 +1,7 @@
 import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {Document, Schema, model} from 'mongoose';
 import {EventsEnum} from '../Events';
+import {AgencyClientsProjectionDocumentType} from './AgencyClientsProjection';
 
 const contextSchema = new Schema<Document>(
   {

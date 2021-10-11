@@ -6,7 +6,7 @@ import {EventStoreModelInterface} from '../models/EventStore';
 import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionHandler';
 
 /**
- * TODO
+ * Class responsible for interacting with agency client aggregate data source
  */
 export class AgencyClientRepository {
   constructor(
@@ -26,11 +26,12 @@ export class AgencyClientRepository {
       sequenceId
     );
 
-    const agencyAggregate = await this.agencyRepository.getAggregate(agencyId);
-
-    return new AgencyClientAggregate({agency_id: agencyId, client_id: clientId}, projection, agencyAggregate);
+    return new AgencyClientAggregate({agency_id: agencyId, client_id: clientId}, projection, this.agencyRepository);
   }
 
+  /**
+   * Persist agency client related events into event store
+   */
   async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
     return this.eventRepository.save(events);
   }

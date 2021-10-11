@@ -5,16 +5,13 @@ import {
   AgencyClientAggregateRecordInterface,
   AgencyClientConsultantInterface
 } from './types';
-import {AgencyAggregate} from '../Agency/AgencyAggregate';
+import {AgencyRepository} from '../Agency/AgencyRepository';
 
-/**
- * TODO
- */
 export class AgencyClientAggregate {
   constructor(
     private id: AgencyClientAggregateIdInterface,
     private aggregate: AgencyClientAggregateRecordInterface,
-    private agencyAggregate: AgencyAggregate
+    private agencyRepository: AgencyRepository
   ) {}
 
   /**
@@ -28,8 +25,9 @@ export class AgencyClientAggregate {
    * Check all invariants of the agency client aggregate before adding a new agency client consultant
    */
   async validateAddClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
+    const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
     // Should this be another aggregate?
-    const consultantRole = this.agencyAggregate.getConsultantRole(consultant.consultant_role_id);
+    const consultantRole = agencyAggregate.getConsultantRole(consultant.consultant_role_id);
     const currentCount =
       countBy(this.aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
 

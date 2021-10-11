@@ -11,7 +11,7 @@ import {EventsEnum} from '../Events';
 import {EventStoreModelInterface} from '../models/EventStore';
 
 /**
- * TODO
+ * Responsible for handling all agency client events to build the current state of the aggregate
  */
 export class AgencyClientWriteProjectionHandler
 implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
@@ -21,15 +21,17 @@ implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
     event: EventStoreModelInterface
   ): AgencyClientAggregateRecordInterface {
     switch (type) {
-      case EventsEnum.AGENCY_CLIENT_LINKED:
+      case EventsEnum.AGENCY_CLIENT_LINKED: {
         aggregate.linked = true;
         aggregate.client_type = (event.data as LinkAgencyClientCommandDataInterface).client_type;
 
         return {...aggregate, last_sequence_id: event.sequence_id};
-      case EventsEnum.AGENCY_CLIENT_UNLINKED:
+      }
+      case EventsEnum.AGENCY_CLIENT_UNLINKED: {
         aggregate.linked = false;
 
         return {...aggregate, last_sequence_id: event.sequence_id};
+      }
       case EventsEnum.AGENCY_CLIENT_SYNCED: {
         const eventData = event.data as SyncAgencyClientCommandDataInterface;
 
@@ -62,7 +64,7 @@ implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       default:
-        throw new Error('Event type not supported');
+        throw new Error(`Event type not supported: ${type}`);
     }
   }
 }

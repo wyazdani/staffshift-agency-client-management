@@ -25,7 +25,6 @@ export class AgencyRepository {
 
   /**
    * Persist agency related events into event store
-   * EventStoreDocumentType<AggregateIdType, EventData>
    */
   async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
     return this.eventRepository.save(events);

@@ -4,7 +4,6 @@ import {assert} from 'chai';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {EventRepository} from '../../../../src/EventRepository';
-import {AgencyClientEventEnum} from '../../../../src/AgencyClient/types';
 import {EventHandlerFactory} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/factories/EventHandlerFactory';
 import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {PassThrough} from 'stream';
@@ -64,7 +63,7 @@ describe('AgencyClientConsultantProjectionTransformer', () => {
     it('should call correct event handler for supported event: AgencyClientConsultantAssigned', (done) => {
       const data = {
         event: {
-          type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED
         }
       };
       const options = {
@@ -101,7 +100,7 @@ describe('AgencyClientConsultantProjectionTransformer', () => {
     it('should call correct event handler for supported event: AgencyClientConsultantUnassigned', (done) => {
       const data = {
         event: {
-          type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED
         }
       };
       const options = {
