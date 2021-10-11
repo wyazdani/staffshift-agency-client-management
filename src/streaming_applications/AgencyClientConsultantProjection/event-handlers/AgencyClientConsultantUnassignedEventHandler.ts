@@ -7,7 +7,7 @@ import {EventStoreModelInterface} from '../../../models/EventStore';
  * Responsible for handling AgencyClientConsultantUnassigned event
  */
 export class AgencyClientConsultantUnassignedEventHandler
-implements EventHandlerInterface<AgencyClientConsultantUnassignedEventStoreDataInterface> {
+implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultantUnassignedEventStoreDataInterface>> {
   /**
    * Delete agency client consultant record
    */

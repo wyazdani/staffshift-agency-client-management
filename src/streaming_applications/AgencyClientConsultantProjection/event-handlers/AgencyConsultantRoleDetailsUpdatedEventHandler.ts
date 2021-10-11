@@ -7,7 +7,7 @@ import {EventStoreModelInterface} from '../../../models/EventStore';
  * Responsible for handling AgencyConsultantRoleDetailsUpdated event
  */
 export class AgencyConsultantRoleDetailsUpdatedEventHandler
-implements EventHandlerInterface<AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface> {
+implements EventHandlerInterface<EventStoreModelInterface<AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface>> {
   /**
    * Update consultant role name for all agency client consultants with that role
    */

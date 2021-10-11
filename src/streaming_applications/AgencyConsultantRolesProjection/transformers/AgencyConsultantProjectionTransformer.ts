@@ -7,6 +7,8 @@ import {AgencyConsultantRolesProjectionDocumentType} from '../../../models/Agenc
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 import {
   AddAgencyConsultantRoleCommandDataInterface,
+  DisableAgencyConsultantRoleCommandDataInterface,
+  EnableAgencyConsultantRoleCommandDataInterface,
   UpdateAgencyConsultantRoleCommandDataInterface
 } from '../../../Agency/types/CommandDataTypes';
 
@@ -16,6 +18,12 @@ const events = [
   EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
   EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
 ];
+
+type SupportedEventsDataType =
+  | AddAgencyConsultantRoleCommandDataInterface
+  | DisableAgencyConsultantRoleCommandDataInterface
+  | EnableAgencyConsultantRoleCommandDataInterface
+  | UpdateAgencyConsultantRoleCommandDataInterface;
 
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
@@ -60,8 +68,10 @@ export class AgencyConsultantProjectionTransformer extends Transform {
       agency_id: event.aggregate_id.agency_id
     };
 
-    if (event.data._id) {
-      criteria._id = event.data._id;
+    const eventData = event.data as SupportedEventsDataType;
+
+    if (eventData._id) {
+      criteria._id = eventData._id;
     }
 
     type UpdateType = {status: string} | UpdateAgencyConsultantRoleCommandDataInterface;
