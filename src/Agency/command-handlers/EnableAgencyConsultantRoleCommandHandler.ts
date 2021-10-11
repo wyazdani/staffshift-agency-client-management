@@ -1,3 +1,4 @@
+import {AgencyConsultantRoleEnabledEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AgencyCommandEnum} from '../types';
@@ -28,7 +29,7 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id
-        },
+        } as AgencyConsultantRoleEnabledEventStoreDataInterface,
         sequence_id: eventId + 1
       }
     ]);

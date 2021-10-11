@@ -1,5 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {RuntimeError} from 'a24-node-error-utils';
+import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
 import {EventRepository} from '../../../EventRepository';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
@@ -20,7 +21,7 @@ export class EventHandlerFactory {
     eventType: EventsEnum,
     eventRepository: EventRepository,
     logger: LoggerContext
-  ): EventHandlerInterface {
+  ): EventHandlerInterface<BaseEventStoreDataInterface> {
     switch (eventType) {
       case EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED:
         return new AgencyClientConsultantAssignedEventHandler(

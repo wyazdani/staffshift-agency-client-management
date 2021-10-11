@@ -1,3 +1,4 @@
+import {AgencyClientSyncedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum} from '../types';
@@ -26,7 +27,7 @@ export class SyncAgencyClientCommandHandler implements AgencyClientCommandHandle
         {
           type: EventsEnum.AGENCY_CLIENT_SYNCED,
           aggregate_id: aggregate.getId(),
-          data: {...commandData},
+          data: {...commandData} as AgencyClientSyncedEventStoreDataInterface,
           sequence_id: ++eventId
         }
       ]);

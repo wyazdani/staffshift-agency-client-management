@@ -1,3 +1,4 @@
+import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {
   AddAgencyClientConsultantCommandDataInterface,
   RemoveAgencyClientConsultantCommandDataInterface
@@ -10,6 +11,6 @@ export type EventDataType =
   | RemoveAgencyClientConsultantCommandDataInterface
   | UpdateAgencyConsultantRoleCommandDataInterface;
 
-export interface EventHandlerInterface {
-  handle(event: EventStoreModelInterface): Promise<void>;
+export interface EventHandlerInterface<EventDataInterface extends BaseEventStoreDataInterface> {
+  handle(event: EventStoreModelInterface<EventDataInterface>): Promise<void>;
 }

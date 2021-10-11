@@ -1,3 +1,4 @@
+import {AgencyClientConsultantUnassignedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum} from '../types';
@@ -31,7 +32,7 @@ export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientC
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id
-        },
+        } as AgencyClientConsultantUnassignedEventStoreDataInterface,
         sequence_id: eventId + 1
       }
     ]);

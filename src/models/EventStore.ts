@@ -1,3 +1,4 @@
+import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {Document, Schema, model} from 'mongoose';
 import {EventsEnum} from '../Events';
 
@@ -42,18 +43,15 @@ const eventMetaDataSchema = new Schema(
   }
 );
 
-export type EventStoreDataType = {
-  [key in string]: any;
-};
-
 export type AggregateIdType = {
   [key in string]: string;
 };
 
-export interface EventStoreModelInterface extends Document {
+export interface EventStoreModelInterface<D extends BaseEventStoreDataInterface = BaseEventStoreDataInterface>
+  extends Document {
   type: EventsEnum;
   aggregate_id: AggregateIdType;
-  data: EventStoreDataType;
+  data: D;
   sequence_id: number;
   meta_data: typeof eventMetaDataSchema;
   correlation_id: string;

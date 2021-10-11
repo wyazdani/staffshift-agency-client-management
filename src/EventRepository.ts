@@ -1,6 +1,7 @@
+import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {reduce, map} from 'lodash';
 import {FilterQuery} from 'mongoose';
-import {AggregateIdType, EventStore, EventStoreDataType, EventStoreModelInterface} from './models/EventStore';
+import {AggregateIdType, EventStore, EventStoreModelInterface} from './models/EventStore';
 import {WriteProjectionInterface} from './WriteProjectionInterface';
 import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
 
@@ -33,7 +34,7 @@ interface BaseProjectionInterface {
 export interface EventInterface {
   type: string;
   aggregate_id: AggregateIdType;
-  data: EventStoreDataType;
+  data: BaseEventStoreDataInterface;
   sequence_id: number;
 }
 

@@ -1,3 +1,7 @@
+import {
+  AgencyConsultantRoleAddedEventStoreDateInterface,
+  AgencyConsultantRoleEnabledEventStoreDataInterface
+} from 'EventStoreDataTypes';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
@@ -29,7 +33,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
           name: commandData.name,
           description: commandData.description,
           max_consultants: commandData.max_consultants
-        },
+        } as AgencyConsultantRoleAddedEventStoreDateInterface,
         sequence_id: ++eventId
       },
       {
@@ -37,7 +41,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id
-        },
+        } as AgencyConsultantRoleEnabledEventStoreDataInterface,
         sequence_id: ++eventId
       }
     ]);

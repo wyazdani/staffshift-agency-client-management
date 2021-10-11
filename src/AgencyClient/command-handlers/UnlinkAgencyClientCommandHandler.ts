@@ -1,3 +1,4 @@
+import {AgencyClientUnlinkedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum} from '../types';
@@ -32,7 +33,7 @@ export class UnlinkAgencyClientCommandHandler implements AgencyClientCommandHand
         {
           type: EventsEnum.AGENCY_CLIENT_UNLINKED,
           aggregate_id: aggregate.getId(),
-          data: {...commandData},
+          data: {...commandData} as AgencyClientUnlinkedEventStoreDataInterface,
           sequence_id: eventId + 1
         }
       ]);
