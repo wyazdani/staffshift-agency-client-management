@@ -18,14 +18,12 @@ export class EventHandlerFactory {
    * Return event handler based on the event type
    */
   static getHandler(eventType: string, eventRepository: EventRepository, logger: LoggerContext): EventHandlerInterface {
-    const facadeClientHelper = new FacadeClientHelper(logger);
-
     switch (eventType) {
       case AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED:
         return new AgencyClientConsultantAssignedEventHandler(
           logger,
           new AgencyRepository(eventRepository),
-          facadeClientHelper
+          new FacadeClientHelper(logger)
         );
       case AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED:
         return new AgencyClientConsultantUnassignedEventHandler();

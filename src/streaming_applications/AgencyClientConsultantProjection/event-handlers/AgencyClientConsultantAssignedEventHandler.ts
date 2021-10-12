@@ -42,7 +42,6 @@ export class AgencyClientConsultantAssignedEventHandler implements EventHandlerI
    * get full name of the consultant
    *
    * @param consultantId
-   * @private
    */
   private async getFullName(consultantId: string): Promise<string> {
     try {

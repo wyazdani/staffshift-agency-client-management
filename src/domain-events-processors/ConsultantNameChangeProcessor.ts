@@ -4,6 +4,12 @@ import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import {AgencyClientConsultantsProjection} from '../models/AgencyClientConsultantsProjection';
 
 export class ConsultantNameChangeProcessor {
+  /**
+   * Listens for events on consultant name changes from domain event and update it on projection
+   *
+   * @param logger
+   * @param facadeClientHelper
+   */
   constructor(private logger: LoggerContext, private facadeClientHelper: FacadeClientHelper) {}
   async process(data: UserUpdateDomainEventDataInterface): Promise<void> {
     try {
