@@ -50,6 +50,11 @@ declare module 'a24-node-staffshift-facade-client' {
     sortBy?: string[];
   };
 
+  type CoordinatesType = {
+    longitude: number;
+    latitude: number;
+  };
+
   export type AgencyOrganisationLinkDataType = {
     _id: string;
     organisation_name: string;
@@ -58,6 +63,26 @@ declare module 'a24-node-staffshift-facade-client' {
     agency_id: string;
     agency_org_type: string;
     agency_linked?: boolean;
+    site_name?: string;
+    site_id?: string;
+    site_type?: string;
+    site_type_id?: string;
+    site_address?: string;
+    site_province?: string;
+    site_post_code?: string;
+    ward_name?: string;
+    ward_id?: string;
+    ward_type?: string;
+    ward_type_id?: string;
+    agency_org_client_reference?: string;
+    requires_po_number?: boolean;
+    authorise_client_contact_names?: string[];
+    updated_at?: string;
+    created_at?: string;
+    site_geo_location?: {
+      type: string;
+      coordinates: CoordinatesType[];
+    };
   };
 
   export type ClientRequestCallbackType = (

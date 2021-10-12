@@ -112,7 +112,9 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetailsListing(options?: ListAgencyOrgLinkOptionsType): Promise<any> {
+  async getAgencyClientDetailsListing(
+    options?: ListAgencyOrgLinkOptionsType
+  ): Promise<AgencyOrganisationLinkDataType[]> {
     options = {...options, xRequestId: this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);

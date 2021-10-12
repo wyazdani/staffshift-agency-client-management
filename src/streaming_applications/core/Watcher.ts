@@ -62,7 +62,7 @@ export class WatcherContext {
 }
 
 export class Watcher {
-  static getWatcherContext(name: string, pipelines: any[]): WatcherContext {
+  static getWatcherContext(name: string, pipelines: PipelineInterface[]): WatcherContext {
     return new WatcherContext(name, pipelines);
   }
 }

@@ -9,7 +9,7 @@ import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBus
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import config from 'config';
 import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEventDataInterface';
-import {DomainEventMessageInterface} from 'DomainEventMessageInterface';
+import {DomainEventMessageInterface} from 'DomainEventTypes/DomainEventMessageInterface';
 import {PubSubMessageMetaDataInterface} from 'PubSubMessageMetaDataInterface';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';

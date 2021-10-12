@@ -54,7 +54,14 @@ export interface EventStoreModelInterface<D extends BaseEventStoreDataInterface 
   aggregate_id: AggregateIdType;
   data: D;
   sequence_id: number;
-  meta_data: typeof eventMetaDataSchema;
+  meta_data: {
+    user_id: string;
+    client_id?: string;
+    context?: {
+      type: string;
+      id?: string;
+    };
+  };
   correlation_id: string;
   created_at: Date;
   updated_at: Date;

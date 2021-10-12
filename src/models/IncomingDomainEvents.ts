@@ -2,8 +2,8 @@ import {Document, Schema, model} from 'mongoose';
 import {AggregateIdType} from './EventStore';
 
 type EventDataType = {
-    [key in string]: unknown
-}
+  [key in string]: unknown;
+};
 
 export type IncomingDomainEventDocumentType = Document & {
   type: string;

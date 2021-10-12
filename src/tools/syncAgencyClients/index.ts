@@ -9,6 +9,7 @@ import {AgencyClientCommandBusFactory} from '../../factories/AgencyClientCommand
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import {AgencyRepository} from '../../Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../../Agency/AgencyWriteProjectionHandler';
+import {AgencyOrganisationLinkDataType} from 'a24-node-staffshift-facade-client';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
@@ -87,7 +88,7 @@ const syncAgencyClients = async (page: number): Promise<number> => {
  *
  * @returns A single SyncCommand
  */
-const getSyncCommandDetails = (agencyClientLink: any): SyncCommandInterface => {
+const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType): SyncCommandInterface => {
   switch (agencyClientLink.agency_org_type) {
     case 'organisation':
       return {
