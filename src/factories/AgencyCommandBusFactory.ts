@@ -13,10 +13,6 @@ import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandl
 export class AgencyCommandBusFactory {
   /**
    * Returns an instance of AgencyCommandBus with a list of supported command handlers configured
-   *
-   *   AggregateIdType extends BaseAggregateIdInterface,
-   EventData extends AgencyCommandDataType | AgencyClientCommandDataType,
-   AggregateType extends BaseAggregateRecordInterface
    */
   static getCommandBus(eventRepository: EventRepository): AgencyCommandBus {
     const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
