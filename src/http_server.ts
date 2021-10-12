@@ -20,9 +20,6 @@ import {LinkHeaderHelper} from 'a24-node-query-utils';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurationInterface';
 
-mongoose.plugin((schema: any) => {
-  schema.options.usePushEach = true;
-});
 mongoose.Promise = global.Promise;
 
 const pubsubAuditConfig = {
