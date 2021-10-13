@@ -1,5 +1,5 @@
 import {
-  AgencyConsultantRoleAddedEventStoreDateInterface,
+  AgencyConsultantRoleAddedEventStoreDataInterface,
   AgencyConsultantRoleEnabledEventStoreDataInterface
 } from 'EventStoreDataTypes';
 import {AgencyRepository} from '../AgencyRepository';
@@ -33,7 +33,7 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
           name: commandData.name,
           description: commandData.description,
           max_consultants: commandData.max_consultants
-        } as AgencyConsultantRoleAddedEventStoreDateInterface,
+        } as AgencyConsultantRoleAddedEventStoreDataInterface,
         sequence_id: ++eventId
       },
       {

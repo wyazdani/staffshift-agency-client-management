@@ -1,6 +1,6 @@
 import {BaseEventStoreDataInterface} from 'EventStoreDataTypes/BaseEventStoreDataInterface';
 
-export interface AgencyConsultantRoleAddedEventStoreDateInterface extends BaseEventStoreDataInterface {
+export interface AgencyConsultantRoleAddedEventStoreDataInterface extends BaseEventStoreDataInterface {
   _id: string;
   name: string;
   description: string;

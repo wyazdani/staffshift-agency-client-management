@@ -3,7 +3,7 @@ import {AgencyClientConsultantUnassignedEventStoreDataInterface} from './AgencyC
 import {AgencyClientLinkedEventStoreDataInterface} from './AgencyClientLinkedEventStoreDataInterface';
 import {AgencyClientSyncedEventStoreDataInterface} from './AgencyClientSyncedEventStoreDataInterface';
 import {AgencyClientUnlinkedEventStoreDataInterface} from './AgencyClientUnlinkedEventStoreDataInterface';
-import {AgencyConsultantRoleAddedEventStoreDateInterface} from './AgencyConsultantRoleAddedEventStoreDateInterface';
+import {AgencyConsultantRoleAddedEventStoreDataInterface} from './AgencyConsultantRoleAddedEventStoreDataInterface';
 import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from './AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface';
 import {AgencyConsultantRoleDisabledEventStoreDataInterface} from './AgencyConsultantRoleDisabledEventStoreDataInterface';
 import {AgencyConsultantRoleEnabledEventStoreDataInterface} from './AgencyConsultantRoleEnabledEventStoreDataInterface';
@@ -15,7 +15,7 @@ export {
   AgencyClientLinkedEventStoreDataInterface,
   AgencyClientSyncedEventStoreDataInterface,
   AgencyClientUnlinkedEventStoreDataInterface,
-  AgencyConsultantRoleAddedEventStoreDateInterface,
+  AgencyConsultantRoleAddedEventStoreDataInterface,
   AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
   AgencyConsultantRoleDisabledEventStoreDataInterface,
   AgencyConsultantRoleEnabledEventStoreDataInterface,
