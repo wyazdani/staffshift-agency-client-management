@@ -3,16 +3,22 @@ import Logger from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../../helpers/FacadeClientHelper';
 import {EventStore} from '../../models/EventStore';
 import {connect, disconnect} from 'mongoose';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../../EventRepository';
 import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../AgencyClient/types';
 import {AgencyClientCommandBusFactory} from '../../factories/AgencyClientCommandBusFactory';
+import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
+import {AgencyRepository} from '../../Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../../Agency/AgencyWriteProjectionHandler';
+import {AgencyOrganisationLinkDataType} from 'a24-node-staffshift-facade-client';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
 const client = new FacadeClientHelper(loggerContext);
 const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
-const commandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository);
+const commandBus = AgencyClientCommandBusFactory.getCommandBus(
+  eventRepository,
+  new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler())
+);
 
 const itemsPerPage = 100;
 
@@ -32,8 +38,8 @@ const run = async (page: number): Promise<void> => {
   try {
     loggerContext.info('Connecting to the database');
     await connect(
-      config.get<GenericObjectInterface>('mongo').database_host,
-      config.get<GenericObjectInterface>('mongo').options
+      config.get<MongoConfigurationInterface>('mongo').database_host,
+      config.get<MongoConfigurationInterface>('mongo').options
     );
     let completed = false;
 
@@ -82,7 +88,7 @@ const syncAgencyClients = async (page: number): Promise<number> => {
  *
  * @returns A single SyncCommand
  */
-const getSyncCommandDetails = (agencyClientLink: any): SyncCommandInterface => {
+const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType): SyncCommandInterface => {
   switch (agencyClientLink.agency_org_type) {
     case 'organisation':
       return {

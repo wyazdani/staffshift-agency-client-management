@@ -3,7 +3,7 @@ import {EventsEnum} from '../../../Events';
 import {LoggerContext} from 'a24-logzio-winston';
 import {EventRepository} from '../../../EventRepository';
 import {EventHandlerFactory} from '../factories/EventHandlerFactory';
-import {TransformChangeStreamDataInterface} from '../types/TransformChangeStreamDataInterface';
+import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 
 const events = [
   EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
@@ -31,7 +31,11 @@ export class AgencyClientConsultantProjectionTransformer extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: TransformChangeStreamDataInterface, encoding: BufferEncoding, callback: TransformCallback): void {
+  _transform(
+    data: EventStoreChangeStreamFullDocumentInterface,
+    encoding: BufferEncoding,
+    callback: TransformCallback
+  ): void {
     const event = data.event;
     const eventType = event.type;
 
@@ -46,6 +50,6 @@ export class AgencyClientConsultantProjectionTransformer extends Transform {
     eventHandler
       .handle(event)
       .then(() => callback(null, data))
-      .catch((error) => callback(error));
+      .catch((error: Error) => callback(error));
   }
 }

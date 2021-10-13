@@ -36,6 +36,11 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantDocumentT
       type: String,
       required: true,
       description: 'The consultant id, a reference to the staffshift user_id'
+    },
+    consultant_name: {
+      type: String,
+      required: true,
+      description: 'The consultant name enriched from facade'
     }
   },
   {

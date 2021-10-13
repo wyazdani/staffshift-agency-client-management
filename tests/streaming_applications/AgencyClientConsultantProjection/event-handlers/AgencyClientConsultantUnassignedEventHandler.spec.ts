@@ -11,7 +11,7 @@ describe('AgencyClientConsultantUnassignedEventHandler', () => {
   describe('handle()', () => {
     const agencyId = '5b16b824e8a73a752c42d848';
     const clientId = '6155c39a2dff5a83f7b7bc6c';
-    const event = {
+    const event: any = {
       type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
       sequence_id: 1,
       aggregate_id: {

@@ -1,6 +1,6 @@
 import {ServerResponse} from 'http';
 import {GenericRepository} from '../GenericRepository';
-import {AgencyClientEventLog} from '../models/AgencyClientEventLog';
+import {AgencyClientEventLog, AgencyClientEventLogDocumentType} from '../models/AgencyClientEventLog';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {isEmpty, get} from 'lodash';
@@ -27,7 +27,7 @@ export const listAgencyClientEventLogs = async (
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
   query.client_id = get(req, 'swagger.params.client_id.value', '');
 
-  const service = new GenericRepository(logger, AgencyClientEventLog);
+  const service = new GenericRepository<AgencyClientEventLogDocumentType>(logger, AgencyClientEventLog);
 
   try {
     const {count, data} = await service.listResources(query, limit, skip, sortBy);

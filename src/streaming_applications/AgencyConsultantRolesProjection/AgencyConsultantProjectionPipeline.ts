@@ -58,6 +58,7 @@ export class AgencyConsultantProjectionPipeline implements PipelineInterface {
       STREAM_TYPES_ENUM.WATCH
     );
     const watchDb: Db = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
 
     logger.info('Collection watch initiated', {

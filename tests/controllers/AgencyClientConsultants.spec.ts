@@ -1,5 +1,9 @@
 import sinon from 'sinon';
-import {addAgencyClientConsultant, removeAgencyClientConsultant, listAgencyClientConsultants} from '../../src/controllers/AgencyClientConsultants';
+import {
+  addAgencyClientConsultant,
+  removeAgencyClientConsultant,
+  listAgencyClientConsultants
+} from '../../src/controllers/AgencyClientConsultants';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {ObjectID} from 'mongodb';
@@ -110,7 +114,7 @@ describe('AgencyClientConsultants', () => {
       client_id: {
         value: clientId
       },
-      consultant_id: {
+      client_consultant_id: {
         value: id
       }
     };

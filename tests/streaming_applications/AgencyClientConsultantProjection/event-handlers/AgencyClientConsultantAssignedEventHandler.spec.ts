@@ -1,11 +1,14 @@
 import sinon, {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
 import {AgencyRepository} from '../../../../src/Agency/AgencyRepository';
+import {FacadeClientHelper} from '../../../../src/helpers/FacadeClientHelper';
 import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/streaming_applications/AgencyClientConsultantProjection/event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {AgencyAggregate} from '../../../../src/Agency/AgencyAggregate';
 import {AgencyConsultantRoleEnum} from '../../../../src/Agency/types';
 import {AgencyClientConsultantsProjection} from '../../../../src/models/AgencyClientConsultantsProjection';
 import {EventsEnum} from '../../../../src/Events';
+import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
+import {ResourceNotFoundError} from 'a24-node-error-utils';
 
 describe('AgencyClientConsultantAssignedEventHandler', () => {
   afterEach(() => {
@@ -15,7 +18,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
   describe('handle()', () => {
     const agencyId = '5b16b824e8a73a752c42d848';
     const clientId = '6155c39a2dff5a83f7b7bc6c';
-    const event = {
+    const event: any = {
       type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
       sequence_id: 1,
       aggregate_id: {
@@ -39,14 +42,20 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
     it('should create agency client consultant record', async () => {
       const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyAggregateStub = stubConstructor(AgencyAggregate);
-      const handler = new AgencyClientConsultantAssignedEventHandler(agencyRepositoryStub);
+      const facadeClientHelperStub = stubConstructor(FacadeClientHelper);
+      const handler = new AgencyClientConsultantAssignedEventHandler(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        agencyRepositoryStub,
+        facadeClientHelperStub
+      );
       const expectedClientConsultantRecord = {
         _id: event.data._id,
         agency_id: event.aggregate_id.agency_id,
         client_id: event.aggregate_id.client_id,
         consultant_role_id: event.data.consultant_role_id,
         consultant_role_name: consultantRole.name,
-        consultant_id: event.data.consultant_id
+        consultant_id: event.data.consultant_id,
+        consultant_name: 'AAA'
       };
       const saveStub = sinon.stub(AgencyClientConsultantsProjection.prototype, 'save');
 
@@ -63,14 +72,61 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
 
       agencyRepositoryStub.getAggregate.resolves(agencyAggregateStub);
       agencyAggregateStub.getConsultantRole.returns(consultantRole);
+      facadeClientHelperStub.getUserFullName.resolves('AAA');
 
       await handler.handle(event);
       assert.equal(saveStub.callCount, 1, 'save should be called once');
+      facadeClientHelperStub.getUserFullName.should.have.been.calledWith(event.data.consultant_id);
+    });
+
+    it('should create agency client consultant record when user full name not found', async () => {
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyAggregateStub = stubConstructor(AgencyAggregate);
+      const facadeClientHelperStub = stubConstructor(FacadeClientHelper);
+      const handler = new AgencyClientConsultantAssignedEventHandler(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        agencyRepositoryStub,
+        facadeClientHelperStub
+      );
+      const expectedClientConsultantRecord = {
+        _id: event.data._id,
+        agency_id: event.aggregate_id.agency_id,
+        client_id: event.aggregate_id.client_id,
+        consultant_role_id: event.data.consultant_role_id,
+        consultant_role_name: consultantRole.name,
+        consultant_id: event.data.consultant_id,
+        consultant_name: 'Unknown Unknown'
+      };
+      const saveStub = sinon.stub(AgencyClientConsultantsProjection.prototype, 'save');
+
+      saveStub.callsFake(() => {
+        const data = saveStub.thisValues[0];
+
+        assert.deepEqual(
+          data.toJSON(),
+          expectedClientConsultantRecord,
+          'Incorrect agency client consultant record saved'
+        );
+        return Promise.resolve();
+      });
+
+      agencyRepositoryStub.getAggregate.resolves(agencyAggregateStub);
+      agencyAggregateStub.getConsultantRole.returns(consultantRole);
+      facadeClientHelperStub.getUserFullName.rejects(new ResourceNotFoundError('oops'));
+
+      await handler.handle(event);
+      assert.equal(saveStub.callCount, 1, 'save should be called once');
+      facadeClientHelperStub.getUserFullName.should.have.been.calledWith(event.data.consultant_id);
     });
 
     it('should throw an error if the getAggregate call fails', async () => {
       const agencyRepositoryStub = stubConstructor(AgencyRepository);
-      const handler = new AgencyClientConsultantAssignedEventHandler(agencyRepositoryStub);
+      const facadeClientHelperStub = stubConstructor(FacadeClientHelper);
+      const handler = new AgencyClientConsultantAssignedEventHandler(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        agencyRepositoryStub,
+        facadeClientHelperStub
+      );
       const expectedClientConsultantRecord = {
         _id: event.data._id,
         agency_id: event.aggregate_id.agency_id,
@@ -102,7 +158,12 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
     it('should throw error when the call to save the record fails', async () => {
       const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyAggregateStub = stubConstructor(AgencyAggregate);
-      const handler = new AgencyClientConsultantAssignedEventHandler(agencyRepositoryStub);
+      const facadeClientHelperStub = stubConstructor(FacadeClientHelper);
+      const handler = new AgencyClientConsultantAssignedEventHandler(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        agencyRepositoryStub,
+        facadeClientHelperStub
+      );
       const expectedClientConsultantRecord = {
         _id: event.data._id,
         agency_id: event.aggregate_id.agency_id,

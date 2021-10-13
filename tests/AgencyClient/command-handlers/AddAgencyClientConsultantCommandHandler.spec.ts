@@ -1,9 +1,10 @@
 import {assert} from 'chai';
 import {AgencyClientRepository} from '../../../src/AgencyClient/AgencyClientRepository';
 import {AddAgencyClientConsultantCommandHandler} from '../../../src/AgencyClient/command-handlers/AddAgencyClientConsultantCommandHandler';
-import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../../../src/AgencyClient/types';
+import {AgencyClientCommandEnum} from '../../../src/AgencyClient/types';
 import {AgencyClientAggregate} from '../../../src/AgencyClient/AgencyClientAggregate';
 import {stubConstructor} from 'ts-sinon';
+import {EventsEnum} from '../../../src/Events';
 
 describe('AddAgencyClientConsultantCommandHandler', () => {
   describe('execute()', () => {
@@ -20,7 +21,7 @@ describe('AddAgencyClientConsultantCommandHandler', () => {
     };
     const expectedEvents = [
       {
-        type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: aggregateId,
         data: commandData,
         sequence_id: 2

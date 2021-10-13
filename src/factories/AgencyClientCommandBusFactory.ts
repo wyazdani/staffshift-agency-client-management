@@ -6,6 +6,8 @@ import {SyncAgencyClientCommandHandler} from '../AgencyClient/command-handlers/S
 import {UnlinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers/UnlinkAgencyClientCommandHandler';
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 import {RemoveAgencyClientConsultantCommandHandler} from '../AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
+import {AgencyRepository} from '../Agency/AgencyRepository';
+import {AgencyClientWriteProjectionHandler} from '../AgencyClient/AgencyClientWriteProjectionHandler';
 
 /**
  * Factory class responsible for building an AgencyClientCommandBus configured with supported command handlers
@@ -14,8 +16,12 @@ export class AgencyClientCommandBusFactory {
   /**
    * Returns an instance of AgencyClientCommandBus with a list of supported command handlers configured
    */
-  static getCommandBus(eventRepository: EventRepository): AgencyClientCommandBus {
-    const agencyClientRepository = new AgencyClientRepository(eventRepository);
+  static getCommandBus(eventRepository: EventRepository, agencyRepository: AgencyRepository): AgencyClientCommandBus {
+    const agencyClientRepository = new AgencyClientRepository(
+      eventRepository,
+      new AgencyClientWriteProjectionHandler(),
+      agencyRepository
+    );
     const commandBus = new AgencyClientCommandBus();
 
     commandBus
