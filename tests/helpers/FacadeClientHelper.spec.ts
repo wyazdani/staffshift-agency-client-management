@@ -1,9 +1,9 @@
-import {FacadeClientHelper, FacadeClientRecordInterface} from '../../src/helpers/FacadeClientHelper';
+import {FacadeClientHelper} from '../../src/helpers/FacadeClientHelper';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 import sinon from 'sinon';
 import {assert} from 'chai';
 import {LoggerContext} from 'a24-logzio-winston';
-import StaffshiftFacadeClient from 'a24-node-staffshift-facade-client';
+import StaffshiftFacadeClient, {AgencyOrganisationLinkDataType} from 'a24-node-staffshift-facade-client';
 import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
 
 describe('FacadeClientHelper Class', () => {
@@ -87,7 +87,7 @@ describe('FacadeClientHelper Class', () => {
     });
 
     it('success scenario', async () => {
-      const record: FacadeClientRecordInterface = {
+      const record: AgencyOrganisationLinkDataType = {
         _id: 'string',
         organisation_name: 'string',
         organisation_id: 'string',

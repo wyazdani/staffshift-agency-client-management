@@ -16,7 +16,10 @@ import {GenericRepository} from '../GenericRepository';
 import {LocationHelper} from '../helpers/LocationHelper';
 import {QueryHelper} from 'a24-node-query-utils';
 import {PaginationHelper} from '../helpers/PaginationHelper';
-import {AgencyConsultantRolesProjection} from '../models/AgencyConsultantRolesProjection';
+import {
+  AgencyConsultantRolesProjection,
+  AgencyConsultantRolesProjectionDocumentType
+} from '../models/AgencyConsultantRolesProjection';
 
 /**
  * Add Agency Consultant Role
@@ -173,7 +176,10 @@ export const getAgencyConsultantRole = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-    const repository = new GenericRepository(req.Logger, AgencyConsultantRolesProjection);
+    const repository = new GenericRepository<AgencyConsultantRolesProjectionDocumentType>(
+      req.Logger,
+      AgencyConsultantRolesProjection
+    );
     const record = await repository.findOne({
       _id: consultantRoleId,
       agency_id: agencyId
@@ -215,7 +221,10 @@ export const listAgencyConsultantRoles = async (
     const query = QueryHelper.getQuery(swaggerParams);
 
     query.agency_id = agencyId;
-    const service = new GenericRepository(req.Logger, AgencyConsultantRolesProjection);
+    const service = new GenericRepository<AgencyConsultantRolesProjectionDocumentType>(
+      req.Logger,
+      AgencyConsultantRolesProjection
+    );
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
 
     if (isEmpty(data)) {

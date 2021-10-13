@@ -3,14 +3,18 @@ import {Model} from 'mongoose';
 import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyClientRepository} from '../../../AgencyClient/AgencyClientRepository';
 import {EventsEnum} from '../../../Events';
-import {GenericObjectInterface} from 'GenericObjectInterface';
 import {EventRepository} from '../../../EventRepository';
+import {AgencyClientEventLogDocumentType} from '../../../models/AgencyClientEventLog';
+import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
+import {AgencyClientWriteProjectionHandler} from '../../../AgencyClient/AgencyClientWriteProjectionHandler';
+import {AgencyRepository} from '../../../Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjectionHandler';
 
 const events = [EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED];
 
 interface ProjectionOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
-  model: Model<any>;
+  model: Model<AgencyClientEventLogDocumentType>;
   pipeline: string;
   logger: LoggerContext;
 }
@@ -20,7 +24,7 @@ interface ProjectionOptionsInterface extends TransformOptions {
  */
 export class AgencyClientEventLogProjection extends Transform {
   private readonly eventRepository: EventRepository;
-  private model: Model<any>;
+  private model: Model<AgencyClientEventLogDocumentType>;
   private pipeline: string;
   private logger: LoggerContext;
   constructor(opts: ProjectionOptionsInterface) {
@@ -33,7 +37,11 @@ export class AgencyClientEventLogProjection extends Transform {
     this.logger = opts.logger;
   }
 
-  _transform(data: GenericObjectInterface, encoding: BufferEncoding, callback: TransformCallback): void {
+  _transform(
+    data: EventStoreChangeStreamFullDocumentInterface,
+    encoding: BufferEncoding,
+    callback: TransformCallback
+  ): void {
     if (!events.includes(data.event.type)) {
       this.logger.debug('Incoming event ignored', {event: data.event.type});
 
@@ -41,7 +49,11 @@ export class AgencyClientEventLogProjection extends Transform {
     }
     this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
-    const repository = new AgencyClientRepository(this.eventRepository);
+    const repository = new AgencyClientRepository(
+      this.eventRepository,
+      new AgencyClientWriteProjectionHandler(),
+      new AgencyRepository(this.eventRepository, new AgencyWriteProjectionHandler())
+    );
 
     repository
       .getAggregate(event.aggregate_id.agency_id, event.aggregate_id.client_id, event.sequence_id)

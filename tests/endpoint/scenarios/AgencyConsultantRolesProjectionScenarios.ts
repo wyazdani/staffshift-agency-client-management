@@ -1,5 +1,4 @@
 import {AgencyConsultantRolesProjection} from '../../../src/models/AgencyConsultantRolesProjection';
-import {GenericObjectInterface} from '../../../src/types/GenericObjectInterface';
 import {assign} from 'lodash';
 
 export class AgencyConsultantRolesProjectionScenarios {
@@ -8,7 +7,7 @@ export class AgencyConsultantRolesProjectionScenarios {
    *
    * @param opts - overrides the record properties
    */
-  static async create(opts?: GenericObjectInterface): Promise<void> {
+  static async create(opts?: any): Promise<void> {
     await AgencyConsultantRolesProjection.create(
       assign(
         {

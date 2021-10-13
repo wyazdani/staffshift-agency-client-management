@@ -1,33 +1,14 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import config from 'config';
-import StaffshiftFacadeClient from 'a24-node-staffshift-facade-client';
+import StaffshiftFacadeClient, {
+  AgencyOrganisationLinkDataType,
+  ApiClient,
+  ListAgencyOrgLinkOptionsType
+} from 'a24-node-staffshift-facade-client';
 import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
-import {GenericObjectInterface} from 'GenericObjectInterface';
+import {HttpServiceConfigurationInterface} from 'HttpServiceConfigurationInterface';
 
-const clientConfig = config.get<GenericObjectInterface>('a24-staffshift-facade');
-
-export interface FacadeClientRecordInterface {
-  _id: string;
-  organisation_name: string;
-  organisation_id: string;
-  agency_name: string;
-  agency_id: string;
-  agency_org_type: string;
-  agency_linked?: boolean;
-  //There are a lot of fields in the response. but i only added required and the ones that we used in code
-}
-
-interface GetAgencyClientDetailsOptionsInterface {
-  xRequestId: string;
-  agencyId?: string;
-  organisationId?: string;
-  agencyOrgType?: string;
-  siteId?: string;
-  wardId?: string;
-  sortBy?: string[];
-  page?: number;
-  itemsPerPage?: number;
-}
+const clientConfig = config.get<HttpServiceConfigurationInterface>('a24-staffshift-facade');
 
 /**
  * Facade client helper
@@ -58,8 +39,8 @@ export class FacadeClientHelper {
     organisationId: string,
     siteId?: string,
     wardId?: string,
-    options?: GetAgencyClientDetailsOptionsInterface
-  ): Promise<FacadeClientRecordInterface[]> {
+    options?: ListAgencyOrgLinkOptionsType
+  ): Promise<AgencyOrganisationLinkDataType[]> {
     if (!options) {
       options = {
         xRequestId: this.logger.requestId,
@@ -85,43 +66,45 @@ export class FacadeClientHelper {
 
     this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
 
-    return new Promise((resolve: (body?: FacadeClientRecordInterface[]) => void, reject: (error?: Error) => void) => {
-      api.listAgencyOrganisationLink(authorization, options, (error: any, data: any, response: any) => {
-        let item = null;
+    return new Promise(
+      (resolve: (body?: AgencyOrganisationLinkDataType[]) => void, reject: (error?: Error) => void) => {
+        api.listAgencyOrganisationLink(authorization, options, (error, data, response) => {
+          let item = null;
 
-        if (error) {
-          if (response) {
-            if (response.statusCode === 400) {
-              item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
-              const validationError = new ValidationError(item.message, item.errors);
+          if (error) {
+            if (response) {
+              if (response.statusCode === 400) {
+                item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
+                const validationError = new ValidationError(item.message, item.errors);
 
-              return reject(validationError);
+                return reject(validationError);
+              }
+              if (response.statusCode === 401) {
+                const authorizationError = new AuthorizationError('Invalid token specified');
+
+                return reject(authorizationError);
+              }
+
+              if (response.statusCode === 404) {
+                return resolve();
+              }
+
+              item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
+
+              return reject(new RuntimeError(item.message, error));
             }
-            if (response.statusCode === 401) {
-              const authorizationError = new AuthorizationError('Invalid token specified');
+            item = new RuntimeError('An error occurred during the agency client data get call', error);
 
-              return reject(authorizationError);
-            }
-
-            if (response.statusCode === 404) {
-              return resolve();
-            }
-
-            item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
-
-            return reject(new RuntimeError(item.message, error));
+            return reject(item);
           }
-          item = new RuntimeError('An error occurred during the agency client data get call', error);
+          this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
+            body: response.body
+          });
 
-          return reject(item);
-        }
-        this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
-          body: response.body
+          return resolve(response.body);
         });
-
-        return resolve(response.body);
-      });
-    });
+      }
+    );
   }
 
   /**
@@ -129,7 +112,9 @@ export class FacadeClientHelper {
    *
    * @return Promise<Object>
    */
-  async getAgencyClientDetailsListing(options?: GetAgencyClientDetailsOptionsInterface): Promise<any> {
+  async getAgencyClientDetailsListing(
+    options?: ListAgencyOrgLinkOptionsType
+  ): Promise<AgencyOrganisationLinkDataType[]> {
     options = {...options, xRequestId: this.logger.requestId};
     const client = FacadeClientHelper.getInstance();
     const api = new StaffshiftFacadeClient.AgencyOrganisationLinkApi(client);
@@ -137,53 +122,56 @@ export class FacadeClientHelper {
 
     this.logger.debug('The agency client GET call to staffshift facade service has started', {options});
 
-    return new Promise((resolve: (results?: FacadeClientRecordInterface[]) => void, reject: (error: Error) => void) => {
-      api.listAgencyOrganisationLink(authorization, options, (error: any, data: any, response: any) => {
-        let item = null;
+    return new Promise(
+      (resolve: (results?: AgencyOrganisationLinkDataType[]) => void, reject: (error: Error) => void) => {
+        api.listAgencyOrganisationLink(authorization, options, (error, data, response) => {
+          let item = null;
 
-        if (error) {
-          if (response) {
-            if (response.statusCode === 400) {
-              item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
-              const validationError = new ValidationError(item.message, item.errors);
+          if (error) {
+            if (response) {
+              if (response.statusCode === 400) {
+                item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
+                const validationError = new ValidationError(item.message, item.errors);
 
-              return reject(validationError);
+                return reject(validationError);
+              }
+              if (response.statusCode === 401) {
+                const authorizationError = new AuthorizationError('Invalid token specified');
+
+                return reject(authorizationError);
+              }
+
+              if (response.statusCode === 404) {
+                return resolve();
+              }
+
+              item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
+
+              return reject(new RuntimeError(item.message, error));
             }
-            if (response.statusCode === 401) {
-              const authorizationError = new AuthorizationError('Invalid token specified');
-
-              return reject(authorizationError);
-            }
-
-            if (response.statusCode === 404) {
-              return resolve();
-            }
-
-            item = client.deserialize(response, StaffshiftFacadeClient.ServerErrorModel);
+            item = new RuntimeError('An error occurred during the agency client data get call', error);
 
             return reject(item);
           }
-          item = new RuntimeError('An error occurred during the agency client data get call', error);
+          this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
+            body: response.body
+          });
 
-          return reject(item);
-        }
-        this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
-          body: response.body
+          return resolve(response.body);
         });
-
-        return resolve(response.body);
-      });
-    });
+      }
+    );
   }
 
-  static getInstance(): any {
+  /**
+   * Configure and return staffshift facade client instance
+   */
+  static getInstance(): ApiClient {
     const client = new StaffshiftFacadeClient.ApiClient();
-    const requestOptions = clientConfig.request_options as GenericObjectInterface;
+    const requestOptions = clientConfig.request_options;
 
-    client.basePath = `${requestOptions.protocol as string}://${requestOptions.host as string}:${
-      requestOptions.port as string
-    }/${requestOptions.version as string}`;
-
+    client.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
+    client.timeout = clientConfig.request_timeout;
     return client;
   }
 }

@@ -3,8 +3,9 @@ import {stubConstructor} from 'ts-sinon';
 import {AgencyAggregate} from '../../../src/Agency/AgencyAggregate';
 import {AgencyRepository} from '../../../src/Agency/AgencyRepository';
 import {AddAgencyConsultantRoleCommandHandler} from '../../../src/Agency/command-handlers/AddAgencyConsultantRoleCommandHandler';
-import {AgencyCommandEnum, AgencyEventEnum} from '../../../src/Agency/types';
+import {AgencyCommandEnum} from '../../../src/Agency/types';
 import {AddAgencyConsultantRoleCommandDataInterface} from '../../../src/Agency/types/CommandDataTypes';
+import {EventsEnum} from '../../../src/Events';
 
 describe('AddAgencyConsultantRoleCommandHandler', () => {
   describe('execute()', () => {
@@ -32,7 +33,7 @@ describe('AddAgencyConsultantRoleCommandHandler', () => {
         agencyRepository.save.getCall(0).args[0],
         [
           {
-            type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+            type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
             aggregate_id: {agency_id: agencyId},
             data: {
               _id: 'some-id',
@@ -43,7 +44,7 @@ describe('AddAgencyConsultantRoleCommandHandler', () => {
             sequence_id: 101
           },
           {
-            type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
+            type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
             aggregate_id: {agency_id: agencyId},
             data: {
               _id: 'some-id'

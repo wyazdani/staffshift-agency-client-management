@@ -25,13 +25,16 @@ describe('AgencyClientLinkStatus', () => {
     it('should call command bus with correct command', async () => {
       const message = {
         event: {
-          name: 'agency_organisation_link_deleted'
+          name: 'agency_organisation_link_deleted',
+          id: '11111',
+          date_created: new Date()
         },
         event_data: {
           _id: '123',
           agency_id: agencyId,
           organisation_id: clientId
-        }
+        },
+        application_jwt: 'token'
       };
       const expectedCommand = {
         type: 'unlinkAgencyClient',
@@ -49,14 +52,17 @@ describe('AgencyClientLinkStatus', () => {
     it('should call command bus with correct command', async () => {
       const message = {
         event: {
-          name: 'agency_organisation_site_link_deleted'
+          name: 'agency_organisation_site_link_deleted',
+          id: '11111',
+          date_created: new Date()
         },
         event_data: {
           _id: '123',
           agency_id: agencyId,
           organisation_id: '12345',
           site_id: clientId
-        }
+        },
+        application_jwt: 'token'
       };
 
       const expectedCommand = {
@@ -76,7 +82,9 @@ describe('AgencyClientLinkStatus', () => {
     it('should call command bus with correct command', async () => {
       const message = {
         event: {
-          name: 'agency_organisation_site_ward_link_deleted'
+          name: 'agency_organisation_site_ward_link_deleted',
+          id: '11111',
+          date_created: new Date()
         },
         event_data: {
           _id: '123',
@@ -84,7 +92,8 @@ describe('AgencyClientLinkStatus', () => {
           organisation_id: '12345',
           site_id: '57689',
           ward_id: clientId
-        }
+        },
+        application_jwt: 'token'
       };
 
       const expectedCommand = {
@@ -105,13 +114,16 @@ describe('AgencyClientLinkStatus', () => {
     it('should call command bus with correct command', async () => {
       const message = {
         event: {
-          name: 'agency_organisation_link_status_changed'
+          name: 'agency_organisation_link_status_changed',
+          id: '11111',
+          date_created: new Date()
         },
         event_data: {
           _id: '123',
           agency_id: agencyId,
           organisation_id: clientId
-        }
+        },
+        application_jwt: 'token'
       };
 
       const expectedCommand = {
@@ -141,13 +153,16 @@ describe('AgencyClientLinkStatus', () => {
     it('should call command bus with correct command', async () => {
       const message = {
         event: {
-          name: 'agency_organisation_link_created'
+          name: 'agency_organisation_link_created',
+          id: '11111',
+          date_created: new Date()
         },
         event_data: {
           _id: '123',
           agency_id: agencyId,
           organisation_id: clientId
-        }
+        },
+        application_jwt: 'token'
       };
 
       const expectedCommand = {
@@ -177,14 +192,17 @@ describe('AgencyClientLinkStatus', () => {
     it('should call command bus with correct command', async () => {
       const message = {
         event: {
-          name: 'agency_organisation_site_link_status_changed'
+          name: 'agency_organisation_site_link_status_changed',
+          id: '11111',
+          date_created: new Date()
         },
         event_data: {
           _id: '123',
           agency_id: agencyId,
           organisation_id: '12345',
           site_id: clientId
-        }
+        },
+        application_jwt: 'token'
       };
       const expectedCommand = {
         type: 'linkAgencyClient',
@@ -214,7 +232,9 @@ describe('AgencyClientLinkStatus', () => {
     it('should call command bus with correct command', async () => {
       const message = {
         event: {
-          name: 'agency_organisation_site_ward_link_status_changed'
+          name: 'agency_organisation_site_ward_link_status_changed',
+          id: '11111',
+          date_created: new Date()
         },
         event_data: {
           _id: '123',
@@ -222,7 +242,8 @@ describe('AgencyClientLinkStatus', () => {
           organisation_id: '12345',
           site_id: '57689',
           ward_id: clientId
-        }
+        },
+        application_jwt: 'token'
       };
       const expectedCommand = {
         type: 'linkAgencyClient',

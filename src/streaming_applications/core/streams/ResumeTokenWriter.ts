@@ -1,6 +1,5 @@
 import {Writable, WritableOptions} from 'stream';
-import {Collection} from 'mongodb';
-import {GenericObjectInterface} from 'GenericObjectInterface';
+import {ChangeEvent, Collection} from 'mongodb';
 
 export interface ResumeTokenWriterOptionsInterface extends WritableOptions {
   _id: string;
@@ -35,7 +34,7 @@ export class ResumeTokenWriter extends Writable {
     this.persistRate = opts.persistRate || 1;
   }
 
-  _write(data: GenericObjectInterface, encoding: BufferEncoding, next: (error?: Error | null) => void): void {
+  _write(data: ChangeEvent, encoding: BufferEncoding, next: (error?: Error | null) => void): void {
     this.counter++;
     if (this.counter >= this.persistRate || this.isFirstTime) {
       this.isFirstTime = false;

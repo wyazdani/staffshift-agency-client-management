@@ -1,7 +1,9 @@
+import {AgencyClientConsultantAssignedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
-import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
+import {AgencyClientCommandEnum} from '../types';
 import {AddAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
+import {EventsEnum} from '../../Events';
 
 /**
  * Class responsible for handling addAgencyClientConsultant command
@@ -26,9 +28,9 @@ export class AddAgencyClientConsultantCommandHandler implements AgencyClientComm
 
     await this.agencyClientRepository.save([
       {
-        type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: aggregate.getId(),
-        data: commandData,
+        data: commandData as AgencyClientConsultantAssignedEventStoreDataInterface,
         sequence_id: eventId + 1
       }
     ]);

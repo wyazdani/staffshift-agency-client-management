@@ -1,7 +1,9 @@
+import {AgencyConsultantRoleDisabledEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyRepository} from '../AgencyRepository';
-import {AgencyCommandEnum, AgencyEventEnum} from '../types';
+import {AgencyCommandEnum} from '../types';
 import {DisableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
+import {EventsEnum} from '../../Events';
 
 /**
  * Class responsible for handling disableAgencyConsultantRole command
@@ -23,11 +25,11 @@ export class DisableAgencyConsultantRoleCommandHandler implements AgencyCommandH
     }
     await this.agencyRepository.save([
       {
-        type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id
-        },
+        } as AgencyConsultantRoleDisabledEventStoreDataInterface,
         sequence_id: eventId + 1
       }
     ]);

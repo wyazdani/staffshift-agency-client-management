@@ -4,8 +4,9 @@ import {stubConstructor} from 'ts-sinon';
 import {AgencyClientAggregate} from '../../../src/AgencyClient/AgencyClientAggregate';
 import {AgencyClientRepository} from '../../../src/AgencyClient/AgencyClientRepository';
 import {RemoveAgencyClientConsultantCommandHandler} from '../../../src/AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
-import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../../../src/AgencyClient/types';
+import {AgencyClientCommandEnum} from '../../../src/AgencyClient/types';
 import {RemoveAgencyClientConsultantCommandDataInterface} from '../../../src/AgencyClient/types/CommandDataTypes';
+import {EventsEnum} from '../../../src/Events';
 
 describe('RemoveAgencyClientConsultantCommandHandler', () => {
   afterEach(() => {
@@ -39,7 +40,7 @@ describe('RemoveAgencyClientConsultantCommandHandler', () => {
 
       repository.save.should.have.been.calledWith([
         {
-          type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
           aggregate_id: aggregateId,
           data: {
             _id: commandData._id
