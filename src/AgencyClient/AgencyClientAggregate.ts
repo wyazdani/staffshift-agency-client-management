@@ -42,6 +42,10 @@ export class AgencyClientAggregate {
     if (consultantRole.status != 'enabled') {
       throw new ValidationError(`Consultant role ${consultant.consultant_role_id} is not enabled`);
     }
+
+    if (!this.isLinked()) {
+      throw new ValidationError('Client not linked to the agency');
+    }
   }
 
   /**

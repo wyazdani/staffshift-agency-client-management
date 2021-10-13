@@ -30,7 +30,10 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario();
 
   beforeEach(async () => {
-    await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, roleId);
+    await Promise.all([
+      agencyClientScenario.linkAgencyClient(agencyId, clientId),
+      agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, roleId)
+    ]);
   });
 
   afterEach(async () => {
