@@ -77,10 +77,12 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
                 description: {
                   type: 'string'
                 }
-              }
+              },
+              additionalProperties: false
             }
           }
-        }
+        },
+        additionalProperties: false
       };
       const res = await api.patch(`/agency/${agencyId}/consultant-roles/${roleId}`).set(headers).send({
         name: 'ok',
@@ -104,7 +106,8 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const otherHeaders = _.cloneDeep(headers);
 
@@ -132,7 +135,8 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const res = await api.patch(`/agency/${agencyId}/consultant-roles/${roleId}`).set(headers).send({
         name: 'ok',
@@ -205,7 +209,8 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
 
       const res = await api.get(`/agency/${agencyId}/consultant-roles/sample`).set(headers).send();
@@ -226,7 +231,8 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const otherHeaders = _.cloneDeep(headers);
 
@@ -250,7 +256,8 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
 
       const res = await api.get(`/agency/${agencyId}/consultant-roles/${roleId}`).set(headers).send();

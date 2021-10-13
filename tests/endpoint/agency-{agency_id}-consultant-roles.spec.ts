@@ -74,10 +74,12 @@ describe('/agency/{agency_id}/consultant-roles', () => {
                 description: {
                   type: 'string'
                 }
-              }
+              },
+              additionalProperties: false
             }
           }
-        }
+        },
+        additionalProperties: false
       };
       const res = await api.post(`/agency/${agencyId}/consultant-roles`).set(headers).send({
         name: 'ok',
@@ -101,7 +103,8 @@ describe('/agency/{agency_id}/consultant-roles', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const otherHeaders = _.cloneDeep(headers);
 
@@ -195,7 +198,8 @@ describe('/agency/{agency_id}/consultant-roles', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const res = await api.get('/agency/invalid/consultant-roles').set(headers).send();
 
@@ -215,7 +219,8 @@ describe('/agency/{agency_id}/consultant-roles', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const otherHeaders = _.cloneDeep(headers);
 
