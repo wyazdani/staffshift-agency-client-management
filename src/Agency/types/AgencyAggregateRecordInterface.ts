@@ -1,6 +1,6 @@
 import {AgencyConsultantRoleInterface} from './AgencyConsultantRoleInterface';
+import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
 
-export interface AgencyAggregateRecordInterface {
+export interface AgencyAggregateRecordInterface extends BaseAggregateRecordInterface {
   consultant_roles?: AgencyConsultantRoleInterface[];
-  last_sequence_id: number;
 }

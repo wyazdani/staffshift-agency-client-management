@@ -2,7 +2,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
 import {RuntimeError} from 'a24-node-error-utils';
-import {DomainEventMessageInterface} from 'DomainEventMessageInterface';
+import {DomainEventMessageInterface} from 'DomainEventTypes/DomainEventMessageInterface';
 import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEventDataInterface';
 import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../AgencyClient/types';
 

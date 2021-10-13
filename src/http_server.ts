@@ -6,7 +6,7 @@ import {ServerResponse, createServer} from 'http';
 import {EventRepository} from './EventRepository';
 import {EventStore} from './models/EventStore';
 import connect from 'connect';
-import swaggerTools from 'swagger-tools';
+import swaggerTools, {Middleware20} from 'swagger-tools';
 import {load} from 'js-yaml';
 import fs from 'fs';
 import config from 'config';
@@ -20,9 +20,6 @@ import {LinkHeaderHelper} from 'a24-node-query-utils';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurationInterface';
 
-mongoose.plugin((schema: any) => {
-  schema.options.usePushEach = true;
-});
 mongoose.Promise = global.Promise;
 
 const pubsubAuditConfig = {
@@ -77,7 +74,7 @@ export const startServer = new Promise<void>((resolve) => {
     const swaggerDoc = load(spec);
 
     // Initialize the Swagger middleware
-    swaggerTools.initializeMiddleware(swaggerDoc, (middleware: any) => {
+    swaggerTools.initializeMiddleware(swaggerDoc, (middleware: Middleware20) => {
       app.use((req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error | null) => void) => {
         let loggerContext = null;
 
@@ -106,6 +103,7 @@ export const startServer = new Promise<void>((resolve) => {
       // Validate Swagger requests
       app.use(middleware.swaggerValidator());
 
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
       const securityMetaData: {[key in string]: any} = {};
 
       app.use((req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error | null) => void) => {
@@ -134,7 +132,13 @@ export const startServer = new Promise<void>((resolve) => {
       });
 
       // Modifying the middleware swagger security, to cater for jwt verification
-      securityMetaData.jwt = (req: any, def: any, token: any, next: (error?: Error | null) => void) =>
+      securityMetaData.jwt = (
+        req: SwaggerRequestInterface,
+        // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+        def: any,
+        token: string,
+        next: (error?: Error | null) => void
+      ) =>
         JWTSecurityHelper.jwtVerification(
           token,
           config.get<string>('api_token'),
@@ -167,7 +171,7 @@ export const startServer = new Promise<void>((resolve) => {
       // Serve the Swagger documents and Swagger UI
       app.use(middleware.swaggerUi());
 
-      app.use((err: any, req: any, res: any, next: (error?: Error | null) => void) => {
+      app.use((err: Error, req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error | null) => void) => {
         ErrorHandler.onError(err, req, res, next);
       });
 

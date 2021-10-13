@@ -1,9 +1,14 @@
 import {Document, Schema, model} from 'mongoose';
+import {AggregateIdType} from './EventStore';
+
+type EventDataType = {
+  [key in string]: unknown;
+};
 
 export type IncomingDomainEventDocumentType = Document & {
   type: string;
-  aggregate_id: unknown;
-  data: unknown;
+  aggregate_id: AggregateIdType;
+  data: EventDataType;
   sequence_id: number;
   created_at: Date;
   updated_at: Date;

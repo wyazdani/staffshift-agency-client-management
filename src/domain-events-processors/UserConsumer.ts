@@ -2,7 +2,7 @@ import {UserUpdateDomainEventDataInterface} from 'UserUpdateDomainEventDataInter
 import {LoggerContext} from 'a24-logzio-winston';
 import {v4 as uuidv4} from 'uuid';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
-import {DomainEventMessageInterface} from 'DomainEventMessageInterface';
+import {DomainEventMessageInterface} from 'DomainEventTypes/DomainEventMessageInterface';
 import {PubSubMessageMetaDataInterface} from 'PubSubMessageMetaDataInterface';
 import {ConsultantNameChangeProcessor} from './ConsultantNameChangeProcessor';
 

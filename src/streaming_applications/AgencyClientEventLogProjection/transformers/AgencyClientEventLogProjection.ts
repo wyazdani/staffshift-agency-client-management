@@ -5,14 +5,11 @@ import {AgencyClientRepository} from '../../../AgencyClient/AgencyClientReposito
 import {EventsEnum} from '../../../Events';
 import {EventRepository} from '../../../EventRepository';
 import {AgencyClientEventLogDocumentType} from '../../../models/AgencyClientEventLog';
-import {
-  AddAgencyClientConsultantCommandDataInterface,
-  RemoveAgencyClientConsultantCommandDataInterface
-} from '../../../AgencyClient/types/CommandDataTypes';
-import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
+import {AgencyClientWriteProjectionHandler} from '../../../AgencyClient/AgencyClientWriteProjectionHandler';
+import {AgencyRepository} from '../../../Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjectionHandler';
 
-type EventDataType = AddAgencyClientConsultantCommandDataInterface | RemoveAgencyClientConsultantCommandDataInterface;
 const events = [EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED];
 
 interface ProjectionOptionsInterface extends TransformOptions {
@@ -41,7 +38,7 @@ export class AgencyClientEventLogProjection extends Transform {
   }
 
   _transform(
-    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyClientAggregateIdInterface>,
+    data: EventStoreChangeStreamFullDocumentInterface,
     encoding: BufferEncoding,
     callback: TransformCallback
   ): void {
@@ -52,7 +49,11 @@ export class AgencyClientEventLogProjection extends Transform {
     }
     this.logger.debug('Processing the incoming event', {event: data.event.type});
     const event = data.event;
-    const repository = new AgencyClientRepository(this.eventRepository);
+    const repository = new AgencyClientRepository(
+      this.eventRepository,
+      new AgencyClientWriteProjectionHandler(),
+      new AgencyRepository(this.eventRepository, new AgencyWriteProjectionHandler())
+    );
 
     repository
       .getAggregate(event.aggregate_id.agency_id, event.aggregate_id.client_id, event.sequence_id)

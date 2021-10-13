@@ -4,8 +4,9 @@ import {stubConstructor} from 'ts-sinon';
 import {AgencyAggregate} from '../../../src/Agency/AgencyAggregate';
 import {AgencyRepository} from '../../../src/Agency/AgencyRepository';
 import {UpdateAgencyConsultantRoleCommandHandler} from '../../../src/Agency/command-handlers/UpdateAgencyConsultantRoleCommandHandler';
-import {AgencyCommandEnum, AgencyEventEnum} from '../../../src/Agency/types';
+import {AgencyCommandEnum} from '../../../src/Agency/types';
 import {UpdateAgencyConsultantRoleCommandDataInterface} from '../../../src/Agency/types/CommandDataTypes';
+import {EventsEnum} from '../../../src/Events';
 
 describe('UpdateAgencyConsultantRoleCommandHandler', () => {
   afterEach(() => {
@@ -40,7 +41,7 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
 
       agencyRepository.save.should.have.been.calledWith([
         {
-          type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
           aggregate_id: {agency_id: agencyId},
           data: commandData,
           sequence_id: 101

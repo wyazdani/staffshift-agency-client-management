@@ -5,19 +5,18 @@ import {EventRepository} from '../../../EventRepository';
 import {EventsEnum} from '../../../Events';
 import {AgencyClientsProjectionDocumentType} from '../../../models/AgencyClientsProjection';
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
-import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
 import {
   LinkAgencyClientCommandDataInterface,
   SyncAgencyClientCommandDataInterface,
   UnlinkAgencyClientCommandDataInterface
 } from '../../../AgencyClient/types/CommandDataTypes';
 
-type EventDataType =
-  | LinkAgencyClientCommandDataInterface
-  | UnlinkAgencyClientCommandDataInterface
-  | SyncAgencyClientCommandDataInterface;
 const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_UNLINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
+type SupportedEventsDataType =
+  | LinkAgencyClientCommandDataInterface
+  | SyncAgencyClientCommandDataInterface
+  | UnlinkAgencyClientCommandDataInterface;
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
   model: Model<AgencyClientsProjectionDocumentType>;
@@ -45,7 +44,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
   }
 
   _transform(
-    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyClientAggregateIdInterface>,
+    data: EventStoreChangeStreamFullDocumentInterface,
     encoding: BufferEncoding,
     callback: TransformCallback
   ): void {
@@ -61,17 +60,19 @@ export class AgencyClientsProjectionTransformer extends Transform {
       client_id: event.aggregate_id.client_id
     };
 
-    if (event.data.organisation_id) {
-      criteria.organisation_id = event.data.organisation_id;
+    const eventData = event.data as SupportedEventsDataType;
+
+    if (eventData.organisation_id) {
+      criteria.organisation_id = eventData.organisation_id;
     }
-    if (event.data.site_id) {
-      criteria.site_id = event.data.site_id;
+    if (eventData.site_id) {
+      criteria.site_id = eventData.site_id;
     }
     if (EventsEnum.AGENCY_CLIENT_LINKED === data.event.type) {
       this.model.findOneAndUpdate(
         criteria,
         {
-          client_type: event.data.client_type,
+          client_type: eventData.client_type,
           linked: true
         },
         {upsert: true},
@@ -81,7 +82,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
       this.model.findOneAndUpdate(
         criteria,
         {
-          client_type: event.data.client_type,
+          client_type: eventData.client_type,
           linked: false
         },
         {upsert: true},
@@ -91,7 +92,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
       this.model.findOneAndUpdate(
         criteria,
         {
-          client_type: event.data.client_type,
+          client_type: eventData.client_type,
           linked: (event.data as SyncAgencyClientCommandDataInterface).linked
         },
         {upsert: true},

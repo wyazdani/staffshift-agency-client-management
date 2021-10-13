@@ -1,7 +1,9 @@
+import {AgencyClientConsultantUnassignedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
-import {AgencyClientCommandEnum, AgencyClientEventEnum} from '../types';
+import {AgencyClientCommandEnum} from '../types';
 import {RemoveAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
+import {EventsEnum} from '../../Events';
 
 /**
  * Class responsible for handling removeAgencyClientConsultant command
@@ -26,11 +28,11 @@ export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientC
 
     await this.agencyClientRepository.save([
       {
-        type: AgencyClientEventEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
+        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id
-        },
+        } as AgencyClientConsultantUnassignedEventStoreDataInterface,
         sequence_id: eventId + 1
       }
     ]);

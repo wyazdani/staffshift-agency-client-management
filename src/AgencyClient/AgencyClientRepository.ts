@@ -1,35 +1,38 @@
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {EventRepository} from '../EventRepository';
-import {
-  AgencyClientAggregateIdInterface,
-  AgencyClientAggregateRecordInterface,
-  AgencyClientEventInterface
-} from './types';
-import {AgencyClientCommandDataType} from './types/AgencyClientCommandDataType';
-import {EventStoreDocumentType} from '../models/EventStore';
+import {EventRepository, EventInterface} from '../EventRepository';
+import {AgencyClientAggregateRecordInterface} from './types';
+import {EventStoreModelInterface} from '../models/EventStore';
+import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionHandler';
 
+/**
+ * Class responsible for interacting with agency client aggregate data source
+ */
 export class AgencyClientRepository {
-  constructor(private eventRepository: EventRepository) {}
+  constructor(
+    private eventRepository: EventRepository,
+    private agencyClientWriteProjectionHandler: AgencyClientWriteProjectionHandler,
+    private agencyRepository: AgencyRepository
+  ) {}
 
   async getAggregate(
     agencyId: string,
     clientId: string,
     sequenceId: number = undefined
   ): Promise<AgencyClientAggregate> {
-    const projection: AgencyClientAggregateRecordInterface = await this.eventRepository.leftFoldEvents<
-      AgencyClientAggregateIdInterface,
-      AgencyClientEventInterface<AgencyClientCommandDataType>
-    >({agency_id: agencyId, client_id: clientId}, sequenceId);
-
-    return new AgencyClientAggregate(
+    const projection: AgencyClientAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
+      this.agencyClientWriteProjectionHandler,
       {agency_id: agencyId, client_id: clientId},
-      projection,
-      new AgencyRepository(this.eventRepository)
+      sequenceId
     );
+
+    return new AgencyClientAggregate({agency_id: agencyId, client_id: clientId}, projection, this.agencyRepository);
   }
 
-  async save(events: AgencyClientEventInterface<AgencyClientCommandDataType>[]): Promise<EventStoreDocumentType[]> {
-    return this.eventRepository.save<AgencyClientEventInterface<AgencyClientCommandDataType>>(events);
+  /**
+   * Persist agency client related events into event store
+   */
+  async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
+    return this.eventRepository.save(events);
   }
 }

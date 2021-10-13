@@ -1,28 +1,28 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
+import {AgencyClientConsultantAssignedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
 import {AgencyClientConsultantsProjection} from '../../../models/AgencyClientConsultantsProjection';
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
-import {AddAgencyClientConsultantCommandDataInterface} from '../../../AgencyClient/types/CommandDataTypes';
-import {EventStoreDocumentType} from '../../../models/EventStore';
-import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
+import {EventStoreModelInterface} from '../../../models/EventStore';
 
 /**
  * Responsible for handling AgencyClientConsultantAssigned event
  */
-export class AgencyClientConsultantAssignedEventHandler implements EventHandlerInterface {
+export class AgencyClientConsultantAssignedEventHandler
+implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultantAssignedEventStoreDataInterface>> {
   constructor(
     private logger: LoggerContext,
     private agencyRepository: AgencyRepository,
     private facadeClientHelper: FacadeClientHelper
   ) {}
+
   /**
    * Create a new agency client consultant record
+   * handle(event: EventStoreModelInterface<EventDataInterface>): Promise<void>;
    */
-  async handle(
-    event: EventStoreDocumentType<AddAgencyClientConsultantCommandDataInterface, AgencyClientAggregateIdInterface>
-  ): Promise<void> {
+  async handle(event: EventStoreModelInterface<AgencyClientConsultantAssignedEventStoreDataInterface>): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
     const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
     const agencyClientConsultant = new AgencyClientConsultantsProjection({

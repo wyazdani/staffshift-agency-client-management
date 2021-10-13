@@ -3,8 +3,6 @@ import {EventsEnum} from '../../../Events';
 import {LoggerContext} from 'a24-logzio-winston';
 import {EventRepository} from '../../../EventRepository';
 import {EventHandlerFactory} from '../factories/EventHandlerFactory';
-import {EventDataType} from '../types/EventHandlerInterface';
-import {AgencyClientAggregateIdInterface} from '../../../AgencyClient/types';
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 
 const events = [
@@ -34,7 +32,7 @@ export class AgencyClientConsultantProjectionTransformer extends Transform {
   }
 
   _transform(
-    data: EventStoreChangeStreamFullDocumentInterface<EventDataType, AgencyClientAggregateIdInterface>,
+    data: EventStoreChangeStreamFullDocumentInterface,
     encoding: BufferEncoding,
     callback: TransformCallback
   ): void {

@@ -9,8 +9,10 @@ import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBus
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
 import config from 'config';
 import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEventDataInterface';
-import {DomainEventMessageInterface} from 'DomainEventMessageInterface';
+import {DomainEventMessageInterface} from 'DomainEventTypes/DomainEventMessageInterface';
 import {PubSubMessageMetaDataInterface} from 'PubSubMessageMetaDataInterface';
+import {AgencyRepository} from '../Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
 
 const getEventMeta = async (logger: LoggerContext, token: string): Promise<EventMetaInterface> =>
   new Promise((resolve, reject) =>
@@ -47,7 +49,10 @@ const process = async (
     case 'agency_organisation_site_ward_link_created':
     case 'agency_organisation_site_ward_link_deleted':
     case 'agency_organisation_site_ward_link_status_changed': {
-      const agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository);
+      const agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(
+        eventRepository,
+        new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler())
+      );
       const facadeClientHelper = new FacadeClientHelper(logger);
       const handler = new AgencyClientLinkStatus(logger, agencyClientCommandBus, facadeClientHelper);
 

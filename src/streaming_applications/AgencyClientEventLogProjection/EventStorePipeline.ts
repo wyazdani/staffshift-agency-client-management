@@ -51,6 +51,7 @@ export class EventStorePipeline implements PipelineInterface {
     const eventRepository = new EventRepository(EventStore, logger.requestId);
     const watchOptions = await tokenManager.setResumeAfterWatchOptions(this.getID(), STREAM_TYPES_ENUM.WATCH);
     const watchDb = await clientManager.getClientDatabase(logger, AGENCY_CLIENT_MANAGEMENT_DB_KEY);
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const watchStream: any = watchDb.collection(EventStore.collection.name).watch(watchOptions);
 
     logger.info('Collection watch initiated', {

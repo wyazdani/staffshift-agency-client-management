@@ -1,7 +1,12 @@
+import {
+  AgencyConsultantRoleAddedEventStoreDataInterface,
+  AgencyConsultantRoleEnabledEventStoreDataInterface
+} from 'EventStoreDataTypes';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
-import {AgencyCommandEnum, AgencyEventEnum} from '../types';
+import {AgencyCommandEnum} from '../types';
+import {EventsEnum} from '../../Events';
 
 /**
  * Class responsible for handling addAgencyConsultantRole command
@@ -21,22 +26,22 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
 
     await this.agencyRepository.save([
       {
-        type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id,
           name: commandData.name,
           description: commandData.description,
           max_consultants: commandData.max_consultants
-        },
+        } as AgencyConsultantRoleAddedEventStoreDataInterface,
         sequence_id: ++eventId
       },
       {
-        type: AgencyEventEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: aggregate.getId(),
         data: {
           _id: commandData._id
-        },
+        } as AgencyConsultantRoleEnabledEventStoreDataInterface,
         sequence_id: ++eventId
       }
     ]);

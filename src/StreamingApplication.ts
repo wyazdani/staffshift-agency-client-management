@@ -13,9 +13,6 @@ import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurat
 
 const StreamTracker = 'StreamTracker';
 
-mongoose.plugin((schema: any) => {
-  schema.options.usePushEach = true;
-});
 mongoose.Promise = global.Promise;
 
 mongoose.connect(

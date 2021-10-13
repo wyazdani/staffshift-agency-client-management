@@ -1,6 +1,6 @@
-import {EventStoreDocumentType} from '../models/EventStore';
+import {EventStoreModelInterface} from '../models/EventStore';
 
-export interface EventStoreChangeStreamFullDocumentInterface<EventDataType, AggregateId> {
+export interface EventStoreChangeStreamFullDocumentInterface {
   _id: string; // change stream identifier
-  event: EventStoreDocumentType<EventDataType, AggregateId>; // full document from event store collection
+  event: EventStoreModelInterface; // full document from event store collection
 }

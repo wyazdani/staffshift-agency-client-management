@@ -1,5 +1,7 @@
+import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {Document, Schema, model} from 'mongoose';
 import {EventsEnum} from '../Events';
+import {AgencyClientsProjectionDocumentType} from './AgencyClientsProjection';
 
 const contextSchema = new Schema<Document>(
   {
@@ -42,16 +44,28 @@ const eventMetaDataSchema = new Schema(
   }
 );
 
-export type EventStoreDocumentType<Data = unknown, AggregateId = unknown> = Document & {
+export type AggregateIdType = {
+  [key in string]: string;
+};
+
+export interface EventStoreModelInterface<D extends BaseEventStoreDataInterface = BaseEventStoreDataInterface>
+  extends Document {
   type: EventsEnum;
-  aggregate_id: AggregateId;
-  data: Data;
+  aggregate_id: AggregateIdType;
+  data: D;
   sequence_id: number;
-  meta_data: typeof eventMetaDataSchema;
+  meta_data: {
+    user_id: string;
+    client_id?: string;
+    context?: {
+      type: string;
+      id?: string;
+    };
+  };
   correlation_id: string;
   created_at: Date;
   updated_at: Date;
-};
+}
 
 const eventStoreSchema = new Schema(
   {
@@ -99,4 +113,4 @@ const eventStoreSchema = new Schema(
 /**
  * Defines the model for the Event Store
  */
-export const EventStore = model<EventStoreDocumentType<unknown>>('EventStore', eventStoreSchema);
+export const EventStore = model<EventStoreModelInterface>('EventStore', eventStoreSchema);
