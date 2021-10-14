@@ -99,4 +99,29 @@ declare module 'a24-node-staffshift-facade-client' {
       cb: ClientRequestCallbackType
     ): void;
   }
+
+  // User API:
+  export type UserDetailsDataType = {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+  };
+  export type GetUserDetailsOptionsType = {
+    xRequestId?: string;
+  };
+  export type ClientUserDetailsRequestCallbackType = (
+    err: Error | null,
+    data: UserDetailsDataType[],
+    response: Response
+  ) => void;
+
+  export class UserApi {
+    constructor(client: ApiClient);
+    public getUserDetails(
+      userId: string,
+      authToken: string,
+      reqOptions: GetUserDetailsOptionsType,
+      cb: ClientUserDetailsRequestCallbackType
+    ): void;
+  }
 }

@@ -9,6 +9,7 @@ import {AgencyClientConsultantUnassignedEventHandler} from '../event-handlers/Ag
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjectionHandler';
 import {EventsEnum} from '../../../Events';
+import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
 
 /**
  * Responsible for building different event handlers
@@ -25,7 +26,9 @@ export class EventHandlerFactory {
     switch (eventType) {
       case EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED:
         return new AgencyClientConsultantAssignedEventHandler(
-          new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler())
+          logger,
+          new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler()),
+          new FacadeClientHelper(logger)
         );
       case EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED:
         return new AgencyClientConsultantUnassignedEventHandler();

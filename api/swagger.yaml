@@ -573,6 +573,7 @@ definitions:
       - consultant_role_id
       - consultant_role_name
       - consultant_id
+      - consultant_name
       - created_at
       - updated_at
       - __v
@@ -588,6 +589,8 @@ definitions:
       consultant_role_name:
         type: string
       consultant_id:
+        type: string
+      consultant_name:
         type: string
       created_at:
         type: string

@@ -3,8 +3,11 @@ import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 import sinon from 'sinon';
 import {assert} from 'chai';
 import {LoggerContext} from 'a24-logzio-winston';
-import StaffshiftFacadeClient, {AgencyOrganisationLinkDataType} from 'a24-node-staffshift-facade-client';
-import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
+import StaffshiftFacadeClient, {
+  AgencyOrganisationLinkDataType,
+  UserDetailsDataType
+} from 'a24-node-staffshift-facade-client';
+import {ValidationError, AuthorizationError, RuntimeError, ResourceNotFoundError} from 'a24-node-error-utils';
 
 describe('FacadeClientHelper Class', () => {
   let logger: LoggerContext;
@@ -113,6 +116,103 @@ describe('FacadeClientHelper Class', () => {
 
       assert.equal(result, apiResponse.body);
       assert.equal(listAgencyOrganisationLink.callCount, 1, 'listAgencyOrganisationLink not called');
+    });
+  });
+
+  describe('getUserFullName()', () => {
+    const userId = 'user id';
+    const error = new Error('custom');
+
+    it('success scenario', async () => {
+      const record: UserDetailsDataType = {
+        user_id: userId,
+        first_name: 'first name',
+        last_name: 'last name'
+      };
+      const apiResponse = {
+        body: record
+      };
+      const client = new FacadeClientHelper(logger);
+      const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
+        _userId.should.to.equal(userId);
+        clb(null, apiResponse, apiResponse);
+      });
+
+      sinon.stub(StaffshiftFacadeClient, 'UserApi').returns({
+        getUserDetails
+      });
+      const fullName = await client.getUserFullName(userId);
+
+      fullName.should.to.equal('first name last name');
+    });
+    it('test for validation error when downstream returns 400 status code', async () => {
+      const apiResponse = {
+        statusCode: 400,
+        body: {
+          code: 'MODEL_VALIDATION_FAILED',
+          message: 'some validation message'
+        }
+      };
+      const client = new FacadeClientHelper(logger);
+      const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
+        _userId.should.to.equal(userId);
+        clb(error, apiResponse, apiResponse);
+      });
+
+      sinon.stub(StaffshiftFacadeClient, 'UserApi').returns({getUserDetails});
+      await client.getUserFullName(userId).should.be.rejectedWith(ValidationError, 'some validation message');
+    });
+
+    it('test for authorization error when downstream returns 401 status code', async () => {
+      const apiResponse = {
+        statusCode: 401,
+        body: {
+          code: 'UNAUTHORIZED',
+          message: 'Invalid token specified'
+        }
+      };
+      const client = new FacadeClientHelper(logger);
+      const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
+        _userId.should.to.equal(userId);
+        clb(error, apiResponse, apiResponse);
+      });
+
+      sinon.stub(StaffshiftFacadeClient, 'UserApi').returns({getUserDetails});
+      await client.getUserFullName(userId).should.be.rejectedWith(AuthorizationError, 'Invalid token specified');
+    });
+
+    it('test it resolves successfully when downstream returns 404', async () => {
+      const apiResponse = {
+        statusCode: 404
+      };
+      const client = new FacadeClientHelper(logger);
+      const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
+        _userId.should.to.equal(userId);
+        clb(error, apiResponse, apiResponse);
+      });
+
+      sinon.stub(StaffshiftFacadeClient, 'UserApi').returns({getUserDetails});
+      await client.getUserFullName(userId).should.be.rejectedWith(ResourceNotFoundError, 'User not found');
+    });
+
+    it('test for validation when downstream returns 401 status code', async () => {
+      const apiResponse = {
+        statusCode: 500,
+        body: {
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Internal server error'
+        }
+      };
+      const client = new FacadeClientHelper(logger);
+      const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
+        _userId.should.to.equal(userId);
+        clb(error, apiResponse, apiResponse);
+      });
+
+      sinon.stub(StaffshiftFacadeClient, 'UserApi').returns({getUserDetails});
+      await client
+        .getUserFullName(userId)
+        .should.be.rejectedWith(RuntimeError, 'An error occurred during getUserDetails get call');
     });
   });
 });

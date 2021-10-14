@@ -3,9 +3,10 @@ import config from 'config';
 import StaffshiftFacadeClient, {
   AgencyOrganisationLinkDataType,
   ApiClient,
-  ListAgencyOrgLinkOptionsType
+  ListAgencyOrgLinkOptionsType,
+  UserDetailsDataType
 } from 'a24-node-staffshift-facade-client';
-import {ValidationError, AuthorizationError, RuntimeError} from 'a24-node-error-utils';
+import {ValidationError, AuthorizationError, RuntimeError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {HttpServiceConfigurationInterface} from 'HttpServiceConfigurationInterface';
 
 const clientConfig = config.get<HttpServiceConfigurationInterface>('a24-staffshift-facade');
@@ -161,6 +162,60 @@ export class FacadeClientHelper {
         });
       }
     );
+  }
+
+  /**
+   * get user full name
+   *
+   * @param userId
+   */
+  async getUserFullName(userId: string): Promise<string> {
+    const details = await this.getUserDetails(userId);
+
+    return `${details.first_name} ${details.last_name}`;
+  }
+
+  /**
+   * get user details
+   *
+   * @param userId - user id
+   */
+  private getUserDetails(userId: string): Promise<UserDetailsDataType> {
+    const options = {xRequestId: this.logger.requestId};
+    const client = FacadeClientHelper.getInstance();
+    const api = new StaffshiftFacadeClient.UserApi(client);
+    const tokenAuthorization = `token ${config.get('a24-staffshift-facade.api_token')}`;
+
+    this.logger.info('The user details GET call to staffshift facade service has started', {userId});
+    return new Promise((resolve, reject) => {
+      api.getUserDetails(userId, tokenAuthorization, options, (error: Error, data, response) => {
+        let item = null;
+
+        if (error) {
+          if (response) {
+            if (response.statusCode === 400) {
+              item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
+              const validationError = new ValidationError(item.message, item.errors);
+
+              return reject(validationError);
+            }
+            if (response.statusCode === 401) {
+              return reject(new AuthorizationError('Invalid token specified'));
+            }
+
+            if (response.statusCode === 404) {
+              return reject(new ResourceNotFoundError('User not found'));
+            }
+
+            return reject(new RuntimeError('An error occurred during getUserDetails get call', error));
+          }
+          item = new RuntimeError('Error occurred during user details GET call', error);
+          return reject(item);
+        }
+
+        return resolve(response.body);
+      });
+    });
   }
 
   /**
