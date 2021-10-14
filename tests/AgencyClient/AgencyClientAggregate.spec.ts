@@ -117,10 +117,7 @@ describe('AgencyClientAggregate', () => {
 
     it('should return validation error when client is not linked to agency', async () => {
       const aggregate = {
-        last_sequence_id: 1,
-        linked: false,
-        client_type: 'site',
-        consultants: [consultant]
+        last_sequence_id: 0
       };
       const consultantRole = {
         _id: '2020',

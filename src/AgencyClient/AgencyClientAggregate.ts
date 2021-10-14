@@ -1,4 +1,4 @@
-import {countBy, find} from 'lodash';
+import {countBy, find, isUndefined} from 'lodash';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {
@@ -43,7 +43,7 @@ export class AgencyClientAggregate {
       throw new ValidationError(`Consultant role ${consultant.consultant_role_id} is not enabled`);
     }
 
-    if (!this.isLinked()) {
+    if (isUndefined(this.aggregate.linked)) {
       throw new ValidationError('Client not linked to the agency');
     }
   }
