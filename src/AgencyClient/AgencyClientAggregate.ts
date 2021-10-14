@@ -44,7 +44,7 @@ export class AgencyClientAggregate {
     }
 
     if (isUndefined(this.aggregate.linked)) {
-      throw new ValidationError('Client not linked to the agency');
+      throw new ResourceNotFoundError('Agency client not found');
     }
   }
 

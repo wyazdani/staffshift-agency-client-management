@@ -130,6 +130,31 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
       assert.equal(res.statusCode, 401);
       assert.isTrue(validator.validate(res.body, schema), 'response does not match expected schema');
     });
+
+    it('should respond with 404 validation Error', async () => {
+      const schema = {
+        description: 'No resource found',
+        type: 'object',
+        required: ['code', 'message'],
+        properties: {
+          code: {
+            type: 'string',
+            enum: ['RESOURCE_NOT_FOUND']
+          },
+          message: {
+            type: 'string'
+          }
+        }
+      };
+      const res = await api.post(`/agency/${agencyId}/clients/5f5b8afe085def4826c43ee8/consultants`).set(headers).send({
+        consultant_role_id: roleId,
+        consultant_id: '61432f88d7667e06d38e73b4'
+      });
+
+      assert.equal(res.statusCode, 404, 'incorrect status code returned');
+      assert.isTrue(validator.validate(res.body, schema), 'response does not match expected schema');
+    });
+
   });
 
   describe('get', () => {

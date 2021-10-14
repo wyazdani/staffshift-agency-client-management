@@ -136,7 +136,7 @@ describe('AgencyClientAggregate', () => {
 
       await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Client not linked to the agency');
+        .should.be.rejectedWith(ResourceNotFoundError, 'Agency client not found');
       assert.equal(
         agencyRepositoryStub.getAggregate.getCall(0).args[0],
         agencyId,
