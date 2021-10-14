@@ -11,7 +11,8 @@
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore .",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
-    "start-streaming-application-core": "node dist/StreamingApplication --type=core"
+    "start-streaming-application-core": "node dist/StreamingApplication --type=core",
+    "generate-event-docs": "node dist/tools/generate_events_docs.js"
   },
   "pre-commit": [
     "lint"

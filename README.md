@@ -17,6 +17,7 @@ By making a contribution to this project, I certify that:
 * [Running the project](#running-the-project)
 * [Test Cases](#test-cases)
 * [VS Code Settings](#vs-code-settings)
+* [Events](https://github.com/A24Group/staffshift-agency-client-management/blob/master/Events.md)
 
 
 ## JWT

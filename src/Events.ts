@@ -14,7 +14,7 @@ type EventsType = {
   [key in EventsEnum]: {name: string; description: string};
 };
 
-const events: EventsType = {
+export const events: EventsType = {
   [EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED]: {
     name: 'AgencyConsultantRoleAdded',
     description: 'The Agency Consultant Role has been created'
