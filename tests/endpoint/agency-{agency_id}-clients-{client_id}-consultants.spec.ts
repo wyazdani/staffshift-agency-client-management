@@ -171,6 +171,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
             "consultant_role_id",
             "consultant_role_name",
             "consultant_id",
+            "consultant_name",
             "created_at",
             "updated_at",
             "__v"
@@ -192,6 +193,9 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
               "type": "string"
             },
             "consultant_id": {
+              "type": "string"
+            },
+            "consultant_name": {
               "type": "string"
             },
             "created_at": {
