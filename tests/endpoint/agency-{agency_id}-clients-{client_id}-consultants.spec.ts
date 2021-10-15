@@ -88,10 +88,12 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
                 description: {
                   type: 'string'
                 }
-              }
+              },
+              additionalProperties: false
             }
           }
-        }
+        },
+        additionalProperties: false
       };
       const res = await api.post(`/agency/${agencyId}/clients/${clientId}/consultants`).set(headers).send({
         consultant_role_id: 'blah',
@@ -114,7 +116,8 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const headersClone = cloneDeep(headers);
 
@@ -223,7 +226,8 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
           "message": {
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       };
 
       /*eslint-enable*/
@@ -251,7 +255,8 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
           "message": {
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       };
 
       /*eslint-enable*/
