@@ -7,18 +7,16 @@ jobs:
       # Checkout the project
       - name: Checkout Project
         uses: actions/checkout@v2
+      # Install ssh key
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          persist-credentials: false
+          ssh-private-key: ${{ secrets.ROBSON }}
       # Install node
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.ROBSON }}
-          name: github_id
       - name: NPM Install
         run: npm install
       - name: Run generator script
