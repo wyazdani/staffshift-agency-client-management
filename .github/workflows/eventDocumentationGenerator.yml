@@ -11,7 +11,7 @@ jobs:
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.ROBSON }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       # Install node
       - name: Setup Node
         uses: actions/setup-node@v2
