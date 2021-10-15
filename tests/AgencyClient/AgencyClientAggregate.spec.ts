@@ -114,6 +114,40 @@ describe('AgencyClientAggregate', () => {
         'getConsultantRole called with incorrect args'
       );
     });
+
+    it('should return validation error when client is not linked to agency', async function () {
+      const aggregate = {
+        last_sequence_id: 0
+      };
+      const consultantRole = {
+        _id: '2020',
+        name: 'ooh',
+        description: 'blah',
+        max_consultants: 5,
+        status: AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED
+      };
+
+      const AgencyAggregateStub = stubConstructor(AgencyAggregate);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+
+      agencyRepositoryStub.getAggregate.resolves(AgencyAggregateStub);
+      AgencyAggregateStub.getConsultantRole.returns(consultantRole);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      await agencyClientAggregate
+        .validateAddClientConsultant(consultant)
+        .should.be.rejectedWith(ResourceNotFoundError, 'Agency client not found');
+      assert.equal(
+        agencyRepositoryStub.getAggregate.getCall(0).args[0],
+        agencyId,
+        'getAggregate called with incorrect args'
+      );
+      assert.equal(
+        AgencyAggregateStub.getConsultantRole.getCall(0).args[0],
+        roleId,
+        'getConsultantRole called with incorrect args'
+      );
+    });
   });
 
   describe('validateRemoveClientConsultant()', () => {

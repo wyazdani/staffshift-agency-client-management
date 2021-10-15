@@ -152,6 +152,8 @@ paths:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
             $ref: "#/definitions/assign_agency_client_consultant_validation_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         401:
           $ref: "#/responses/unauthorize_error_model"
         default:

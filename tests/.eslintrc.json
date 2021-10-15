@@ -1,6 +1,7 @@
 {
   "rules": {
-    "prefer-arrow-callback": "error",
+    "prefer-arrow-callback": "off",
+    "func-names": "off",
     "arrow-body-style": ["error", "as-needed"],
     "prefer-arrow/prefer-arrow-functions": [
       "off"
