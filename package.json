@@ -12,7 +12,7 @@
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
     "start-streaming-application-core": "node dist/StreamingApplication --type=core",
-    "dev-generate-event-docs": "node dist/tools/generate_events_docs.js"
+    "dev-generate-event-docs": "ts-node src/tools/generate_events_docs.ts"
   },
   "pre-commit": [
     "lint"
