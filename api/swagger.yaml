@@ -615,6 +615,7 @@ definitions:
           - REQUIRED
       message:
         type: string
+    additionalProperties: false
   agency_consultant_role_payload_def:
     type: object
     required:
@@ -703,6 +704,7 @@ definitions:
           - UNAUTHORIZED
       message:
         type: "string"
+    additionalProperties: false
   empty_payload_def:
     type: object
     additionalProperties: false
@@ -718,6 +720,7 @@ definitions:
         type: string
       stack:
         type: string
+    additionalProperties: false
   server_status_response:
     type: "object"
     required:
@@ -725,6 +728,7 @@ definitions:
     properties:
       up_time:
         type: integer
+    additionalProperties: false
   server_error_model:
     type: object
     required:
@@ -737,6 +741,7 @@ definitions:
         type: string
       stack:
         type: string
+    additionalProperties: false
   resource_not_found:
     description: "No resource found"
     type: object
@@ -750,6 +755,7 @@ definitions:
           - RESOURCE_NOT_FOUND
       message:
         type: string
+    additionalProperties: false
   add_consultant_roles_validation_error_model:
     type: object
     required:
@@ -784,6 +790,8 @@ definitions:
                 type: "string"
             description:
               type: "string"
+          additionalProperties: false
+    additionalProperties: false
   update_consultant_roles_validation_error_model:
     type: object
     required:
@@ -822,6 +830,8 @@ definitions:
                 type: "string"
             description:
               type: "string"
+          additionalProperties: false
+    additionalProperties: false
   assign_agency_client_consultant_validation_error_model:
     type: object
     required:
@@ -861,6 +871,8 @@ definitions:
                 type: string
             description:
               type: string
+          additionalProperties: false
+    additionalProperties: false
   remove_agency_client_consultant_validation_error_model:
     type: object
     required:
@@ -874,6 +886,7 @@ definitions:
           - PATTERN
       message:
         type: string
+    additionalProperties: false
   get_consultant_role_list_validation_error_model:
     type: object
     required:
@@ -889,6 +902,7 @@ definitions:
           - REQUIRED
       message:
         type: string
+    additionalProperties: false
   get_consultant_role_validation_error_model:
     type: object
     required:
@@ -902,6 +916,7 @@ definitions:
           - REQUIRED
       message:
         type: string
+    additionalProperties: false
 responses:
   unauthorize_error_model:
     description: "Failed to authenticate the incoming request"

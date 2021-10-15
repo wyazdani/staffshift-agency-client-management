@@ -66,7 +66,8 @@ describe('agency-{agency_id}-clients-{client_id}-consultants-{consultant_id}', (
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const res = await api.del(`/agency/${agencyId}/clients/${clientId}/consultants/44444`).set(headers).send();
 
@@ -86,7 +87,8 @@ describe('agency-{agency_id}-clients-{client_id}-consultants-{consultant_id}', (
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
       const otherHeaders = _.cloneDeep(headers);
 
@@ -113,7 +115,8 @@ describe('agency-{agency_id}-clients-{client_id}-consultants-{consultant_id}', (
           message: {
             type: 'string'
           }
-        }
+        },
+        additionalProperties: false
       };
 
       await agencyClientScenario.linkAgencyClient(agencyId, clientId);
