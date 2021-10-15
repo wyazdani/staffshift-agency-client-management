@@ -7,6 +7,8 @@ jobs:
       # Checkout the project
       - name: Checkout Project
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       # Install node
       - name: Setup Node
         uses: actions/setup-node@v2
