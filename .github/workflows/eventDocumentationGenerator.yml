@@ -21,3 +21,6 @@ jobs:
         run: npm install
       - name: Run generator script
         run: npm run dev-generate-event-docs
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update event documentation
