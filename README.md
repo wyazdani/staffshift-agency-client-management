@@ -11,6 +11,7 @@ By making a contribution to this project, I certify that:
 
 ## Table Of Contents
 * [Contributing Guidelines](https://github.com/A24Group/big-book-of-information/blob/master/onboarding/contributing.md)
+* [Events](https://github.com/A24Group/staffshift-agency-client-management/blob/master/Events.md)
 * [JWT](#jwt)
 * [Onboarding Documentation](https://github.com/A24Group/big-book-of-information/tree/master/onboarding)
 * [Project Design Reference Material](https://github.com/A24Group/big-book-of-information/tree/master/ddd_cqrs_eventsourcing)
