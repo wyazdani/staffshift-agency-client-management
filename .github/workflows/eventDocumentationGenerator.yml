@@ -18,10 +18,11 @@ jobs:
         with:
           node-version: '14'
       - name: NPM Install
-        run: npm install
+        run: npm install --only=dev
       - name: Run generator script
         run: npm run dev-generate-event-docs
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update event documentation
           file_pattern: "*.md"
