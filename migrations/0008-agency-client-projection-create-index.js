@@ -9,7 +9,7 @@ const indexOptions = {
   background: true
 };
 module.exports = {
-  id: '0007-agency-client-projection-create-index',
+  id: '0008-agency-client-projection-create-index',
   up: (db, cb) => {
     db.createCollection(collectionName, {collation: {locale: 'en_US', strength: 2}}, (err) => {
       //if collection already exists, it does not throw error
