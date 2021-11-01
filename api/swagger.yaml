@@ -863,6 +863,9 @@ definitions:
                 - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - OBJECT_MISSING_REQUIRED_PROPERTY
+                - MAX_CONSULTANTS_ASSIGNED
+                - CONSULTANT_ROLE_NOT_FOUND
+                - CONSULTANT_ROLE_NOT_ENABLED
             message:
               type: string
             path:
