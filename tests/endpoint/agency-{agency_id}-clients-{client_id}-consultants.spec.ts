@@ -77,7 +77,15 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
               properties: {
                 code: {
                   type: 'string',
-                  enum: ['INVALID_TYPE', 'PATTERN', 'OBJECT_ADDITIONAL_PROPERTIES', 'OBJECT_MISSING_REQUIRED_PROPERTY']
+                  enum: [
+                    'INVALID_TYPE',
+                    'PATTERN',
+                    'OBJECT_ADDITIONAL_PROPERTIES',
+                    'OBJECT_MISSING_REQUIRED_PROPERTY',
+                    'CONSULTANT_ROLE_NOT_ENABLED',
+                    'CONSULTANT_ROLE_NOT_FOUND',
+                    'MAX_CONSULTANTS_ASSIGNED'
+                  ]
                 },
                 message: {
                   type: 'string'
@@ -157,7 +165,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
       assert.equal(res.statusCode, 404, 'incorrect status code returned');
       assert.isTrue(validator.validate(res.body, schema), 'response does not match expected schema');
     });
-
   });
 
   describe('get', () => {

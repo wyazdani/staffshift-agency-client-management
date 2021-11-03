@@ -36,9 +36,19 @@ describe('AgencyClientAggregate', () => {
       AgencyAggregateStub.getConsultantRole.returns(undefined);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
 
-      await agencyClientAggregate
+      const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Consultant role 2020 does not not exist');
+        .should.be.rejectedWith(ValidationError);
+
+      error.should.to.deep.equal(
+        new ValidationError('Not allowed consultant role', [
+          {
+            code: 'CONSULTANT_ROLE_NOT_FOUND',
+            message: `Consultant role ${consultant.consultant_role_id} does not not exist`,
+            path: ['consultant_role_id']
+          }
+        ])
+      );
     });
 
     it('should return validation error when max consultants have been exceeded', async () => {
@@ -63,9 +73,19 @@ describe('AgencyClientAggregate', () => {
       AgencyAggregateStub.getConsultantRole.returns(consultantRole);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
 
-      await agencyClientAggregate
+      const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Too many consultants for the role 2020');
+        .should.be.rejectedWith(ValidationError);
+
+      error.should.to.deep.equal(
+        new ValidationError('Not allowed consultant role', [
+          {
+            code: 'MAX_CONSULTANTS_ASSIGNED',
+            message: `Max consultants already assigned for consultant role id: ${consultant.consultant_role_id}`,
+            path: ['consultant_role_id']
+          }
+        ])
+      );
       assert.equal(
         agencyRepositoryStub.getAggregate.getCall(0).args[0],
         agencyId,
@@ -100,9 +120,19 @@ describe('AgencyClientAggregate', () => {
       AgencyAggregateStub.getConsultantRole.returns(consultantRole);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
 
-      await agencyClientAggregate
+      const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Consultant role 2020 is not enabled');
+        .should.be.rejectedWith(ValidationError);
+
+      error.should.to.deep.equal(
+        new ValidationError('Not allowed consultant role', [
+          {
+            code: 'CONSULTANT_ROLE_NOT_ENABLED',
+            message: `Consultant role ${consultant.consultant_role_id} is not enabled`,
+            path: ['consultant_role_id']
+          }
+        ])
+      );
       assert.equal(
         agencyRepositoryStub.getAggregate.getCall(0).args[0],
         agencyId,
