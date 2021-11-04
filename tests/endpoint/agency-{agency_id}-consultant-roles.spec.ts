@@ -60,7 +60,7 @@ describe('/agency/{agency_id}/consultant-roles', () => {
               properties: {
                 code: {
                   type: 'string',
-                  enum: ['INVALID_TYPE', 'MINIMUM', 'OBJECT_ADDITIONAL_PROPERTIES', 'OBJECT_MISSING_REQUIRED_PROPERTY']
+                  enum: ['INVALID_TYPE', 'MINIMUM', 'MIN_LENGTH', 'MAX_LENGTH', 'OBJECT_ADDITIONAL_PROPERTIES', 'OBJECT_MISSING_REQUIRED_PROPERTY']
                 },
                 message: {
                   type: 'string'
@@ -82,9 +82,9 @@ describe('/agency/{agency_id}/consultant-roles', () => {
         additionalProperties: false
       };
       const res = await api.post(`/agency/${agencyId}/consultant-roles`).set(headers).send({
-        name: 'ok',
+        name: 'o',
         description: 'description',
-        max_consultants: 0
+        max_consultants: 2
       });
 
       assert.equal(res.statusCode, 400);
