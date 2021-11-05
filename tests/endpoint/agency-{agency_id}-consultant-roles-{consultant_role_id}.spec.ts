@@ -40,7 +40,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}', () => {
         max_consultants: 2
       });
 
-      resEndpoint.statusCode.should.to.equal(202);
+      resEndpoint.statusCode.should.equal(202);
     });
 
     it('should respond with 400 Validation Error', async () => {

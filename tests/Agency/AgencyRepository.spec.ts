@@ -28,7 +28,7 @@ describe('AgencyRepository class', () => {
       const aggregate = await agencyRepository.getAggregate(agencyId);
 
       leftFoldEvents.should.have.been.calledWith(writeProjectionHandler, {agency_id: agencyId}, undefined);
-      aggregate.getId().agency_id.should.to.equal(agencyId);
+      aggregate.getId().agency_id.should.equal(agencyId);
     });
   });
 

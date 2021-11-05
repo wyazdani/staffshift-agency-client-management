@@ -33,8 +33,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_LINKED, aggregate, event);
 
-        result.linked.should.to.be.true;
-        result.client_type.should.to.equal('site');
+        result.linked.should.be.true;
+        result.client_type.should.equal('site');
       });
     });
 
@@ -54,7 +54,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_UNLINKED, aggregate, event);
 
-        result.linked.should.to.be.false;
+        result.linked.should.be.false;
       });
     });
 
@@ -79,8 +79,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_SYNCED, aggregate, event);
 
-        result.linked.should.to.be.false;
-        result.client_type.should.to.equal('site');
+        result.linked.should.be.false;
+        result.client_type.should.equal('site');
       });
     });
 
@@ -105,7 +105,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, aggregate, event);
 
-        result.consultants.should.to.deep.equal([
+        result.consultants.should.deep.equal([
           {
             _id: 'id',
             consultant_id: 'consultant id',
@@ -140,7 +140,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, aggregate, event);
 
-        result.consultants.should.to.deep.equal([
+        result.consultants.should.deep.equal([
           {
             _id: 'id2',
             consultant_id: 'consultant id2',
@@ -181,7 +181,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED, aggregate, event);
 
-        result.consultants.should.to.be.empty;
+        result.consultants.should.be.empty;
       });
       it('Test when consultant does not exist', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
@@ -208,7 +208,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED, aggregate, event);
 
-        result.consultants.should.to.deep.equal(aggregate.consultants);
+        result.consultants.should.deep.equal(aggregate.consultants);
       });
     });
 

@@ -40,7 +40,7 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError);
 
-      error.should.to.deep.equal(
+      error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
           {
             code: 'CONSULTANT_ROLE_NOT_FOUND',
@@ -77,7 +77,7 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError);
 
-      error.should.to.deep.equal(
+      error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
           {
             code: 'MAX_CONSULTANTS_ASSIGNED',
@@ -124,7 +124,7 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError);
 
-      error.should.to.deep.equal(
+      error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
           {
             code: 'CONSULTANT_ROLE_NOT_ENABLED',

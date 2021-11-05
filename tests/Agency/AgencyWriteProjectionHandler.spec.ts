@@ -36,7 +36,7 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED, aggregate, event);
 
-        result.consultant_roles[0].should.to.deep.equal(eventData);
+        result.consultant_roles[0].should.deep.equal(eventData);
       });
     });
     describe('AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED Event', () => {
@@ -69,7 +69,7 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED, aggregate, event);
 
-        result.consultant_roles[0].should.to.deep.equal(eventData);
+        result.consultant_roles[0].should.deep.equal(eventData);
       });
 
       it('Test when record not found', () => {
@@ -101,7 +101,7 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED, aggregate, event);
 
-        result.consultant_roles.should.to.deep.equal(aggregate.consultant_roles);
+        result.consultant_roles.should.deep.equal(aggregate.consultant_roles);
       });
     });
 
@@ -140,10 +140,10 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED, aggregate, event);
 
-        result.consultant_roles[0].status.should.to.equal(
+        result.consultant_roles[0].status.should.equal(
           AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
         );
-        result.consultant_roles[1].status.should.to.equal(
+        result.consultant_roles[1].status.should.equal(
           AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED
         );
       });
@@ -182,7 +182,7 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED, aggregate, event);
 
-        result.consultant_roles.should.to.deep.equal(aggregate.consultant_roles);
+        result.consultant_roles.should.deep.equal(aggregate.consultant_roles);
       });
     });
 
@@ -221,8 +221,8 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED, aggregate, event);
 
-        result.consultant_roles[0].status.should.to.equal(AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED);
-        result.consultant_roles[1].status.should.to.equal(
+        result.consultant_roles[0].status.should.equal(AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED);
+        result.consultant_roles[1].status.should.equal(
           AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
         );
       });
@@ -261,7 +261,7 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED, aggregate, event);
 
-        result.consultant_roles.should.to.deep.equal(aggregate.consultant_roles);
+        result.consultant_roles.should.deep.equal(aggregate.consultant_roles);
       });
     });
 

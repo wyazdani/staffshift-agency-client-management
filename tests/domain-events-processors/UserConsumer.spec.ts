@@ -51,7 +51,7 @@ describe('UserConsumer', () => {
 
       process(logger, message, messageMeta, (param: Error) => {
         processStub.should.have.been.calledWith(data);
-        param.should.to.equal(error);
+        param.should.equal(error);
         done();
       });
     });
