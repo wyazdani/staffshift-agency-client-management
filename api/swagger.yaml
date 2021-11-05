@@ -209,7 +209,7 @@ paths:
       security:
         - jwt: []
       responses:
-        200:
+        202:
           description: "Removes an Agency Client Consultant"
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
