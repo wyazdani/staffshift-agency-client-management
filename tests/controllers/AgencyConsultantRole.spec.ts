@@ -308,7 +308,7 @@ describe('AgencyConsultantRole', () => {
       });
       setHeader.should.not.have.been.called;
       end.should.not.have.been.called;
-      next.getCall(0).args[0].should.to.be.instanceOf(ResourceNotFoundError);
+      next.getCall(0).args[0].should.be.instanceOf(ResourceNotFoundError);
     });
   });
 
@@ -359,7 +359,7 @@ describe('AgencyConsultantRole', () => {
         skip,
         sortBy
       );
-      res.statusCode.should.to.equal(200);
+      res.statusCode.should.equal(200);
       setPaginationHeaders.should.have.been.calledWith(req, res, 1);
       end.should.have.been.calledWith(JSON.stringify(data));
       next.should.not.have.been.called;
@@ -411,7 +411,7 @@ describe('AgencyConsultantRole', () => {
         skip,
         sortBy
       );
-      res.statusCode.should.to.equal(204);
+      res.statusCode.should.equal(204);
       setPaginationHeaders.should.not.have.been.called;
       end.should.have.been.calledWith();
       next.should.not.have.been.called;

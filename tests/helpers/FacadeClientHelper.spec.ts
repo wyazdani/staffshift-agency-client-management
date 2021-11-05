@@ -134,7 +134,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
-        _userId.should.to.equal(userId);
+        _userId.should.equal(userId);
         clb(null, apiResponse, apiResponse);
       });
 
@@ -143,7 +143,7 @@ describe('FacadeClientHelper Class', () => {
       });
       const fullName = await client.getUserFullName(userId);
 
-      fullName.should.to.equal('first name last name');
+      fullName.should.equal('first name last name');
     });
     it('test for validation error when downstream returns 400 status code', async () => {
       const apiResponse = {
@@ -155,7 +155,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
-        _userId.should.to.equal(userId);
+        _userId.should.equal(userId);
         clb(error, apiResponse, apiResponse);
       });
 
@@ -173,7 +173,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
-        _userId.should.to.equal(userId);
+        _userId.should.equal(userId);
         clb(error, apiResponse, apiResponse);
       });
 
@@ -187,7 +187,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
-        _userId.should.to.equal(userId);
+        _userId.should.equal(userId);
         clb(error, apiResponse, apiResponse);
       });
 
@@ -205,7 +205,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const getUserDetails = sinon.spy((_userId, _authorization, _options, clb) => {
-        _userId.should.to.equal(userId);
+        _userId.should.equal(userId);
         clb(error, apiResponse, apiResponse);
       });
 

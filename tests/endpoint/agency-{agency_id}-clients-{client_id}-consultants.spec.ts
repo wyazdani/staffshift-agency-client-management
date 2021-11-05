@@ -228,7 +228,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
       });
       const res = await api.get(`/agency/${agencyId}/clients/${clientId}/consultants`).set(headers);
 
-      res.statusCode.should.to.equal(200);
+      res.statusCode.should.equal(200);
       validator.validate(res.body, schema);
       assert.equal(res.body[0].agency_id, agencyId);
       assert.equal(res.body[0].client_id, clientId);
@@ -238,7 +238,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
       await AgencyClientConsultantsProjectionScenarios.removeAll();
       const res = await api.get(`/agency/${agencyId}/clients/${clientId}/consultants`).set(headers);
 
-      res.statusCode.should.to.equal(204);
+      res.statusCode.should.equal(204);
     });
 
     it('should respond with 400 Validation Error. Usually...', async () => {
@@ -268,7 +268,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
       /*eslint-enable*/
       const res = await api.get(`/agency/${agencyId}/clients/123/consultants`).set(headers);
 
-      res.statusCode.should.to.equal(400);
+      res.statusCode.should.equal(400);
       validator.validate(res.body, schema);
     });
 
@@ -302,7 +302,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
         'X-Request-Id': '123'
       });
 
-      res.statusCode.should.to.equal(401);
+      res.statusCode.should.equal(401);
       validator.validate(res.body, schema);
     });
   });

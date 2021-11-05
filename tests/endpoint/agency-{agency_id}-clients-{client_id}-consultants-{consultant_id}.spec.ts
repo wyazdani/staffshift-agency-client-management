@@ -51,7 +51,7 @@ describe('agency-{agency_id}-clients-{client_id}-consultants-{consultant_id}', (
         .set(headers)
         .send();
 
-      res.statusCode.should.to.equal(202);
+      res.statusCode.should.equal(202);
     });
 
     it('should respond with 400 Validation Error', async () => {
@@ -125,7 +125,7 @@ describe('agency-{agency_id}-clients-{client_id}-consultants-{consultant_id}', (
         .set(headers)
         .send();
 
-      res.statusCode.should.to.equal(404);
+      res.statusCode.should.equal(404);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
   });

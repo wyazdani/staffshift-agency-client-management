@@ -31,7 +31,7 @@ describe('/agency/{agency_id}/consultant-roles', () => {
         max_consultants: 2
       });
 
-      res.statusCode.should.to.equal(202);
+      res.statusCode.should.equal(202);
       const location = res.get('Location');
 
       assert.match(
@@ -173,7 +173,7 @@ describe('/agency/{agency_id}/consultant-roles', () => {
       assert.equal(res.headers['x-result-count'], '1');
       assert.isString(res.headers.link);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
-      res.headers['content-type'].should.to.equal('application/json');
+      res.headers['content-type'].should.equal('application/json');
     });
 
     it('should respond with 204 List Agency Consultant Roles', async () => {
