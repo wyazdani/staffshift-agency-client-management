@@ -641,11 +641,16 @@ definitions:
     properties:
       name:
         type: string
+        minLength: 2
+        maxLength: 100
       description:
         type: string
+        minLength: 1
+        maxLength: 255
       max_consultants:
         type: integer
         minimum: 1
+        maximum: 50
     additionalProperties: false
   agency_consultant_role_item_def:
     type: object
@@ -667,7 +672,7 @@ definitions:
         maxLength: 100
       description:
         type: string
-        minLength: 0
+        minLength: 1
         maxLength: 255
       status:
         type: string
