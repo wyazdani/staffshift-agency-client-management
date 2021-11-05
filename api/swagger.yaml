@@ -625,23 +625,32 @@ definitions:
     properties:
       name:
         type: string
+        minLength: 2
+        maxLength: 100
       description:
         type: string
         minLength: 1
+        maxLength: 255
       max_consultants:
         type: integer
         minimum: 1
+        maximum: 50
     additionalProperties: false
   agency_consultant_role_update_payload:
     type: object
     properties:
       name:
         type: string
+        minLength: 2
+        maxLength: 100
       description:
         type: string
+        minLength: 1
+        maxLength: 255
       max_consultants:
         type: integer
         minimum: 1
+        maximum: 50
     additionalProperties: false
   agency_consultant_role_item_def:
     type: object
@@ -659,8 +668,12 @@ definitions:
         pattern: ^[0-9a-fA-F]{24}$
       name:
         type: string
+        minLength: 2
+        maxLength: 100
       description:
         type: string
+        minLength: 1
+        maxLength: 255
       status:
         type: string
         enum:
@@ -669,6 +682,7 @@ definitions:
       max_consultants:
         type: integer
         minimum: 1
+        maximum: 50
       updated_at:
         type: string
         format: date-time
