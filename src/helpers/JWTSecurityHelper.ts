@@ -48,7 +48,7 @@ export class JWTSecurityHelper {
   ): void {
     verify(token, secret, (err: Error, decoded: DecodedJWTInterface) => {
       if (err) {
-        return callback(new AuthorizationError('Invalid token specified'));
+        return callback(new AuthorizationError('JWT token specified'));
       }
 
       return callback(null, {token, decoded});

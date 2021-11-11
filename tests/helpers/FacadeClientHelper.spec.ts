@@ -41,7 +41,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 401,
         body: {
           code: 'UNAUTHORIZED',
-          message: 'Invalid token specified'
+          message: 'API token specified'
         }
       };
       const client = new FacadeClientHelper(logger);
@@ -52,7 +52,7 @@ describe('FacadeClientHelper Class', () => {
       sinon.stub(StaffshiftFacadeClient, 'AgencyOrganisationLinkApi').returns({listAgencyOrganisationLink});
       await client
         .getAgencyClientDetails('agency id', 'organisation id', 'site id', undefined)
-        .should.be.rejectedWith(AuthorizationError, 'Invalid token specified');
+        .should.be.rejectedWith(AuthorizationError, 'API token specified');
     });
 
     it('test it resolves successfully when downstream returns 404', async () => {
@@ -168,7 +168,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 401,
         body: {
           code: 'UNAUTHORIZED',
-          message: 'Invalid token specified'
+          message: 'API token specified'
         }
       };
       const client = new FacadeClientHelper(logger);
@@ -178,7 +178,7 @@ describe('FacadeClientHelper Class', () => {
       });
 
       sinon.stub(StaffshiftFacadeClient, 'UserApi').returns({getUserDetails});
-      await client.getUserFullName(userId).should.be.rejectedWith(AuthorizationError, 'Invalid token specified');
+      await client.getUserFullName(userId).should.be.rejectedWith(AuthorizationError, 'API token specified');
     });
 
     it('test it resolves successfully when downstream returns 404', async () => {

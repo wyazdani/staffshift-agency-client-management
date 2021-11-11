@@ -81,7 +81,7 @@ export class FacadeClientHelper {
                 return reject(validationError);
               }
               if (response.statusCode === 401) {
-                const authorizationError = new AuthorizationError('Invalid token specified');
+                const authorizationError = new AuthorizationError('API token specified');
 
                 return reject(authorizationError);
               }
@@ -137,7 +137,7 @@ export class FacadeClientHelper {
                 return reject(validationError);
               }
               if (response.statusCode === 401) {
-                const authorizationError = new AuthorizationError('Invalid token specified');
+                const authorizationError = new AuthorizationError('API token specified');
 
                 return reject(authorizationError);
               }
@@ -200,7 +200,7 @@ export class FacadeClientHelper {
               return reject(validationError);
             }
             if (response.statusCode === 401) {
-              return reject(new AuthorizationError('Invalid token specified'));
+              return reject(new AuthorizationError('API token specified'));
             }
 
             if (response.statusCode === 404) {
