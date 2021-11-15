@@ -469,8 +469,7 @@ describe('AgencyConsultantRole', () => {
       const roleId = 'AAA';
       const params = {
         agency_id: {value: agencyId},
-        consultant_role_id: {value: roleId},
-        payload: {
+        agency_consultant_role_payload: {
           value: {}
         }
       };
@@ -478,11 +477,15 @@ describe('AgencyConsultantRole', () => {
         swaggerParams: params
       });
       const res = fakeResponse();
+      const next = sinon.spy();
       const end = sinon.stub(res, 'end');
+      
+      const execute = sinon.stub(AgencyCommandBus.prototype, 'execute').resolves();
 
       await enableAgencyConsultantRole(req, res);
       assert.equal(res.statusCode, 202, 'status code expected to be 202');
       assert.equal(end.callCount, 1, 'Expected end to be called');
+      assert.equal(next.callCount, 0, 'Expected next to not be called');
     });
 
     it('failure scenario, ResourceNotFoundError', async () => {
