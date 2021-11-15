@@ -96,7 +96,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}/enable', () 
       const res = await api.post(`/agency/${agencyId}/consultant-roles/${roleId}/enable`).set(headers).send({
         description: 'description'
       });
-      
+
       assert.equal(res.statusCode, 400);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
@@ -123,6 +123,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}/enable', () 
         .post(`/agency/${agencyId}/consultant-roles/${roleId}/enable`)
         .set(otherHeaders)
         .send({});
+
       assert.equal(res.statusCode, 401);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
