@@ -118,12 +118,11 @@ export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, r
     // Passing in the agency id here feels strange
     await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
-    res.statusCode = 200;
+    res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({status: 'completed'}));
   } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
+    res.statusCode = err.status;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({message: err.message}));
   }

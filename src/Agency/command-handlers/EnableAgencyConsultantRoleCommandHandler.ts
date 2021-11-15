@@ -20,7 +20,7 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
     const eventId = aggregate.getLastEventId();
 
-    if (!aggregate.canEnableConsultantRole(commandData._id)) {
+    if (!aggregate.roleExists(commandData._id)) {
       return;
     }
     await this.agencyRepository.save([

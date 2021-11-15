@@ -24,7 +24,7 @@ export class AgencyAggregate {
     return this.aggregate.consultant_roles;
   }
 
-  canEnableConsultantRole(consultantRoleId: string): boolean {
+  roleExists(consultantRoleId: string): boolean {
     const role = find(this.aggregate.consultant_roles, {_id: consultantRoleId});
 
     if (!role) {

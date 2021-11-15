@@ -3,7 +3,8 @@ import {
   addAgencyConsultantRole,
   updateAgencyConsultantRole,
   getAgencyConsultantRole,
-  listAgencyConsultantRoles
+  listAgencyConsultantRoles,
+  enableAgencyConsultantRole
 } from '../../src/controllers/AgencyConsultantRole';
 import {GenericRepository} from '../../src/GenericRepository';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
@@ -460,5 +461,49 @@ describe('AgencyConsultantRole', () => {
       );
       next.should.have.been.calledWith(error);
     });
+  });
+
+  describe('enableAgencyConsultantRole()', () => {
+    it('success scenario', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: roleId},
+        payload: {
+          value: {}
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const end = sinon.stub(res, 'end');
+
+      await enableAgencyConsultantRole(req, res);
+      assert.equal(res.statusCode, 202, 'status code expected to be 202');
+      assert.equal(end.callCount, 1, 'Expected end to be called');
+    });
+
+    it('failure scenario, ResourceNotFoundError', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: roleId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const end = sinon.stub(res, 'end');
+      const error = new ResourceNotFoundError('sample');
+
+      sinon.stub(AgencyCommandBus.prototype, 'execute').rejects(error);
+      await enableAgencyConsultantRole(req, res);
+      assert.equal(res.statusCode, 404, 'status code expected to be 404');
+      assert.equal(end.callCount, 1, 'Expected end to be called');
+    });
+
   });
 });
