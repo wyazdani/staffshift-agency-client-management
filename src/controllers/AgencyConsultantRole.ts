@@ -102,8 +102,13 @@ export const updateAgencyConsultantRole = async (
  *
  * @param req - The http request object
  * @param res - The http response object
+ * @param next - The callback used to pass control to the next middleware
  */
-export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
+export const enableAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
@@ -121,10 +126,11 @@ export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, r
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({status: 'completed'}));
-  } catch (err) {
-    res.statusCode = err.status;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+  } catch (error) {
+    if (!(error instanceof ValidationError)) {
+      req.Logger.error('Unknown error in enableAgencyConsultantRole', error);
+    }
+    return next(error);
   }
 };
 
@@ -133,8 +139,13 @@ export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, r
  *
  * @param req - The http request object
  * @param res - The http response object
+ * @param next - The callback used to pass control to the next middleware
  */
-export const disableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
+export const disableAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   const agencyId = get(req, 'swagger.params.agency_id.value', '');
   const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
   const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
@@ -152,10 +163,11 @@ export const disableAgencyConsultantRole = async (req: SwaggerRequestInterface, 
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({status: 'completed'}));
-  } catch (err) {
-    res.statusCode = err.status;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+  } catch (error) {
+    if (!(error instanceof ValidationError)) {
+      req.Logger.error('Unknown error in disableAgencyConsultantRole', error);
+    }
+    return next(error);
   }
 };
 

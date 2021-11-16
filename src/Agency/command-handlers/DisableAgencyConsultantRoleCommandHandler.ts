@@ -4,7 +4,6 @@ import {AgencyCommandEnum} from '../types';
 import {DisableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {EventsEnum} from '../../Events';
-import {AgencyConsultantRoleEnum} from '../types/AgencyConsultantRoleEnum';
 
 /**
  * Class responsible for handling disableAgencyConsultantRole command
@@ -21,7 +20,7 @@ export class DisableAgencyConsultantRoleCommandHandler implements AgencyCommandH
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
     const eventId = aggregate.getLastEventId();
 
-    if (aggregate.roleExists(commandData._id, AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED)) {
+    if (!aggregate.canDisableConsultantRole(commandData._id)) {
       return;
     }
     await this.agencyRepository.save([
