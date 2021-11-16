@@ -4,7 +4,8 @@ import {
   updateAgencyConsultantRole,
   getAgencyConsultantRole,
   listAgencyConsultantRoles,
-  enableAgencyConsultantRole
+  enableAgencyConsultantRole,
+  disableAgencyConsultantRole
 } from '../../src/controllers/AgencyConsultantRole';
 import {GenericRepository} from '../../src/GenericRepository';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
@@ -503,6 +504,52 @@ describe('AgencyConsultantRole', () => {
 
       sinon.stub(AgencyCommandBus.prototype, 'execute').rejects(error);
       await enableAgencyConsultantRole(req, res);
+      assert.equal(res.statusCode, 404, 'status code expected to be 404');
+      assert.equal(end.callCount, 1, 'Expected end to be called');
+    });
+
+  });
+
+  describe('disableAgencyConsultantRole()', () => {
+    it('success scenario', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        agency_consultant_role_payload: {
+          value: {}
+        }
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+
+      sinon.stub(AgencyCommandBus.prototype, 'execute').resolves();
+      await disableAgencyConsultantRole(req, res);
+      assert.equal(res.statusCode, 202, 'status code expected to be 202');
+      assert.equal(end.callCount, 1, 'Expected end to be called');
+      assert.equal(next.callCount, 0, 'Expected next to not be called');
+    });
+
+    it('failure scenario, ResourceNotFoundError', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'AAA';
+      const params = {
+        agency_id: {value: agencyId},
+        consultant_role_id: {value: roleId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params
+      });
+      const res = fakeResponse();
+      const end = sinon.stub(res, 'end');
+      const error = new ResourceNotFoundError('sample');
+
+      sinon.stub(AgencyCommandBus.prototype, 'execute').rejects(error);
+      await disableAgencyConsultantRole(req, res);
       assert.equal(res.statusCode, 404, 'status code expected to be 404');
       assert.equal(end.callCount, 1, 'Expected end to be called');
     });

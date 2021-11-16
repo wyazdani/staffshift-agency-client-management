@@ -24,24 +24,14 @@ export class AgencyAggregate {
     return this.aggregate.consultant_roles;
   }
 
-  roleExists(consultantRoleId: string): boolean {
+  roleExists(consultantRoleId: string, roleStatus: string): boolean {
     const role = find(this.aggregate.consultant_roles, {_id: consultantRoleId});
 
     if (!role) {
       throw new ResourceNotFoundError('Consultant role not found');
     }
 
-    return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED;
-  }
-
-  canDisableConsultantRole(consultantRoleId: string): boolean {
-    const role = find(this.aggregate.consultant_roles, {_id: consultantRoleId});
-
-    if (!role) {
-      throw new ResourceNotFoundError('Consultant role not found');
-    }
-
-    return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED;
+    return role.status == roleStatus;
   }
 
   getId(): AgencyAggregateIdInterface {

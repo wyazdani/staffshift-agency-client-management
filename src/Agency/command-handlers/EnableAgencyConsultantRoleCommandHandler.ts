@@ -4,6 +4,7 @@ import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterf
 import {AgencyCommandEnum} from '../types';
 import {EnableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {EventsEnum} from '../../Events';
+import {AgencyConsultantRoleEnum} from '../types/AgencyConsultantRoleEnum';
 
 /**
  * Class responsible for handling enableAgencyConsultantRole command
@@ -20,7 +21,7 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
     const eventId = aggregate.getLastEventId();
 
-    if (!aggregate.roleExists(commandData._id)) {
+    if (aggregate.roleExists(commandData._id, AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED)) {
       return;
     }
     await this.agencyRepository.save([

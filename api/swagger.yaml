@@ -386,13 +386,21 @@ paths:
       parameters:
         - $ref: "#/parameters/empty_payload"
       responses:
-        200:
+        202:
           description: "Disables an Agency Consultant Role"
           schema:
             $ref: "#/definitions/empty_payload_def"
+        400:
+          description: "Validation error."
+          schema:
+            $ref: "#/definitions/empty_payload_def"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Creates an Agency Consultant Role"
+      summary: "Disables an Agency Consultant Role"
       tags:
         - "Agency Consultant Roles"
 parameters:
