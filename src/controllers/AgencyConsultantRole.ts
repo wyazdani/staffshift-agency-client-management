@@ -125,7 +125,7 @@ export const enableAgencyConsultantRole = async (
     // This needs to be centralised and done better
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
+    res.end();
   } catch (error) {
     if (!(error instanceof ValidationError)) {
       req.Logger.error('Unknown error in enableAgencyConsultantRole', error);
@@ -162,7 +162,7 @@ export const disableAgencyConsultantRole = async (
     // This needs to be centralised and done better
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
+    res.end();
   } catch (error) {
     if (!(error instanceof ValidationError)) {
       req.Logger.error('Unknown error in disableAgencyConsultantRole', error);
