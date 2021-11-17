@@ -85,7 +85,7 @@ describe('AgencyAggregate class', () => {
         projection
       );
 
-      assert(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671') == true, 'Expected to enable');
+      assert.isTrue(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to enable');
 
     });
 
@@ -107,7 +107,7 @@ describe('AgencyAggregate class', () => {
         projection
       );
 
-      assert(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671') == false, 'Expected to not to enable');
+      assert.isFalse(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671'), 'Expected not to enable');
 
     });
 
@@ -172,7 +172,7 @@ describe('AgencyAggregate class', () => {
         projection
       );
 
-      assert(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671') == true, 'Expected to disable');
+      assert.isTrue(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to disable');
 
     });
 
@@ -194,7 +194,7 @@ describe('AgencyAggregate class', () => {
         projection
       );
 
-      assert(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671') == false, 'Expected to not to disabled');
+      assert.isFalse(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to not to disabled');
 
     });
 

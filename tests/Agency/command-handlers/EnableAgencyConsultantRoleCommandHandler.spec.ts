@@ -45,22 +45,31 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
         }
       ]);
 
-      assert.deepEqual(
-        agencyRepository.save.getCall(0).args[0],
-        [
-          {
-            type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
-            aggregate_id: {agency_id: agencyId},
-            data: {
-              _id: 'some-id'
-            },
-            sequence_id: 101
-          }
-        ],
-        'Expected events no to be saved'
-      );
       agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
       aggregate.canEnableConsultantRole.should.have.calledOnceWith(roleId);
+    });
+
+    it('Test exception is thrown for validate consultant role', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'some-id';
+      const commandData = {
+        _id: roleId,
+        name: 'some name',
+        description: 'description',
+        max_consultants: 2
+      } as EnableAgencyConsultantRoleCommandDataInterface;
+      const agencyRepository = stubConstructor(AgencyRepository);
+      const aggregate = stubConstructor(AgencyAggregate);
+      const error = new Error('sample error');
+
+      agencyRepository.getAggregate.resolves(aggregate);
+      aggregate.canEnableConsultantRole.throws(error);
+      const handler = new EnableAgencyConsultantRoleCommandHandler(agencyRepository);
+
+      await handler.execute(agencyId, commandData).should.be.rejectedWith(error);
+
+      aggregate.canEnableConsultantRole.should.have.been.calledOnce;
+      agencyRepository.save.should.not.have.been.called;
     });
   });
 });

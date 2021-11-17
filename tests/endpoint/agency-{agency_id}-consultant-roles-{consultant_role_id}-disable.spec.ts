@@ -57,7 +57,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}/disable', ()
         properties: {
           code: {
             type: 'string',
-            enum: ['SCHEMA_VALIDATION_FAILED', 'MODEL_VALIDATION_FAILED']
+            enum: ['SCHEMA_VALIDATION_FAILED', 'MODEL_VALIDATION_FAILED', 'PATTERN', 'REQUIRED']
           },
           message: {
             type: 'string'
