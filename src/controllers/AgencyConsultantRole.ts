@@ -109,17 +109,17 @@ export const enableAgencyConsultantRole = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
-  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
-  // Decide how auth / audit data gets from here to the event in the event store.
-  const command: EnableAgencyConsultantRoleCommandInterface = {
-    type: commandType,
-    data: {_id: consultantRoleId}
-  };
-
   try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+    const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
+    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    // Decide how auth / audit data gets from here to the event in the event store.
+    const command: EnableAgencyConsultantRoleCommandInterface = {
+      type: commandType,
+      data: {_id: consultantRoleId}
+    };
+
     // Passing in the agency id here feels strange
     await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
@@ -127,7 +127,7 @@ export const enableAgencyConsultantRole = async (
     res.setHeader('Content-Type', 'application/json');
     res.end();
   } catch (error) {
-    if (!(error instanceof ValidationError)) {
+    if (!(error instanceof ResourceNotFoundError)) {
       req.Logger.error('Unknown error in enableAgencyConsultantRole', error);
     }
     return next(error);
@@ -146,17 +146,17 @@ export const disableAgencyConsultantRole = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
-  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
-  // Decide how auth / audit data gets from here to the event in the event store.
-  const command: DisableAgencyConsultantRoleCommandInterface = {
-    type: commandType,
-    data: {_id: consultantRoleId}
-  };
-
   try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+    const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
+    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    // Decide how auth / audit data gets from here to the event in the event store.
+    const command: DisableAgencyConsultantRoleCommandInterface = {
+      type: commandType,
+      data: {_id: consultantRoleId}
+    };
+
     // Passing in the agency id here feels strange
     await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
@@ -164,7 +164,7 @@ export const disableAgencyConsultantRole = async (
     res.setHeader('Content-Type', 'application/json');
     res.end();
   } catch (error) {
-    if (!(error instanceof ValidationError)) {
+    if (!(error instanceof ResourceNotFoundError)) {
       req.Logger.error('Unknown error in disableAgencyConsultantRole', error);
     }
     return next(error);
