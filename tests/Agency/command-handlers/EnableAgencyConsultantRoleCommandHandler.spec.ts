@@ -44,9 +44,23 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
           sequence_id: 101
         }
       ]);
+
+      assert.deepEqual(
+        agencyRepository.save.getCall(0).args[0],
+        [
+          {
+            type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
+            aggregate_id: {agency_id: agencyId},
+            data: {
+              _id: 'some-id'
+            },
+            sequence_id: 101
+          }
+        ],
+        'Expected events no to be saved'
+      );
       agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
       aggregate.canEnableConsultantRole.should.have.calledOnceWith(roleId);
     });
-
   });
 });

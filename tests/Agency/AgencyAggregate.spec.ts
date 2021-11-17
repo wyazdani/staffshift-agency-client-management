@@ -46,7 +46,7 @@ describe('AgencyAggregate class', () => {
   });
 
   describe('canEnableConsultantRole()', () => {
-    it.only('Test success scenario', () => {
+    it('Test success scenario', () => {
       const projection: AgencyAggregateRecordInterface = {
         last_sequence_id: 2,
         consultant_roles: [
@@ -67,7 +67,49 @@ describe('AgencyAggregate class', () => {
       aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671');
     });
 
-    it.only('Test failure scenario', () => {
+    it('Test consultant role enabled', () => {
+      const projection: AgencyAggregateRecordInterface = {
+        last_sequence_id: 2,
+        consultant_roles: [
+          {
+            _id: '61948046abd55b1a8ec55671',
+            name: 'abc',
+            description: 'description',
+            max_consultants: 2,
+            status: AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
+          }
+        ]
+      };
+      const aggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        projection
+      );
+      assert(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671') == true, 'Expected to enable')
+      
+    });
+
+    it('Test consultant role not to be enabled', () => {
+      const projection: AgencyAggregateRecordInterface = {
+        last_sequence_id: 2,
+        consultant_roles: [
+          {
+            _id: '61948046abd55b1a8ec55671',
+            name: 'abc',
+            description: 'description',
+            max_consultants: 2,
+            status: AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED
+          }
+        ]
+      };
+      const aggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        projection
+      );
+      assert(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671') == false, 'Expected to not to enable')
+      
+    });
+
+    it('Test failure scenario', () => {
       const aggregate = new AgencyAggregate(
         {agency_id: 'id'},
         {
@@ -89,7 +131,7 @@ describe('AgencyAggregate class', () => {
   });
 
   describe('canDisableConsultantRole()', () => {
-    it.only('Test success scenario', () => {
+    it('Test success scenario', () => {
       const projection: AgencyAggregateRecordInterface = {
         last_sequence_id: 2,
         consultant_roles: [
@@ -110,7 +152,49 @@ describe('AgencyAggregate class', () => {
       aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671');
     });
 
-    it.only('Test failure scenario', () => {
+    it('Test consultant role disabled', () => {
+      const projection: AgencyAggregateRecordInterface = {
+        last_sequence_id: 2,
+        consultant_roles: [
+          {
+            _id: '61948046abd55b1a8ec55671',
+            name: 'abc',
+            description: 'description',
+            max_consultants: 2,
+            status: AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED
+          }
+        ]
+      };
+      const aggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        projection
+      );
+      assert(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671') == true, 'Expected to disable')
+      
+    });
+
+    it('Test consultant role not to be disabled', () => {
+      const projection: AgencyAggregateRecordInterface = {
+        last_sequence_id: 2,
+        consultant_roles: [
+          {
+            _id: '61948046abd55b1a8ec55671',
+            name: 'abc',
+            description: 'description',
+            max_consultants: 2,
+            status: AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
+          }
+        ]
+      };
+      const aggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        projection
+      );
+      assert(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671') == false, 'Expected to not to disabled')
+      
+    });
+
+    it('Test failure scenario', () => {
       const aggregate = new AgencyAggregate(
         {agency_id: 'id'},
         {
