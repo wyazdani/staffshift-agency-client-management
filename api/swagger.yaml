@@ -362,7 +362,7 @@ paths:
         400:
           description: "Validation error."
           schema:
-            $ref: "#/definitions/enable_disable_consultant_roles_validation_error_model"
+            $ref: "#/definitions/empty_payload_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -393,7 +393,7 @@ paths:
         400:
           description: "Validation error."
           schema:
-            $ref: "#/definitions/enable_disable_consultant_roles_validation_error_model"
+            $ref: "#/definitions/empty_payload_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -862,7 +862,7 @@ definitions:
               type: "string"
           additionalProperties: false
     additionalProperties: false
-  enable_disable_consultant_roles_validation_error_model:
+  empty_payload_error_model:
     type: object
     required:
       - code

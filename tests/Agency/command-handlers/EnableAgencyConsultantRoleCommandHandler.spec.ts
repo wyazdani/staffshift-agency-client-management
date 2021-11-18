@@ -71,5 +71,32 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
       aggregate.canEnableConsultantRole.should.have.been.calledOnce;
       agencyRepository.save.should.not.have.been.called;
     });
+
+    it('should resolve with undefined when role cannot be enabled', async () => {
+      const agencyId = 'agency id';
+      const roleId = 'some-id';
+      const commandData = {
+        _id: roleId
+      } as EnableAgencyConsultantRoleCommandDataInterface;
+      const agencyRepository = stubConstructor(AgencyRepository);
+      const aggregate = stubConstructor(AgencyAggregate);
+
+      agencyRepository.getAggregate.resolves(aggregate);
+      aggregate.getLastEventId.returns(100);
+      aggregate.canEnableConsultantRole.returns(false);
+      const handler = new EnableAgencyConsultantRoleCommandHandler(agencyRepository);
+
+      assert.equal(
+        handler.commandType,
+        AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
+        'Expected command type to match'
+      );
+      const result = await handler.execute(agencyId, commandData);
+
+      assert.isUndefined(result, 'result should be undefined when a role cannot be disabled');
+      assert.isFalse(agencyRepository.save.called, 'Save must not be called');
+      agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
+      aggregate.canEnableConsultantRole.should.have.calledOnceWith(roleId);
+    });
   });
 });
