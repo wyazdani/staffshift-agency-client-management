@@ -93,7 +93,7 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
       );
       const result = await handler.execute(agencyId, commandData);
 
-      assert.isUndefined(result, 'result should be undefined when a role cannot be disabled');
+      assert.isUndefined(result, 'result should be undefined when a role cannot be enabled');
       assert.isFalse(agencyRepository.save.called, 'Save must not be called');
       agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
       aggregate.canEnableConsultantRole.should.have.calledOnceWith(roleId);
