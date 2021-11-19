@@ -72,7 +72,7 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.save.should.not.have.been.called;
     });
 
-    it('should resolve with undefined when role cannot be enabled', async () => {
+    it.only('should resolve successfully when role cannot be enabled', async () => {
       const agencyId = 'agency id';
       const roleId = 'some-id';
       const commandData = {
@@ -91,9 +91,8 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
         AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
         'Expected command type to match'
       );
-      const result = await handler.execute(agencyId, commandData);
+      await handler.execute(agencyId, commandData);
 
-      assert.isUndefined(result, 'result should be undefined when a role cannot be enabled');
       assert.isFalse(agencyRepository.save.called, 'Save must not be called');
       agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
       aggregate.canEnableConsultantRole.should.have.calledOnceWith(roleId);
