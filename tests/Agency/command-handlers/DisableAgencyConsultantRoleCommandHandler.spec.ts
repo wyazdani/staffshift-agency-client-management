@@ -72,7 +72,7 @@ describe('DisableAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.save.should.not.have.been.called;
     });
 
-    it('should resolvesuccessfully when role cannot be disabled', async () => {
+    it('should resolve successfully when role cannot be disabled', async () => {
       const agencyId = 'agency id';
       const roleId = 'some-id';
       const commandData = {
