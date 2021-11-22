@@ -102,30 +102,35 @@ export const updateAgencyConsultantRole = async (
  *
  * @param req - The http request object
  * @param res - The http response object
+ * @param next - The callback used to pass control to the next middleware
  */
-export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
-  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
-  // Decide how auth / audit data gets from here to the event in the event store.
-  const command: EnableAgencyConsultantRoleCommandInterface = {
-    type: commandType,
-    data: {_id: consultantRoleId}
-  };
-
+export const enableAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+    const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
+    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    // Decide how auth / audit data gets from here to the event in the event store.
+    const command: EnableAgencyConsultantRoleCommandInterface = {
+      type: commandType,
+      data: {_id: consultantRoleId}
+    };
+
     // Passing in the agency id here feels strange
     await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
-    res.statusCode = 200;
+    res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
-  } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+    res.end();
+  } catch (error) {
+    if (!(error instanceof ResourceNotFoundError)) {
+      req.Logger.error('Unknown error in enableAgencyConsultantRole', error);
+    }
+    return next(error);
   }
 };
 
@@ -134,30 +139,35 @@ export const enableAgencyConsultantRole = async (req: SwaggerRequestInterface, r
  *
  * @param req - The http request object
  * @param res - The http response object
+ * @param next - The callback used to pass control to the next middleware
  */
-export const disableAgencyConsultantRole = async (req: SwaggerRequestInterface, res: ServerResponse): Promise<void> => {
-  const agencyId = get(req, 'swagger.params.agency_id.value', '');
-  const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-  const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
-  const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
-  // Decide how auth / audit data gets from here to the event in the event store.
-  const command: DisableAgencyConsultantRoleCommandInterface = {
-    type: commandType,
-    data: {_id: consultantRoleId}
-  };
-
+export const disableAgencyConsultantRole = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
   try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
+    const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
+    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    // Decide how auth / audit data gets from here to the event in the event store.
+    const command: DisableAgencyConsultantRoleCommandInterface = {
+      type: commandType,
+      data: {_id: consultantRoleId}
+    };
+
     // Passing in the agency id here feels strange
     await commandBus.execute(agencyId, command);
     // This needs to be centralised and done better
-    res.statusCode = 200;
+    res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({status: 'completed'}));
-  } catch (err) {
-    // This needs to be centralised and done better
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({message: err.message}));
+    res.end();
+  } catch (error) {
+    if (!(error instanceof ResourceNotFoundError)) {
+      req.Logger.error('Unknown error in disableAgencyConsultantRole', error);
+    }
+    return next(error);
   }
 };
 

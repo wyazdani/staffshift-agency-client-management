@@ -14,7 +14,7 @@ export class DisableAgencyConsultantRoleCommandHandler implements AgencyCommandH
   constructor(private agencyRepository: AgencyRepository) {}
 
   /**
-   * Build and save event caused by addAgencyConsultantRole command
+   * Build and save event caused by disableAgencyConsultantRole command
    */
   async execute(agencyId: string, commandData: DisableAgencyConsultantRoleCommandDataInterface): Promise<void> {
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
