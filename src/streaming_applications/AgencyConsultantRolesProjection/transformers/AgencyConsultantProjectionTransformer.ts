@@ -6,11 +6,11 @@ import {EventsEnum} from '../../../Events';
 import {AgencyConsultantRolesProjectionDocumentType} from '../../../models/AgencyConsultantRolesProjection';
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 import {
-  AddAgencyConsultantRoleCommandDataInterface,
-  DisableAgencyConsultantRoleCommandDataInterface,
-  EnableAgencyConsultantRoleCommandDataInterface,
-  UpdateAgencyConsultantRoleCommandDataInterface
-} from '../../../Agency/types/CommandDataTypes';
+  AgencyConsultantRoleAddedEventStoreDataInterface,
+  AgencyConsultantRoleDisabledEventStoreDataInterface,
+  AgencyConsultantRoleEnabledEventStoreDataInterface,
+  AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface
+} from 'EventStoreDataTypes';
 
 const events = [
   EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
@@ -20,10 +20,10 @@ const events = [
 ];
 
 type SupportedEventsDataType =
-  | AddAgencyConsultantRoleCommandDataInterface
-  | DisableAgencyConsultantRoleCommandDataInterface
-  | EnableAgencyConsultantRoleCommandDataInterface
-  | UpdateAgencyConsultantRoleCommandDataInterface;
+  | AgencyConsultantRoleAddedEventStoreDataInterface
+  | AgencyConsultantRoleDisabledEventStoreDataInterface
+  | AgencyConsultantRoleEnabledEventStoreDataInterface
+  | AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface;
 
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
@@ -74,7 +74,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
       criteria._id = eventData._id;
     }
 
-    type UpdateType = {status: string} | UpdateAgencyConsultantRoleCommandDataInterface;
+    type UpdateType = {status: string} | AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface;
     switch (data.event.type) {
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED:
         this.addRecord(this.logger, this.model, data, callback);
@@ -90,7 +90,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
           this.logger,
           this.model,
           criteria,
-          event.data as UpdateAgencyConsultantRoleCommandDataInterface,
+          event.data as AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
           data,
           callback
         );
@@ -115,7 +115,7 @@ export class AgencyConsultantProjectionTransformer extends Transform {
     data: EventStoreChangeStreamFullDocumentInterface,
     callback: TransformCallback
   ): void {
-    const eventData = data.event.data as AddAgencyConsultantRoleCommandDataInterface;
+    const eventData = data.event.data as AgencyConsultantRoleAddedEventStoreDataInterface;
     const consultantRoleProjection = new model({
       agency_id: data.event.aggregate_id.agency_id,
       name: eventData.name,

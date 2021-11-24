@@ -6,17 +6,21 @@ import {EventsEnum} from '../../../Events';
 import {AgencyClientsProjectionDocumentType} from '../../../models/AgencyClientsProjection';
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 import {
-  LinkAgencyClientCommandDataInterface,
-  SyncAgencyClientCommandDataInterface,
-  UnlinkAgencyClientCommandDataInterface
-} from '../../../AgencyClient/types/CommandDataTypes';
+  AgencyClientSyncedEventStoreDataInterface,
+  AgencyClientConsultantAssignedEventStoreDataInterface,
+  AgencyClientConsultantUnassignedEventStoreDataInterface,
+  AgencyClientLinkedEventStoreDataInterface,
+  AgencyClientUnlinkedEventStoreDataInterface
+} from 'EventStoreDataTypes';
 
 const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_UNLINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
 type SupportedEventsDataType =
-  | LinkAgencyClientCommandDataInterface
-  | SyncAgencyClientCommandDataInterface
-  | UnlinkAgencyClientCommandDataInterface;
+  | AgencyClientLinkedEventStoreDataInterface
+  | AgencyClientConsultantAssignedEventStoreDataInterface
+  | AgencyClientConsultantUnassignedEventStoreDataInterface
+  | AgencyClientSyncedEventStoreDataInterface
+  | AgencyClientUnlinkedEventStoreDataInterface;
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
   model: Model<AgencyClientsProjectionDocumentType>;
@@ -93,7 +97,7 @@ export class AgencyClientsProjectionTransformer extends Transform {
         criteria,
         {
           client_type: eventData.client_type,
-          linked: (event.data as SyncAgencyClientCommandDataInterface).linked
+          linked: (event.data as AgencyClientSyncedEventStoreDataInterface).linked
         },
         {upsert: true},
         (err: CallbackError) => callback(err, data)

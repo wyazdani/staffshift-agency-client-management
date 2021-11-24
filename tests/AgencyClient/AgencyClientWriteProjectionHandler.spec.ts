@@ -1,11 +1,12 @@
 import {AgencyClientWriteProjectionHandler} from '../../src/AgencyClient/AgencyClientWriteProjectionHandler';
 import {AgencyClientAggregateRecordInterface} from '../../src/AgencyClient/types';
 import {
-  LinkAgencyClientCommandDataInterface,
-  SyncAgencyClientCommandDataInterface,
-  AddAgencyClientConsultantCommandDataInterface,
-  RemoveAgencyClientConsultantCommandDataInterface
-} from '../../src/AgencyClient/types/CommandDataTypes';
+  AgencyClientConsultantAssignedEventStoreDataInterface,
+  AgencyClientConsultantUnassignedEventStoreDataInterface,
+  AgencyClientLinkedEventStoreDataInterface,
+  AgencyClientSyncedEventStoreDataInterface
+} from '../../src/types/EventStoreDataTypes';
+
 import {EventsEnum} from '../../src/Events';
 import {EventStore} from '../../src/models/EventStore';
 import {assert} from 'chai';
@@ -19,7 +20,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
           last_sequence_id: 1
         };
-        const eventData: LinkAgencyClientCommandDataInterface = {
+        const eventData: AgencyClientLinkedEventStoreDataInterface = {
           client_type: 'site'
         };
         const event = new EventStore({
@@ -63,7 +64,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
           last_sequence_id: 1
         };
-        const eventData: SyncAgencyClientCommandDataInterface = {
+        const eventData: AgencyClientSyncedEventStoreDataInterface = {
           client_type: 'site',
           linked: false,
           linked_at: new Date()
@@ -89,10 +90,11 @@ describe('AgencyClientWriteProjectionHandler', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
           last_sequence_id: 1
         };
-        const eventData: AddAgencyClientConsultantCommandDataInterface = {
+        const eventData: AgencyClientConsultantAssignedEventStoreDataInterface = {
           _id: 'id',
           consultant_id: 'consultant id',
-          consultant_role_id: 'consultant role id'
+          consultant_role_id: 'consultant role id',
+          client_type: 'client-type'
         };
         const event = new EventStore({
           type: 'sample',
@@ -124,10 +126,12 @@ describe('AgencyClientWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: AddAgencyClientConsultantCommandDataInterface = {
+        const eventData: AgencyClientConsultantAssignedEventStoreDataInterface = {
           _id: 'id',
           consultant_id: 'consultant id',
-          consultant_role_id: 'consultant role id'
+          consultant_role_id: 'consultant role id',
+          client_type: 'client type'
+
         };
         const event = new EventStore({
           type: 'sample',
@@ -167,8 +171,9 @@ describe('AgencyClientWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: RemoveAgencyClientConsultantCommandDataInterface = {
-          _id: 'id'
+        const eventData: AgencyClientConsultantUnassignedEventStoreDataInterface = {
+          _id: 'id',
+          client_type: 'client type'
         };
         const event = new EventStore({
           type: 'sample',
@@ -194,8 +199,9 @@ describe('AgencyClientWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: RemoveAgencyClientConsultantCommandDataInterface = {
-          _id: 'id'
+        const eventData: AgencyClientConsultantUnassignedEventStoreDataInterface = {
+          _id: 'id',
+          client_type: 'client type'
         };
         const event = new EventStore({
           type: 'sample',

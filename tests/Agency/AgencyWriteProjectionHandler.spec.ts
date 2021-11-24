@@ -1,13 +1,13 @@
 import {AgencyWriteProjectionHandler} from '../../src/Agency/AgencyWriteProjectionHandler';
 import {AgencyAggregateRecordInterface, AgencyConsultantRoleEnum} from '../../src/Agency/types';
-import {
-  AddAgencyConsultantRoleCommandDataInterface,
-  UpdateAgencyConsultantRoleCommandDataInterface,
-  EnableAgencyConsultantRoleCommandDataInterface
-} from '../../src/Agency/types/CommandDataTypes';
 import {EventsEnum} from '../../src/Events';
 import {EventStore} from '../../src/models/EventStore';
 import {assert} from 'chai';
+import {
+  AgencyConsultantRoleAddedEventStoreDataInterface,
+  AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
+  AgencyConsultantRoleEnabledEventStoreDataInterface
+} from '../../src/types/EventStoreDataTypes';
 
 describe('AgencyWriteProjectionHandler', () => {
   describe('execute()', () => {
@@ -19,7 +19,7 @@ describe('AgencyWriteProjectionHandler', () => {
           last_sequence_id: 1,
           consultant_roles: []
         };
-        const eventData: AddAgencyConsultantRoleCommandDataInterface = {
+        const eventData: AgencyConsultantRoleAddedEventStoreDataInterface = {
           _id: 'sample',
           description: 'sample2',
           max_consultants: 2,
@@ -52,7 +52,7 @@ describe('AgencyWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: UpdateAgencyConsultantRoleCommandDataInterface = {
+        const eventData: AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface = {
           _id: 'sample',
           description: 'sample2',
           max_consultants: 3,
@@ -84,7 +84,7 @@ describe('AgencyWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: UpdateAgencyConsultantRoleCommandDataInterface = {
+        const eventData: AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface = {
           _id: 'sample',
           description: 'sample2',
           max_consultants: 3,
@@ -126,7 +126,7 @@ describe('AgencyWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: EnableAgencyConsultantRoleCommandDataInterface = {
+        const eventData: AgencyConsultantRoleEnabledEventStoreDataInterface = {
           _id: 'oops'
         };
         const event = new EventStore({
@@ -168,7 +168,7 @@ describe('AgencyWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: EnableAgencyConsultantRoleCommandDataInterface = {
+        const eventData: AgencyConsultantRoleEnabledEventStoreDataInterface = {
           _id: 'oopsxx'
         };
         const event = new EventStore({
@@ -207,7 +207,7 @@ describe('AgencyWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: EnableAgencyConsultantRoleCommandDataInterface = {
+        const eventData: AgencyConsultantRoleEnabledEventStoreDataInterface = {
           _id: 'oops'
         };
         const event = new EventStore({
@@ -247,7 +247,7 @@ describe('AgencyWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: EnableAgencyConsultantRoleCommandDataInterface = {
+        const eventData: AgencyConsultantRoleEnabledEventStoreDataInterface = {
           _id: 'oopsx'
         };
         const event = new EventStore({
@@ -270,7 +270,7 @@ describe('AgencyWriteProjectionHandler', () => {
         last_sequence_id: 1,
         consultant_roles: []
       };
-      const eventData: EnableAgencyConsultantRoleCommandDataInterface = {
+      const eventData: AgencyConsultantRoleEnabledEventStoreDataInterface = {
         _id: 'oops'
       };
       const event = new EventStore({
