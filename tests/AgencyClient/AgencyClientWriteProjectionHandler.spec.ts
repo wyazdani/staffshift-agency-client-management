@@ -93,8 +93,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         const eventData: AgencyClientConsultantAssignedEventStoreDataInterface = {
           _id: 'id',
           consultant_id: 'consultant id',
-          consultant_role_id: 'consultant role id',
-          client_type: 'client-type'
+          consultant_role_id: 'consultant role id'
         };
         const event = new EventStore({
           type: 'sample',
@@ -129,9 +128,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         const eventData: AgencyClientConsultantAssignedEventStoreDataInterface = {
           _id: 'id',
           consultant_id: 'consultant id',
-          consultant_role_id: 'consultant role id',
-          client_type: 'client type'
-
+          consultant_role_id: 'consultant role id'
         };
         const event = new EventStore({
           type: 'sample',
@@ -172,8 +169,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
           ]
         };
         const eventData: AgencyClientConsultantUnassignedEventStoreDataInterface = {
-          _id: 'id',
-          client_type: 'client type'
+          _id: 'id'
         };
         const event = new EventStore({
           type: 'sample',
@@ -200,8 +196,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
           ]
         };
         const eventData: AgencyClientConsultantUnassignedEventStoreDataInterface = {
-          _id: 'id',
-          client_type: 'client type'
+          _id: 'id'
         };
         const event = new EventStore({
           type: 'sample',
