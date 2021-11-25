@@ -7,8 +7,6 @@ import {AgencyClientsProjectionDocumentType} from '../../../models/AgencyClients
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
 import {
   AgencyClientSyncedEventStoreDataInterface,
-  AgencyClientConsultantAssignedEventStoreDataInterface,
-  AgencyClientConsultantUnassignedEventStoreDataInterface,
   AgencyClientLinkedEventStoreDataInterface,
   AgencyClientUnlinkedEventStoreDataInterface
 } from 'EventStoreDataTypes';
@@ -17,8 +15,6 @@ const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_UNLINK
 
 type SupportedEventsDataType =
   | AgencyClientLinkedEventStoreDataInterface
-  | AgencyClientConsultantAssignedEventStoreDataInterface
-  | AgencyClientConsultantUnassignedEventStoreDataInterface
   | AgencyClientSyncedEventStoreDataInterface
   | AgencyClientUnlinkedEventStoreDataInterface;
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
