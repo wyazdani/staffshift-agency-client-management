@@ -11,6 +11,8 @@ import {
   EnableAgencyConsultantRoleCommandDataInterface,
   UpdateAgencyConsultantRoleCommandDataInterface
 } from '../../../Agency/types/CommandDataTypes';
+import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
+import {MongoError} from 'mongodb';
 
 const events = [
   EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
@@ -126,6 +128,11 @@ export class AgencyConsultantProjectionTransformer extends Transform {
 
     consultantRoleProjection.save((err: Error) => {
       if (err) {
+        if ((err as MongoError).code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
+          this.logger.notice('Duplicate agency consultant role record', consultantRoleProjection.toJSON());
+          return callback(null, data);
+        }
+
         logger.error('Error saving a record to the consultant role projection', {
           model: consultantRoleProjection.toObject(),
           originalError: err
