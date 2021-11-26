@@ -1,14 +1,14 @@
 import {map} from 'lodash';
 import {WriteProjectionInterface} from '../WriteProjectionInterface';
 import {AgencyAggregateRecordInterface, AgencyConsultantRoleEnum, AgencyConsultantRoleInterface} from './types';
-import {
-  AddAgencyConsultantRoleCommandDataInterface,
-  DisableAgencyConsultantRoleCommandDataInterface,
-  EnableAgencyConsultantRoleCommandDataInterface,
-  UpdateAgencyConsultantRoleCommandDataInterface
-} from './types/CommandDataTypes';
 import {EventStoreModelInterface} from '../models/EventStore';
 import {EventsEnum} from '../Events';
+import {
+  AgencyConsultantRoleAddedEventStoreDataInterface,
+  AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
+  AgencyConsultantRoleEnabledEventStoreDataInterface,
+  AgencyConsultantRoleDisabledEventStoreDataInterface
+} from 'EventStoreDataTypes';
 
 /**
  * Responsible for handling all agency events to build the current state of the aggregate
@@ -21,7 +21,7 @@ export class AgencyWriteProjectionHandler implements WriteProjectionInterface<Ag
   ): AgencyAggregateRecordInterface {
     switch (type) {
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED: {
-        const eventData = event.data as AddAgencyConsultantRoleCommandDataInterface;
+        const eventData = event.data as AgencyConsultantRoleAddedEventStoreDataInterface;
         const consultantRole: AgencyConsultantRoleInterface = {
           _id: eventData._id,
           name: eventData.name,
@@ -36,7 +36,7 @@ export class AgencyWriteProjectionHandler implements WriteProjectionInterface<Ag
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED: {
-        const eventData = event.data as UpdateAgencyConsultantRoleCommandDataInterface;
+        const eventData = event.data as AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface;
 
         aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
           if (item._id === eventData._id) {
@@ -49,7 +49,7 @@ export class AgencyWriteProjectionHandler implements WriteProjectionInterface<Ag
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED: {
-        const eventData = event.data as EnableAgencyConsultantRoleCommandDataInterface;
+        const eventData = event.data as AgencyConsultantRoleEnabledEventStoreDataInterface;
 
         aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
           if (item._id === eventData._id) {
@@ -62,7 +62,7 @@ export class AgencyWriteProjectionHandler implements WriteProjectionInterface<Ag
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED: {
-        const eventData = event.data as DisableAgencyConsultantRoleCommandDataInterface;
+        const eventData = event.data as AgencyConsultantRoleDisabledEventStoreDataInterface;
 
         aggregate.consultant_roles = map(aggregate.consultant_roles, (item) => {
           if (item._id == eventData._id) {
