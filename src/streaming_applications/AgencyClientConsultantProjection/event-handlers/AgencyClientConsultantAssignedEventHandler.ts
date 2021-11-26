@@ -43,6 +43,10 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultant
         return;
       }
 
+      this.logger.error('Error occurred while creating agency client record', {
+        originalError: error,
+        record: agencyClientConsultant.toJSON()
+      });
       throw error;
     }
   }
