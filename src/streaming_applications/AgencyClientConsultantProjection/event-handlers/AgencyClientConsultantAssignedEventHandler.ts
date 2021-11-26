@@ -39,7 +39,7 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultant
       await agencyClientConsultant.save();
     } catch (error) {
       if (error.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
-        this.logger.notice('Duplicate agency client record', agencyClientConsultant.toJSON());
+        this.logger.notice('Duplicate key error for agency client record', agencyClientConsultant.toJSON());
         return;
       }
 

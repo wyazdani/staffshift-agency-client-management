@@ -9,6 +9,7 @@ import {PassThrough, TransformOptions} from 'stream';
 import {AgencyConsultantProjectionTransformer} from '../../../../src/streaming_applications/AgencyConsultantRolesProjection/transformers/AgencyConsultantProjectionTransformer';
 import {Model} from 'mongoose';
 import {EventsEnum} from '../../../../src/Events';
+import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
 interface ProjectionTransformerOptionsInterface extends TransformOptions {
   eventRepository: EventRepository;
@@ -100,6 +101,50 @@ describe('AgencyConsultantProjectionTransformer', () => {
 
       saveStub.callsFake((callback) => {
         callback();
+      });
+
+      inputStream.pipe(agencyConsultantProjectionTransformer).pipe(outputStream);
+      outputStream.on('data', (data) => {
+        assert.deepEqual(data, testData, 'Expected output stream was not returned');
+      });
+
+      outputStream.on('end', () => {
+        done();
+      });
+
+      inputStream.write(testData);
+      inputStream.resume();
+
+      inputStream.end();
+    });
+
+    it('test AgencyConsultantRoleAdded event success scenario when save operation fails with duplicate key error ', (done) => {
+      const testData = {
+        event: {
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+          aggregate_id: {
+            agency_id: agencyId
+          },
+          data: {
+            name: 'some name',
+            description: 'describe me',
+            max_consultants: 1,
+            _id: consultantRoleId
+          }
+        }
+      };
+      const options = {
+        objectMode: true,
+        highWaterMark: 1,
+        version: '3.6.3'
+      };
+      const inputStream = new PassThrough(options);
+      const outputStream = new PassThrough(options);
+
+      const saveStub = sinon.stub(AgencyConsultantRolesProjection.prototype, 'save');
+
+      saveStub.callsFake((callback) => {
+        callback({code: MONGO_ERROR_CODES.DUPLICATE_KEY});
       });
 
       inputStream.pipe(agencyConsultantProjectionTransformer).pipe(outputStream);

@@ -97,6 +97,5 @@ describe('DisableAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
       aggregate.canDisableConsultantRole.should.have.calledOnceWith(roleId);
     });
-
   });
 });

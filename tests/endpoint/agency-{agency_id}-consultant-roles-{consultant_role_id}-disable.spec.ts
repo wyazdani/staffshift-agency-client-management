@@ -40,8 +40,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}/disable', ()
     });
 
     it('should respond with 404 resource not found', async () => {
-      const errorMessage =
-      {
+      const errorMessage = {
         message: 'Consultant role not found'
       };
       const res = await api.post(`/agency/${agencyId}/consultant-roles/${roleId}/disable`).set(headers).send({});
@@ -70,9 +69,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}/disable', ()
               properties: {
                 code: {
                   type: 'string',
-                  enum: [
-                    'OBJECT_ADDITIONAL_PROPERTIES'
-                  ]
+                  enum: ['OBJECT_ADDITIONAL_PROPERTIES']
                 },
                 message: {
                   type: 'string'
@@ -119,10 +116,7 @@ describe('/agency/{agency_id}/consultant-roles/{consultant_role_id}/disable', ()
       const otherHeaders = _.cloneDeep(headers);
 
       otherHeaders['x-request-jwt'] = 'invalid';
-      const res = await api
-        .post(`/agency/${agencyId}/consultant-roles/${roleId}/disable`)
-        .set(otherHeaders)
-        .send({});
+      const res = await api.post(`/agency/${agencyId}/consultant-roles/${roleId}/disable`).set(otherHeaders).send({});
 
       assert.equal(res.statusCode, 401);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');

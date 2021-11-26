@@ -59,13 +59,9 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate(
-        {agency_id: 'id'},
-        projection
-      );
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isTrue(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to enable');
-
     });
 
     it('Test consultant role not to be enabled', () => {
@@ -81,13 +77,9 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate(
-        {agency_id: 'id'},
-        projection
-      );
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isFalse(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671'), 'Expected not to enable');
-
     });
 
     it('Test failure scenario', () => {
@@ -125,13 +117,9 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate(
-        {agency_id: 'id'},
-        projection
-      );
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isTrue(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to disable');
-
     });
 
     it('Test consultant role not to be disabled', () => {
@@ -147,13 +135,9 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate(
-        {agency_id: 'id'},
-        projection
-      );
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isFalse(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to not to disabled');
-
     });
 
     it('Test failure scenario', () => {

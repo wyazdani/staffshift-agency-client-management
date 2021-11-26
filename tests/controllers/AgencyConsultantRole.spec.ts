@@ -508,7 +508,6 @@ describe('AgencyConsultantRole', () => {
       await enableAgencyConsultantRole(req, res, next);
       assert.equal(next.callCount, 1, 'Expected next to be called');
     });
-
   });
 
   describe('disableAgencyConsultantRole()', () => {
@@ -554,8 +553,6 @@ describe('AgencyConsultantRole', () => {
 
       await disableAgencyConsultantRole(req, res, next);
       assert.equal(next.callCount, 1, 'Expected next to be called');
-
     });
-
   });
 });

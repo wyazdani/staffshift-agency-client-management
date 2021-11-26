@@ -129,7 +129,10 @@ export class AgencyConsultantProjectionTransformer extends Transform {
     consultantRoleProjection.save((err: Error) => {
       if (err) {
         if ((err as MongoError).code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
-          this.logger.notice('Duplicate agency consultant role record', consultantRoleProjection.toJSON());
+          this.logger.notice(
+            'Duplicate key error for agency consultant role record',
+            consultantRoleProjection.toJSON()
+          );
           return callback(null, data);
         }
 
