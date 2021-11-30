@@ -38,7 +38,7 @@ describe('ConsultantNameChangeProcessor', () => {
       facadeClientHelper.getUserFullName.rejects(error);
       const processor = new ConsultantNameChangeProcessor(TestUtilsLogger.getLogger(sinon.spy()), facadeClientHelper);
 
-      await processor.process({user_id: userId}).should.have.been.rejectedWith(error);
+      await processor.process({user_id: userId}).should.have.been.rejectedWith(Error, 'some error');
       updateMany.should.not.have.been.called;
       facadeClientHelper.getUserFullName.should.have.been.calledWith(userId);
     });

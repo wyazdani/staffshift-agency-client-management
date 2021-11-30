@@ -38,7 +38,7 @@ describe('AgencyClientAggregate', () => {
 
       const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError);
+        .should.be.rejectedWith(ValidationError, 'Not allowed consultant role');
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
@@ -75,7 +75,7 @@ describe('AgencyClientAggregate', () => {
 
       const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError);
+        .should.be.rejectedWith(ValidationError, 'Not allowed consultant role');
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
@@ -122,7 +122,7 @@ describe('AgencyClientAggregate', () => {
 
       const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError);
+        .should.be.rejectedWith(ValidationError, 'Not allowed consultant role');
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [

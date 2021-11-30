@@ -66,7 +66,7 @@ describe('DisableAgencyConsultantRoleCommandHandler', () => {
       aggregate.canDisableConsultantRole.throws(error);
       const handler = new DisableAgencyConsultantRoleCommandHandler(agencyRepository);
 
-      await handler.execute(agencyId, commandData).should.be.rejectedWith(error);
+      await handler.execute(agencyId, commandData).should.be.rejectedWith(Error, 'sample error');
 
       aggregate.canDisableConsultantRole.should.have.been.calledOnce;
       agencyRepository.save.should.not.have.been.called;

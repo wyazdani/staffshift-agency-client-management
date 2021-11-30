@@ -68,7 +68,7 @@ describe('RemoveAgencyClientConsultantCommandHandler', () => {
       aggregate.validateRemoveClientConsultant.rejects(error);
       const handler = new RemoveAgencyClientConsultantCommandHandler(repository);
 
-      await handler.execute(agencyId, clientId, commandData).should.be.rejectedWith(error);
+      await handler.execute(agencyId, clientId, commandData).should.be.rejectedWith(Error, 'sample');
       repository.getAggregate.should.have.been.calledOnceWith(agencyId, clientId);
       aggregate.validateRemoveClientConsultant.should.have.calledOnceWith(commandData);
       repository.save.should.not.have.been.called;
