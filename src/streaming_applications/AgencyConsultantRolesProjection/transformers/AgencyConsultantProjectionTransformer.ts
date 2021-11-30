@@ -5,6 +5,8 @@ import {EventRepository} from '../../../EventRepository';
 import {EventsEnum} from '../../../Events';
 import {AgencyConsultantRolesProjectionDocumentType} from '../../../models/AgencyConsultantRolesProjection';
 import {EventStoreChangeStreamFullDocumentInterface} from 'EventStoreChangeStreamFullDocumentInterface';
+import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
+import {MongoError} from 'mongodb';
 import {
   AgencyConsultantRoleAddedEventStoreDataInterface,
   AgencyConsultantRoleDisabledEventStoreDataInterface,
@@ -126,6 +128,14 @@ export class AgencyConsultantProjectionTransformer extends Transform {
 
     consultantRoleProjection.save((err: Error) => {
       if (err) {
+        if ((err as MongoError).code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
+          this.logger.notice(
+            'Duplicate key error for agency consultant role record',
+            consultantRoleProjection.toJSON()
+          );
+          return callback(null, data);
+        }
+
         logger.error('Error saving a record to the consultant role projection', {
           model: consultantRoleProjection.toObject(),
           originalError: err

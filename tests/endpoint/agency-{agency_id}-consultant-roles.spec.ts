@@ -60,7 +60,14 @@ describe('/agency/{agency_id}/consultant-roles', () => {
               properties: {
                 code: {
                   type: 'string',
-                  enum: ['INVALID_TYPE', 'MINIMUM', 'MIN_LENGTH', 'MAX_LENGTH', 'OBJECT_ADDITIONAL_PROPERTIES', 'OBJECT_MISSING_REQUIRED_PROPERTY']
+                  enum: [
+                    'INVALID_TYPE',
+                    'MINIMUM',
+                    'MIN_LENGTH',
+                    'MAX_LENGTH',
+                    'OBJECT_ADDITIONAL_PROPERTIES',
+                    'OBJECT_MISSING_REQUIRED_PROPERTY'
+                  ]
                 },
                 message: {
                   type: 'string'

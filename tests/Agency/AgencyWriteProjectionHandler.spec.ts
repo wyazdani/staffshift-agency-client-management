@@ -140,12 +140,8 @@ describe('AgencyWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED, aggregate, event);
 
-        result.consultant_roles[0].status.should.equal(
-          AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
-        );
-        result.consultant_roles[1].status.should.equal(
-          AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED
-        );
+        result.consultant_roles[0].status.should.equal(AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED);
+        result.consultant_roles[1].status.should.equal(AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED);
       });
 
       it('Test when role not found', () => {
@@ -222,9 +218,7 @@ describe('AgencyWriteProjectionHandler', () => {
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED, aggregate, event);
 
         result.consultant_roles[0].status.should.equal(AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED);
-        result.consultant_roles[1].status.should.equal(
-          AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED
-        );
+        result.consultant_roles[1].status.should.equal(AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED);
       });
 
       it('Test when role not found', () => {

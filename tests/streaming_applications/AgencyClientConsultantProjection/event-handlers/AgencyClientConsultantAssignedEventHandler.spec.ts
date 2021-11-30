@@ -9,6 +9,7 @@ import {AgencyClientConsultantsProjection} from '../../../../src/models/AgencyCl
 import {EventsEnum} from '../../../../src/Events';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
+import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
 describe('AgencyClientConsultantAssignedEventHandler', () => {
   afterEach(() => {
@@ -68,6 +69,46 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
           'Incorrect agency client consultant record saved'
         );
         return Promise.resolve();
+      });
+
+      agencyRepositoryStub.getAggregate.resolves(agencyAggregateStub);
+      agencyAggregateStub.getConsultantRole.returns(consultantRole);
+      facadeClientHelperStub.getUserFullName.resolves('AAA');
+
+      await handler.handle(event);
+      assert.equal(saveStub.callCount, 1, 'save should be called once');
+      facadeClientHelperStub.getUserFullName.should.have.been.calledWith(event.data.consultant_id);
+    });
+
+    it('should resolve successfully when a duplicate key error is thrown on save', async () => {
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyAggregateStub = stubConstructor(AgencyAggregate);
+      const facadeClientHelperStub = stubConstructor(FacadeClientHelper);
+      const handler = new AgencyClientConsultantAssignedEventHandler(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        agencyRepositoryStub,
+        facadeClientHelperStub
+      );
+      const expectedClientConsultantRecord = {
+        _id: event.data._id,
+        agency_id: event.aggregate_id.agency_id,
+        client_id: event.aggregate_id.client_id,
+        consultant_role_id: event.data.consultant_role_id,
+        consultant_role_name: consultantRole.name,
+        consultant_id: event.data.consultant_id,
+        consultant_name: 'AAA'
+      };
+      const saveStub = sinon.stub(AgencyClientConsultantsProjection.prototype, 'save');
+
+      saveStub.callsFake(() => {
+        const data = saveStub.thisValues[0];
+
+        assert.deepEqual(
+          data.toJSON(),
+          expectedClientConsultantRecord,
+          'Incorrect agency client consultant record saved'
+        );
+        return Promise.reject({code: MONGO_ERROR_CODES.DUPLICATE_KEY});
       });
 
       agencyRepositoryStub.getAggregate.resolves(agencyAggregateStub);

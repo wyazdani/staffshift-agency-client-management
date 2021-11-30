@@ -6,6 +6,7 @@ import {AgencyClientConsultantsProjection} from '../../../models/AgencyClientCon
 import {AgencyRepository} from '../../../Agency/AgencyRepository';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {EventStoreModelInterface} from '../../../models/EventStore';
+import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
 /**
  * Responsible for handling AgencyClientConsultantAssigned event
@@ -20,7 +21,6 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultant
 
   /**
    * Create a new agency client consultant record
-   * handle(event: EventStoreModelInterface<EventDataInterface>): Promise<void>;
    */
   async handle(event: EventStoreModelInterface<AgencyClientConsultantAssignedEventStoreDataInterface>): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
@@ -35,7 +35,20 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultant
       consultant_name: await this.getFullName(event.data.consultant_id)
     });
 
-    await agencyClientConsultant.save();
+    try {
+      await agencyClientConsultant.save();
+    } catch (error) {
+      if (error.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
+        this.logger.notice('Duplicate key error for agency client record', agencyClientConsultant.toJSON());
+        return;
+      }
+
+      this.logger.error('Error occurred while creating agency client record', {
+        originalError: error,
+        record: agencyClientConsultant.toJSON()
+      });
+      throw error;
+    }
   }
 
   /**
