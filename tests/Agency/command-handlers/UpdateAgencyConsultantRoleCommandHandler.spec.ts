@@ -68,7 +68,7 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
       aggregate.validateUpdateConsultantRole.throws(error);
       const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
 
-      await handler.execute(agencyId, commandData).should.be.rejectedWith(error);
+      await handler.execute(agencyId, commandData).should.be.rejectedWith(Error, 'sample error');
 
       aggregate.validateUpdateConsultantRole.should.have.been.calledOnce;
       agencyRepository.save.should.not.have.been.called;
