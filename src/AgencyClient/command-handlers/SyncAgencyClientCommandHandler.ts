@@ -19,7 +19,7 @@ export class SyncAgencyClientCommandHandler implements AgencyClientCommandHandle
   async execute(agencyId: string, clientId: string, commandData: SyncAgencyClientCommandDataInterface): Promise<void> {
     const aggregate = await this.agencyClientRepository.getAggregate(agencyId, clientId);
 
-    // Only create the event if we are not aware of the this aggregate
+    // Only create the event if we are not aware of this aggregate
     if (aggregate.getLastEventId() === 0) {
       let eventId = aggregate.getLastEventId();
 
