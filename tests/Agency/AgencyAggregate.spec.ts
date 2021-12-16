@@ -1,11 +1,10 @@
 import {AgencyAggregate} from '../../src/Agency/AgencyAggregate';
 import {assert} from 'chai';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
-import {AgencyAggregateRecordInterface} from '../../src/Agency/types';
-import {AgencyConsultantRoleEnum} from '../../src/Agency/types/AgencyConsultantRoleEnum';
+import {AgencyConsultantRoleEnum, AgencyAggregateRecordInterface} from '../../src/Agency/types';
 
 describe('AgencyAggregate class', () => {
-  describe('validateConsultantRoleExists()', () => {
+  describe('validateUpdateConsultantRole()', () => {
     it('Test success scenario', () => {
       const aggregate = new AgencyAggregate(
         {agency_id: 'id'},
@@ -158,6 +157,113 @@ describe('AgencyAggregate class', () => {
       );
 
       assert.throws(() => aggregate.canDisableConsultantRole('some-id'), ResourceNotFoundError);
+    });
+  });
+
+  describe('getConsultantRole()', function () {
+    it('should return undefined when role is not found', function () {
+      const agencyAggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        {
+          consultant_roles: [],
+          last_sequence_id: 10
+        }
+      );
+      const consultantRoleId = '123';
+
+      assert.isUndefined(agencyAggregate.getConsultantRole(consultantRoleId));
+    });
+
+    it('should return consultant role found', function () {
+      const consultantRoleId = '123';
+      const role = {
+        _id: consultantRoleId,
+        name: 'now',
+        description: 'wow',
+        max_consultants: 1
+      };
+      const agencyAggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        {
+          consultant_roles: [role],
+          last_sequence_id: 10
+        }
+      );
+
+      assert.deepEqual(agencyAggregate.getConsultantRole(consultantRoleId), role, 'incorrect consultant role returned');
+    });
+  });
+
+  describe('getConsultantRoles()', function () {
+    it('should return all consultant roles', function () {
+      const role1 = {
+        _id: '123',
+        name: 'now',
+        description: 'wow',
+        max_consultants: 1
+      };
+      const role2 = {
+        _id: '333',
+        name: 'new',
+        description: 'well',
+        max_consultants: 1
+      };
+      const agencyAggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        {
+          consultant_roles: [role1, role2],
+          last_sequence_id: 10
+        }
+      );
+
+      assert.deepEqual(agencyAggregate.getConsultantRoles(), [role1, role2], 'incorrect roles returned');
+    });
+  });
+
+  describe('getId()', function () {
+    it('should return aggregate id', function () {
+      const agencyAggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        {
+          consultant_roles: [],
+          last_sequence_id: 10
+        }
+      );
+
+      assert.deepEqual(agencyAggregate.getId(), {agency_id: 'id'}, 'incorrect aggregate id returned');
+    });
+  });
+
+  describe('getLastEventId()', function () {
+    it('should return last event id', function () {
+      const agencyAggregate = new AgencyAggregate(
+        {agency_id: 'id'},
+        {
+          consultant_roles: [],
+          last_sequence_id: 10
+        }
+      );
+
+      assert.equal(agencyAggregate.getLastEventId(), 10, 'incorrect last sequence id returned');
+    });
+  });
+
+  describe('toJSON()', function () {
+    it('should return the aggregate', function () {
+      const aggregate = {
+        consultant_roles: [
+          {
+            _id: '333',
+            name: 'new',
+            description: 'well',
+            max_consultants: 1
+          }
+        ],
+        last_sequence_id: 10
+      };
+      const agencyAggregate = new AgencyAggregate({agency_id: 'id'}, aggregate);
+
+      assert.deepEqual(agencyAggregate.toJSON(), aggregate, 'Incorrect aggregate returned');
     });
   });
 });

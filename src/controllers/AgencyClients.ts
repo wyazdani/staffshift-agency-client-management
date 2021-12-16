@@ -19,22 +19,15 @@ export const getAgencyClient = async (
   res: ServerResponse,
   next: (error?: Error) => void
 ): Promise<void> => {
-  const swaggerParams = req.swagger.params || {};
   const logger = req.Logger;
-  const limit = QueryHelper.getItemsPerPage(swaggerParams);
-  const skip = QueryHelper.getSkipValue(swaggerParams, limit);
-  const sortBy = QueryHelper.getSortParams(swaggerParams);
-  const query = QueryHelper.getQuery(swaggerParams);
-
-  query.agency_id = get(req, 'swagger.params.agency_id.value', '');
-  query.client_id = get(req, 'swagger.params.client_id.value', '');
-
-  const service = new GenericRepository(logger, AgencyClientsProjection);
+  const agencyId = get(req, 'swagger.params.agency_id.value', '');
+  const clientId = get(req, 'swagger.params.client_id.value', '');
 
   try {
-    const {data} = await service.listResources(query, limit, skip, sortBy);
+    const repository = new GenericRepository<AgencyClientsProjectionDocumentType>(logger, AgencyClientsProjection);
+    const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
-    if (isEmpty(data)) {
+    if (isEmpty(agencyClient)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
@@ -44,7 +37,7 @@ export const getAgencyClient = async (
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
 
-    return res.end(JSON.stringify(data[0]));
+    return res.end(JSON.stringify(agencyClient));
   } catch (error) {
     return next(error);
   }
