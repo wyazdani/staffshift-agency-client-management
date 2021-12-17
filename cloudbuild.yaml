@@ -46,6 +46,16 @@ steps:
           echo "Not pushing branch $TAG_NAME to registry"
           true
         fi
+
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Git diff"
+        npm run dev-generate-event-docs
+        git diff
+
 # Secrets
 secrets:
   - kmsKeyName: projects/registry-153916/locations/global/keyRings/buildargs/cryptoKeys/githhubsshkey
