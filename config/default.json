@@ -146,5 +146,19 @@
       "version": "v1"
     },
     "request_timeout": 2000
+  },
+  "internal_pubSub": {
+    "api_end_point": "https://europe-west1-pubsub.googleapis.com",
+    "topics": [{
+      "name": "ss.staffshift.agency.client.management.event.store",
+      "subscribers": [
+        {
+          "name": "subscriber.event.store.projection",
+          "processor": "./EventStoreProjectionProcessor",
+          "enableMessageOrdering": true,
+          "maxConcurrentMessages": 5
+        }
+      ]
+    }]
   }
 }
