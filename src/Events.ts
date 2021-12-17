@@ -53,7 +53,7 @@ export const events: EventsType = {
     description: 'Sync event to move data from legacy application to microservice'
   },
   [EventsEnum.TESTING_CI_EVENT]: {
-    name: 'some name blah 1',
+    name: 'some name blah 2',
     description: 'some description'
   }
 };

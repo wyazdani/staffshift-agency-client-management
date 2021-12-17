@@ -23,7 +23,7 @@ steps:
     waitFor: ["-"]
 
   - name: 'staffshift-agency-client-management'
-    entrypoint: 'sh'
+    entrypoint: '/bin/sh'
     args:
       - '-c'
       - |
