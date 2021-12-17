@@ -6,6 +6,7 @@
   "scripts": {
     "build-ts": "tsc",
     "start": "node dist/http_server",
+    "ststs": "blah",
     "start-tracing": "node -r ./tracing.js dist/http_server",
     "test": "node ./testfile-drop-database.js && npm run migrate && node_modules/.bin/nyc node_modules/.bin/mocha",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore .",
