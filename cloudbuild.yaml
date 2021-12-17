@@ -22,6 +22,15 @@ steps:
     secretEnv: ['PASSWORD']
     waitFor: ["-"]
 
+  - name: 'staffshift-agency-client-management'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Git diff"
+        npm run dev-generate-event-docs
+        git diff
+
   # Run the app and dependencies in the background using docker-compose.
   # We have compose exit with the same code as staffshift-agency-client-management
   - name: 'docker/compose:1.23.2'
@@ -46,15 +55,6 @@ steps:
           echo "Not pushing branch $TAG_NAME to registry"
           true
         fi
-
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Git diff"
-        npm run dev-generate-event-docs
-        git diff
 
 # Secrets
 secrets:
