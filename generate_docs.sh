@@ -8,7 +8,7 @@ if [ "$LAST_COMMIT_BY" == "devonly@a24group.com" ]; then
     echo "Commit made by ci user, no further actions"
 else
     # Get the git branch that we are on
-    GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    GIT_BRANCH=$(git branch --show-current)
     echo "Branch identified as $GIT_BRANCH"
 
     # Generate the docs
@@ -30,7 +30,7 @@ else
         echo "Comitting..."
         git commit -m 'Update event documentation'
         echo "Pushing..."
-        git push git@github.com:A24Group/staffshift-agency-client-management.git $GIT_BRANCH
+        #git push git@github.com:A24Group/staffshift-agency-client-management.git $GIT_BRANCH
         echo "Pushed"
     fi
 fi
