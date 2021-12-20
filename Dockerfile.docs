@@ -1,6 +1,9 @@
 FROM staffshift-agency-client-management
 
 ARG PRIVATE_SSH_KEY
+ARG BRANCH_NAME
+
+ENV GIT_BRANCH=$BRANCH_NAME
 
 RUN apk add bash
 

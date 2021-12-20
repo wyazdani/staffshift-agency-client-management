@@ -8,7 +8,6 @@ if [ "$LAST_COMMIT_BY" == "devonly@a24group.com" ]; then
     echo "Commit made by ci user, no further actions"
 else
     # Get the git branch that we are on
-    GIT_BRANCH=$(git branch --show-current)
     echo "Branch identified as $GIT_BRANCH"
 
     # Generate the docs
