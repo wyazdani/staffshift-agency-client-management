@@ -1,0 +1,9 @@
+FROM staffshift-agency-client-management
+
+ARG PRIVATE_SSH_KEY
+
+RUN apk add bash
+
+COPY ./generate_docs.sh ./
+
+RUN  echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa && chmod o-rw $HOME/.ssh/id_rsa && chmod g-rw $HOME/.ssh/id_rsa && /bin/bash ./generate_docs.sh && rm $HOME/.ssh/id_rsa
