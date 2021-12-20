@@ -38,5 +38,5 @@ git add Events.md
 echo "Comitting..."
 git commit -m 'Update event documentation'
 echo "Pushing..."
-git push git@github.com:A24Group/staffshift-agency-client-management.git $GIT_BRANCH
+git push git@github.com:A24Group/staffshift-agency-client-management.git HEAD:$GIT_BRANCH
 echo "Pushed"
