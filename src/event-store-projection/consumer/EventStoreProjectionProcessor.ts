@@ -32,8 +32,8 @@ module.exports = async (
         published_at: publishedAt,
         received_at: receivedAt,
         consumed_at: consumedAt,
-        process_duration: consumedAt.getTime() - receivedAt.getTime(),
-        receive_duration: receivedAt.getTime() - publishedAt.getTime(),
+        process_duration_in_ms: consumedAt.getTime() - receivedAt.getTime(),
+        receive_duration_in_ms: receivedAt.getTime() - publishedAt.getTime(),
         consumer_instance: CONSUMER_NAME
       },
       (err) => {

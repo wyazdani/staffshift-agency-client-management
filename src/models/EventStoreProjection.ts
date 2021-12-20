@@ -5,8 +5,8 @@ export interface EventStoreProjectionModelInterface {
   published_at: Date;
   received_at: Date;
   consumed_at: Date;
-  process_duration: number;
-  receive_duration: number;
+  process_duration_in_ms: number;
+  receive_duration_in_ms: number;
   consumer_instance: string;
   created_at: Date;
 }
@@ -18,8 +18,8 @@ const eventStoreProjectionSchema = new Schema(
     published_at: Date,
     received_at: Date,
     consumed_at: Date,
-    process_duration: Number,
-    receive_duration: Number,
+    process_duration_in_ms: Number,
+    receive_duration_in_ms: Number,
     consumer_instance: String
   },
   {

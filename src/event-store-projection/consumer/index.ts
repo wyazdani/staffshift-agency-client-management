@@ -33,6 +33,9 @@ if (!MIN_DELAY) {
 if (!MAX_DELAY) {
   throw 'MAX DELAY is not set';
 }
+if (MAX_DELAY > 10000) {
+  throw 'MAX DELAY supported is 10s';
+}
 if (!CONSUMER_NAME) {
   throw 'CONSUMER NAME is not set';
 }
