@@ -30,7 +30,7 @@ else
         echo "Comitting..."
         git commit -m 'Update event documentation'
         echo "Pushing..."
-        git push origin $GIT_BRANCH
+        git push git@github.com:A24Group/staffshift-agency-client-management.git $GIT_BRANCH
         echo "Pushed"
     fi
 fi
