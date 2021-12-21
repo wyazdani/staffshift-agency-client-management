@@ -62,16 +62,13 @@ export class EventStoreProjectionResumeTokenCollectionManager {
       throw new Error('Set both db and collection name before requesting watch options');
     }
     const pipelineId = `${pipeline}_${streamType}`;
-    const resumeAfter = await this.db.collection(this.collectionName).findOne({_id: pipelineId});
-
-    if (streamType === STREAM_TYPES_ENUM.WATCH && !resumeAfter) {
-      const seedPipelineId = `${pipeline}_seed`;
-      const seed = await this.db.collection(this.collectionName).findOne({_id: seedPipelineId});
-
-      if (seed && seed.created_at) {
-        watchOptions.startAtOperationTime = new Timestamp(1, seed.created_at.valueOf() / 1000);
+    const resumeAfter = await this.db.collection(this.collectionName).findOne(
+      {_id: pipelineId},
+      {
+        readPreference: 'primaryPreferred'
       }
-    }
+    );
+
     if (resumeAfter) {
       watchOptions.resumeAfter = resumeAfter.token;
       watchOptions.total = resumeAfter.total;
