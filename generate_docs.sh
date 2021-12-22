@@ -11,8 +11,15 @@ if [ "$LAST_COMMIT_BY" == "devonly@a24group.com" ]; then
     exit 0;
 fi
 
-# Get the git branch that we are on, exit the process if it's master branch
 echo "Branch identified as $GIT_BRANCH"
+
+# Exit the process when branch is not set, this will be the case when a tag is pushed
+if [ -z "$GIT_BRANCH" ]; then
+    echo "Tags will not generate docs"
+    exit 0;
+fi
+
+# Exit the process if it's master branch
 if [ "$GIT_BRANCH" == "master" ]; then
     echo "Master branch will not generate docs"
     exit 0;
