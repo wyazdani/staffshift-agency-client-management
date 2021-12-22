@@ -5,15 +5,15 @@ steps:
 
   # Build mongo
   - name: 'gcr.io/cloud-builders/docker'
-   entrypoint: 'bash'
-   args: [ '-c', 'docker build -t database --file Dockerfile.mongo --cache-from gcr.io/$PROJECT_ID/database:latest . && docker tag database eu.gcr.io/$PROJECT_ID/database:latest && docker push eu.gcr.io/$PROJECT_ID/database:latest' ]
-   waitFor: ["-"]
+    entrypoint: 'bash'
+    args: [ '-c', 'docker build -t database --file Dockerfile.mongo --cache-from gcr.io/$PROJECT_ID/database:latest . && docker tag database eu.gcr.io/$PROJECT_ID/database:latest && docker push eu.gcr.io/$PROJECT_ID/database:latest' ]
+    waitFor: ["-"]
 
    # Build mountebank
-   - name: 'gcr.io/cloud-builders/docker'
-     entrypoint: 'bash'
-     args: [ '-c', 'docker build -t mountebank --file Dockerfile.mountebank --cache-from gcr.io/$PROJECT_ID/mountebank:latest . && docker tag mountebank eu.gcr.io/$PROJECT_ID/mountebank:latest && docker push eu.gcr.io/$PROJECT_ID/mountebank:latest' ]
-     waitFor: ["-"]
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [ '-c', 'docker build -t mountebank --file Dockerfile.mountebank --cache-from gcr.io/$PROJECT_ID/mountebank:latest . && docker tag mountebank eu.gcr.io/$PROJECT_ID/mountebank:latest && docker push eu.gcr.io/$PROJECT_ID/mountebank:latest' ]
+    waitFor: ["-"]
 
   # Build staffshift-agency-client-management
   - name: 'gcr.io/cloud-builders/docker'
@@ -22,19 +22,19 @@ steps:
     secretEnv: ['PASSWORD']
     waitFor: ["-"]
 
-  # Run the app and dependencies in the background using docker-compose.
-  # We have compose exit with the same code as staffshift-agency-client-management
-  - name: 'docker/compose:1.23.2'
-   args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
-   env:
-     - 'PROJECT_ID=$PROJECT_ID'
-     - 'NODE_ENV=ci'
-
   # Build container that regenerates event docs
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: [ '-c', 'docker build --file Dockerfile.docs --build-arg PRIVATE_SSH_KEY="$$PASSWORD" --build-arg BRANCH_NAME="$BRANCH_NAME" -t staffshift-agency-client-management-docs .' ]
     secretEnv: ['PASSWORD']
+
+  # Run the app and dependencies in the background using docker-compose.
+  # We have compose exit with the same code as staffshift-agency-client-management
+  - name: 'docker/compose:1.23.2'
+    args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
+    env:
+      - 'PROJECT_ID=$PROJECT_ID'
+      - 'NODE_ENV=ci'
 
   # Work around as described in https://github.com/GoogleCloudPlatform/cloud-builders/issues/138
   - name: 'gcr.io/cloud-builders/docker'
