@@ -4,16 +4,16 @@ steps:
     args: ['pull', 'docker/compose:1.23.2']
 
   # Build mongo
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   entrypoint: 'bash'
-  #   args: [ '-c', 'docker build -t database --file Dockerfile.mongo --cache-from gcr.io/$PROJECT_ID/database:latest . && docker tag database eu.gcr.io/$PROJECT_ID/database:latest && docker push eu.gcr.io/$PROJECT_ID/database:latest' ]
-  #   waitFor: ["-"]
+  - name: 'gcr.io/cloud-builders/docker'
+   entrypoint: 'bash'
+   args: [ '-c', 'docker build -t database --file Dockerfile.mongo --cache-from gcr.io/$PROJECT_ID/database:latest . && docker tag database eu.gcr.io/$PROJECT_ID/database:latest && docker push eu.gcr.io/$PROJECT_ID/database:latest' ]
+   waitFor: ["-"]
 
-  # # Build mountebank
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   entrypoint: 'bash'
-  #   args: [ '-c', 'docker build -t mountebank --file Dockerfile.mountebank --cache-from gcr.io/$PROJECT_ID/mountebank:latest . && docker tag mountebank eu.gcr.io/$PROJECT_ID/mountebank:latest && docker push eu.gcr.io/$PROJECT_ID/mountebank:latest' ]
-  #   waitFor: ["-"]
+   # Build mountebank
+   - name: 'gcr.io/cloud-builders/docker'
+     entrypoint: 'bash'
+     args: [ '-c', 'docker build -t mountebank --file Dockerfile.mountebank --cache-from gcr.io/$PROJECT_ID/mountebank:latest . && docker tag mountebank eu.gcr.io/$PROJECT_ID/mountebank:latest && docker push eu.gcr.io/$PROJECT_ID/mountebank:latest' ]
+     waitFor: ["-"]
 
   # Build staffshift-agency-client-management
   - name: 'gcr.io/cloud-builders/docker'
@@ -24,12 +24,13 @@ steps:
 
   # Run the app and dependencies in the background using docker-compose.
   # We have compose exit with the same code as staffshift-agency-client-management
-  # - name: 'docker/compose:1.23.2'
-  #   args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
-  #   env:
-  #     - 'PROJECT_ID=$PROJECT_ID'
-  #     - 'NODE_ENV=ci'
+  - name: 'docker/compose:1.23.2'
+   args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
+   env:
+     - 'PROJECT_ID=$PROJECT_ID'
+     - 'NODE_ENV=ci'
 
+  # Build container that regenerates event docs
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: [ '-c', 'docker build --file Dockerfile.docs --build-arg PRIVATE_SSH_KEY="$$PASSWORD" --build-arg BRANCH_NAME="$BRANCH_NAME" -t staffshift-agency-client-management-docs .' ]
@@ -51,7 +52,6 @@ steps:
           echo "Not pushing branch $TAG_NAME to registry"
           true
         fi
-
 # Secrets
 secrets:
   - kmsKeyName: projects/registry-153916/locations/global/keyRings/buildargs/cryptoKeys/githhubsshkey

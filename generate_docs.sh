@@ -5,13 +5,13 @@ LAST_COMMIT_BY=$(git log -1 --pretty=%ae)
 
 echo "Last commit made by $LAST_COMMIT_BY"
 
-# Only run if the commit was not made by ci user
+# Exit process if commit was made by ci user
 if [ "$LAST_COMMIT_BY" == "devonly@a24group.com" ]; then
     echo "Commit made by ci user, no further actions"
     exit 0;
 fi
 
-# Get the git branch that we are on
+# Get the git branch that we are on, exit the process if it's master branch
 echo "Branch identified as $GIT_BRANCH"
 if [ "$GIT_BRANCH" == "master" ]; then
     echo "Master branch will not generate docs"
@@ -35,7 +35,7 @@ git config --global user.name "CI"
 git config --global user.email "devonly@a24group.com"
 echo "Adding files..."
 git add Events.md
-echo "Comitting..."
+echo "Committing..."
 git commit -m 'Update event documentation'
 echo "Pushing..."
 git push git@github.com:A24Group/staffshift-agency-client-management.git HEAD:$GIT_BRANCH
