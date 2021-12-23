@@ -33,7 +33,7 @@ REGENERATED=$( git status -s | grep "Events.md" )
 
 if [ -z "$REGENERATED" ]; then
     echo "Events.md had no changes"
-    exit: 0;
+    exit 0;
 fi
 
 # Changes seen on Events.md file
