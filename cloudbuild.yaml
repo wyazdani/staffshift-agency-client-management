@@ -30,6 +30,12 @@ steps:
       - 'PROJECT_ID=$PROJECT_ID'
       - 'NODE_ENV=ci'
 
+  # Build container that regenerates event docs
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [ '-c', 'docker build --file Dockerfile.docs --build-arg PRIVATE_SSH_KEY="$$PASSWORD" --build-arg BRANCH_NAME="$BRANCH_NAME" -t staffshift-agency-client-management-docs .' ]
+    secretEnv: ['PASSWORD']
+
   # Work around as described in https://github.com/GoogleCloudPlatform/cloud-builders/issues/138
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
