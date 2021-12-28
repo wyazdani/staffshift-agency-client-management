@@ -116,7 +116,7 @@ export class EventStorePipeline {
     const cursor = db
       .collection(EventStore.collection.name)
       .find({})
-      .sort({created_at: 1})
+      .sort({created_at: 1, _id: 1})
       .skip(watchOptions.total || 0);
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const stream: any = cursor;
