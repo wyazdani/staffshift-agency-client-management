@@ -34,8 +34,8 @@ module.exports = async (
   const chaosCode: string[] = [];
 
   handledMessages++;
-  if ((timeout % 7 == 0 && CHAOS_CODES.includes(TIMEOUT)) || handledMessages % 45 == 0) {
-    logger.info(`CHAOS_CODE::TIMEOUT invoked for event with delay ${timeout}`, {
+  if (timeout % 7 == 0 && CHAOS_CODES.includes(TIMEOUT)) {
+    logger.debug(`CHAOS_CODE::TIMEOUT invoked for event with delay ${timeout}`, {
       consumer: CONSUMER_NAME,
       event_id: message.event._id.toString()
     });
@@ -47,7 +47,7 @@ module.exports = async (
     let nackError: Error;
 
     if (handledMessages > MAX_MESSAGES && CHAOS_CODES.includes(CRASH)) {
-      logger.info('CHAOS_CODE::CRASH invoked for event', {
+      logger.debug('CHAOS_CODE::CRASH invoked for event', {
         consumer: CONSUMER_NAME,
         event_id: message.event._id.toString()
       });
@@ -56,7 +56,7 @@ module.exports = async (
     if (timeout % 9 == 0 && CHAOS_CODES.includes(NACK)) {
       nackError = new Error(`CHAOS_CODE::NACK invoked for event ${message.event._id.toString()}`);
 
-      logger.info('CHAOS::NACK invoked for event', {
+      logger.debug('CHAOS::NACK invoked for event', {
         consumer: CONSUMER_NAME,
         original_error: nackError,
         event_id: message.event._id.toString()
