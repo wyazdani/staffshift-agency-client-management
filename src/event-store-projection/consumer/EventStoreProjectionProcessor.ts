@@ -7,12 +7,11 @@ const NACK = 'NACK';
 const TIMEOUT = 'TIMEOUT';
 const CRASH = 'CRASH';
 
-const SUBSCRIBER_TIMEOUT = 10000;
+const SUBSCRIBER_TIMEOUT = 15000;
 const CONSUMER_NAME = process.argv[2];
 const MIN_DELAY = toNumber(process.argv[3]);
 const MAX_DELAY = toNumber(process.argv[4]);
-const CHAOS_CODES = process.argv[5].split(',');
-const DELAY = random(MIN_DELAY, MAX_DELAY);
+const CHAOS_CODES = process.argv[5] ? process.argv[5].split(',') : [];
 const MAX_MESSAGES = random(10, 100);
 
 let handledMessages = 0;
@@ -31,30 +30,40 @@ module.exports = async (
   logger.debug('event received', message);
   const receivedAt = new Date();
   const publishedAt = new Date(message.published_at);
+  let timeout = random(MIN_DELAY, MAX_DELAY);
+  const chaosCode: string[] = [];
 
   handledMessages++;
+  if ((timeout % 7 == 0 && CHAOS_CODES.includes(TIMEOUT)) || handledMessages % 45 == 0) {
+    logger.info(`CHAOS_CODE::TIMEOUT invoked for event with delay ${timeout}`, {
+      consumer: CONSUMER_NAME,
+      event_id: message.event._id.toString()
+    });
+    timeout = SUBSCRIBER_TIMEOUT;
+    chaosCode.push(TIMEOUT);
+  }
+
   setTimeout(() => {
+    let nackError: Error;
+
     if (handledMessages > MAX_MESSAGES && CHAOS_CODES.includes(CRASH)) {
-      logger.info('CHAOS_CODE::CRASH invoked for event', {consumer: CONSUMER_NAME, event_id: message.event._id.toString()});
+      logger.info('CHAOS_CODE::CRASH invoked for event', {
+        consumer: CONSUMER_NAME,
+        event_id: message.event._id.toString()
+      });
       process.exit(1);
     }
+    if (timeout % 9 == 0 && CHAOS_CODES.includes(NACK)) {
+      nackError = new Error(`CHAOS_CODE::NACK invoked for event ${message.event._id.toString()}`);
 
-    if (DELAY % 9 == 0 && CHAOS_CODES.includes(NACK)) {
-      const err = new Error(`CHAOS_CODE::NACK invoked for event ${message.event._id.toString()}`);
-
-      logger.info('CHAOS::NACK invoked for event', {consumer: CONSUMER_NAME, original_error: err, event_id: message.event._id.toString()});
-      return callback(err);
+      logger.info('CHAOS::NACK invoked for event', {
+        consumer: CONSUMER_NAME,
+        original_error: nackError,
+        event_id: message.event._id.toString()
+      });
+      chaosCode.push(NACK);
     }
-
-    if (DELAY % 8 == 0 && CHAOS_CODES.includes(TIMEOUT)) {
-      logger.info('CHAOS_CODE::TIMEOUT invoked for event', {consumer: CONSUMER_NAME, event_id: message.event._id.toString()});
-      setTimeout(() => {
-        logger.info('CHAOS_CODE::TIMEOUT executed for event', {consumer: CONSUMER_NAME, event_id: message.event._id.toString()});
-        return callback();
-      }, SUBSCRIBER_TIMEOUT);
-      return;
-    }
-
+    // Get the date just before we persist
     const consumedAt = new Date();
 
     EventStoreProjection.create(
@@ -65,15 +74,16 @@ module.exports = async (
         consumed_at: consumedAt,
         process_duration_in_ms: consumedAt.getTime() - receivedAt.getTime(),
         receive_duration_in_ms: receivedAt.getTime() - publishedAt.getTime(),
-        consumer_instance: CONSUMER_NAME
+        consumer_instance: CONSUMER_NAME,
+        chaos_codes: chaosCode
       },
       (err) => {
         if (err) {
           logger.error('error creating event store projection record', err);
           return callback(err);
         }
-        return callback();
+        return callback(nackError);
       }
     );
-  }, DELAY);
+  }, timeout);
 };
