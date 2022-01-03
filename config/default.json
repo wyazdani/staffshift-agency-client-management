@@ -52,18 +52,6 @@
       "readPreference": "secondaryPreferred"
     }
   },
-  "octophant_audit": {
-    "service_identifier": "402e8078-428f-103a-b7c0-0050569a0010",
-    "pubsub_project": {
-      "projectId": "staffshift-dev-env"
-    },
-    "pubsub_topics": [
-      {
-        "name": "staffshift.audit",
-        "subscribers": []
-      }
-    ]
-  },
   "api_token": "SomeSecret",
   "tracing": {
     "key_file": "",

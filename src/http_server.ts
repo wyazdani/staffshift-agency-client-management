@@ -13,7 +13,6 @@ import config from 'config';
 import A24ErrorUtils, {RuntimeError, ErrorHandler} from 'a24-node-error-utils';
 import Logger, {SetupOptions} from 'a24-logzio-winston';
 import Url from 'url';
-import {MessagePublisher} from 'a24-node-pubsub';
 import {createHttpTerminator} from 'http-terminator';
 import mongoose, {Error} from 'mongoose';
 import {LinkHeaderHelper} from 'a24-node-query-utils';
@@ -22,17 +21,10 @@ import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurat
 
 mongoose.Promise = global.Promise;
 
-const pubsubAuditConfig = {
-  env: process.env.NODE_ENV || 'development',
-  auth: config.get('octophant_audit.pubsub_project'),
-  topics: config.get('octophant_audit.pubsub_topics')
-};
-
 Logger.setup(config.get<SetupOptions>('logger'));
 const serverPort = config.has('server.port') ? config.get('server.port') : 3370;
 const app = connect();
 
-MessagePublisher.configure(pubsubAuditConfig);
 // Allow any calls on /docs and /api-docs
 const allowedRegex = '^/docs.*|^/api-docs.*';
 // swaggerRouter configuration
