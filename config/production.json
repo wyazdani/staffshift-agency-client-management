@@ -7,7 +7,6 @@
     "request_timeout": 2000
   },
   "exposed_server": {
-    "host": "staffshift-agency-client-management-service",
-    "port": 80
+    "host": "staffshift-agency-client-management-service"
   }
 }
