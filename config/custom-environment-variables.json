@@ -6,5 +6,8 @@
     "request_options": {
       "port": "A24_STAFFSHIFT_FACADE_SERVICE_SERVICE_PORT"
     }
+  },
+  "exposed_server": {
+    "port": "STAFFSHIFT_AGENCY_CLIENT_MANAGEMENT_SERVICE_SERVICE_PORT"
   }
 }

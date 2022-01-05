@@ -5,5 +5,8 @@
       "host": "a24-staffshift-facade-service"
     },
     "request_timeout": 2000
+  },
+  "exposed_server": {
+    "host": "staffshift-agency-client-management-service"
   }
 }
