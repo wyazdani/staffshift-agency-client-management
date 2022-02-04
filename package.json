@@ -12,7 +12,9 @@
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
     "start-streaming-application-core": "node dist/StreamingApplication --type=core",
-    "start-event-store-projection-stream": "node dist/event-store-projection/streaming_app",
+    "start-event-store-publisher": "node dist/event_store_publisher",
+    "start-event-store-projection": "node dist/event_store_projection",
+    "start-event-store-http-server": "node dist/event_store_http_server",
     "dev-generate-event-docs": "ts-node src/tools/generate_events_docs.ts"
   },
   "pre-commit": [
@@ -38,6 +40,7 @@
     "a24-node-pubsub": "git+ssh://git@github.com/A24Group/a24-node-pubsub.git#v6.1.0",
     "a24-node-query-utils": "git+ssh://git@github.com/A24Group/a24-node-query-utils.git#v1.8.0",
     "a24-node-staffshift-facade-client": "git+ssh://git@github.com/A24Group/a24-node-staffshift-facade-client.git#v1.27.0",
+    "ss-eventstore": "git+ssh://git@github.com/A24Group/ss-eventstore.git#remove-publisher-seed-23",
     "arg": "^5.0.1",
     "config": "^3.3.6",
     "connect": "3.7.0",

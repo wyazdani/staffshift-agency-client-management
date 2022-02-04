@@ -11,6 +11,14 @@
       "serverSelectionTimeoutMS": 60000
     }
   },
+  "event_store": {
+    "mongo": {
+      "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementCI",
+      "options": {
+        "serverSelectionTimeoutMS": 60000
+      }
+    }
+  },
   "mounteBank": {
     "host": "mountebank",
     "port": 2525,
