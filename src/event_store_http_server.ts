@@ -24,7 +24,7 @@ const shutdown = async () => {
     loggerContext.error('Error while shutting down event store http server', error);
     process.exit(1);
   }
-}
+};
 
 for (const signal of config.get<GracefulShutdownConfigurationInterface>('graceful_shutdown').signals) {
   process.on(signal, () => shutdown());

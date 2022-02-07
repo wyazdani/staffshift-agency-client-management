@@ -138,14 +138,7 @@
   "event_store": {
     "http_server": {
       "api_token": "SomeSecret",
-      "port": 2030,
-      "options": {
-        "protocol": "http",
-        "host": "localhost",
-        "port": 2030,
-        "version": "v1"
-      },
-      "request_timeout": 2000
+      "port": 2030
     },
     "mongo": {
       "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementDev",
@@ -159,12 +152,12 @@
       "api_end_point": "https://europe-west1-pubsub.googleapis.com"
     },
     "projection": {
-      "agency-client-management-event-store-http-server": {
+      "staffshift-agency-client-management-event-store": {
         "api_token": "SomeSecret",
         "request_options": {
           "protocol": "http",
           "host": "localhost",
-          "port": 3155,
+          "port": 2030,
           "version": "v1"
         }
       },

@@ -9,8 +9,7 @@ const loggerContext = Logger.getContext('event-store-publisher');
 
 const eventStorePublisher = new EventStorePublisher({
   messagePublisher: {
-    api_end_point: config.get('event_store.pub_sub_api_end_point'),
-    enable_message_ordering: true,
+    api_end_point: config.get('event_store.publisher.api_end_point'),
     env: process.env.NODE_ENV || 'development',
     auth: config.get('pubSubAuth')
   },
@@ -18,8 +17,8 @@ const eventStorePublisher = new EventStorePublisher({
     database_host: config.get('event_store.mongo.database_host'),
     options: config.get('event_store.mongo.options')
   },
-  publishTopicName: config.get<string>('event_store.topic_name'),
-  pipelineId: config.get<string>('event_store.pipeline_id')
+  publishTopicName: config.get<string>('event_store.publisher.topic_name'),
+  pipelineId: config.get<string>('event_store.publisher.pipeline_id')
 } as EventStorePublisherConfigInterface);
 
 const shutdown = async (success: boolean) => {

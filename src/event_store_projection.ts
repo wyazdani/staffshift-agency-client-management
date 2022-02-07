@@ -34,7 +34,7 @@ const projection = new EventStoreProjection({
     database_host: config.get('event_store.mongo.database_host'),
     options: config.get('event_store.mongo.options')
   },
-  projections: config.get('event_store.projections')
+  projections: config.get('event_store.projection.projections')
 });
 
 const shutdown = async (success: boolean) => {
