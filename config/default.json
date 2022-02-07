@@ -65,6 +65,9 @@
     },
     "changestream": {
       "server_close_timeout": 5000
+    },
+    "event_store": {
+      "server_close_timeout": 5000
     }
   },
   "pubSubAuth": {

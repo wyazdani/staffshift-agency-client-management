@@ -17,7 +17,10 @@ const eventStoreHttpServer = new EventStoreHttpServer({
 const shutdown = async () => {
   try {
     loggerContext.info('Starting to shutdown');
-    await eventStoreHttpServer.shutdown();
+    await Promise.race([
+      setTimeout(config.get('graceful_shutdown.event_store.server_close_timeout')),
+      eventStoreHttpServer.shutdown()
+    ]);
     loggerContext.info('Shutdown done');
     process.exit(0);
   } catch (error) {

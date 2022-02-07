@@ -24,7 +24,10 @@ const eventStorePublisher = new EventStorePublisher({
 const shutdown = async (success: boolean) => {
   loggerContext.info('Calling shutdown on event store publisher');
   try {
-    await eventStorePublisher.shutdown();
+    await Promise.race([
+      setTimeout(config.get('graceful_shutdown.event_store.server_close_timeout')),
+      eventStorePublisher.shutdown()
+    ]);
     process.exit(success ? 0 : 1);
   } catch (error) {
     loggerContext.error('Error exiting event store publisher', error);

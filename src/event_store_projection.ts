@@ -40,7 +40,10 @@ const projection = new EventStoreProjection({
 const shutdown = async (success: boolean) => {
   loggerContext.info('Calling shutdown on event store projection');
   try {
-    await projection.shutdown();
+    await Promise.race([
+      setTimeout(config.get('graceful_shutdown.event_store.server_close_timeout')),
+      projection.shutdown()
+    ]);
     process.exit(success ? 0 : 1);
   } catch (error) {
     loggerContext.error('Error exiting event store projection', error);
