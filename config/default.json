@@ -141,7 +141,7 @@
   "event_store": {
     "http_server": {
       "api_token": "SomeSecret",
-      "port": 2030
+      "port": 3400
     },
     "mongo": {
       "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementDev",
@@ -160,7 +160,7 @@
         "request_options": {
           "protocol": "http",
           "host": "localhost",
-          "port": 2030,
+          "port": 3400,
           "version": "v1"
         }
       },
