@@ -8,5 +8,17 @@
   },
   "exposed_server": {
     "host": "staffshift-agency-client-management-service"
+  },
+  "event_store": {
+    "http_server": {
+      "port": 3400
+    },
+    "projection": {
+      "staffshift-agency-client-management-event-store": {
+        "request_options": {
+          "host": "staffshift-agency-client-management-event-store-service"
+        }
+      }
+    }
   }
 }

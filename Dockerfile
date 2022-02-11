@@ -1,4 +1,4 @@
-ARG NODE_VERSION_TAG=fermium-alpine
+ARG NODE_VERSION_TAG=gallium-alpine
 
 FROM node:$NODE_VERSION_TAG
 # Create the directory for our application

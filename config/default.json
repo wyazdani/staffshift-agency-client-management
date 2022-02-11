@@ -65,6 +65,9 @@
     },
     "changestream": {
       "server_close_timeout": 5000
+    },
+    "event_store": {
+      "server_close_timeout": 5000
     }
   },
   "pubSubAuth": {
@@ -135,18 +138,40 @@
     },
     "request_timeout": 2000
   },
-  "internal_pubSub": {
-    "api_end_point": "https://europe-west1-pubsub.googleapis.com",
-    "topics": [{
-      "name": "ss.staffshift.agency.client.management.event.store",
-      "subscribers": [
-        {
-          "name": "subscriber.event.store.projection",
-          "processor": "./EventStoreProjectionProcessor",
-          "enableMessageOrdering": true,
-          "maxConcurrentMessages": 5
+  "event_store": {
+    "http_server": {
+      "api_token": "SomeSecret",
+      "port": 3400
+    },
+    "mongo": {
+      "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementDev",
+      "options": {
+        "readPreference": "secondaryPreferred"
+      }
+    },
+    "publisher": {
+      "pipeline_id": "event_store_publisher",
+      "topic_name": "ss.global.event.store.staffshift.agency.client.management",
+      "api_end_point": "https://europe-west1-pubsub.googleapis.com"
+    },
+    "projection": {
+      "staffshift-agency-client-management-event-store": {
+        "api_token": "SomeSecret",
+        "request_options": {
+          "protocol": "http",
+          "host": "localhost",
+          "port": 3400,
+          "version": "v1"
         }
-      ]
-    }]
+      },
+      "projections": [{
+        "name": "Agency Clients",
+        "bindings": [{
+          "id": "agency-clients",
+          "projector": "./projections/AgencyClients/Projector",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management"
+        }]
+      }]
+    }
   }
 }

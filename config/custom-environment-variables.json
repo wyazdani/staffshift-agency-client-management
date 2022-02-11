@@ -9,5 +9,14 @@
   },
   "exposed_server": {
     "port": "STAFFSHIFT_AGENCY_CLIENT_MANAGEMENT_SERVICE_SERVICE_PORT"
+  },
+  "event_store": {
+    "projection": {
+      "staffshift-agency-client-management-event-store": {
+        "request_options": {
+          "port": "STAFFSHIFT_AGENCY_CLIENT_MANAGEMENT_EVENT_STORE_SERVICE_SERVICE_PORT"
+        }
+      }
+    }
   }
 }
