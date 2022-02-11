@@ -2,6 +2,7 @@ import Logger from 'a24-logzio-winston';
 import config from 'config';
 import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurationInterface';
 import {EventStoreHttpServer} from 'ss-eventstore';
+import {setTimeout} from 'timers/promises';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext('event-store-http-server');
