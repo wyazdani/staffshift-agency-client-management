@@ -2,9 +2,8 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('config');
 const _ = require('lodash');
-const selectorFields = ['agency_id', 'client_id'];
 const comparisonFields = {
-  'source': ['linked', 'client_type'],
+  'source': ['linked', 'client_type', "created_at"],
   'destination': ['linked', 'client_type'],
 }
 
@@ -13,14 +12,19 @@ const run = async () => {
   const db = client.db(config.mongo.database);
   const SourceCollection = db.collection(config.mongo.source_collection);
   const DestinationCollection = db.collection(config.mongo.destination_collection);
-  const cursor = await SourceCollection.find({});
+  const sourceData = await SourceCollection.find({}).toArray();
+  console.log('Source data retrieved');
+  const destinationData = await DestinationCollection.find({}).toArray();
+  console.log('Destination data retrieved');
 
   let counter = 0;
-  while (await cursor.hasNext()) {
+  for (const item of sourceData) {
     counter++;
-    const source = await cursor.next();
-    const destination = await DestinationCollection.findOne(_.pick(source, selectorFields));
-    await compare(source, destination);
+    const destItem =  _.find(destinationData, {agency_id: item.agency_id, client_id: item.client_id});
+    if (!destItem) {
+      console.error('DESTINATION MISSING DOCUMENT', item);
+    }
+    await compare(item, destItem);
     if (counter % 100 === 0) {
       console.log(`PROGRESS: completed ${counter}`);
     }
