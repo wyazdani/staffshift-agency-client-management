@@ -69,3 +69,4 @@ config/local-development.json
 
 # Exclude typescript build directory
 dist
+local.json

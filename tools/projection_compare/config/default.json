@@ -1,0 +1,8 @@
+{
+  "mongo": {
+    "connection" : "",
+    "database":"",
+    "source_collection": "",
+    "destination_collection": ""
+  }
+}
