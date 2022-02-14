@@ -186,5 +186,33 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         {}
       );
     });
+
+    it('Test AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED failure scenario', async () => {
+      const event: any = {
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
+        aggregate_id: {
+          agency_id: agencyId
+        },
+        data: {
+          name: 'some name',
+          description: 'describe me',
+          max_consultants: 1,
+          _id: consultantRoleId
+        }
+      };
+      const error = new Error('sample error');
+
+      updateOne.rejects(error);
+      const projector = new AgencyConsultantRolesProjector();
+
+      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event).should.have.been.rejectedWith(error);
+      updateOne.should.have.been.calledOnceWith(
+        {_id: consultantRoleId, agency_id: agencyId},
+        {
+          $set: event.data
+        },
+        {}
+      );
+    });
   });
 });

@@ -40,7 +40,7 @@ describe('Test AgencyClientConsultantsProjectorV2', () => {
 
     it('Test AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED', async () => {
       const event: any = {
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
       };
       const handlerStub = stubConstructor(AgencyClientConsultantAssignedEventHandler);
 
