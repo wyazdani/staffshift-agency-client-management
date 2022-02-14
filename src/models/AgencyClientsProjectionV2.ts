@@ -1,6 +1,6 @@
 import {Document, Schema, model} from 'mongoose';
 
-export type AgencyClientsProjectionDocumentType = Document & {
+export type AgencyClientsProjectionV2DocumentType = Document & {
   agency_id: string;
   client_id: string;
   organisation_id: string;
@@ -11,7 +11,7 @@ export type AgencyClientsProjectionDocumentType = Document & {
   updated_at: Date;
 };
 
-const agencyClients = new Schema<AgencyClientsProjectionDocumentType>(
+const agencyClients = new Schema<AgencyClientsProjectionV2DocumentType>(
   {
     agency_id: {
       type: String,
@@ -50,14 +50,14 @@ const agencyClients = new Schema<AgencyClientsProjectionDocumentType>(
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     },
-    collection: 'AgencyClientsPubSubProjection'
+    collection: 'AgencyClientsProjectionV2'
   }
 );
 
 /**
  * Defines the model for the AgencyClients Read Projection
  */
-export const AgencyClientsPubSubProjection = model<AgencyClientsProjectionDocumentType>(
-  'AgencyClientsPubSubProjection',
+export const AgencyClientsProjectionV2 = model<AgencyClientsProjectionV2DocumentType>(
+  'AgencyClientsProjectionV2',
   agencyClients
 );

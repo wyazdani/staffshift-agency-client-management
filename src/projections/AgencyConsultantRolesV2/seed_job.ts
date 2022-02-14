@@ -4,9 +4,6 @@ import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import mongoose from 'mongoose';
 import {SeedingJob} from 'ss-eventstore';
 
-/**
- * Runs the seed process for AgencyClients projection
- */
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext('event-store-seed');
 
@@ -27,7 +24,7 @@ mongoose.connection.on('error', (error: Error) => {
 (async () => {
   try {
     const seedJob = await SeedingJob.createInstance({
-      bindingId: 'agency-clients',
+      bindingId: 'agency-consultant-roles-v2',
       eventStoreHttpClientConfig: {
         ...config.get('event_store.projection.staffshift-agency-client-management-event-store'),
         issuer_service_name: config.get('app_name')
@@ -42,7 +39,7 @@ mongoose.connection.on('error', (error: Error) => {
         database_host: config.get('event_store.mongo.database_host'),
         options: config.get('event_store.mongo.options')
       },
-      projectorFilePath: './Projector',
+      projectorFilePath: './AgencyConsultantRolesProjector',
       topicName: 'ss.global.event.store.staffshift.agency.client.management'
     });
 
