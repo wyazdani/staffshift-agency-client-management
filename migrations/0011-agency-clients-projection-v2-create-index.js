@@ -9,7 +9,7 @@ const indexOptions = {
   background: true
 };
 module.exports = {
-  id: '0011-agency-client-projection-v2-create-index',
+  id: '0011-agency-clients-projection-v2-create-index',
   up: (db, cb) => {
     ensureIndexExists(
       db.collection(collectionName),
