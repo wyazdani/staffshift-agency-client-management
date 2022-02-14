@@ -2,7 +2,7 @@
 const collectionName = 'AgencyClientConsultantsProjectionV2';
 
 module.exports = {
-  id: '0010-create-collection-AgencyClientConsultantsProjectionV2-collection',
+  id: '0012-create-collection-AgencyClientConsultantsProjectionV2-collection',
 
   up: (db, cb) => {
     db.createCollection(collectionName, {collation: {locale: 'en_US', strength: 2}}, cb);
