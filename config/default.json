@@ -165,10 +165,24 @@
         }
       },
       "projections": [{
-        "name": "Agency Clients",
+        "name": "Agency Clients V2",
         "bindings": [{
-          "id": "agency-clients",
-          "projector": "./projections/AgencyClients/Projector",
+          "id": "agency-clients-v2",
+          "projector": "./projections/AgencyClientsV2/AgencyClientsProjector",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management"
+        }]
+      }, {
+        "name": "Agency Client Consultants V2",
+        "bindings": [{
+          "id": "agency-client-consultants-v2",
+          "projector": "./projections/AgencyClientConsultantsV2/AgencyClientConsultantsProjector",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management"
+        }]
+      }, {
+        "name": "Agency Consultant Roles V2",
+        "bindings": [{
+          "id": "agency-consultant-roles-v2",
+          "projector": "./projections/AgencyConsultantRolesV2/AgencyConsultantRolesProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }]
