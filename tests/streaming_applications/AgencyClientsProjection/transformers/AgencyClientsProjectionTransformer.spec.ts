@@ -4,7 +4,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {EventRepository} from '../../../../src/EventRepository';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {stubConstructor} from 'ts-sinon';
-import {AgencyClientsProjection} from '../../../../src/models/AgencyClientsProjection';
+import {AgencyClientsProjectionV2} from '../../../../src/models/AgencyClientsProjectionV2';
 import {PassThrough} from 'stream';
 import {AgencyClientsProjectionTransformer} from '../../../../src/streaming_applications/AgencyClientsProjection/transformers/AgencyClientsProjectionTransformer';
 import {EventsEnum} from '../../../../src/Events';
@@ -19,7 +19,7 @@ describe('AgencyClientsProjectionTransformer', function () {
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
     eventRepository = stubConstructor(EventRepository);
-    model = AgencyClientsProjection;
+    model = AgencyClientsProjectionV2;
     opts = {
       eventRepository,
       model,
@@ -94,7 +94,7 @@ describe('AgencyClientsProjectionTransformer', function () {
         client_type: 'site',
         linked: true
       };
-      const findOneAndUpdateStub = sinon.stub(AgencyClientsProjection, 'findOneAndUpdate');
+      const findOneAndUpdateStub = sinon.stub(AgencyClientsProjectionV2, 'findOneAndUpdate');
 
       findOneAndUpdateStub.callsFake((filter: any, update: any, opts: any, callback: any) => {
         assert.deepEqual(filter, expectedFilter, 'incorrect query filter');
@@ -146,7 +146,7 @@ describe('AgencyClientsProjectionTransformer', function () {
         client_type: 'site',
         linked: false
       };
-      const findOneAndUpdateStub = sinon.stub(AgencyClientsProjection, 'findOneAndUpdate');
+      const findOneAndUpdateStub = sinon.stub(AgencyClientsProjectionV2, 'findOneAndUpdate');
 
       findOneAndUpdateStub.callsFake((filter: any, update: any, opts: any, callback: any) => {
         assert.deepEqual(filter, expectedFilter, 'incorrect query filter');
@@ -198,7 +198,7 @@ describe('AgencyClientsProjectionTransformer', function () {
         client_type: 'site',
         linked: false
       };
-      const findOneAndUpdateStub = sinon.stub(AgencyClientsProjection, 'findOneAndUpdate');
+      const findOneAndUpdateStub = sinon.stub(AgencyClientsProjectionV2, 'findOneAndUpdate');
 
       findOneAndUpdateStub.callsFake((filter: any, update: any, opts: any, callback: any) => {
         assert.deepEqual(filter, expectedFilter, 'incorrect query filter');
