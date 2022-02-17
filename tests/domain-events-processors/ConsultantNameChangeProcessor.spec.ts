@@ -3,12 +3,14 @@ import {ConsultantNameChangeProcessor} from '../../src/domain-events-processors/
 import {FacadeClientHelper} from '../../src/helpers/FacadeClientHelper';
 import {AgencyClientConsultantsProjection} from '../../src/models/AgencyClientConsultantsProjection';
 import sinon from 'sinon';
+import {AgencyClientConsultantsProjectionV3} from '../../src/models/AgencyClientConsultantsProjectionV3';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 
 describe('ConsultantNameChangeProcessor', () => {
   describe('process()', () => {
     it('Test success scenario', async () => {
       const updateMany = sinon.stub(AgencyClientConsultantsProjection, 'updateMany').resolves();
+      const updateManyV3 = sinon.stub(AgencyClientConsultantsProjectionV3, 'updateMany').resolves();
       const userId = 'user id';
       const fullName = 'AA BB';
       const facadeClientHelper = stubConstructor(FacadeClientHelper);
@@ -18,6 +20,16 @@ describe('ConsultantNameChangeProcessor', () => {
 
       await processor.process({user_id: userId});
       updateMany.should.have.been.calledWith(
+        {
+          consultant_id: userId
+        },
+        {
+          $set: {
+            consultant_name: fullName
+          }
+        }
+      );
+      updateManyV3.should.have.been.calledWith(
         {
           consultant_id: userId
         },

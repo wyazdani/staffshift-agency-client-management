@@ -1,8 +1,8 @@
 import sinon, {stubConstructor} from 'ts-sinon';
 import {EventsEnum} from '../../../src/Events';
-import AgencyClientConsultantsProjector from '../../../src/projections/AgencyClientConsultantsV2/AgencyClientConsultantsProjector';
-import {AgencyClientConsultantAssignedEventHandler} from '../../../src/projections/AgencyClientConsultantsV2/event-handlers/AgencyClientConsultantAssignedEventHandler';
-import {EventHandlerFactory} from '../../../src/projections/AgencyClientConsultantsV2/factories/EventHandlerFactory';
+import AgencyClientConsultantsProjector from '../../../src/projections/AgencyClientConsultantsV3/AgencyClientConsultantsProjector';
+import {AgencyClientConsultantAssignedEventHandler} from '../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyClientConsultantAssignedEventHandler';
+import {EventHandlerFactory} from '../../../src/projections/AgencyClientConsultantsV3/factories/EventHandlerFactory';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
 describe('Test AgencyClientConsultantsProjectorV2', () => {
