@@ -172,10 +172,10 @@
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }, {
-        "name": "Agency Client Consultants V2",
+        "name": "Agency Client Consultants V3",
         "bindings": [{
-          "id": "agency-client-consultants-v2",
-          "projector": "./projections/AgencyClientConsultantsV2/AgencyClientConsultantsProjector",
+          "id": "agency-client-consultants-v3",
+          "projector": "./projections/AgencyClientConsultantsV3/AgencyClientConsultantsProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }, {

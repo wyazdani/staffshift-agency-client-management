@@ -24,7 +24,7 @@ mongoose.connection.on('error', (error: Error) => {
 (async () => {
   try {
     const seedJob = await SeedingJob.createInstance({
-      bindingId: 'agency-client-consultants-v2',
+      bindingId: 'agency-client-consultants-v3',
       eventStoreHttpClientConfig: {
         ...config.get('event_store.projection.staffshift-agency-client-management-event-store'),
         issuer_service_name: config.get('app_name')

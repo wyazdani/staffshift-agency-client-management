@@ -1,13 +1,13 @@
-import {EventHandlerFactory} from '../../../../src/projections/AgencyClientConsultantsV2/factories/EventHandlerFactory';
+import {EventHandlerFactory} from '../../../../src/projections/AgencyClientConsultantsV3/factories/EventHandlerFactory';
 import {EventRepository} from '../../../../src/EventRepository';
 import sinon, {stubConstructor} from 'ts-sinon';
 import {afterEach} from 'mocha';
 import {assert, expect} from 'chai';
-import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV2/event-handlers/AgencyClientConsultantAssignedEventHandler';
+import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {LoggerContext} from 'a24-logzio-winston';
-import {AgencyClientConsultantUnassignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV2/event-handlers/AgencyClientConsultantUnassignedEventHandler';
-import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV2/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
+import {AgencyClientConsultantUnassignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyClientConsultantUnassignedEventHandler';
+import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 import {EventsEnum} from '../../../../src/Events';
 
 describe('EventHandlerFactory', () => {

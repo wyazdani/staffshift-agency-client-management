@@ -1,6 +1,6 @@
 import {AgencyClientConsultantUnassignedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
-import {AgencyClientConsultantsProjectionV2} from '../../../models/AgencyClientConsultantsProjectionV2';
+import {AgencyClientConsultantsProjectionV3} from '../../../models/AgencyClientConsultantsProjectionV3';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 
 /**
@@ -14,6 +14,6 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultant
   async handle(
     event: EventStoreModelInterface<AgencyClientConsultantUnassignedEventStoreDataInterface>
   ): Promise<void> {
-    await AgencyClientConsultantsProjectionV2.deleteOne({_id: event.data._id});
+    await AgencyClientConsultantsProjectionV3.deleteOne({_id: event.data._id});
   }
 }

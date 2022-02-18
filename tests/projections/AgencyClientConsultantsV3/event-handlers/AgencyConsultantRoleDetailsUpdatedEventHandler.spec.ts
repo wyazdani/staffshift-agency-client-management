@@ -1,6 +1,6 @@
 import sinon from 'ts-sinon';
-import {AgencyClientConsultantsProjectionV2} from '../../../../src/models/AgencyClientConsultantsProjectionV2';
-import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV2/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
+import {AgencyClientConsultantsProjectionV3} from '../../../../src/models/AgencyClientConsultantsProjectionV3';
+import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 import {EventsEnum} from '../../../../src/Events';
 
 describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
@@ -28,7 +28,7 @@ describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
 
     it('should delete the record with correct filter', async () => {
       const handler = new AgencyConsultantRoleDetailsUpdatedEventHandler();
-      const updateManyStub = sinon.stub(AgencyClientConsultantsProjectionV2, 'updateMany');
+      const updateManyStub = sinon.stub(AgencyClientConsultantsProjectionV3, 'updateMany');
 
       updateManyStub.resolves();
       await handler.handle(event);
@@ -37,7 +37,7 @@ describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
 
     it('should throw an error when the updateMany operation fails', async () => {
       const handler = new AgencyConsultantRoleDetailsUpdatedEventHandler();
-      const updateManyStub = sinon.stub(AgencyClientConsultantsProjectionV2, 'updateMany');
+      const updateManyStub = sinon.stub(AgencyClientConsultantsProjectionV3, 'updateMany');
 
       updateManyStub.rejects(new Error('blah error'));
       await handler.handle(event).should.be.rejectedWith(Error, 'blah error');

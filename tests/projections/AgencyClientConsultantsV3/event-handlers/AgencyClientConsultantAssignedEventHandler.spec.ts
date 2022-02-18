@@ -2,10 +2,10 @@ import sinon, {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
 import {AgencyRepository} from '../../../../src/Agency/AgencyRepository';
 import {FacadeClientHelper} from '../../../../src/helpers/FacadeClientHelper';
-import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV2/event-handlers/AgencyClientConsultantAssignedEventHandler';
+import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {AgencyAggregate} from '../../../../src/Agency/AgencyAggregate';
 import {AgencyConsultantRoleEnum} from '../../../../src/Agency/types';
-import {AgencyClientConsultantsProjectionV2} from '../../../../src/models/AgencyClientConsultantsProjectionV2';
+import {AgencyClientConsultantsProjectionV3} from '../../../../src/models/AgencyClientConsultantsProjectionV3';
 import {EventsEnum} from '../../../../src/Events';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
@@ -58,7 +58,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
         consultant_id: event.data.consultant_id,
         consultant_name: 'AAA'
       };
-      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV2.prototype, 'save');
+      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV3.prototype, 'save');
 
       saveStub.callsFake(() => {
         const data = saveStub.thisValues[0];
@@ -98,7 +98,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
         consultant_id: event.data.consultant_id,
         consultant_name: 'AAA'
       };
-      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV2.prototype, 'save');
+      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV3.prototype, 'save');
 
       saveStub.callsFake(() => {
         const data = saveStub.thisValues[0];
@@ -138,7 +138,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
         consultant_id: event.data.consultant_id,
         consultant_name: 'Unknown Unknown'
       };
-      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV2.prototype, 'save');
+      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV3.prototype, 'save');
 
       saveStub.callsFake(() => {
         const data = saveStub.thisValues[0];
@@ -177,7 +177,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
         consultant_id: event.data.consultant_id,
         last_sequence_id: 3
       };
-      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV2.prototype, 'save');
+      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV3.prototype, 'save');
 
       saveStub.callsFake(() => {
         const data = saveStub.thisValues[0];
@@ -213,7 +213,7 @@ describe('AgencyClientConsultantAssignedEventHandler', () => {
         consultant_role_name: consultantRole.name,
         consultant_id: event.data.consultant_id
       };
-      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV2.prototype, 'save');
+      const saveStub = sinon.stub(AgencyClientConsultantsProjectionV3.prototype, 'save');
 
       saveStub.callsFake(() => {
         const data = saveStub.thisValues[0];

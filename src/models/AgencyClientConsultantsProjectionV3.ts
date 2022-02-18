@@ -1,6 +1,6 @@
 import {Document, Schema, model} from 'mongoose';
 
-export type AgencyClientConsultantV2DocumentType = Document & {
+export type AgencyClientConsultantV3DocumentType = Document & {
   agency_id: string;
   client_id: string;
   consultant_role_id: string;
@@ -10,7 +10,7 @@ export type AgencyClientConsultantV2DocumentType = Document & {
   updated_at: Date;
 };
 
-const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantV2DocumentType>(
+const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantV3DocumentType>(
   {
     agency_id: {
       type: String,
@@ -48,12 +48,12 @@ const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantV2Documen
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     },
-    collection: 'AgencyClientConsultantsProjectionV2'
+    collection: 'AgencyClientConsultantsProjectionV3'
   }
 );
 
 const toJSONConfig = {
-  transform: (doc: AgencyClientConsultantV2DocumentType, ret: AgencyClientConsultantV2DocumentType) => {
+  transform: (doc: AgencyClientConsultantV3DocumentType, ret: AgencyClientConsultantV3DocumentType) => {
     ret._id = ret._id.toString();
   }
 };
@@ -63,7 +63,7 @@ agencyClientConsultantsSchema.set('toJSON', toJSONConfig);
 /**
  * Defines the model for the AgencyClientConsultants Read Projection
  */
-export const AgencyClientConsultantsProjectionV2 = model<AgencyClientConsultantV2DocumentType>(
-  'AgencyClientConsultantsProjectionV2',
+export const AgencyClientConsultantsProjectionV3 = model<AgencyClientConsultantV3DocumentType>(
+  'AgencyClientConsultantsProjectionV3',
   agencyClientConsultantsSchema
 );

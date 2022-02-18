@@ -1,6 +1,6 @@
 import sinon from 'ts-sinon';
-import {AgencyClientConsultantUnassignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV2/event-handlers/AgencyClientConsultantUnassignedEventHandler';
-import {AgencyClientConsultantsProjectionV2} from '../../../../src/models/AgencyClientConsultantsProjectionV2';
+import {AgencyClientConsultantUnassignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyClientConsultantUnassignedEventHandler';
+import {AgencyClientConsultantsProjectionV3} from '../../../../src/models/AgencyClientConsultantsProjectionV3';
 import {EventsEnum} from '../../../../src/Events';
 
 describe('AgencyClientConsultantUnassignedEventHandler', () => {
@@ -26,7 +26,7 @@ describe('AgencyClientConsultantUnassignedEventHandler', () => {
 
     it('should delete the record with correct filter', async () => {
       const handler = new AgencyClientConsultantUnassignedEventHandler();
-      const deleteOneStub = sinon.stub(AgencyClientConsultantsProjectionV2, 'deleteOne');
+      const deleteOneStub = sinon.stub(AgencyClientConsultantsProjectionV3, 'deleteOne');
 
       deleteOneStub.resolves();
       await handler.handle(event);
@@ -35,7 +35,7 @@ describe('AgencyClientConsultantUnassignedEventHandler', () => {
 
     it('should throw an error when the deleteOne operation fails', async () => {
       const handler = new AgencyClientConsultantUnassignedEventHandler();
-      const deleteOneStub = sinon.stub(AgencyClientConsultantsProjectionV2, 'deleteOne');
+      const deleteOneStub = sinon.stub(AgencyClientConsultantsProjectionV3, 'deleteOne');
 
       deleteOneStub.rejects(new Error('blah error'));
       await handler.handle(event).should.be.rejectedWith(Error, 'blah error');

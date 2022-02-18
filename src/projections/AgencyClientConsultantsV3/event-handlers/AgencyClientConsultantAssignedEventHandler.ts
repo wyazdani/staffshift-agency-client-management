@@ -3,7 +3,7 @@ import {AgencyRepository} from '../../../Agency/AgencyRepository';
 import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
 import {AgencyClientConsultantAssignedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
-import {AgencyClientConsultantsProjectionV2} from '../../../models/AgencyClientConsultantsProjectionV2';
+import {AgencyClientConsultantsProjectionV3} from '../../../models/AgencyClientConsultantsProjectionV3';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
@@ -25,7 +25,7 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultant
   async handle(event: EventStoreModelInterface<AgencyClientConsultantAssignedEventStoreDataInterface>): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate(event.aggregate_id.agency_id);
     const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
-    const agencyClientConsultant = new AgencyClientConsultantsProjectionV2({
+    const agencyClientConsultant = new AgencyClientConsultantsProjectionV3({
       _id: event.data._id,
       agency_id: event.aggregate_id.agency_id,
       client_id: event.aggregate_id.client_id,
