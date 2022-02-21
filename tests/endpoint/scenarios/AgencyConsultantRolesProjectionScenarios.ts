@@ -1,4 +1,4 @@
-import {AgencyConsultantRolesProjection} from '../../../src/models/AgencyConsultantRolesProjection';
+import {AgencyConsultantRolesProjectionV2} from '../../../src/models/AgencyConsultantRolesProjectionV2';
 import {assign} from 'lodash';
 
 export class AgencyConsultantRolesProjectionScenarios {
@@ -8,7 +8,7 @@ export class AgencyConsultantRolesProjectionScenarios {
    * @param opts - overrides the record properties
    */
   static async create(opts?: any): Promise<void> {
-    await AgencyConsultantRolesProjection.create(
+    await AgencyConsultantRolesProjectionV2.create(
       assign(
         {
           agency_id: '6156bd47e687e16b58000001',
@@ -26,6 +26,6 @@ export class AgencyConsultantRolesProjectionScenarios {
    * remove all records
    */
   static async removeAll(): Promise<void> {
-    await AgencyConsultantRolesProjection.deleteMany({});
+    await AgencyConsultantRolesProjectionV2.deleteMany({});
   }
 }

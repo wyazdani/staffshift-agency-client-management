@@ -4,9 +4,9 @@ import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../AgencyClient/types';
 import {GenericRepository} from '../GenericRepository';
 import {
-  AgencyClientConsultantDocumentType,
-  AgencyClientConsultantsProjection
-} from '../models/AgencyClientConsultantsProjection';
+  AgencyClientConsultantV3DocumentType,
+  AgencyClientConsultantsProjectionV3
+} from '../models/AgencyClientConsultantsProjectionV3';
 import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {QueryHelper} from 'a24-node-query-utils';
@@ -117,9 +117,9 @@ export const listAgencyClientConsultants = async (
     query.agency_id = get(req, 'swagger.params.agency_id.value', '');
     query.client_id = get(req, 'swagger.params.client_id.value', '');
 
-    const service = new GenericRepository<AgencyClientConsultantDocumentType>(
+    const service = new GenericRepository<AgencyClientConsultantV3DocumentType>(
       logger,
-      AgencyClientConsultantsProjection
+      AgencyClientConsultantsProjectionV3
     );
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
     const statusCode = isEmpty(data) ? 204 : 200;

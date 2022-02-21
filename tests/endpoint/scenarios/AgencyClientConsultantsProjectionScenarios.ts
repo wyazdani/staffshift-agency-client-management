@@ -1,14 +1,14 @@
 import {
-  AgencyClientConsultantsProjection,
-  AgencyClientConsultantDocumentType
-} from '../../../src/models/AgencyClientConsultantsProjection';
+  AgencyClientConsultantsProjectionV3,
+  AgencyClientConsultantV3DocumentType
+} from '../../../src/models/AgencyClientConsultantsProjectionV3';
 import {get} from 'lodash';
 
 export class AgencyClientConsultantsProjectionScenarios {
   static async createRecord(document: {
     [key in string]: string | boolean | Date;
-  }): Promise<AgencyClientConsultantDocumentType> {
-    return await AgencyClientConsultantsProjection.create({
+  }): Promise<AgencyClientConsultantV3DocumentType> {
+    return await AgencyClientConsultantsProjectionV3.create({
       agency_id: get(document, 'agency_id', '6141d5be5863dc2202000001'),
       client_id: get(document, 'client_id', '6141d64365e0e52381000001'),
       consultant_id: get(document, 'consultant_id', '6141d64365e0e52381000123'),
@@ -19,6 +19,6 @@ export class AgencyClientConsultantsProjectionScenarios {
   }
 
   static async removeAll(): Promise<void> {
-    await AgencyClientConsultantsProjection.deleteMany({}).exec();
+    await AgencyClientConsultantsProjectionV3.deleteMany({}).exec();
   }
 }

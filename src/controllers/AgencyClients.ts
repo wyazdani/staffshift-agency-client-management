@@ -1,7 +1,7 @@
 import {ServerResponse} from 'http';
 import {GenericRepository} from '../GenericRepository';
 import {get, isEmpty} from 'lodash';
-import {AgencyClientsProjection, AgencyClientsProjectionDocumentType} from '../models/AgencyClientsProjection';
+import {AgencyClientsProjectionV2, AgencyClientsProjectionV2DocumentType} from '../models/AgencyClientsProjectionV2';
 import {QueryHelper} from 'a24-node-query-utils';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
@@ -24,7 +24,7 @@ export const getAgencyClient = async (
   const clientId = get(req, 'swagger.params.client_id.value', '');
 
   try {
-    const repository = new GenericRepository<AgencyClientsProjectionDocumentType>(logger, AgencyClientsProjection);
+    const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
     const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
     if (isEmpty(agencyClient)) {
@@ -64,7 +64,7 @@ export const listAgencyClients = async (
 
   query.agency_id = get(req, 'swagger.params.agency_id.value', '');
 
-  const service = new GenericRepository<AgencyClientsProjectionDocumentType>(logger, AgencyClientsProjection);
+  const service = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
 
   try {
     const {count, data} = await service.listResources(query, limit, skip, sortBy);
