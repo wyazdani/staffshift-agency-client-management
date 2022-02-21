@@ -3,8 +3,18 @@ const MongoClient = require('mongodb').MongoClient;
 const config = require('config');
 const _ = require('lodash');
 const comparisonFields = {
-  'source': ['agency_id', 'name', 'description', 'max_consultants', 'status'],
-  'destination': ['agency_id', 'name', 'description', 'max_consultants', 'status'],
+  'AgencyConsultantRolesProjection': {
+    'source': ['agency_id', 'name', 'description', 'max_consultants', 'status'],
+    'destination': ['agency_id', 'name', 'description', 'max_consultants', 'status']
+  },
+  'AgencyClientsProjection': {
+    'source': ['linked', 'client_type'],
+    'destination': ['linked', 'client_type']
+  },
+  'AgencyClientConsultantsProjection': {
+    'source': ['consultant_role_id', 'consultant_role_name', 'consultant_name'],
+    'destination': ['consultant_role_id', 'consultant_role_name', 'consultant_name']
+  }
 }
 
 const run = async () => {
@@ -26,22 +36,26 @@ const run = async () => {
   for (const item of sourceData) {
     counter++;
     // TODO improve find to remove need to always alter the code.
-    const destItem =  _.find(destinationData, {_id: item._id});
+    const destItem =  _.find(
+      destinationData,
+      {agency_id: item.agency_id, client_id:item.client_id,
+        consultant_id: item.consultant_id, consultant_role_id: item.consultant_role_id}
+    );
     if (!destItem) {
       console.error('DESTINATION MISSING DOCUMENT', item);
     }
-    await compare(item, destItem);
+    await compare(config.mongo.source_collection, item, destItem);
     if (counter % 100 === 0) {
       console.log(`PROGRESS: completed ${counter}`);
     }
   }
 }
 
-const compare = async (source, destination) => {
+const compare = async (key, source, destination) => {
   if (
     !_.isEqual(
-      _.pick(source, comparisonFields.source),
-      _.pick(destination, comparisonFields.destination)
+      _.pick(source, comparisonFields[key].source),
+      _.pick(destination, comparisonFields[key].destination)
     )
   ) {
     console.error('PROJECTION COMPARISON FAILED', source, destination);
@@ -50,7 +64,7 @@ const compare = async (source, destination) => {
 
 run().then(
   () => {
-    console.log('COMPELTED');
+    console.log('COMPLETED');
   }
 ).catch((err) => {
   console.error('ERROR', err);
