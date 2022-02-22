@@ -7,7 +7,8 @@ export enum EventsEnum {
   AGENCY_CLIENT_CONSULTANT_UNASSIGNED = 'AgencyClientConsultantUnassigned',
   AGENCY_CLIENT_LINKED = 'AgencyClientLinked',
   AGENCY_CLIENT_UNLINKED = 'AgencyClientUnLinked',
-  AGENCY_CLIENT_SYNCED = 'AgencyClientSynced'
+  AGENCY_CLIENT_SYNCED = 'AgencyClientSynced',
+  CONSULTANT_ASSIGN_INITIATED = 'ConsultantAssignInitiated'
 }
 
 type EventsType = {
@@ -50,5 +51,9 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_SYNCED]: {
     name: 'AgencyClientSynced',
     description: 'Sync event to move data from legacy application to microservice'
+  },
+  [EventsEnum.CONSULTANT_ASSIGN_INITIATED]: {
+    name: 'ConsultantAssignInitiated',
+    description: 'Initiate assigning a consultant to multiple clients in an agency'
   }
 };
