@@ -1,6 +1,6 @@
 {
   "name": "staffshift-agency-client-management",
-  "version": "1.25.5",
+  "version": "1.25.6",
   "description": "Micro service for managing staffshift agency clients",
   "main": "src/http_server.ts",
   "scripts": {
@@ -11,7 +11,6 @@
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore .",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
     "start-domain-event-consumer": "node dist/ss_domain_event_consumer",
-    "start-streaming-application-core": "node dist/StreamingApplication --type=core",
     "start-event-store-publisher": "node dist/event_store_publisher",
     "start-event-store-projection": "node dist/event_store_projection",
     "start-event-store-http-server": "node dist/event_store_http_server",
