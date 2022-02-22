@@ -1,3 +1,4 @@
+timeout: "900s" # A 15 minutes timeout as this is taking longer than the default 10 mins
 steps:
   # Pull the docker compose
   - name: 'gcr.io/cloud-builders/docker'
