@@ -1,7 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {UserUpdateDomainEventDataInterface} from 'UserUpdateDomainEventDataInterface';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
-import {AgencyClientConsultantsProjection} from '../models/AgencyClientConsultantsProjection';
 import {AgencyClientConsultantsProjectionV3} from '../models/AgencyClientConsultantsProjectionV3';
 
 export class ConsultantNameChangeProcessor {
@@ -21,16 +20,6 @@ export class ConsultantNameChangeProcessor {
         fullName,
         userId
       });
-      await AgencyClientConsultantsProjection.updateMany(
-        {
-          consultant_id: userId
-        },
-        {
-          $set: {
-            consultant_name: fullName
-          }
-        }
-      );
 
       await AgencyClientConsultantsProjectionV3.updateMany(
         {
