@@ -1,43 +1,26 @@
-import {
-  AgencyConsultantRoleAddedEventStoreDataInterface,
-  AgencyConsultantRoleEnabledEventStoreDataInterface
-} from 'EventStoreDataTypes';
-import {AgencyRepository} from '../AgencyRepository';
+import {ConsultantAssignInitiatedEventStoreDataInterface} from 'EventStoreDataTypes/ConsultantAssignInitiatedEventStoreDataInterface';
 import {ConsultantRepository} from '../ConsultantRepository';
-import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
-import {
-  AddAgencyConsultantRoleCommandDataInterface,
-  AssignConsultantCommandDataInterface
-} from '../types/CommandDataTypes';
+import {ConsultantCommandHandlerInterface} from '../types/ConsultantCommandHandlerInterface';
+import {AssignConsultantCommandDataInterface} from '../types/CommandDataTypes';
 import {ConsultantCommandEnum} from '../types';
 import {EventsEnum} from '../../Events';
 
-export class AssignConsultantCommandHandler implements AgencyCommandHandlerInterface {
+export class AssignConsultantCommandHandler implements ConsultantCommandHandlerInterface {
   public commandType = ConsultantCommandEnum.ASSIGN_CONSULTANT;
 
   constructor(private repository: ConsultantRepository) {}
 
   async execute(agencyId: string, commandData: AssignConsultantCommandDataInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(agencyId);
+
+    await aggregate.validateAssignConsultant(commandData);
     let eventId = aggregate.getLastEventId();
-    await this.agencyRepository.save([
+
+    await this.repository.save([
       {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+        type: EventsEnum.CONSULTANT_ASSIGN_INITIATED,
         aggregate_id: aggregate.getId(),
-        data: {
-          _id: commandData._id,
-          name: commandData.name,
-          description: commandData.description,
-          max_consultants: commandData.max_consultants
-        } as AgencyConsultantRoleAddedEventStoreDataInterface,
-        sequence_id: ++eventId
-      },
-      {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
-        aggregate_id: aggregate.getId(),
-        data: {
-          _id: commandData._id
-        } as AgencyConsultantRoleEnabledEventStoreDataInterface,
+        data: commandData as ConsultantAssignInitiatedEventStoreDataInterface,
         sequence_id: ++eventId
       }
     ]);

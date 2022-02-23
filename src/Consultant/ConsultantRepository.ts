@@ -1,3 +1,4 @@
+import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ConsultantAggregate} from './ConsultantAggregate';
 import {EventRepository, EventInterface} from '../EventRepository';
 import {ConsultantAggregateRecordInterface} from './types';
@@ -9,7 +10,11 @@ import {ConsultantWriteProjectionHandler} from './ConsultantWriteProjectionHandl
  */
 export class ConsultantRepository {
   private static readonly AGGREGATE_ID_NAME = 'Consultant';
-  constructor(private eventRepository: EventRepository, private projectionHandler: ConsultantWriteProjectionHandler) {}
+  constructor(
+    private eventRepository: EventRepository,
+    private projectionHandler: ConsultantWriteProjectionHandler,
+    private agencyRepository: AgencyRepository
+  ) {}
 
   async getAggregate(agencyId: string, sequenceId: number = undefined): Promise<ConsultantAggregate> {
     const projection: ConsultantAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
@@ -18,7 +23,11 @@ export class ConsultantRepository {
       sequenceId
     );
 
-    return new ConsultantAggregate({name: ConsultantRepository.AGGREGATE_ID_NAME, agency_id: agencyId}, projection);
+    return new ConsultantAggregate(
+      {name: ConsultantRepository.AGGREGATE_ID_NAME, agency_id: agencyId},
+      projection,
+      this.agencyRepository
+    );
   }
 
   /**

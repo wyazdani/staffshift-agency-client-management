@@ -8,7 +8,8 @@ export enum EventsEnum {
   AGENCY_CLIENT_LINKED = 'AgencyClientLinked',
   AGENCY_CLIENT_UNLINKED = 'AgencyClientUnLinked',
   AGENCY_CLIENT_SYNCED = 'AgencyClientSynced',
-  CONSULTANT_ASSIGN_INITIATED = 'ConsultantAssignInitiated'
+  CONSULTANT_ASSIGN_INITIATED = 'ConsultantAssignInitiated',
+  CONSULTANT_ASSIGN_COMPLETED = 'ConsultantAssignCompleted'
 }
 
 type EventsType = {
@@ -55,5 +56,9 @@ export const events: EventsType = {
   [EventsEnum.CONSULTANT_ASSIGN_INITIATED]: {
     name: 'ConsultantAssignInitiated',
     description: 'Initiate assigning a consultant to multiple clients in an agency'
+  },
+  [EventsEnum.CONSULTANT_ASSIGN_COMPLETED]: {
+    name: 'ConsultantAssignCompleted',
+    description: 'Assigning a consultant to multiple clients in an agency is completed'
   }
 };
