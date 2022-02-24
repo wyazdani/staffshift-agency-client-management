@@ -8,7 +8,7 @@ import {ConsultantJobRepository} from '../../src/ConsultantJob/ConsultantJobRepo
 import {ConsultantJobCommandBus} from '../../src/ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobCommandEnum} from '../../src/ConsultantJob/types';
 
-describe('ConsultantCommandBus', () => {
+describe('ConsultantJobCommandBus', () => {
   let logger: LoggerContext;
   let consultantCommandBus: ConsultantJobCommandBus;
   let consultantRepository: ConsultantJobRepository;

@@ -5,7 +5,7 @@ import {ConsultantJobAggregate} from '../../src/ConsultantJob/ConsultantJobAggre
 import {AssignConsultantCommandDataInterface} from '../../src/ConsultantJob/types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
 
-describe('ConsultantAggregate', () => {
+describe('ConsultantJobAggregate', () => {
   const aggregateId = {
     name: 'consultant',
     agency_id: 'agency id'

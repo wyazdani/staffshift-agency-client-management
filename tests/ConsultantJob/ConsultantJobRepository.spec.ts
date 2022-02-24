@@ -6,7 +6,7 @@ import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
 import {AgencyWriteProjectionHandler} from '../../src/Agency/AgencyWriteProjectionHandler';
 
-describe('ConsultantRepository class', () => {
+describe('ConsultantJobRepository class', () => {
   afterEach(() => {
     sinon.restore();
   });
@@ -30,7 +30,7 @@ describe('ConsultantRepository class', () => {
       leftFoldEvents.should.have.been.calledWith(
         writeProjectionHandler,
         {
-          name: 'Consultant',
+          name: 'consultant_job',
           agency_id: agencyId
         },
         undefined

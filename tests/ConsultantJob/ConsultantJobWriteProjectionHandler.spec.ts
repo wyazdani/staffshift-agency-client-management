@@ -8,7 +8,7 @@ import {
   ConsultantAssignCompletedEventStoreDataInterface
 } from '../../src/types/EventStoreDataTypes';
 
-describe('ConsultantWriteProjectionHandler', () => {
+describe('ConsultantJobWriteProjectionHandler', () => {
   describe('execute()', () => {
     const projectionHandler = new ConsultantJobWriteProjectionHandler();
 
