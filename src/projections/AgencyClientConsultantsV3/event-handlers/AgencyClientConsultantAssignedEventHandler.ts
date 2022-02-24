@@ -2,7 +2,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
 import {AgencyClientConsultantAssignedEventStoreDataInterface} from 'EventStoreDataTypes';
-import {EventHandlerInterface} from '../types/EventHandlerInterface';
+import {EventHandlerInterface} from 'EventHandlerInterface';
 import {AgencyClientConsultantsProjectionV3} from '../../../models/AgencyClientConsultantsProjectionV3';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {EventStoreModelInterface} from '../../../models/EventStore';
