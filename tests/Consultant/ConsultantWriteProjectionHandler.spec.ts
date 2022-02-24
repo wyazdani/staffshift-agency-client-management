@@ -159,7 +159,7 @@ describe('ConsultantWriteProjectionHandler', () => {
       assert.throw(
         () => projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED, aggregate, event),
         Error,
-        `Event not supported ${EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED}`
+        `Event type not supported: ${EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED}`
       );
     });
   });

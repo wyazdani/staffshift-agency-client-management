@@ -1,4 +1,3 @@
 import {AssignConsultantCommandDataInterface} from './CommandDataTypes';
 
-export type ConsultantCommandDataType =
-  AssignConsultantCommandDataInterface;
+export type ConsultantCommandDataType = AssignConsultantCommandDataInterface;
