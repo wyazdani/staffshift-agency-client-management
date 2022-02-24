@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {AgencyRepository} from '../../../Agency/AgencyRepository';
+import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
 import {AgencyClientConsultantAssignedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';

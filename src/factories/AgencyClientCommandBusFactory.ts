@@ -1,13 +1,13 @@
-import {AgencyClientRepository} from '../AgencyClient/AgencyClientRepository';
+import {AgencyClientRepository} from '../aggregates/AgencyClient/AgencyClientRepository';
 import {EventRepository} from '../EventRepository';
-import {AddAgencyClientConsultantCommandHandler} from '../AgencyClient/command-handlers/AddAgencyClientConsultantCommandHandler';
-import {LinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers/LinkAgencyClientCommandHandler';
-import {SyncAgencyClientCommandHandler} from '../AgencyClient/command-handlers/SyncAgencyClientCommandHandler';
-import {UnlinkAgencyClientCommandHandler} from '../AgencyClient/command-handlers/UnlinkAgencyClientCommandHandler';
-import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
-import {RemoveAgencyClientConsultantCommandHandler} from '../AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
-import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyClientWriteProjectionHandler} from '../AgencyClient/AgencyClientWriteProjectionHandler';
+import {AddAgencyClientConsultantCommandHandler} from '../aggregates/AgencyClient/command-handlers/AddAgencyClientConsultantCommandHandler';
+import {LinkAgencyClientCommandHandler} from '../aggregates/AgencyClient/command-handlers/LinkAgencyClientCommandHandler';
+import {SyncAgencyClientCommandHandler} from '../aggregates/AgencyClient/command-handlers/SyncAgencyClientCommandHandler';
+import {UnlinkAgencyClientCommandHandler} from '../aggregates/AgencyClient/command-handlers/UnlinkAgencyClientCommandHandler';
+import {AgencyClientCommandBus} from '../aggregates/AgencyClient/AgencyClientCommandBus';
+import {RemoveAgencyClientConsultantCommandHandler} from '../aggregates/AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
+import {AgencyRepository} from '../aggregates/Agency/AgencyRepository';
+import {AgencyClientWriteProjectionHandler} from '../aggregates/AgencyClient/AgencyClientWriteProjectionHandler';
 
 /**
  * Factory class responsible for building an AgencyClientCommandBus configured with supported command handlers
