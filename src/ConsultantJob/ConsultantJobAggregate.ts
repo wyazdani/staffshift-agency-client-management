@@ -1,13 +1,13 @@
 import {find, indexOf} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {ConsultantAggregateIdInterface, ConsultantAggregateRecordInterface} from './types';
+import {ConsultantJobAggregateIdInterface, ConsultantJobAggregateRecordInterface} from './types';
 import {AssignConsultantCommandDataInterface} from './types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
 
-export class ConsultantAggregate {
+export class ConsultantJobAggregate {
   constructor(
-    private id: ConsultantAggregateIdInterface,
-    private aggregate: ConsultantAggregateRecordInterface,
+    private id: ConsultantJobAggregateIdInterface,
+    private aggregate: ConsultantJobAggregateRecordInterface,
     private agencyRepository: AgencyRepository
   ) {}
 
@@ -58,7 +58,7 @@ export class ConsultantAggregate {
   /**
    * Return the aggregate ID
    */
-  getId(): ConsultantAggregateIdInterface {
+  getId(): ConsultantJobAggregateIdInterface {
     return this.id;
   }
 
@@ -70,7 +70,7 @@ export class ConsultantAggregate {
   }
 
   // Base class method for all aggregates
-  toJSON(): ConsultantAggregateRecordInterface {
+  toJSON(): ConsultantJobAggregateRecordInterface {
     return this.aggregate;
   }
 }

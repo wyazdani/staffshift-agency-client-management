@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import {stubInterface} from 'ts-sinon';
 import {AgencyRepository} from '../../src/Agency/AgencyRepository';
-import {ConsultantRepository} from '../../src/Consultant/ConsultantRepository';
+import {ConsultantJobRepository} from '../../src/ConsultantJob/ConsultantJobRepository';
 import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
 import {AgencyWriteProjectionHandler} from '../../src/Agency/AgencyWriteProjectionHandler';
@@ -17,7 +17,7 @@ describe('ConsultantRepository class', () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
       const writeProjectionHandler = new AgencyWriteProjectionHandler();
       const agencyRepository = stubInterface<AgencyRepository>();
-      const consultantRepository = new ConsultantRepository(eventRepository, writeProjectionHandler, agencyRepository);
+      const consultantRepository = new ConsultantJobRepository(eventRepository, writeProjectionHandler, agencyRepository);
 
       const projection: any = {
         oops: 'ok'
@@ -43,7 +43,7 @@ describe('ConsultantRepository class', () => {
     it('Test call eventRepository', async () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
       const agencyRepository = stubInterface<AgencyRepository>();
-      const consultantRepository = new ConsultantRepository(
+      const consultantRepository = new ConsultantJobRepository(
         eventRepository,
         new AgencyWriteProjectionHandler(),
         agencyRepository

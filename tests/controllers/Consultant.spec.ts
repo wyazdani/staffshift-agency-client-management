@@ -1,6 +1,6 @@
 import sinon from 'sinon';
-import {ConsultantCommandBus} from '../../src/Consultant/ConsultantCommandBus';
-import {ConsultantCommandEnum} from '../../src/Consultant/types';
+import {ConsultantJobCommandBus} from '../../src/ConsultantJob/ConsultantJobCommandBus';
+import {ConsultantJobCommandEnum} from '../../src/ConsultantJob/types';
 import {assignConsultant} from '../../src/controllers/Consultant';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
@@ -39,7 +39,7 @@ describe('Consultant Controller', () => {
 
       sinon.stub(ObjectID.prototype, 'toString').returns(id);
 
-      const execute = sinon.stub(ConsultantCommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(ConsultantJobCommandBus.prototype, 'execute').resolves();
 
       await assignConsultant(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
@@ -50,7 +50,7 @@ describe('Consultant Controller', () => {
         [
           agencyId,
           {
-            type: ConsultantCommandEnum.ASSIGN_CONSULTANT,
+            type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
             data: {
               _id: id,
               ...payload
@@ -71,7 +71,7 @@ describe('Consultant Controller', () => {
 
       sinon.stub(ObjectID.prototype, 'toString').returns(id);
       const error = new Error('custom');
-      const execute = sinon.stub(ConsultantCommandBus.prototype, 'execute').rejects(error);
+      const execute = sinon.stub(ConsultantJobCommandBus.prototype, 'execute').rejects(error);
 
       await assignConsultant(req, res, next);
       assert.equal(next.callCount, 1, 'Expected next to be called once');
@@ -81,7 +81,7 @@ describe('Consultant Controller', () => {
         [
           agencyId,
           {
-            type: ConsultantCommandEnum.ASSIGN_CONSULTANT,
+            type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
             data: {
               _id: id,
               ...payload

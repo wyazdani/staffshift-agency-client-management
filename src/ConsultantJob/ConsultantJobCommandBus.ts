@@ -1,16 +1,16 @@
-import {ConsultantCommandHandlerInterface} from './types/ConsultantCommandHandlerInterface';
-import {ConsultantCommandInterface} from './types';
+import {ConsultantJobCommandHandlerInterface} from './types/ConsultantJobCommandHandlerInterface';
+import {ConsultantJobCommandInterface} from './types';
 
 /**
  * Responsible for routing all commands to their corresponding handlers
  */
-export class ConsultantCommandBus {
-  private commandHandlers: ConsultantCommandHandlerInterface[] = [];
+export class ConsultantJobCommandBus {
+  private commandHandlers: ConsultantJobCommandHandlerInterface[] = [];
 
   /**
    * Add a command handler to the list of supported handlers
    */
-  addHandler(commandHandler: ConsultantCommandHandlerInterface) {
+  addHandler(commandHandler: ConsultantJobCommandHandlerInterface) {
     this.commandHandlers.push(commandHandler);
     return this;
   }
@@ -18,7 +18,7 @@ export class ConsultantCommandBus {
   /**
    * Execute the command by finding it's corresponding handler
    */
-  async execute(agencyId: string, command: ConsultantCommandInterface): Promise<void> {
+  async execute(agencyId: string, command: ConsultantJobCommandInterface): Promise<void> {
     const commandHandler = this.commandHandlers.find((handler) => handler.commandType === command.type);
 
     if (!commandHandler) {

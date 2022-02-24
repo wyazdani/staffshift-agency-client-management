@@ -1,8 +1,8 @@
 import {stubInterface} from 'ts-sinon';
 import {AgencyAggregate} from '../../src/Agency/AgencyAggregate';
 import {AgencyRepository} from '../../src/Agency/AgencyRepository';
-import {ConsultantAggregate} from '../../src/Consultant/ConsultantAggregate';
-import {AssignConsultantCommandDataInterface} from '../../src/Consultant/types/CommandDataTypes';
+import {ConsultantJobAggregate} from '../../src/ConsultantJob/ConsultantJobAggregate';
+import {AssignConsultantCommandDataInterface} from '../../src/ConsultantJob/types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
 
 describe('ConsultantAggregate', () => {
@@ -30,7 +30,7 @@ describe('ConsultantAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(undefined);
-      const consultantAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
       const error = await consultantAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
 
@@ -55,7 +55,7 @@ describe('ConsultantAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
       const error = await consultantAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
 
@@ -86,7 +86,7 @@ describe('ConsultantAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
       const error = await consultantAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
 
@@ -117,7 +117,7 @@ describe('ConsultantAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
       await consultantAggregate.validateAssignConsultant(command);
     });
@@ -132,7 +132,7 @@ describe('ConsultantAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
       await consultantAggregate.validateAssignConsultant(command);
     });
@@ -143,7 +143,7 @@ describe('ConsultantAggregate', () => {
         last_sequence_id: 1
       };
       const agencyRepositoryStub = stubInterface<AgencyRepository>();
-      const agencyClientAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepositoryStub);
+      const agencyClientAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
       const id = agencyClientAggregate.getId();
 
       id.should.equal(aggregateId);
@@ -156,7 +156,7 @@ describe('ConsultantAggregate', () => {
         last_sequence_id: 1
       };
       const agencyRepositoryStub = stubInterface<AgencyRepository>();
-      const consultantAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepositoryStub);
+      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
       const id = consultantAggregate.getLastEventId();
 
       id.should.equal(1);
@@ -169,7 +169,7 @@ describe('ConsultantAggregate', () => {
         last_sequence_id: 1
       };
       const agencyRepositoryStub = stubInterface<AgencyRepository>();
-      const consultantAggregate = new ConsultantAggregate(aggregateId, aggregate, agencyRepositoryStub);
+      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
       const id = consultantAggregate.toJSON();
 
       id.should.equal(aggregate);

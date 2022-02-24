@@ -2,8 +2,8 @@ import {ServerResponse} from 'http';
 import {get} from 'lodash';
 import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
-import {ConsultantCommandEnum} from '../Consultant/types';
-import {AssignConsultantCommandInterface} from '../Consultant/types/CommandTypes';
+import {ConsultantJobCommandEnum} from '../ConsultantJob/types';
+import {AssignConsultantCommandInterface} from '../ConsultantJob/types/CommandTypes';
 import {ConsultantCommandBusFactory} from '../factories/ConsultantCommandBusFactory';
 import {ValidationError} from 'a24-node-error-utils';
 
@@ -15,7 +15,7 @@ export const assignConsultant = async (
   try {
     const payload = get(req, 'swagger.params.assign_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const commandType = ConsultantCommandEnum.ASSIGN_CONSULTANT;
+    const commandType = ConsultantJobCommandEnum.ASSIGN_CONSULTANT;
     const commandBus = ConsultantCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
     const id = new ObjectID().toString();
 

@@ -3,21 +3,21 @@ import {
   ConsultantAssignCompletedEventStoreDataInterface
 } from 'EventStoreDataTypes';
 import {find} from 'lodash';
-import {ConsultantAggregateRecordInterface} from './types';
+import {ConsultantJobAggregateRecordInterface} from './types';
 import {WriteProjectionInterface} from '../WriteProjectionInterface';
 import {EventsEnum} from '../Events';
 import {EventStoreModelInterface} from '../models/EventStore';
-import {ConsultantAggregateRecordProcessInterface} from './types/ConsultantAggregateRecordInterface';
+import {ConsultantAggregateRecordProcessInterface} from './types/ConsultantJobAggregateRecordInterface';
 
 /**
  * Responsible for handling all events to build the current state of the aggregate
  */
-export class ConsultantWriteProjectionHandler implements WriteProjectionInterface<ConsultantAggregateRecordInterface> {
+export class ConsultantJobWriteProjectionHandler implements WriteProjectionInterface<ConsultantJobAggregateRecordInterface> {
   execute(
     type: EventsEnum,
-    aggregate: ConsultantAggregateRecordInterface,
+    aggregate: ConsultantJobAggregateRecordInterface,
     event: EventStoreModelInterface
-  ): ConsultantAggregateRecordInterface {
+  ): ConsultantJobAggregateRecordInterface {
     switch (type) {
       case EventsEnum.CONSULTANT_ASSIGN_INITIATED: {
         const data = event.data as ConsultantAssignInitiatedEventStoreDataInterface;

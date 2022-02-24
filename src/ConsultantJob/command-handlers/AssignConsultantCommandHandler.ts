@@ -1,14 +1,14 @@
 import {ConsultantAssignInitiatedEventStoreDataInterface} from 'EventStoreDataTypes/ConsultantAssignInitiatedEventStoreDataInterface';
-import {ConsultantRepository} from '../ConsultantRepository';
-import {ConsultantCommandHandlerInterface} from '../types/ConsultantCommandHandlerInterface';
+import {ConsultantJobRepository} from '../ConsultantJobRepository';
+import {ConsultantJobCommandHandlerInterface} from '../types/ConsultantJobCommandHandlerInterface';
 import {AssignConsultantCommandDataInterface} from '../types/CommandDataTypes';
-import {ConsultantCommandEnum} from '../types';
+import {ConsultantJobCommandEnum} from '../types';
 import {EventsEnum} from '../../Events';
 
-export class AssignConsultantCommandHandler implements ConsultantCommandHandlerInterface {
-  public commandType = ConsultantCommandEnum.ASSIGN_CONSULTANT;
+export class AssignConsultantCommandHandler implements ConsultantJobCommandHandlerInterface {
+  public commandType = ConsultantJobCommandEnum.ASSIGN_CONSULTANT;
 
-  constructor(private repository: ConsultantRepository) {}
+  constructor(private repository: ConsultantJobRepository) {}
 
   async execute(agencyId: string, commandData: AssignConsultantCommandDataInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(agencyId);

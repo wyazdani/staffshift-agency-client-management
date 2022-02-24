@@ -401,7 +401,7 @@ paths:
           $ref: "#/responses/unauthorize_error_model"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Assign an agency client consultant"
+      summary: "Assign a consultant to multiple clients"
       tags:
         - "Consultant Bulk"
 parameters:

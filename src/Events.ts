@@ -55,10 +55,10 @@ export const events: EventsType = {
   },
   [EventsEnum.CONSULTANT_ASSIGN_INITIATED]: {
     name: 'ConsultantAssignInitiated',
-    description: 'Initiate assigning a consultant to multiple clients in an agency'
+    description: 'Initiate assigning a consultant to multiple clients for an agency'
   },
   [EventsEnum.CONSULTANT_ASSIGN_COMPLETED]: {
     name: 'ConsultantAssignCompleted',
-    description: 'Assigning a consultant to multiple clients in an agency is completed'
+    description: 'Assigning a consultant to multiple clients for an agency has completed'
   }
 };

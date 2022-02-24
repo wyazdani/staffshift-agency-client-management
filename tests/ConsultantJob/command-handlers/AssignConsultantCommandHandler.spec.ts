@@ -1,7 +1,7 @@
 import sinon, {stubInterface} from 'ts-sinon';
-import {AssignConsultantCommandHandler} from '../../../src/Consultant/command-handlers/AssignConsultantCommandHandler';
-import {ConsultantAggregate} from '../../../src/Consultant/ConsultantAggregate';
-import {ConsultantRepository} from '../../../src/Consultant/ConsultantRepository';
+import {AssignConsultantCommandHandler} from '../../../src/ConsultantJob/command-handlers/AssignConsultantCommandHandler';
+import {ConsultantJobAggregate} from '../../../src/ConsultantJob/ConsultantJobAggregate';
+import {ConsultantJobRepository} from '../../../src/ConsultantJob/ConsultantJobRepository';
 import {EventsEnum} from '../../../src/Events';
 
 describe('AssignConsultantCommandHandler class', () => {
@@ -13,8 +13,8 @@ describe('AssignConsultantCommandHandler class', () => {
     });
     it('Test success scenario', async () => {
       const command: any = {ok: 'sample'};
-      const repository = stubInterface<ConsultantRepository>();
-      const aggregate = stubInterface<ConsultantAggregate>();
+      const repository = stubInterface<ConsultantJobRepository>();
+      const aggregate = stubInterface<ConsultantJobAggregate>();
 
       repository.getAggregate.resolves(aggregate);
       aggregate.validateAssignConsultant.resolves();

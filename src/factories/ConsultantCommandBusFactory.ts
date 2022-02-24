@@ -1,20 +1,20 @@
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
-import {AssignConsultantCommandHandler} from '../Consultant/command-handlers/AssignConsultantCommandHandler';
-import {ConsultantCommandBus} from '../Consultant/ConsultantCommandBus';
-import {ConsultantRepository} from '../Consultant/ConsultantRepository';
-import {ConsultantWriteProjectionHandler} from '../Consultant/ConsultantWriteProjectionHandler';
+import {AssignConsultantCommandHandler} from '../ConsultantJob/command-handlers/AssignConsultantCommandHandler';
+import {ConsultantJobCommandBus} from '../ConsultantJob/ConsultantJobCommandBus';
+import {ConsultantJobRepository} from '../ConsultantJob/ConsultantJobRepository';
+import {ConsultantJobWriteProjectionHandler} from '../ConsultantJob/ConsultantJobWriteProjectionHandler';
 import {EventRepository} from '../EventRepository';
 
 export class ConsultantCommandBusFactory {
-  static getCommandBus(eventRepository: EventRepository): ConsultantCommandBus {
+  static getCommandBus(eventRepository: EventRepository): ConsultantJobCommandBus {
     const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
-    const consultantRepository = new ConsultantRepository(
+    const consultantRepository = new ConsultantJobRepository(
       eventRepository,
-      new ConsultantWriteProjectionHandler(),
+      new ConsultantJobWriteProjectionHandler(),
       agencyRepository
     );
-    const commandBus = new ConsultantCommandBus();
+    const commandBus = new ConsultantJobCommandBus();
 
     commandBus.addHandler(new AssignConsultantCommandHandler(consultantRepository));
     return commandBus;

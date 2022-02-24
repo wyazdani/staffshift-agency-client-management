@@ -6,6 +6,6 @@ export interface ConsultantAggregateRecordProcessInterface {
   status: 'initiated' | 'completed';
 }
 
-export interface ConsultantAggregateRecordInterface extends BaseAggregateRecordInterface {
+export interface ConsultantJobAggregateRecordInterface extends BaseAggregateRecordInterface {
   processes?: ConsultantAggregateRecordProcessInterface[];
 }

@@ -1,7 +1,7 @@
-import {ConsultantCommandEnum} from '../ConsultantCommandEnum';
+import {ConsultantJobCommandEnum} from '../ConsultantJobCommandEnum';
 import {AssignConsultantCommandDataInterface} from '../CommandDataTypes';
 
 export interface AssignConsultantCommandInterface {
-  type: ConsultantCommandEnum.ASSIGN_CONSULTANT;
+  type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT;
   data: AssignConsultantCommandDataInterface;
 }

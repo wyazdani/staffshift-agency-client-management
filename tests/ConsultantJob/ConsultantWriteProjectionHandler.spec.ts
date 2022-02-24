@@ -1,4 +1,4 @@
-import {ConsultantWriteProjectionHandler} from '../../src/Consultant/ConsultantWriteProjectionHandler';
+import {ConsultantJobWriteProjectionHandler} from '../../src/ConsultantJob/ConsultantJobWriteProjectionHandler';
 import {EventsEnum} from '../../src/Events';
 import {EventStore} from '../../src/models/EventStore';
 import {assert} from 'chai';
@@ -10,7 +10,7 @@ import {
 
 describe('ConsultantWriteProjectionHandler', () => {
   describe('execute()', () => {
-    const projectionHandler = new ConsultantWriteProjectionHandler();
+    const projectionHandler = new ConsultantJobWriteProjectionHandler();
 
     describe('CONSULTANT_ASSIGN_INITIATED Event', () => {
       it('Test when processes var is not defined', () => {

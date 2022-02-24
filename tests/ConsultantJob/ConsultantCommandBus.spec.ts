@@ -3,20 +3,20 @@ import {stubConstructor} from 'ts-sinon';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 import {assert} from 'chai';
-import {AssignConsultantCommandHandler} from '../../src/Consultant/command-handlers/AssignConsultantCommandHandler';
-import {ConsultantRepository} from '../../src/Consultant/ConsultantRepository';
-import {ConsultantCommandBus} from '../../src/Consultant/ConsultantCommandBus';
-import {ConsultantCommandEnum} from '../../src/Consultant/types';
+import {AssignConsultantCommandHandler} from '../../src/ConsultantJob/command-handlers/AssignConsultantCommandHandler';
+import {ConsultantJobRepository} from '../../src/ConsultantJob/ConsultantJobRepository';
+import {ConsultantJobCommandBus} from '../../src/ConsultantJob/ConsultantJobCommandBus';
+import {ConsultantJobCommandEnum} from '../../src/ConsultantJob/types';
 
 describe('ConsultantCommandBus', () => {
   let logger: LoggerContext;
-  let consultantCommandBus: ConsultantCommandBus;
-  let consultantRepository: ConsultantRepository;
+  let consultantCommandBus: ConsultantJobCommandBus;
+  let consultantRepository: ConsultantJobRepository;
 
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
-    consultantCommandBus = new ConsultantCommandBus();
-    consultantRepository = stubConstructor(ConsultantRepository);
+    consultantCommandBus = new ConsultantJobCommandBus();
+    consultantRepository = stubConstructor(ConsultantJobRepository);
   });
 
   describe('addHandler()', () => {
@@ -30,7 +30,7 @@ describe('ConsultantCommandBus', () => {
   describe('execute()', () => {
     const agencyId = '6141d9cb9fb4b44d53469145';
     const command: any = {
-      type: ConsultantCommandEnum.ASSIGN_CONSULTANT,
+      type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
       data: {sample: 'ok'}
     };
 
