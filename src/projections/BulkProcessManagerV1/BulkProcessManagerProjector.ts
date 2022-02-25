@@ -3,9 +3,9 @@ import {EventStoreProjectorInterface, EventStorePubSubModelInterface} from 'ss-e
 import {EventsEnum} from '../../Events';
 import {EventHandlerFactory} from './EventHandlerFactory';
 
-const events = [EventsEnum.CONSULTANT_ASSIGN_INITIATED, EventsEnum.CONSULTANT_ASSIGN_COMPLETED];
+const events = [EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED, EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED];
 
-export class BulkProcessManagerProjector implements EventStoreProjectorInterface {
+export default class BulkProcessManagerProjector implements EventStoreProjectorInterface {
   async project(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
     const eventType: EventsEnum = event.type as EventsEnum;
 
@@ -15,6 +15,14 @@ export class BulkProcessManagerProjector implements EventStoreProjectorInterface
     }
     const eventHandler = EventHandlerFactory.getHandler(eventType, logger);
 
-    await eventHandler.handle(event);
+    try {
+      await eventHandler.handle(event);
+    } catch (error) {
+      logger.error('Error in Bulk Process Manager Projector', {
+        error,
+        _id: event._id
+      });
+      throw error;
+    }
   }
 }
