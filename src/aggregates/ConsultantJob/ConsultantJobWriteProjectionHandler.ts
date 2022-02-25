@@ -7,7 +7,7 @@ import {ConsultantJobAggregateRecordInterface} from './types';
 import {WriteProjectionInterface} from '../../WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
 import {EventStoreModelInterface} from '../../models/EventStore';
-import {ConsultantAggregateRecordProcessInterface} from './types/ConsultantJobAggregateRecordInterface';
+import {ConsultantJobAggregateRecordProcessInterface} from './types/ConsultantJobAggregateRecordInterface';
 
 /**
  * Responsible for handling all events to build the current state of the aggregate
@@ -21,7 +21,7 @@ export class ConsultantJobWriteProjectionHandler implements WriteProjectionInter
     switch (type) {
       case EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED: {
         const data = event.data as ConsultantJobAssignInitiatedEventStoreDataInterface;
-        const process: ConsultantAggregateRecordProcessInterface = {
+        const process: ConsultantJobAggregateRecordProcessInterface = {
           _id: data._id,
           consultants: [data.consultant_id],
           status: 'initiated'
