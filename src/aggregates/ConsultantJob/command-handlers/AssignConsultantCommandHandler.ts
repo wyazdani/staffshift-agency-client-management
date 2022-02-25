@@ -1,4 +1,4 @@
-import {ConsultantAssignInitiatedEventStoreDataInterface} from 'EventStoreDataTypes/ConsultantAssignInitiatedEventStoreDataInterface';
+import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventStoreDataTypes/ConsultantJobAssignInitiatedEventStoreDataInterface';
 import {ConsultantJobRepository} from '../ConsultantJobRepository';
 import {ConsultantJobCommandHandlerInterface} from '../types/ConsultantJobCommandHandlerInterface';
 import {AssignConsultantCommandDataInterface} from '../types/CommandDataTypes';
@@ -18,9 +18,9 @@ export class AssignConsultantCommandHandler implements ConsultantJobCommandHandl
 
     await this.repository.save([
       {
-        type: EventsEnum.CONSULTANT_ASSIGN_INITIATED,
+        type: EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
         aggregate_id: aggregate.getId(),
-        data: commandData as ConsultantAssignInitiatedEventStoreDataInterface,
+        data: commandData as ConsultantJobAssignInitiatedEventStoreDataInterface,
         sequence_id: ++eventId
       }
     ]);

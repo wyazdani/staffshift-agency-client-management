@@ -27,7 +27,7 @@ describe('AssignConsultantCommandHandler class', () => {
       aggregate.validateAssignConsultant.should.have.been.calledWith(command);
       repository.save.should.have.been.calledOnceWith([
         {
-          type: EventsEnum.CONSULTANT_ASSIGN_INITIATED,
+          type: EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
           aggregate_id: aggregate.getId(),
           data: command,
           sequence_id: 2
