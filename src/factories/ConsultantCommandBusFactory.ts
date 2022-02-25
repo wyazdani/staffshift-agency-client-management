@@ -1,9 +1,9 @@
-import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
-import {AssignConsultantCommandHandler} from '../ConsultantJob/command-handlers/AssignConsultantCommandHandler';
-import {ConsultantJobCommandBus} from '../ConsultantJob/ConsultantJobCommandBus';
-import {ConsultantJobRepository} from '../ConsultantJob/ConsultantJobRepository';
-import {ConsultantJobWriteProjectionHandler} from '../ConsultantJob/ConsultantJobWriteProjectionHandler';
+import {AgencyRepository} from '../aggregates/Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../aggregates/Agency/AgencyWriteProjectionHandler';
+import {AssignConsultantCommandHandler} from '../aggregates/ConsultantJob/command-handlers/AssignConsultantCommandHandler';
+import {ConsultantJobCommandBus} from '../aggregates/ConsultantJob/ConsultantJobCommandBus';
+import {ConsultantJobRepository} from '../aggregates/ConsultantJob/ConsultantJobRepository';
+import {ConsultantJobWriteProjectionHandler} from '../aggregates/ConsultantJob/ConsultantJobWriteProjectionHandler';
 import {EventRepository} from '../EventRepository';
 
 export class ConsultantCommandBusFactory {

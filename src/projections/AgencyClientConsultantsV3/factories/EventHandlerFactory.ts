@@ -1,13 +1,13 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {RuntimeError} from 'a24-node-error-utils';
 import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
-import {AgencyRepository} from '../../../Agency/AgencyRepository';
+import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {EventRepository} from '../../../EventRepository';
 import {EventHandlerInterface} from '../types/EventHandlerInterface';
 import {AgencyClientConsultantAssignedEventHandler} from '../event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {AgencyClientConsultantUnassignedEventHandler} from '../event-handlers/AgencyClientConsultantUnassignedEventHandler';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
-import {AgencyWriteProjectionHandler} from '../../../Agency/AgencyWriteProjectionHandler';
+import {AgencyWriteProjectionHandler} from '../../../aggregates/Agency/AgencyWriteProjectionHandler';
 import {EventsEnum} from '../../../Events';
 import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
 

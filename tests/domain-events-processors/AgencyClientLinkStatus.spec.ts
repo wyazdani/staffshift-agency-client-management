@@ -2,7 +2,7 @@ import sinon, {StubbedInstance, stubConstructor} from 'ts-sinon';
 import {AgencyClientLinkStatus} from '../../src/domain-events-processors/AgencyClientLinkStatus';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
-import {AgencyClientCommandBus} from '../../src/AgencyClient/AgencyClientCommandBus';
+import {AgencyClientCommandBus} from '../../src/aggregates/AgencyClient/AgencyClientCommandBus';
 import {FacadeClientHelper} from '../../src/helpers/FacadeClientHelper';
 
 describe('AgencyClientLinkStatus', () => {

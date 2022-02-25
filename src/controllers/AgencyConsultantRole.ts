@@ -10,8 +10,8 @@ import {
   DisableAgencyConsultantRoleCommandInterface,
   EnableAgencyConsultantRoleCommandInterface,
   UpdateAgencyConsultantRoleCommandInterface
-} from '../Agency/types/CommandTypes';
-import {AgencyCommandEnum} from '../Agency/types';
+} from '../aggregates/Agency/types/CommandTypes';
+import {AgencyCommandEnum} from '../aggregates/Agency/types';
 import {GenericRepository} from '../GenericRepository';
 import {LocationHelper} from '../helpers/LocationHelper';
 import {QueryHelper} from 'a24-node-query-utils';

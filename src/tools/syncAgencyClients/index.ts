@@ -4,11 +4,11 @@ import {FacadeClientHelper} from '../../helpers/FacadeClientHelper';
 import {EventStore} from '../../models/EventStore';
 import {connect, disconnect} from 'mongoose';
 import {EventRepository} from '../../EventRepository';
-import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../AgencyClient/types';
+import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../aggregates/AgencyClient/types';
 import {AgencyClientCommandBusFactory} from '../../factories/AgencyClientCommandBusFactory';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
-import {AgencyRepository} from '../../Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../../Agency/AgencyWriteProjectionHandler';
+import {AgencyRepository} from '../../aggregates/Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../../aggregates/Agency/AgencyWriteProjectionHandler';
 import {AgencyOrganisationLinkDataType} from 'a24-node-staffshift-facade-client';
 
 Logger.setup(config.get('logger'));

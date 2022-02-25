@@ -2,8 +2,8 @@ import {ServerResponse} from 'http';
 import {get} from 'lodash';
 import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
-import {ConsultantJobCommandEnum} from '../ConsultantJob/types';
-import {AssignConsultantCommandInterface} from '../ConsultantJob/types/CommandTypes';
+import {ConsultantJobCommandEnum} from '../aggregates/ConsultantJob/types';
+import {AssignConsultantCommandInterface} from '../aggregates/ConsultantJob/types/CommandTypes';
 import {ConsultantCommandBusFactory} from '../factories/ConsultantCommandBusFactory';
 import {ValidationError} from 'a24-node-error-utils';
 
