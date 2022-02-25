@@ -30,9 +30,9 @@ describe('ConsultantJobAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(undefined);
-      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      const error = await consultantAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
+      const error = await consultantJobAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
@@ -55,9 +55,9 @@ describe('ConsultantJobAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      const error = await consultantAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
+      const error = await consultantJobAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
@@ -86,9 +86,9 @@ describe('ConsultantJobAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      const error = await consultantAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
+      const error = await consultantJobAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant', [
@@ -117,9 +117,9 @@ describe('ConsultantJobAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      await consultantAggregate.validateAssignConsultant(command);
+      await consultantJobAggregate.validateAssignConsultant(command);
     });
 
     it('Test success when there is no other process', async () => {
@@ -132,9 +132,9 @@ describe('ConsultantJobAggregate', () => {
 
       agencyRepository.getAggregate.resolves(agencyAggregate);
       agencyAggregate.getConsultantRole.returns(role);
-      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      await consultantAggregate.validateAssignConsultant(command);
+      await consultantJobAggregate.validateAssignConsultant(command);
     });
   });
   describe('getId()', () => {
@@ -156,8 +156,8 @@ describe('ConsultantJobAggregate', () => {
         last_sequence_id: 1
       };
       const agencyRepositoryStub = stubInterface<AgencyRepository>();
-      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
-      const id = consultantAggregate.getLastEventId();
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
+      const id = consultantJobAggregate.getLastEventId();
 
       id.should.equal(1);
     });
@@ -169,8 +169,8 @@ describe('ConsultantJobAggregate', () => {
         last_sequence_id: 1
       };
       const agencyRepositoryStub = stubInterface<AgencyRepository>();
-      const consultantAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
-      const id = consultantAggregate.toJSON();
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
+      const id = consultantJobAggregate.toJSON();
 
       id.should.equal(aggregate);
     });
