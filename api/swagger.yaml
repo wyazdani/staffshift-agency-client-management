@@ -384,7 +384,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
     post:
-      x-swagger-router-controller: "Consultant"
+      x-swagger-router-controller: "ConsultantJob"
       operationId: "assignConsultant"
       security:
         - jwt: []
