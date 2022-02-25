@@ -17,6 +17,6 @@ Description: A short description of the event
 | AGENCY_CLIENT_LINKED | AgencyClientLinked | The Agency Client was linked |
 | AGENCY_CLIENT_UNLINKED | AgencyClientUnLinked | The Agency Client was unlinked, does not indicate a deletion |
 | AGENCY_CLIENT_SYNCED | AgencyClientSynced | Sync event to move data from legacy application to microservice |
-| CONSULTANT_ASSIGN_INITIATED | ConsultantAssignInitiated | Initiate assigning a consultant to multiple clients in an agency |
-| CONSULTANT_ASSIGN_COMPLETED | ConsultantAssignCompleted | Assigning a consultant to multiple clients in an agency is completed |
+| CONSULTANT_ASSIGN_INITIATED | ConsultantAssignInitiated | Initiate assigning a consultant to multiple clients for an agency |
+| CONSULTANT_ASSIGN_COMPLETED | ConsultantAssignCompleted | Assigning a consultant to multiple clients for an agency has completed |
 <!--DATA_END-->

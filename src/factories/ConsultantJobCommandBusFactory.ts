@@ -6,7 +6,7 @@ import {ConsultantJobRepository} from '../aggregates/ConsultantJob/ConsultantJob
 import {ConsultantJobWriteProjectionHandler} from '../aggregates/ConsultantJob/ConsultantJobWriteProjectionHandler';
 import {EventRepository} from '../EventRepository';
 
-export class ConsultantCommandBusFactory {
+export class ConsultantJobCommandBusFactory {
   static getCommandBus(eventRepository: EventRepository): ConsultantJobCommandBus {
     const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
     const consultantRepository = new ConsultantJobRepository(

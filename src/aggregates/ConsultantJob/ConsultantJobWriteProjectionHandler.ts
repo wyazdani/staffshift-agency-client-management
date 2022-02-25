@@ -1,6 +1,6 @@
 import {
-  ConsultantAssignInitiatedEventStoreDataInterface,
-  ConsultantAssignCompletedEventStoreDataInterface
+  ConsultantJobAssignInitiatedEventStoreDataInterface,
+  ConsultantJobAssignCompletedEventStoreDataInterface
 } from 'EventStoreDataTypes';
 import {find} from 'lodash';
 import {ConsultantJobAggregateRecordInterface} from './types';
@@ -19,8 +19,8 @@ export class ConsultantJobWriteProjectionHandler implements WriteProjectionInter
     event: EventStoreModelInterface
   ): ConsultantJobAggregateRecordInterface {
     switch (type) {
-      case EventsEnum.CONSULTANT_ASSIGN_INITIATED: {
-        const data = event.data as ConsultantAssignInitiatedEventStoreDataInterface;
+      case EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED: {
+        const data = event.data as ConsultantJobAssignInitiatedEventStoreDataInterface;
         const process: ConsultantAggregateRecordProcessInterface = {
           _id: data._id,
           consultants: [data.consultant_id],
@@ -31,8 +31,8 @@ export class ConsultantJobWriteProjectionHandler implements WriteProjectionInter
 
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
-      case EventsEnum.CONSULTANT_ASSIGN_COMPLETED: {
-        const data = event.data as ConsultantAssignCompletedEventStoreDataInterface;
+      case EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED: {
+        const data = event.data as ConsultantJobAssignCompletedEventStoreDataInterface;
         const process = find(aggregate.processes, {_id: data._id});
 
         if (process) {

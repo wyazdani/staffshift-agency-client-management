@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import {ConsultantJobCommandBus} from '../../src/aggregates/ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobCommandEnum} from '../../src/aggregates/ConsultantJob/types';
-import {assignConsultant} from '../../src/controllers/Consultant';
+import {assignConsultant} from '../../src/controllers/ConsultantJob';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {ObjectID} from 'mongodb';

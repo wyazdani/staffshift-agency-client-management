@@ -4,8 +4,8 @@ import {EventStore} from '../../../src/models/EventStore';
 import {assert} from 'chai';
 import {
   AgencyConsultantRoleEnabledEventStoreDataInterface,
-  ConsultantAssignInitiatedEventStoreDataInterface,
-  ConsultantAssignCompletedEventStoreDataInterface
+  ConsultantJobAssignInitiatedEventStoreDataInterface,
+  ConsultantJobAssignCompletedEventStoreDataInterface
 } from '../../../src/types/EventStoreDataTypes';
 
 describe('ConsultantJobWriteProjectionHandler', () => {
@@ -17,7 +17,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
         const aggregate: any = {
           last_sequence_id: 1
         };
-        const eventData: ConsultantAssignInitiatedEventStoreDataInterface = {
+        const eventData: ConsultantJobAssignInitiatedEventStoreDataInterface = {
           client_ids: ['sample client id'],
           _id: 'sample',
           consultant_id: 'consultant id',
@@ -32,7 +32,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           correlation_id: 1
         });
 
-        const result = projectionHandler.execute(EventsEnum.CONSULTANT_ASSIGN_INITIATED, aggregate, event);
+        const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED, aggregate, event);
 
         result.processes[0].should.deep.equal({
           _id: eventData._id,
@@ -50,7 +50,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: ConsultantAssignInitiatedEventStoreDataInterface = {
+        const eventData: ConsultantJobAssignInitiatedEventStoreDataInterface = {
           client_ids: ['sample client id'],
           _id: 'sample',
           consultant_id: 'consultant id',
@@ -65,7 +65,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           correlation_id: 1
         });
 
-        const result = projectionHandler.execute(EventsEnum.CONSULTANT_ASSIGN_INITIATED, aggregate, event);
+        const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED, aggregate, event);
 
         result.processes[0].should.deep.equal({
           sample: 'ok'
@@ -89,7 +89,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: ConsultantAssignCompletedEventStoreDataInterface = {
+        const eventData: ConsultantJobAssignCompletedEventStoreDataInterface = {
           _id: 'sample'
         };
         const event = new EventStore({
@@ -101,7 +101,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           correlation_id: 1
         });
 
-        const result = projectionHandler.execute(EventsEnum.CONSULTANT_ASSIGN_COMPLETED, aggregate, event);
+        const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED, aggregate, event);
 
         result.processes[0].should.deep.equal({
           _id: eventData._id,
@@ -119,7 +119,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
             }
           ]
         };
-        const eventData: ConsultantAssignCompletedEventStoreDataInterface = {
+        const eventData: ConsultantJobAssignCompletedEventStoreDataInterface = {
           _id: 'sample'
         };
         const event = new EventStore({
@@ -131,7 +131,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           correlation_id: 1
         });
 
-        const result = projectionHandler.execute(EventsEnum.CONSULTANT_ASSIGN_COMPLETED, aggregate, event);
+        const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED, aggregate, event);
 
         result.processes[0].should.deep.equal({
           _id: 'sample-oops',

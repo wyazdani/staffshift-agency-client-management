@@ -1,5 +1,5 @@
 import {BaseEventStoreDataInterface} from 'EventStoreDataTypes/BaseEventStoreDataInterface';
 
-export interface ConsultantAssignCompletedEventStoreDataInterface extends BaseEventStoreDataInterface {
+export interface ConsultantJobAssignCompletedEventStoreDataInterface extends BaseEventStoreDataInterface {
   _id: string;
 }
