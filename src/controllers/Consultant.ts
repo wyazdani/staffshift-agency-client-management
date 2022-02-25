@@ -4,7 +4,7 @@ import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {ConsultantJobCommandEnum} from '../aggregates/ConsultantJob/types';
 import {AssignConsultantCommandInterface} from '../aggregates/ConsultantJob/types/CommandTypes';
-import {ConsultantCommandBusFactory} from '../factories/ConsultantCommandBusFactory';
+import {ConsultantJobCommandBusFactory} from '../factories/ConsultantJobCommandBusFactory';
 import {ValidationError} from 'a24-node-error-utils';
 
 export const assignConsultant = async (
@@ -16,7 +16,7 @@ export const assignConsultant = async (
     const payload = get(req, 'swagger.params.assign_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const commandType = ConsultantJobCommandEnum.ASSIGN_CONSULTANT;
-    const commandBus = ConsultantCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const commandBus = ConsultantJobCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
     const id = new ObjectID().toString();
 
     const command: AssignConsultantCommandInterface = {
