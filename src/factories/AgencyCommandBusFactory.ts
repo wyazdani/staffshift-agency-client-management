@@ -1,11 +1,11 @@
-import {AgencyCommandBus} from '../Agency/AgencyCommandBus';
-import {AddAgencyConsultantRoleCommandHandler} from '../Agency/command-handlers/AddAgencyConsultantRoleCommandHandler';
-import {UpdateAgencyConsultantRoleCommandHandler} from '../Agency/command-handlers/UpdateAgencyConsultantRoleCommandHandler';
-import {DisableAgencyConsultantRoleCommandHandler} from '../Agency/command-handlers/DisableAgencyConsultantRoleCommandHandler';
-import {EnableAgencyConsultantRoleCommandHandler} from '../Agency/command-handlers/EnableAgencyConsultantRoleCommandHandler';
-import {AgencyRepository} from '../Agency/AgencyRepository';
+import {AgencyCommandBus} from '../aggregates/Agency/AgencyCommandBus';
+import {AddAgencyConsultantRoleCommandHandler} from '../aggregates/Agency/command-handlers/AddAgencyConsultantRoleCommandHandler';
+import {UpdateAgencyConsultantRoleCommandHandler} from '../aggregates/Agency/command-handlers/UpdateAgencyConsultantRoleCommandHandler';
+import {DisableAgencyConsultantRoleCommandHandler} from '../aggregates/Agency/command-handlers/DisableAgencyConsultantRoleCommandHandler';
+import {EnableAgencyConsultantRoleCommandHandler} from '../aggregates/Agency/command-handlers/EnableAgencyConsultantRoleCommandHandler';
+import {AgencyRepository} from '../aggregates/Agency/AgencyRepository';
 import {EventRepository} from '../EventRepository';
-import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
+import {AgencyWriteProjectionHandler} from '../aggregates/Agency/AgencyWriteProjectionHandler';
 
 /**
  * Factory class responsible for building an AgencyCommandBus configured with supported command handlers

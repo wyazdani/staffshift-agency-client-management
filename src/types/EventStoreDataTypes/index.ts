@@ -7,6 +7,8 @@ import {AgencyConsultantRoleAddedEventStoreDataInterface} from './AgencyConsulta
 import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from './AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface';
 import {AgencyConsultantRoleDisabledEventStoreDataInterface} from './AgencyConsultantRoleDisabledEventStoreDataInterface';
 import {AgencyConsultantRoleEnabledEventStoreDataInterface} from './AgencyConsultantRoleEnabledEventStoreDataInterface';
+import {ConsultantJobAssignInitiatedEventStoreDataInterface} from './ConsultantJobAssignInitiatedEventStoreDataInterface';
+import {ConsultantJobAssignCompletedEventStoreDataInterface} from './ConsultantJobAssignCompletedEventStoreDataInterface';
 import {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';
 
 export {
@@ -19,5 +21,7 @@ export {
   AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
   AgencyConsultantRoleDisabledEventStoreDataInterface,
   AgencyConsultantRoleEnabledEventStoreDataInterface,
+  ConsultantJobAssignInitiatedEventStoreDataInterface,
+  ConsultantJobAssignCompletedEventStoreDataInterface,
   BaseEventStoreDataInterface
 };

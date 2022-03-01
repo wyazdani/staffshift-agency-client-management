@@ -1,10 +1,10 @@
 import sinon, {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
-import {AgencyRepository} from '../../../../src/Agency/AgencyRepository';
+import {AgencyRepository} from '../../../../src/aggregates/Agency/AgencyRepository';
 import {FacadeClientHelper} from '../../../../src/helpers/FacadeClientHelper';
 import {AgencyClientConsultantAssignedEventHandler} from '../../../../src/projections/AgencyClientConsultantsV3/event-handlers/AgencyClientConsultantAssignedEventHandler';
-import {AgencyAggregate} from '../../../../src/Agency/AgencyAggregate';
-import {AgencyConsultantRoleEnum} from '../../../../src/Agency/types';
+import {AgencyAggregate} from '../../../../src/aggregates/Agency/AgencyAggregate';
+import {AgencyConsultantRoleEnum} from '../../../../src/aggregates/Agency/types';
 import {AgencyClientConsultantsProjectionV3} from '../../../../src/models/AgencyClientConsultantsProjectionV3';
 import {EventsEnum} from '../../../../src/Events';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';

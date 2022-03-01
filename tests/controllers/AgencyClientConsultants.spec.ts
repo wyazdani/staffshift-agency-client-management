@@ -7,8 +7,8 @@ import {
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {ObjectID} from 'mongodb';
-import {AgencyClientCommandEnum} from '../../src/AgencyClient/types';
-import {AgencyClientCommandBus} from '../../src/AgencyClient/AgencyClientCommandBus';
+import {AgencyClientCommandEnum} from '../../src/aggregates/AgencyClient/types';
+import {AgencyClientCommandBus} from '../../src/aggregates/AgencyClient/AgencyClientCommandBus';
 import {GenericRepository} from '../../src/GenericRepository';
 import {QueryHelper} from 'a24-node-query-utils';
 import {PaginationHelper} from '../../src/helpers/PaginationHelper';

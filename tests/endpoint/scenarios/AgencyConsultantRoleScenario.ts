@@ -1,4 +1,4 @@
-import {AgencyCommandEnum} from '../../../src/Agency/types';
+import {AgencyCommandEnum} from '../../../src/aggregates/Agency/types';
 import {AgencyCommandBusFactory} from '../../../src/factories/AgencyCommandBusFactory';
 import {AbstractScenario} from './AbstractScenario';
 

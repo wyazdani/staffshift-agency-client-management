@@ -1,7 +1,7 @@
 import {ObjectID} from 'mongodb';
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
-import {AgencyClientCommandEnum} from '../AgencyClient/types';
+import {AgencyClientCommandEnum} from '../aggregates/AgencyClient/types';
 import {GenericRepository} from '../GenericRepository';
 import {
   AgencyClientConsultantV3DocumentType,
@@ -16,9 +16,9 @@ import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {
   AddAgencyClientConsultantCommandInterface,
   RemoveAgencyClientConsultantCommandInterface
-} from '../AgencyClient/types/CommandTypes';
-import {AgencyRepository} from '../Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
+} from '../aggregates/AgencyClient/types/CommandTypes';
+import {AgencyRepository} from '../aggregates/Agency/AgencyRepository';
+import {AgencyWriteProjectionHandler} from '../aggregates/Agency/AgencyWriteProjectionHandler';
 
 /**
  * Add Agency Client Consultant

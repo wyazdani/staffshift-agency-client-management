@@ -378,6 +378,32 @@ paths:
       summary: "Disables an Agency Consultant Role"
       tags:
         - "Agency Consultant Roles"
+  /agency/{agency_id}/consultant-assign:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+    post:
+      x-swagger-router-controller: "ConsultantJob"
+      operationId: "assignConsultant"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/assign_consultant_payload"
+      responses:
+        202:
+          description: "Assign a consultant to multiple clients"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/assign_consultant_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Assign a consultant to multiple clients"
+      tags:
+        - "Consultant Bulk"
 parameters:
  # Query PARAMS
   query_client_type:
@@ -411,11 +437,6 @@ parameters:
     in: query
     pattern: ^[0-9a-fA-F]{24}$
     description: "The consultant id"
-    type: string
-  query_event:
-    name: event
-    in: query
-    description: "The event that should be filtered on"
     type: string
   query_consultant_role_status:
     name: status
@@ -464,6 +485,13 @@ parameters:
     description: "The payload used to create an agency client consultant"
     schema:
       $ref: "#/definitions/assign_client_consultant_payload_def"
+  assign_consultant_payload:
+    name: assign_consultant_payload
+    in: body
+    required: true
+    description: "The payload used to assign a consultant to multiple clients"
+    schema:
+      $ref: "#/definitions/assign_consultant_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -488,13 +516,6 @@ parameters:
     required: true
     pattern: ^[0-9a-fA-F]{24}$
     description: "Client ID"
-    type: string
-  consultant_id:
-    name: consultant_id
-    in: path
-    required: true
-    pattern: ^[0-9a-fA-F]{24}$
-    description: "Consultant ID"
     type: string
   client_consultant_id:
     name: client_consultant_id
@@ -695,6 +716,26 @@ definitions:
       consultant_id:
         type: string
         pattern: ^[0-9a-fA-F]{24}$
+    additionalProperties: false
+  assign_consultant_payload_def:
+    type: object
+    required:
+      - consultant_role_id
+      - consultant_id
+      - client_ids
+    properties:
+      consultant_role_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      consultant_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      client_ids:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
     additionalProperties: false
  # GENERIC CROSS ROUTE RESPONSES
   unauthorize_error_model:
@@ -909,6 +950,51 @@ definitions:
                 - MAX_CONSULTANTS_ASSIGNED
                 - CONSULTANT_ROLE_NOT_FOUND
                 - CONSULTANT_ROLE_NOT_ENABLED
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
+  assign_consultant_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - OBJECT_MISSING_REQUIRED_PROPERTY
+                - ARRAY_LENGTH_SHORT
+                - CONSULTANT_ROLE_NOT_FOUND
+                - CONSULTANT_ROLE_NOT_ENABLED
+                - ANOTHER_CONSULTANT_PROCESS_ACTIVE
             message:
               type: string
             path:

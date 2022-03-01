@@ -1,10 +1,10 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
-import {AgencyClientCommandBus} from '../AgencyClient/AgencyClientCommandBus';
+import {AgencyClientCommandBus} from '../aggregates/AgencyClient/AgencyClientCommandBus';
 import {RuntimeError} from 'a24-node-error-utils';
 import {DomainEventMessageInterface} from 'DomainEventTypes/DomainEventMessageInterface';
 import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEventDataInterface';
-import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../AgencyClient/types';
+import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../aggregates/AgencyClient/types';
 
 interface TriageEventToCommandInterface {
   agency_id: string;
