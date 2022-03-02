@@ -1,5 +1,5 @@
 import {AgencyClientConsultantUnassignedEventStoreDataInterface} from 'EventStoreDataTypes';
-import {EventHandlerInterface} from '../types/EventHandlerInterface';
+import {EventHandlerInterface} from 'EventHandlerInterface';
 import {AgencyClientConsultantsProjectionV3} from '../../../models/AgencyClientConsultantsProjectionV3';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 

@@ -3,7 +3,7 @@ import {RuntimeError} from 'a24-node-error-utils';
 import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {EventRepository} from '../../../EventRepository';
-import {EventHandlerInterface} from '../types/EventHandlerInterface';
+import {EventHandlerInterface} from 'EventHandlerInterface';
 import {AgencyClientConsultantAssignedEventHandler} from '../event-handlers/AgencyClientConsultantAssignedEventHandler';
 import {AgencyClientConsultantUnassignedEventHandler} from '../event-handlers/AgencyClientConsultantUnassignedEventHandler';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';

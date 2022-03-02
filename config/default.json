@@ -182,6 +182,14 @@
           "projector": "./projections/AgencyConsultantRolesV2/AgencyConsultantRolesProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
+      }, {
+        "name": "Bulk Process Manager V1",
+        "bindings": [{
+          "id": "bulk-process-manager-v1",
+          "projector": "./projections/BulkProcessManagerV1/BulkProcessManagerProjector",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management",
+          "skipSeed": true
+        }]
       }]
     }
   }
