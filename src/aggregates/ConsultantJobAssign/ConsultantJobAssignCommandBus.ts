@@ -18,13 +18,13 @@ export class ConsultantJobAssignCommandBus {
   /**
    * Execute the command by finding it's corresponding handler
    */
-  async execute(agencyId: string, command: ConsultantJobAssignCommandInterface): Promise<void> {
+  async execute(agencyId: string, jobId: string, command: ConsultantJobAssignCommandInterface): Promise<void> {
     const commandHandler = this.commandHandlers.find((handler) => handler.commandType === command.type);
 
     if (!commandHandler) {
       throw new Error(`Command type:${command.type} is not supported`);
     }
 
-    await commandHandler.execute(agencyId, command.data);
+    await commandHandler.execute(agencyId, jobId, command.data);
   }
 }

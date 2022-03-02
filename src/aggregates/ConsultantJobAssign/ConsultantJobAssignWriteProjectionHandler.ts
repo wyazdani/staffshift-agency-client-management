@@ -6,7 +6,8 @@ import {EventStoreModelInterface} from '../../models/EventStore';
 /**
  * Responsible for handling all events to build the current state of the aggregate
  */
-export class ConsultantJobAssignWriteProjectionHandler implements WriteProjectionInterface<ConsultantJobAssignAggregateRecordInterface> {
+export class ConsultantJobAssignWriteProjectionHandler
+implements WriteProjectionInterface<ConsultantJobAssignAggregateRecordInterface> {
   execute(
     type: EventsEnum,
     aggregate: ConsultantJobAssignAggregateRecordInterface,

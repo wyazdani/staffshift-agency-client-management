@@ -12,7 +12,8 @@ import {ConsultantJobAggregateRecordProcessInterface} from './types/ConsultantJo
 /**
  * Responsible for handling all events to build the current state of the aggregate
  */
-export class ConsultantJobWriteProjectionHandler implements WriteProjectionInterface<ConsultantJobAggregateRecordInterface> {
+export class ConsultantJobWriteProjectionHandler
+implements WriteProjectionInterface<ConsultantJobAggregateRecordInterface> {
   execute(
     type: EventsEnum,
     aggregate: ConsultantJobAggregateRecordInterface,

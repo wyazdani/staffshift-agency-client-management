@@ -8,10 +8,14 @@ export class StartConsultantAssignCommandHandler implements ConsultantJobAssignC
 
   constructor(private repository: ConsultantJobAssignRepository) {}
 
-  async execute(agencyId: string, jobId: string, commandData: StartConsultantJobAssignCommandDataInterface): Promise<void> {
+  async execute(
+    agencyId: string,
+    jobId: string,
+    commandData: StartConsultantJobAssignCommandDataInterface
+  ): Promise<void> {
     const aggregate = await this.repository.getAggregate(agencyId, jobId);
 
-    let eventId = aggregate.getLastEventId();
+    const eventId = aggregate.getLastEventId();
 
     // will be implemented in next prs
     // await this.repository.save([
