@@ -3,6 +3,7 @@ import {AggregateIdType} from './EventStore';
 
 export enum BulkProcessManagerStatusEnum {
   NEW = 'new',
+  PROCESSING = 'processing',
   COMPLETED = 'completed'
 }
 export type BulkProcessManagerV1DocumentType = Document & {
@@ -31,7 +32,11 @@ const bulkProcessManager = new Schema<BulkProcessManagerV1DocumentType>(
     status: {
       type: String,
       required: true,
-      enum: [BulkProcessManagerStatusEnum.NEW, BulkProcessManagerStatusEnum.COMPLETED],
+      enum: [
+        BulkProcessManagerStatusEnum.NEW,
+        BulkProcessManagerStatusEnum.PROCESSING,
+        BulkProcessManagerStatusEnum.COMPLETED
+      ],
       description: 'Status of process'
     },
     total_items: {
@@ -51,6 +56,7 @@ const bulkProcessManager = new Schema<BulkProcessManagerV1DocumentType>(
     }
   },
   {
+    optimisticConcurrency: true,
     timestamps: {
       createdAt: 'created_at',
       updatedAt: 'updated_at'
