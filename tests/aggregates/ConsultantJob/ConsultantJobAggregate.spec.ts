@@ -32,7 +32,9 @@ describe('ConsultantJobAggregate', () => {
       agencyAggregate.getConsultantRole.returns(undefined);
       const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      const error = await consultantJobAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
+      const error = await consultantJobAggregate
+        .validateAssignConsultant(command)
+        .should.be.rejectedWith(ValidationError);
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
@@ -57,7 +59,9 @@ describe('ConsultantJobAggregate', () => {
       agencyAggregate.getConsultantRole.returns(role);
       const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      const error = await consultantJobAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
+      const error = await consultantJobAggregate
+        .validateAssignConsultant(command)
+        .should.be.rejectedWith(ValidationError);
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant role', [
@@ -88,7 +92,9 @@ describe('ConsultantJobAggregate', () => {
       agencyAggregate.getConsultantRole.returns(role);
       const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
 
-      const error = await consultantJobAggregate.validateAssignConsultant(command).should.be.rejectedWith(ValidationError);
+      const error = await consultantJobAggregate
+        .validateAssignConsultant(command)
+        .should.be.rejectedWith(ValidationError);
 
       error.should.deep.equal(
         new ValidationError('Not allowed consultant', [
