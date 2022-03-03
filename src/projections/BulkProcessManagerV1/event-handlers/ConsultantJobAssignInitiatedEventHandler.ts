@@ -16,7 +16,8 @@ implements EventHandlerInterface<EventStorePubSubModelInterface<ConsultantJobAss
       await BulkProcessManagerV1.create({
         _id: event.data._id,
         aggregate_id: event.aggregate_id,
-        status: BulkProcessManagerStatusEnum.NEW
+        status: BulkProcessManagerStatusEnum.NEW,
+        initiate_event_id: event._id
       });
     } catch (error) {
       if (error.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {

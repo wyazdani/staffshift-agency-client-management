@@ -43,6 +43,11 @@ const bulkProcessManager = new Schema<BulkProcessManagerV1DocumentType>(
       type: Number,
       required: false,
       description: 'Number of items have been processed so far'
+    },
+    initiate_event_id: {
+      type: String,
+      required: true,
+      description: 'Event id of initiate. We use this field to find causation id'
     }
   },
   {

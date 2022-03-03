@@ -24,7 +24,8 @@ describe('ConsultantJobAssignInitiatedEventHandler', () => {
       create.should.have.been.calledWith({
         _id: event.data._id,
         aggregate_id: event.aggregate_id,
-        status: BulkProcessManagerStatusEnum.NEW
+        status: BulkProcessManagerStatusEnum.NEW,
+        initiate_event_id: event._id
       });
     });
 
@@ -45,7 +46,8 @@ describe('ConsultantJobAssignInitiatedEventHandler', () => {
       create.should.have.been.calledWith({
         _id: event.data._id,
         aggregate_id: event.aggregate_id,
-        status: BulkProcessManagerStatusEnum.NEW
+        status: BulkProcessManagerStatusEnum.NEW,
+        initiate_event_id: event._id
       });
     });
 
@@ -65,7 +67,8 @@ describe('ConsultantJobAssignInitiatedEventHandler', () => {
       create.should.have.been.calledWith({
         _id: event.data._id,
         aggregate_id: event.aggregate_id,
-        status: BulkProcessManagerStatusEnum.NEW
+        status: BulkProcessManagerStatusEnum.NEW,
+        initiate_event_id: event._id
       });
     });
   });
