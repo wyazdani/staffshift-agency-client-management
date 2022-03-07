@@ -10,6 +10,7 @@ export type BulkProcessManagerV1DocumentType = Document & {
   _id: string;
   aggregate_id: AggregateIdType;
   status: BulkProcessManagerStatusEnum;
+  initiate_event_id: string;
   total_items?: number;
   processed_items?: number;
   created_at: Date;
