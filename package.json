@@ -14,6 +14,7 @@
     "start-event-store-publisher": "node dist/event_store_publisher",
     "start-event-store-projection": "node dist/event_store_projection",
     "start-event-store-http-server": "node dist/event_store_http_server",
+    "start-bulk-process-manager": "node dist/bulk_process_manager",
     "dev-generate-event-docs": "ts-node src/tools/generate_events_docs.ts"
   },
   "pre-commit": [
