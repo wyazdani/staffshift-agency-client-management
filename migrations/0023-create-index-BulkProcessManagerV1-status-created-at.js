@@ -2,13 +2,14 @@
 const {ensureIndexExists, ensureIndexRemoved} = require('../tools/IndexExists');
 const collectionName = 'BulkProcessManagerV1';
 const indexDetails = {
+  status: 1,
   created_at: 1
 };
 const indexOptions = {
   background: true
 };
 module.exports = {
-  id: '0023-create-index-BulkProcessManagerV1-created-at',
+  id: '0023-create-index-BulkProcessManagerV1-status-created-at',
   up: (db, cb) => {
     ensureIndexExists(
       db.collection(collectionName),
