@@ -41,6 +41,7 @@
     "a24-node-staffshift-facade-client": "git+ssh://git@github.com/A24Group/a24-node-staffshift-facade-client.git#v1.27.0",
     "ss-eventstore": "git+ssh://git@github.com/A24Group/ss-eventstore.git#semver:1.9.2",
     "arg": "^5.0.1",
+    "async": "^3.2.3",
     "config": "^3.3.6",
     "connect": "3.7.0",
     "http-terminator": "^3.0.0",
@@ -55,6 +56,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/async": "^3.2.12",
     "@types/chai": "4.2.21",
     "@types/chai-as-promised": "^7.1.4",
     "@types/config": "0.0.39",

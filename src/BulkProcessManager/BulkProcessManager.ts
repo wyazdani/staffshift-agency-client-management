@@ -34,6 +34,7 @@ export class BulkProcessManager {
     this.logger.info('Starting bulk process manager');
     while (!this.shutdownInitiated) {
       this.processing = true;
+      this.logger.debug('Checking BulkProcessManager collection');
       const bulkRecords = await BulkProcessManagerV1.find({
         status: BulkProcessManagerStatusEnum.NEW
       })
@@ -41,18 +42,25 @@ export class BulkProcessManager {
         .limit(this.opts.parallel_limit)
         .exec();
 
-      await each(bulkRecords, async (record) => {
-        try {
-          if (await this.updateToProcessing(record)) {
-            const event = await this.findInitiateEvent(record.initiate_event_id);
+      if (bulkRecords.length > 0) {
+        this.logger.info(`Starting to process ${bulkRecords.length} processes`);
+        await each(bulkRecords, async (record) => {
+          try {
+            if (await this.updateToProcessing(record)) {
+              const event = await this.findInitiateEvent(record.initiate_event_id);
 
-            await this.findAndCallProcess(event);
+              await this.findAndCallProcess(event);
+            }
+          } catch (error) {
+            this.logger.error('Error in bulk process manager process function', {processId: record._id});
+            // We don't throw error here to not break the promise, we will try this process again in next loop
+            // TODO: we should make it resumable, because if we update to processing and findInitiateEvent fails
+            // We will never find the record again
           }
-        } catch (error) {
-          this.logger.error('Error in bulk process manager process function', {processId: record._id});
-          // We don't throw error here to not break the promise, we will try this process again in next loop
-        }
-      });
+        });
+        this.logger.info(`Processing ${bulkRecords.length} processes finished`);
+      }
+
       this.processing = false;
       this.shutdownEmitter.emit('finished');
       await setTimeout(this.opts.polling_interval);
