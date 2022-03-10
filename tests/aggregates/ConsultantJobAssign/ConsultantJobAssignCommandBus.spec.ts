@@ -3,7 +3,7 @@ import {stubConstructor} from 'ts-sinon';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 import {assert} from 'chai';
-import {StartConsultantAssignCommandHandler} from '../../../src/aggregates/ConsultantJobAssign/command-handlers/StartConsultantAssignCommandHandler';
+import {StartConsultantJobAssignCommandHandler} from '../../../src/aggregates/ConsultantJobAssign/command-handlers/StartConsultantJobAssignCommandHandler';
 import {ConsultantJobAssignRepository} from '../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandBus} from '../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignCommandBus';
 import {ConsultantJobAssignCommandEnum} from '../../../src/aggregates/ConsultantJobAssign/types';
@@ -21,7 +21,7 @@ describe('ConsultantJobAssignCommandBus', () => {
 
   describe('addHandler()', () => {
     it('should return class instance', () => {
-      const instance = commandBus.addHandler(new StartConsultantAssignCommandHandler(repository));
+      const instance = commandBus.addHandler(new StartConsultantJobAssignCommandHandler(repository));
 
       assert.deepEqual(instance, commandBus, 'Expected class instance not returned');
     });
@@ -42,7 +42,7 @@ describe('ConsultantJobAssignCommandBus', () => {
     });
 
     it('should use the correct handler', async () => {
-      const handler = new StartConsultantAssignCommandHandler(repository);
+      const handler = new StartConsultantJobAssignCommandHandler(repository);
       const executeStub = sinon.stub(handler, 'execute');
 
       commandBus.addHandler(handler);

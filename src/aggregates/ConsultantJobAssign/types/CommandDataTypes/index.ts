@@ -1,3 +1,4 @@
-import {StartConsultantJobAssignCommandDataInterface} from './StartConsultantJobAssignCommandDataInterface';
-
-export {StartConsultantJobAssignCommandDataInterface};
+export {StartConsultantJobAssignCommandDataInterface} from './StartConsultantJobAssignCommandDataInterface';
+export {ProgressConsultantJobAssignCommandDataInterface} from './ProgressConsultantJobAssignCommandDataInterface';
+export {FailItemConsultantJobAssignCommandDataInterface} from './FailItemConsultantJobAssignCommandDataInterface';
+export {CompleteConsultantJobAssignCommandDataInterface} from './CompleteConsultantJobAssignCommandDataInterface';

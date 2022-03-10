@@ -2,7 +2,7 @@ import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {reduce, map} from 'lodash';
 import {FilterQuery} from 'mongoose';
 import {AggregateIdType, EventStore, EventStoreModelInterface} from './models/EventStore';
-import {WriteProjectionInterface} from './WriteProjectionInterface';
+import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
 
 // Might be worth having a UserEventMeta and SystemEventMeta concept

@@ -1,5 +1,5 @@
 import {ConsultantJobAssignAggregateRecordInterface} from './types';
-import {WriteProjectionInterface} from '../../WriteProjectionInterface';
+import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
 import {EventStoreModelInterface} from '../../models/EventStore';
 
