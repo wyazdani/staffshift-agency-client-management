@@ -44,6 +44,7 @@ mongoose.connection.on('error', (error: Error) => {
       loggerContext.info('Process exited gracefully');
       process.exit(0);
     };
+
     for (const signal of config.get<GracefulShutdownConfigurationInterface>('graceful_shutdown').signals) {
       process.on(signal, shutdown);
     }
