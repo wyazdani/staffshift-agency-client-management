@@ -1,3 +1,4 @@
+import {ConsultantJobAssignProcessProgressedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';
@@ -22,7 +23,7 @@ export class ProgressConsultantJobAssignCommandHandler implements ConsultantJobA
       {
         type: EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_PROGRESSED,
         aggregate_id: aggregate.getId(),
-        data: commandData as ProgressConsultantJobAssignCommandDataInterface,
+        data: commandData as ConsultantJobAssignProcessProgressedEventStoreDataInterface,
         sequence_id: ++eventId
       }
     ]);

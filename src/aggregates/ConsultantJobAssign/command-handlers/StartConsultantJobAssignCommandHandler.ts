@@ -1,3 +1,4 @@
+import {ConsultantJobAssignProcessStartedEventStoreDataInterface} from 'EventStoreDataTypes';
 import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';
@@ -22,7 +23,7 @@ export class StartConsultantJobAssignCommandHandler implements ConsultantJobAssi
       {
         type: EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_STARTED,
         aggregate_id: aggregate.getId(),
-        data: commandData as StartConsultantJobAssignCommandDataInterface,
+        data: commandData as ConsultantJobAssignProcessStartedEventStoreDataInterface,
         sequence_id: ++eventId
       }
     ]);
