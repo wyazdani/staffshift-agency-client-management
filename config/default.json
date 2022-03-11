@@ -65,6 +65,9 @@
     },
     "event_store": {
       "server_close_timeout": 5000
+    },
+    "bulk_process_manager": {
+      "server_close_timeout": 8000
     }
   },
   "pubSubAuth": {
@@ -192,5 +195,9 @@
         }]
       }]
     }
+  },
+  "bulk_process_manager": {
+    "parallel_limit": 5,
+    "polling_interval": 15000
   }
 }
