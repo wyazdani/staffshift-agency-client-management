@@ -5,6 +5,7 @@ import {SequenceIdMismatch} from './errors/SequenceIdMismatch';
 import {AggregateIdType, EventStore, EventStoreModelInterface} from './models/EventStore';
 import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
+import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
 // Might be worth having a UserEventMeta and SystemEventMeta concept
 export interface EventMetaInterface {
@@ -86,7 +87,7 @@ export class EventRepository {
     try {
       return await this.store.insertMany(enrichedEvents);
     } catch (error) {
-      if (error?.code === 11000) {
+      if (error?.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
         /**
          * We only have two unique indexes on EventStore collection:
          * - _id
