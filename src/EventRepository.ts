@@ -84,7 +84,7 @@ export class EventRepository {
     }));
 
     try {
-      return this.store.insertMany(enrichedEvents);
+      return await this.store.insertMany(enrichedEvents);
     } catch (error) {
       if (error?.code === 11000) {
         /**
