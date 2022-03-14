@@ -52,7 +52,7 @@ export class BulkProcessManager {
               await this.findAndCallProcess(event);
             }
           } catch (error) {
-            this.logger.error('Error in bulk process manager process function', {processId: record._id});
+            this.logger.error('Error in bulk process manager process function', {processId: record._id, error});
             // We don't throw error here to not break the promise, we will try this process again in next loop
             // TODO: we should make it resumable, because if we update to processing and findInitiateEvent fails
             // We will never find the record again

@@ -1,7 +1,7 @@
-import {ConsultantJobAssignAggregateRecordInterface} from './types';
 import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
 import {EventStoreModelInterface} from '../../models/EventStore';
+import {ConsultantJobAssignAggregateRecordInterface} from './types';
 
 /**
  * Responsible for handling all events to build the current state of the aggregate
@@ -14,7 +14,14 @@ implements WriteProjectionInterface<ConsultantJobAssignAggregateRecordInterface>
     event: EventStoreModelInterface
   ): ConsultantJobAssignAggregateRecordInterface {
     switch (type) {
-      // Implement projection here
+      case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_STARTED:
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_PROGRESSED:
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED:
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED:
+        return {...aggregate, last_sequence_id: event.sequence_id};
       default:
         throw new Error(`Event type not supported: ${type}`);
     }

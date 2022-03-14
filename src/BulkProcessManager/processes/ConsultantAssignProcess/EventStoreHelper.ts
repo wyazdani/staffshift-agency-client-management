@@ -17,7 +17,10 @@ import {EventRepository} from '../../../EventRepository';
 import {AgencyClientCommandBusFactory} from '../../../factories/AgencyClientCommandBusFactory';
 import {ConsultantJobAssignCommandBusFactory} from '../../../factories/ConsultantJobAssignCommandBusFactory';
 
-export class AggregateHelper {
+/**
+ * Helper class to produce related events
+ */
+export class EventStoreHelper {
   private consultantJobAssignCommandBus: ConsultantJobAssignCommandBus;
   private agencyClientCommandBus: AgencyClientCommandBus;
   constructor(private agencyId: string, private jobId: string, private eventRepository: EventRepository) {

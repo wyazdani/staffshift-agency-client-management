@@ -2,8 +2,7 @@ import {ConsultantJobAssignProcessCompletedEventStoreDataInterface} from 'EventS
 import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';
-import {CompleteConsultantJobAssignCommandDataInterface
-} from '../types/CommandDataTypes';
+import {CompleteConsultantJobAssignCommandDataInterface} from '../types/CommandDataTypes';
 import {ConsultantJobAssignCommandEnum} from '../types';
 
 export class CompleteConsultantJobAssignCommandHandler implements ConsultantJobAssignCommandHandlerInterface {

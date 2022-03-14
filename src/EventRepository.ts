@@ -93,6 +93,8 @@ export class EventRepository {
          * - compound index: aggregate id and sequence id
          * The odds of having duplicate _id is zero (unless we have a bug in code)
          * So we count 11000 as sequence id duplicate(other process wrote to EventStore in mean time)
+         * if some day we have multiple unique indexes on the collection, we need to parse the error and see
+         * is it sequence id related or not
          */
         throw new SequenceIdMismatch('There is already an event in event store with same aggregate id and sequence id');
       }
