@@ -18,6 +18,11 @@ import {EventStoreHelper} from './EventStoreHelper';
  * during each assignment business errors might happen. we mark them as item_failed events and move on.
  */
 export class ConsultantAssignProcess implements ProcessInterface {
+  private initiateEvent: EventStorePubSubModelInterface<
+    ConsultantJobAssignInitiatedEventStoreDataInterface,
+    ConsultantJobAggregateIdInterface
+  >;
+  private eventStoreHelper: EventStoreHelper;
   constructor(private logger: LoggerContext) {}
 
   async execute(
@@ -26,6 +31,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
       ConsultantJobAggregateIdInterface
     >
   ): Promise<void> {
+    this.initiateEvent = initiateEvent;
     const eventId = initiateEvent._id;
 
     this.logger.info('Consultant Assign background process started', {eventId});
@@ -35,61 +41,66 @@ export class ConsultantAssignProcess implements ProcessInterface {
       initiateEvent.meta_data,
       eventId
     );
-    const eventStoreHelper = new EventStoreHelper(
+
+    this.eventStoreHelper = new EventStoreHelper(
       initiateEvent.aggregate_id.agency_id,
       initiateEvent.data._id,
       eventRepository
     );
 
-    await eventStoreHelper.startProcess();
+    await this.eventStoreHelper.startProcess();
     for (const clientId of initiateEvent.data.client_ids) {
-      let succeeded = false;
+      const succeeded = await this.assignClient(clientId);
 
-      try {
-        await eventStoreHelper.assignConsultantToClient(
-          initiateEvent.data.consultant_role_id,
-          initiateEvent.data.consultant_id,
-          clientId
-        );
-        this.logger.debug(`Assigned client ${clientId} to consultant ${initiateEvent.data.consultant_id}`);
-        succeeded = true;
-      } catch (error) {
-        if (error instanceof SequenceIdMismatch) {
-          // We can retry again. we fail it for now
-          // You might need to reload the aggregate for retry
-          this.logger.error('Sequence id mismatch happened. we fail it for now', {
-            initiateEvent: eventId,
-            clientId: clientId,
-            error
-          });
-          await eventStoreHelper.failItemProcess(
-            clientId,
-            ConsultantJobAssignErrorItemEnum.SEQUENCE_ID_MISMATCH_ERROR,
-            error.message
-          );
-        } else if (error instanceof ValidationError || error instanceof ResourceNotFoundError) {
-          // non-retryable errors
-          this.logger.info('assigning consultant to client was not possible due to business validation', error);
-          await eventStoreHelper.failItemProcess(
-            clientId,
-            ConsultantJobAssignErrorItemEnum.VALIDATION_ERROR,
-            error.message
-          );
-        } else {
-          // for unknown errors we can retry but for now we will mark the mas failure
-          this.logger.error('Unknown error occurred during assigning consultant to client');
-          await eventStoreHelper.failItemProcess(
-            clientId,
-            ConsultantJobAssignErrorItemEnum.UNKNOWN_ERROR,
-            error.message
-          );
-        }
-      }
       if (succeeded) {
-        await eventStoreHelper.succeedItemProcess(clientId);
+        await this.eventStoreHelper.succeedItemProcess(clientId);
       }
     }
-    await eventStoreHelper.completeProcess();
+    await this.eventStoreHelper.completeProcess();
     this.logger.info('Consultant Assign background process finished', {eventId});
+  }
+
+  private async assignClient(clientId: string): Promise<boolean> {
+    try {
+      await this.eventStoreHelper.assignConsultantToClient(
+        this.initiateEvent.data.consultant_role_id,
+        this.initiateEvent.data.consultant_id,
+        clientId
+      );
+      this.logger.debug(`Assigned client ${clientId} to consultant ${this.initiateEvent.data.consultant_id}`);
+      return true;
+    } catch (error) {
+      if (error instanceof SequenceIdMismatch) {
+        // We can retry again. we fail it for now
+        // You might need to reload the aggregate for retry
+        this.logger.error('Sequence id mismatch happened. we fail it for now', {
+          initiateEvent: this.initiateEvent._id,
+          clientId: clientId,
+          error
+        });
+        await this.eventStoreHelper.failItemProcess(
+          clientId,
+          ConsultantJobAssignErrorItemEnum.SEQUENCE_ID_MISMATCH_ERROR,
+          error.message
+        );
+      } else if (error instanceof ValidationError || error instanceof ResourceNotFoundError) {
+        // non-retryable errors
+        this.logger.info('assigning consultant to client was not possible due to business validation', error);
+        await this.eventStoreHelper.failItemProcess(
+          clientId,
+          ConsultantJobAssignErrorItemEnum.VALIDATION_ERROR,
+          error.message
+        );
+      } else {
+        // for unknown errors we can retry but for now we will mark the mas failure
+        this.logger.error('Unknown error occurred during assigning consultant to client');
+        await this.eventStoreHelper.failItemProcess(
+          clientId,
+          ConsultantJobAssignErrorItemEnum.UNKNOWN_ERROR,
+          error.message
+        );
+      }
+      return false;
+    }
   }
 }
