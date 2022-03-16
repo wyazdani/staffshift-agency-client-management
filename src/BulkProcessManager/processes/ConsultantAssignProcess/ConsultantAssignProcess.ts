@@ -68,7 +68,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
             error.message
           );
         } else if (error instanceof ValidationError || error instanceof ResourceNotFoundError) {
-          // none retryable errors
+          // non-retryable errors
           this.logger.info('assigning consultant to client was not possible due to business validation', error);
           await eventStoreHelper.failItemProcess(
             clientId,
