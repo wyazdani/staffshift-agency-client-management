@@ -7,7 +7,7 @@ import {AddAgencyClientConsultantCommandDataInterface} from '../../../aggregates
 import {ConsultantJobAssignCommandBus} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignCommandBus';
 import {ConsultantJobAssignCommandEnum} from '../../../aggregates/ConsultantJobAssign/types';
 import {
-  ProgressConsultantJobAssignCommandDataInterface,
+  SucceedItemConsultantJobAssignCommandDataInterface,
   StartConsultantJobAssignCommandDataInterface,
   CompleteConsultantJobAssignCommandDataInterface,
   FailItemConsultantJobAssignCommandDataInterface
@@ -36,21 +36,23 @@ export class EventStoreHelper {
       data: {} as StartConsultantJobAssignCommandDataInterface
     });
   }
-  async progressProcess(clientIds: string[]): Promise<void> {
+
+  async succeedItemProcess(clientId: string): Promise<void> {
     await this.consultantJobAssignCommandBus.execute(this.agencyId, this.jobId, {
-      type: ConsultantJobAssignCommandEnum.PROGRESS,
+      type: ConsultantJobAssignCommandEnum.SUCCEED_ITEM,
       data: {
-        count: clientIds.length,
-        client_ids: clientIds
-      } as ProgressConsultantJobAssignCommandDataInterface
+        client_id: clientId
+      } as SucceedItemConsultantJobAssignCommandDataInterface
     });
   }
+
   async completeProcess(): Promise<void> {
     await this.consultantJobAssignCommandBus.execute(this.agencyId, this.jobId, {
       type: ConsultantJobAssignCommandEnum.COMPLETE,
       data: {} as CompleteConsultantJobAssignCommandDataInterface
     });
   }
+
   async failItemProcess(
     clientId: string,
     errorCode: ConsultantJobAssignErrorItemEnum,
@@ -65,6 +67,7 @@ export class EventStoreHelper {
       } as FailItemConsultantJobAssignCommandDataInterface
     });
   }
+
   async assignConsultantToClient(consultantRoleId: string, consultantId: string, clientId: string): Promise<void> {
     const id = new ObjectID().toString();
 

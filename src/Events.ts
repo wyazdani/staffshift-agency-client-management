@@ -11,7 +11,7 @@ export enum EventsEnum {
   CONSULTANT_JOB_ASSIGN_INITIATED = 'ConsultantJobAssignInitiated',
   CONSULTANT_JOB_ASSIGN_COMPLETED = 'ConsultantJobAssignCompleted',
   CONSULTANT_JOB_ASSIGN_PROCESS_STARTED = 'ConsultantJobAssignProcessStarted',
-  CONSULTANT_JOB_ASSIGN_PROCESS_PROGRESSED = 'ConsultantJobAssignProcessProgressed',
+  CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED = 'ConsultantJobAssignProcessItemSucceeded',
   CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED = 'ConsultantJobAssignProcessItemFailed',
   CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED = 'ConsultantJobAssignProcessCompleted'
 }
@@ -69,9 +69,10 @@ export const events: EventsType = {
     name: 'ConsultantJobAssignProcessStarted',
     description: 'Background process assigning a consultant to multiple clients for an agency is started'
   },
-  [EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_PROGRESSED]: {
-    name: 'ConsultantJobAssignProcessProgressed',
-    description: 'Background process assigning a consultant to multiple clients for an agency is progressed'
+  [EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED]: {
+    name: 'ConsultantJobAssignProcessItemSucceeded',
+    description:
+      'Background process assigning a consultant to multiple clients for an agency is succeeded for one client'
   },
   [EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED]: {
     name: 'ConsultantJobAssignProcessItemFailed',

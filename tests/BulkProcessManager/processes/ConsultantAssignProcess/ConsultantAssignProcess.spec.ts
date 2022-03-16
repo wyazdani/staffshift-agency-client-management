@@ -41,7 +41,7 @@ describe('ConsultantAssignProcess', () => {
     it('Test success scenario', async () => {
       const startProcess = sinon.stub(EventStoreHelper.prototype, 'startProcess').resolves();
       const assignConsultantToClient = sinon.stub(EventStoreHelper.prototype, 'assignConsultantToClient').resolves();
-      const progressProcess = sinon.stub(EventStoreHelper.prototype, 'progressProcess').resolves();
+      const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
       const process = new ConsultantAssignProcess(logger);
 
@@ -52,7 +52,7 @@ describe('ConsultantAssignProcess', () => {
         initiateEvent.data.consultant_id,
         clientId
       );
-      progressProcess.should.have.been.calledOnceWith([clientId]);
+      succeedItemProcess.should.have.been.calledOnceWith(clientId);
       completeProcess.should.have.been.calledOnce;
     });
 
@@ -62,7 +62,7 @@ describe('ConsultantAssignProcess', () => {
         .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
         .rejects(new SequenceIdMismatch('sample'));
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-      const progressProcess = sinon.stub(EventStoreHelper.prototype, 'progressProcess').resolves();
+      const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
       const process = new ConsultantAssignProcess(logger);
 
@@ -75,10 +75,10 @@ describe('ConsultantAssignProcess', () => {
       );
       failItemProcess.should.have.been.calledOnceWith(
         clientId,
-        ConsultantJobAssignErrorItemEnum.INTERNAL_ERROR,
+        ConsultantJobAssignErrorItemEnum.SEQUENCE_ID_MISMATCH_ERROR,
         'sample'
       );
-      progressProcess.should.have.been.calledOnceWith([clientId]);
+      succeedItemProcess.should.not.have.been.called;
       completeProcess.should.have.been.calledOnce;
     });
 
@@ -88,7 +88,7 @@ describe('ConsultantAssignProcess', () => {
         .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
         .rejects(new ValidationError('sample'));
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-      const progressProcess = sinon.stub(EventStoreHelper.prototype, 'progressProcess').resolves();
+      const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
       const process = new ConsultantAssignProcess(logger);
 
@@ -104,7 +104,7 @@ describe('ConsultantAssignProcess', () => {
         ConsultantJobAssignErrorItemEnum.VALIDATION_ERROR,
         'sample'
       );
-      progressProcess.should.have.been.calledOnceWith([clientId]);
+      succeedItemProcess.should.not.have.been.called;
       completeProcess.should.have.been.calledOnce;
     });
     it('Test ResourceNotFoundError error', async () => {
@@ -113,7 +113,7 @@ describe('ConsultantAssignProcess', () => {
         .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
         .rejects(new ResourceNotFoundError('sample'));
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-      const progressProcess = sinon.stub(EventStoreHelper.prototype, 'progressProcess').resolves();
+      const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
       const process = new ConsultantAssignProcess(logger);
 
@@ -129,7 +129,7 @@ describe('ConsultantAssignProcess', () => {
         ConsultantJobAssignErrorItemEnum.VALIDATION_ERROR,
         'sample'
       );
-      progressProcess.should.have.been.calledOnceWith([clientId]);
+      succeedItemProcess.should.not.have.been.called;
       completeProcess.should.have.been.calledOnce;
     });
 
@@ -139,7 +139,7 @@ describe('ConsultantAssignProcess', () => {
         .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
         .rejects(new Error('sample'));
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-      const progressProcess = sinon.stub(EventStoreHelper.prototype, 'progressProcess').resolves();
+      const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
       const process = new ConsultantAssignProcess(logger);
 
@@ -152,10 +152,10 @@ describe('ConsultantAssignProcess', () => {
       );
       failItemProcess.should.have.been.calledOnceWith(
         clientId,
-        ConsultantJobAssignErrorItemEnum.INTERNAL_ERROR,
+        ConsultantJobAssignErrorItemEnum.UNKNOWN_ERROR,
         'sample'
       );
-      progressProcess.should.have.been.calledOnceWith([clientId]);
+      succeedItemProcess.should.not.have.been.called;
       completeProcess.should.have.been.calledOnce;
     });
   });

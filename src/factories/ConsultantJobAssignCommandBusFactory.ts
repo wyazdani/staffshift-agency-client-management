@@ -1,6 +1,6 @@
 import {CompleteConsultantJobAssignCommandHandler} from '../aggregates/ConsultantJobAssign/command-handlers/CompleteConsultantJobAssignCommandHandler';
 import {FailItemConsultantJobAssignCommandHandler} from '../aggregates/ConsultantJobAssign/command-handlers/FailItemConsultantJobAssignCommandHandler';
-import {ProgressConsultantJobAssignCommandHandler} from '../aggregates/ConsultantJobAssign/command-handlers/ProgressConsultantJobAssignCommandHandler';
+import {SucceedItemConsultantJobAssignCommandHandler} from '../aggregates/ConsultantJobAssign/command-handlers/SucceedItemConsultantJobAssignCommandHandler';
 import {StartConsultantJobAssignCommandHandler} from '../aggregates/ConsultantJobAssign/command-handlers/StartConsultantJobAssignCommandHandler';
 import {ConsultantJobAssignCommandBus} from '../aggregates/ConsultantJobAssign/ConsultantJobAssignCommandBus';
 import {ConsultantJobAssignRepository} from '../aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
@@ -17,7 +17,7 @@ export class ConsultantJobAssignCommandBusFactory {
 
     commandBus
       .addHandler(new StartConsultantJobAssignCommandHandler(repository))
-      .addHandler(new ProgressConsultantJobAssignCommandHandler(repository))
+      .addHandler(new SucceedItemConsultantJobAssignCommandHandler(repository))
       .addHandler(new FailItemConsultantJobAssignCommandHandler(repository))
       .addHandler(new CompleteConsultantJobAssignCommandHandler(repository));
     return commandBus;

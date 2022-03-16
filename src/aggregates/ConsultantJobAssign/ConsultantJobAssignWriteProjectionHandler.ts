@@ -16,7 +16,7 @@ implements WriteProjectionInterface<ConsultantJobAssignAggregateRecordInterface>
     switch (type) {
       case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_STARTED:
         return {...aggregate, last_sequence_id: event.sequence_id};
-      case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_PROGRESSED:
+      case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED:
         return {...aggregate, last_sequence_id: event.sequence_id};
       case EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED:
         return {...aggregate, last_sequence_id: event.sequence_id};

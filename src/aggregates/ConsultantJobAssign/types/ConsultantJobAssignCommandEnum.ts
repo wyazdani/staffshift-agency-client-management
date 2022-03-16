@@ -1,6 +1,6 @@
 export enum ConsultantJobAssignCommandEnum {
   START = 'start',
-  PROGRESS = 'progress',
+  SUCCEED_ITEM = 'succeed_item',
   FAIL_ITEM = 'fail_item',
   COMPLETE = 'complete'
 }

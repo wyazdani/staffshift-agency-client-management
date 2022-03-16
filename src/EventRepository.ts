@@ -87,7 +87,7 @@ export class EventRepository {
     try {
       return await this.store.insertMany(enrichedEvents);
     } catch (error) {
-      if (error?.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
+      if (error.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
         /**
          * We only have two unique indexes on EventStore collection:
          * - _id

@@ -13,7 +13,7 @@ import {EventStoreHelper} from './EventStoreHelper';
 /**
  * It handles bulk consultant assign to client
  * It has a for loop to iterate through all clients. In each loop it
- * generates start/progress/item_fails/completed events on ConsultantJobAssign aggregate
+ * generates start/item_succeeded/item_failed/completed events on ConsultantJobAssign aggregate
  * also it assigns clients to consultant one by one
  * during each assignment business errors might happen. we mark them as item_failed events and move on.
  */
@@ -43,6 +43,8 @@ export class ConsultantAssignProcess implements ProcessInterface {
 
     await eventStoreHelper.startProcess();
     for (const clientId of initiateEvent.data.client_ids) {
+      let succeeded = false;
+
       try {
         await eventStoreHelper.assignConsultantToClient(
           initiateEvent.data.consultant_role_id,
@@ -50,6 +52,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
           clientId
         );
         this.logger.debug(`Assigned client ${clientId} to consultant ${initiateEvent.data.consultant_id}`);
+        succeeded = true;
       } catch (error) {
         if (error instanceof SequenceIdMismatch) {
           // We can retry again. we fail it for now
@@ -61,7 +64,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
           });
           await eventStoreHelper.failItemProcess(
             clientId,
-            ConsultantJobAssignErrorItemEnum.INTERNAL_ERROR,
+            ConsultantJobAssignErrorItemEnum.SEQUENCE_ID_MISMATCH_ERROR,
             error.message
           );
         } else if (error instanceof ValidationError || error instanceof ResourceNotFoundError) {
@@ -77,12 +80,14 @@ export class ConsultantAssignProcess implements ProcessInterface {
           this.logger.error('Unknown error occurred during assigning consultant to client');
           await eventStoreHelper.failItemProcess(
             clientId,
-            ConsultantJobAssignErrorItemEnum.INTERNAL_ERROR,
+            ConsultantJobAssignErrorItemEnum.UNKNOWN_ERROR,
             error.message
           );
         }
       }
-      await eventStoreHelper.progressProcess([clientId]);
+      if (succeeded) {
+        await eventStoreHelper.succeedItemProcess(clientId);
+      }
     }
     await eventStoreHelper.completeProcess();
     this.logger.info('Consultant Assign background process finished', {eventId});

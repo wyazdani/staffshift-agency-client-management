@@ -1,4 +1,4 @@
 export {StartConsultantJobAssignCommandDataInterface} from './StartConsultantJobAssignCommandDataInterface';
-export {ProgressConsultantJobAssignCommandDataInterface} from './ProgressConsultantJobAssignCommandDataInterface';
+export {SucceedItemConsultantJobAssignCommandDataInterface} from './SucceedItemConsultantJobAssignCommandDataInterface';
 export {FailItemConsultantJobAssignCommandDataInterface} from './FailItemConsultantJobAssignCommandDataInterface';
 export {CompleteConsultantJobAssignCommandDataInterface} from './CompleteConsultantJobAssignCommandDataInterface';

@@ -1,19 +1,19 @@
-import {ConsultantJobAssignProcessProgressedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {ConsultantJobAssignProcessItemSucceededEventStoreDataInterface} from 'EventStoreDataTypes';
 import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';
-import {ProgressConsultantJobAssignCommandDataInterface} from '../types/CommandDataTypes';
+import {SucceedItemConsultantJobAssignCommandDataInterface} from '../types/CommandDataTypes';
 import {ConsultantJobAssignCommandEnum} from '../types';
 
-export class ProgressConsultantJobAssignCommandHandler implements ConsultantJobAssignCommandHandlerInterface {
-  public commandType = ConsultantJobAssignCommandEnum.PROGRESS;
+export class SucceedItemConsultantJobAssignCommandHandler implements ConsultantJobAssignCommandHandlerInterface {
+  public commandType = ConsultantJobAssignCommandEnum.SUCCEED_ITEM;
 
   constructor(private repository: ConsultantJobAssignRepository) {}
 
   async execute(
     agencyId: string,
     jobId: string,
-    commandData: ProgressConsultantJobAssignCommandDataInterface
+    commandData: SucceedItemConsultantJobAssignCommandDataInterface
   ): Promise<void> {
     const aggregate = await this.repository.getAggregate(agencyId, jobId);
 
@@ -21,9 +21,9 @@ export class ProgressConsultantJobAssignCommandHandler implements ConsultantJobA
 
     await this.repository.save([
       {
-        type: EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_PROGRESSED,
+        type: EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED,
         aggregate_id: aggregate.getId(),
-        data: commandData as ConsultantJobAssignProcessProgressedEventStoreDataInterface,
+        data: commandData as ConsultantJobAssignProcessItemSucceededEventStoreDataInterface,
         sequence_id: ++eventId
       }
     ]);

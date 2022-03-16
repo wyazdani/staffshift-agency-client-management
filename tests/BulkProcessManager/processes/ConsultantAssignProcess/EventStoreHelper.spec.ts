@@ -39,16 +39,15 @@ describe('EventStoreHelper', () => {
       });
     });
   });
-  describe('progressProcess()', () => {
+  describe('succeedItemProcess()', () => {
     it('Test executed command', async () => {
-      const clientIds = ['A', 'B'];
+      const clientId = 'A';
 
-      await eventStoreHelper.progressProcess(clientIds);
+      await eventStoreHelper.succeedItemProcess(clientId);
       consultantJobAssignCommandBus.execute.should.have.been.calledWith(agencyId, jobId, {
-        type: ConsultantJobAssignCommandEnum.PROGRESS,
+        type: ConsultantJobAssignCommandEnum.SUCCEED_ITEM,
         data: {
-          count: 2,
-          client_ids: clientIds
+          client_id: clientId
         }
       });
     });

@@ -11,6 +11,6 @@ export {ConsultantJobAssignInitiatedEventStoreDataInterface} from './ConsultantJ
 export {ConsultantJobAssignCompletedEventStoreDataInterface} from './ConsultantJobAssignCompletedEventStoreDataInterface';
 export {ConsultantJobAssignProcessCompletedEventStoreDataInterface} from './ConsultantJobAssignProcessCompletedEventStoreDataInterface';
 export {ConsultantJobAssignProcessItemFailedEventStoreDataInterface} from './ConsultantJobAssignProcessItemFailedEventStoreDataInterface';
-export {ConsultantJobAssignProcessProgressedEventStoreDataInterface} from './ConsultantJobAssignProcessProgressedEventStoreDataInterface';
+export {ConsultantJobAssignProcessItemSucceededEventStoreDataInterface} from './ConsultantJobAssignProcessItemSucceededEventStoreDataInterface';
 export {ConsultantJobAssignProcessStartedEventStoreDataInterface} from './ConsultantJobAssignProcessStartedEventStoreDataInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';
