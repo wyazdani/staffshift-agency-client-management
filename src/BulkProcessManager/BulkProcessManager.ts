@@ -9,10 +9,12 @@ import {
   BulkProcessManagerV1DocumentType
 } from '../models/BulkProcessManagerV1';
 import {ProcessFactory} from './ProcessFactory';
+import {ProcessHeartbeat} from './ProcessHeartbeat';
 
 interface BulkProcessManagerOptsInterface {
   parallel_limit: number;
   polling_interval: number;
+  heartbeat_interval: number;
   eventStoreHttpClient: EventStoreHttpClient;
 }
 export class BulkProcessManager {
@@ -36,7 +38,14 @@ export class BulkProcessManager {
       this.processing = true;
       this.logger.debug('Checking BulkProcessManager collection');
       const bulkRecords = await BulkProcessManagerV1.find({
-        status: BulkProcessManagerStatusEnum.NEW
+        $or: [{
+          status: BulkProcessManagerStatusEnum.NEW
+        }, {
+          status: BulkProcessManagerStatusEnum.PROCESSING,
+          heart_beat: {
+            $lte // @TODO: implement condition here
+          }
+        }]
       })
         .sort({created_at: 1})
         .limit(this.opts.parallel_limit)
@@ -45,6 +54,9 @@ export class BulkProcessManager {
       if (bulkRecords.length > 0) {
         this.logger.info(`Starting to process ${bulkRecords.length} processes`);
         await each(bulkRecords, async (record) => {
+          const heartbeat = new ProcessHeartbeat(this.logger, record._id, this.opts.heartbeat_interval);
+
+          heartbeat.start();
           try {
             if (await this.updateToProcessing(record)) {
               const event = await this.findInitiateEvent(record.initiate_event_id);
@@ -53,10 +65,10 @@ export class BulkProcessManager {
             }
           } catch (error) {
             this.logger.error('Error in bulk process manager process function', {processId: record._id, error});
-            // We don't throw error here to not break the promise, we will try this process again in next loop
-            // TODO: we should make it resumable, because if we update to processing and findInitiateEvent fails
-            // We will never find the record again
+            // We don't throw error here to not break the promise, after we stop the heartbeat we will find
+            // the process record again and retry processing
           }
+          heartbeat.stop();
         });
         this.logger.info(`Processing ${bulkRecords.length} processes finished`);
       }

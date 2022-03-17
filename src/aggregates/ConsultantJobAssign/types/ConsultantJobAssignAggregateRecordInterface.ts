@@ -1,5 +1,7 @@
 import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
+import {ConsultantJobAssignAggregateStatusEnum} from './ConsultantJobAssignAggregateStatusEnum';
 
 export interface ConsultantJobAssignAggregateRecordInterface extends BaseAggregateRecordInterface {
-  process?: []; // a sample projection
+  status?: ConsultantJobAssignAggregateStatusEnum;
+  progressed_client_ids?: string[];
 }

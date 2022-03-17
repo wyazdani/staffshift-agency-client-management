@@ -1,7 +1,6 @@
-import {ConsultantJobAssignErrorItemEnum} from '../ConsultantJobAssignErrorItemEnum';
+import {EventStoreEncodedErrorInterface} from 'EventStoreEncodedErrorInterface';
 
 export interface FailItemConsultantJobAssignCommandDataInterface {
   client_id: string;
-  error_code: ConsultantJobAssignErrorItemEnum;
-  error_message: string;
+  errors: EventStoreEncodedErrorInterface[];
 }

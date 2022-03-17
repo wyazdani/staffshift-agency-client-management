@@ -13,6 +13,7 @@ export type BulkProcessManagerV1DocumentType = Document & {
   initiate_event_id: string;
   total_items?: number;
   processed_items?: number;
+  heart_beat?: Date;
   created_at: Date;
   updated_at: Date;
   __v: number;
@@ -54,6 +55,11 @@ const bulkProcessManager = new Schema<BulkProcessManagerV1DocumentType>(
       type: String,
       required: true,
       description: 'Event id of initiate. We use this field to find causation id'
+    },
+    heart_beat: {
+      type: Date,
+      required: false,
+      description: 'Last time process was running'
     }
   },
   {

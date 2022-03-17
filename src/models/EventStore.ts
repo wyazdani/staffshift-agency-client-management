@@ -62,6 +62,7 @@ export interface EventStoreModelInterface<D extends BaseEventStoreDataInterface 
     };
   };
   correlation_id: string;
+  causation_id?: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -97,6 +98,11 @@ export const eventStoreSchema = new Schema(
       type: String,
       required: true,
       description: 'Similar to a process_id / request_id depending on the source of the command and events'
+    },
+    causation_id: {
+      type: String,
+      required: false,
+      description: 'Event id that caused this event to be produced'
     }
   },
   {

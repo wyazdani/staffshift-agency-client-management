@@ -1,3 +1,4 @@
+import {EventStoreEncodedErrorInterface} from 'EventStoreEncodedErrorInterface';
 import {ObjectID} from 'mongodb';
 import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../../../aggregates/Agency/AgencyWriteProjectionHandler';
@@ -12,7 +13,6 @@ import {
   CompleteConsultantJobAssignCommandDataInterface,
   FailItemConsultantJobAssignCommandDataInterface
 } from '../../../aggregates/ConsultantJobAssign/types/CommandDataTypes';
-import {ConsultantJobAssignErrorItemEnum} from '../../../aggregates/ConsultantJobAssign/types/ConsultantJobAssignErrorItemEnum';
 import {EventRepository} from '../../../EventRepository';
 import {AgencyClientCommandBusFactory} from '../../../factories/AgencyClientCommandBusFactory';
 import {ConsultantJobAssignCommandBusFactory} from '../../../factories/ConsultantJobAssignCommandBusFactory';
@@ -53,17 +53,12 @@ export class EventStoreHelper {
     });
   }
 
-  async failItemProcess(
-    clientId: string,
-    errorCode: ConsultantJobAssignErrorItemEnum,
-    errorMessage: string
-  ): Promise<void> {
+  async failItemProcess(clientId: string, errors: EventStoreEncodedErrorInterface[]): Promise<void> {
     await this.consultantJobAssignCommandBus.execute(this.agencyId, this.jobId, {
       type: ConsultantJobAssignCommandEnum.FAIL_ITEM,
       data: {
         client_id: clientId,
-        error_code: errorCode,
-        error_message: errorMessage
+        errors
       } as FailItemConsultantJobAssignCommandDataInterface
     });
   }

@@ -32,6 +32,7 @@ mongoose.connection.on('error', (error: Error) => {
     const processManager = new BulkProcessManager(loggerContext, {
       parallel_limit: config.get<number>('bulk_process_manager.parallel_limit'),
       polling_interval: config.get<number>('bulk_process_manager.polling_interval'),
+      heartbeat_interval: config.get<number>('bulk_process_manager.heartbeat_interval'),
       eventStoreHttpClient
     });
 

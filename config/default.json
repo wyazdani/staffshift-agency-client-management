@@ -198,6 +198,13 @@
   },
   "bulk_process_manager": {
     "parallel_limit": 5,
-    "polling_interval": 15000
+    "polling_interval": 15000,
+    "heartbeat_interval": 30000,
+    "processes": {
+      "consultant_assign": {
+        "max_retry": 5,
+        "retry_delay": 1000
+      }
+    }
   }
 }
