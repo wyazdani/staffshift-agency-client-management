@@ -64,14 +64,14 @@ describe('EventStoreHelper', () => {
   describe('failItemProcess()', () => {
     it('Test executed command', async () => {
       const clientId = 'A';
+      const errors: any = [{code: 'sample'}];
 
-      await eventStoreHelper.failItemProcess(clientId, ConsultantJobAssignErrorItemEnum.VALIDATION_ERROR, 'sample');
+      await eventStoreHelper.failItemProcess(clientId, errors);
       consultantJobAssignCommandBus.execute.should.have.been.calledWith(agencyId, jobId, {
         type: ConsultantJobAssignCommandEnum.FAIL_ITEM,
         data: {
           client_id: clientId,
-          error_code: ConsultantJobAssignErrorItemEnum.VALIDATION_ERROR,
-          error_message: 'sample'
+          errors
         }
       });
     });

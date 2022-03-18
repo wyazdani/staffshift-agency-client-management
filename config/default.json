@@ -200,12 +200,6 @@
     "parallel_limit": 5,
     "polling_interval": 15000,
     "heartbeat_interval": 30000,
-    "heartbeat_expire_limit": 60000,
-    "processes": {
-      "consultant_assign": {
-        "max_retry": 5,
-        "retry_delay": 1000
-      }
-    }
+    "heartbeat_expire_limit": 60000
   }
 }

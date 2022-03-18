@@ -16,6 +16,8 @@ describe('BulkProcessManager', () => {
       const bulkProcessManager = new BulkProcessManager(TestUtilsLogger.getLogger(sinon.spy()), {
         parallel_limit: 2,
         polling_interval: 2,
+        heartbeat_expire_limit: 0,
+        heartbeat_interval: 0,
         eventStoreHttpClient
       });
       const event: any = {
@@ -66,6 +68,8 @@ describe('BulkProcessManager', () => {
       const bulkProcessManager = new BulkProcessManager(TestUtilsLogger.getLogger(sinon.spy()), {
         parallel_limit: 2,
         polling_interval: 2,
+        heartbeat_expire_limit: 0,
+        heartbeat_interval: 0,
         eventStoreHttpClient
       });
       const event: any = {
@@ -101,6 +105,9 @@ describe('BulkProcessManager', () => {
       const bulkProcessManager = new BulkProcessManager(TestUtilsLogger.getLogger(sinon.spy()), {
         parallel_limit: 2,
         polling_interval: 2,
+        heartbeat_expire_limit: 0,
+        heartbeat_interval: 0,
+
         eventStoreHttpClient
       });
       const event: any = {
@@ -135,6 +142,9 @@ describe('BulkProcessManager', () => {
       const bulkProcessManager = new BulkProcessManager(TestUtilsLogger.getLogger(sinon.spy()), {
         parallel_limit: 2,
         polling_interval: 2,
+        heartbeat_expire_limit: 0,
+        heartbeat_interval: 0,
+
         eventStoreHttpClient
       });
       const cursor: any = {

@@ -38,12 +38,17 @@ describe('ConsultantAssignProcess', () => {
       meta_data: metaData
     };
 
+    const opts = {
+      maxRetry: 2,
+      retryDelay: 1000
+    };
+
     it('Test success scenario', async () => {
       const startProcess = sinon.stub(EventStoreHelper.prototype, 'startProcess').resolves();
       const assignConsultantToClient = sinon.stub(EventStoreHelper.prototype, 'assignConsultantToClient').resolves();
       const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
-      const process = new ConsultantAssignProcess(logger);
+      const process = new ConsultantAssignProcess(logger, opts);
 
       await process.execute(initiateEvent);
       startProcess.should.have.been.calledOnce;
@@ -64,7 +69,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
       const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
-      const process = new ConsultantAssignProcess(logger);
+      const process = new ConsultantAssignProcess(logger, opts);
 
       await process.execute(initiateEvent);
       startProcess.should.have.been.calledOnce;
@@ -90,7 +95,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
       const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
-      const process = new ConsultantAssignProcess(logger);
+      const process = new ConsultantAssignProcess(logger, opts);
 
       await process.execute(initiateEvent);
       startProcess.should.have.been.calledOnce;
@@ -115,7 +120,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
       const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
-      const process = new ConsultantAssignProcess(logger);
+      const process = new ConsultantAssignProcess(logger, opts);
 
       await process.execute(initiateEvent);
       startProcess.should.have.been.calledOnce;
@@ -141,7 +146,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
       const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
       const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
-      const process = new ConsultantAssignProcess(logger);
+      const process = new ConsultantAssignProcess(logger, opts);
 
       await process.execute(initiateEvent);
       startProcess.should.have.been.calledOnce;
