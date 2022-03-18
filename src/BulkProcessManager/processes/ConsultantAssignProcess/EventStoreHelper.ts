@@ -5,7 +5,13 @@ import {AgencyWriteProjectionHandler} from '../../../aggregates/Agency/AgencyWri
 import {AgencyClientCommandBus} from '../../../aggregates/AgencyClient/AgencyClientCommandBus';
 import {AgencyClientCommandEnum} from '../../../aggregates/AgencyClient/types';
 import {AddAgencyClientConsultantCommandDataInterface} from '../../../aggregates/AgencyClient/types/CommandDataTypes';
+import {ConsultantJobCommandBus} from '../../../aggregates/ConsultantJob/ConsultantJobCommandBus';
+import {ConsultantJobCommandEnum} from '../../../aggregates/ConsultantJob/types';
+import {CompleteAssignConsultantCommandDataInterface} from '../../../aggregates/ConsultantJob/types/CommandDataTypes';
+import {ConsultantJobAssignAggregate} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignAggregate';
 import {ConsultantJobAssignCommandBus} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignCommandBus';
+import {ConsultantJobAssignRepository} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
+import {ConsultantJobAssignWriteProjectionHandler} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignWriteProjectionHandler';
 import {ConsultantJobAssignCommandEnum} from '../../../aggregates/ConsultantJobAssign/types';
 import {
   SucceedItemConsultantJobAssignCommandDataInterface,
@@ -16,6 +22,7 @@ import {
 import {EventRepository} from '../../../EventRepository';
 import {AgencyClientCommandBusFactory} from '../../../factories/AgencyClientCommandBusFactory';
 import {ConsultantJobAssignCommandBusFactory} from '../../../factories/ConsultantJobAssignCommandBusFactory';
+import {ConsultantJobCommandBusFactory} from '../../../factories/ConsultantJobCommandBusFactory';
 
 /**
  * Helper class to produce related events
@@ -23,11 +30,20 @@ import {ConsultantJobAssignCommandBusFactory} from '../../../factories/Consultan
 export class EventStoreHelper {
   private consultantJobAssignCommandBus: ConsultantJobAssignCommandBus;
   private agencyClientCommandBus: AgencyClientCommandBus;
+  private consultantJobAssignRepository: ConsultantJobAssignRepository;
+  private consultantJobCommandBus: ConsultantJobCommandBus;
   constructor(private agencyId: string, private jobId: string, private eventRepository: EventRepository) {
     this.consultantJobAssignCommandBus = ConsultantJobAssignCommandBusFactory.getCommandBus(eventRepository);
     const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
 
     this.agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository, agencyRepository);
+
+    this.consultantJobAssignRepository = new ConsultantJobAssignRepository(
+      eventRepository,
+      new ConsultantJobAssignWriteProjectionHandler()
+    );
+
+    this.consultantJobCommandBus = ConsultantJobCommandBusFactory.getCommandBus(eventRepository);
   }
 
   async startProcess(): Promise<void> {
@@ -73,6 +89,17 @@ export class EventStoreHelper {
         consultant_role_id: consultantRoleId,
         consultant_id: consultantId
       } as AddAgencyClientConsultantCommandDataInterface
+    });
+  }
+
+  async getConsultantJobAssignAggregate(agencyId: string, jobId: string): Promise<ConsultantJobAssignAggregate> {
+    return await this.consultantJobAssignRepository.getAggregate(agencyId, jobId);
+  }
+
+  async completeConsultantJob(agencyId: string, jobId: string): Promise<void> {
+    await this.consultantJobCommandBus.execute(agencyId, {
+      data: {_id: jobId} as CompleteAssignConsultantCommandDataInterface,
+      type: ConsultantJobCommandEnum.COMPLETE_ASSIGN_CONSULTANT
     });
   }
 }

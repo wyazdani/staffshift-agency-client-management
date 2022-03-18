@@ -9,12 +9,13 @@ import {
   BulkProcessManagerV1DocumentType
 } from '../models/BulkProcessManagerV1';
 import {ProcessFactory} from './ProcessFactory';
-import {ProcessHeartbeat} from './ProcessHeartbeat';
+import {HeartbeatService} from './HeartbeatService';
 
 interface BulkProcessManagerOptsInterface {
   parallel_limit: number;
   polling_interval: number;
   heartbeat_interval: number;
+  heartbeat_expire_limit: number;
   eventStoreHttpClient: EventStoreHttpClient;
 }
 export class BulkProcessManager {
@@ -31,6 +32,10 @@ export class BulkProcessManager {
    *  2. change status to `processing`
    *  3. map `initiate event` to related `process` using `ProcessFactory`
    *  4. call process function
+   *
+   *  We do $or on `processing` status for those records the heartbeat is not updated for a while
+   *  This way we can detect crashed processes and make them survive
+   *
    */
   async start(): Promise<void> {
     this.logger.info('Starting bulk process manager');
@@ -38,14 +43,17 @@ export class BulkProcessManager {
       this.processing = true;
       this.logger.debug('Checking BulkProcessManager collection');
       const bulkRecords = await BulkProcessManagerV1.find({
-        $or: [{
-          status: BulkProcessManagerStatusEnum.NEW
-        }, {
-          status: BulkProcessManagerStatusEnum.PROCESSING,
-          heart_beat: {
-            $lte // @TODO: implement condition here
+        $or: [
+          {
+            status: BulkProcessManagerStatusEnum.NEW
+          },
+          {
+            status: BulkProcessManagerStatusEnum.PROCESSING,
+            heart_beat: {
+              $lte: new Date(new Date().valueOf() - this.opts.heartbeat_expire_limit)
+            }
           }
-        }]
+        ]
       })
         .sort({created_at: 1})
         .limit(this.opts.parallel_limit)
@@ -54,14 +62,15 @@ export class BulkProcessManager {
       if (bulkRecords.length > 0) {
         this.logger.info(`Starting to process ${bulkRecords.length} processes`);
         await each(bulkRecords, async (record) => {
-          const heartbeat = new ProcessHeartbeat(this.logger, record._id, this.opts.heartbeat_interval);
+          const heartbeat = new HeartbeatService(this.logger, record._id, this.opts.heartbeat_interval);
 
-          heartbeat.start();
           try {
             if (await this.updateToProcessing(record)) {
+              heartbeat.start();
               const event = await this.findInitiateEvent(record.initiate_event_id);
 
               await this.findAndCallProcess(event);
+              await this.updateToCompleted(record._id);
             }
           } catch (error) {
             this.logger.error('Error in bulk process manager process function', {processId: record._id, error});
@@ -99,9 +108,17 @@ export class BulkProcessManager {
 
   /**
    * changes the status of record, returns true if it updated the record
+   *
+   * Forcing changing heart beat field here:
+   *  - It's for dead processes. dead processes already have status of `processing`
+   *  - We wanted to prevent other processes in parallel to pick the same dead process.
+   *  - When we update heart beat to current date other processes won't pick same dead process again.
+   *  - We increment the counter to make sure we have locking in place.
    */
   private async updateToProcessing(record: BulkProcessManagerV1DocumentType): Promise<boolean> {
     record.status = BulkProcessManagerStatusEnum.PROCESSING;
+    record.heart_beat = new Date();
+    record.increment();
     try {
       await record.save();
       return true;
@@ -113,6 +130,17 @@ export class BulkProcessManager {
       this.logger.error('Unknown error in changing status to processing', {_id: record._id, error});
       throw error;
     }
+  }
+
+  private async updateToCompleted(processId: string): Promise<void> {
+    await BulkProcessManagerV1.updateOne(
+      {_id: processId},
+      {
+        $set: {
+          status: BulkProcessManagerStatusEnum.COMPLETED
+        }
+      }
+    );
   }
 
   private async findInitiateEvent(eventId: string): Promise<EventStorePubSubModelInterface> {
@@ -128,5 +156,6 @@ export class BulkProcessManager {
     const process = ProcessFactory.getProcess(this.logger, initiateEvent.type);
 
     await process.execute(initiateEvent);
+    await process.complete();
   }
 }

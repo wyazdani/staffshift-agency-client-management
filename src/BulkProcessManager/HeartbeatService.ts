@@ -5,7 +5,7 @@ import {BulkProcessManagerV1} from '../models/BulkProcessManagerV1';
  * Responsible for managing heart beat field of bulk process manager
  * we start the interval when start processing and when we are done we stop processing
  */
-export class ProcessHeartbeat {
+export class HeartbeatService {
   private handler: NodeJS.Timer;
   constructor(private logger: LoggerContext, private processId: string, private interval: number) {}
   start(): void {
@@ -29,6 +29,8 @@ export class ProcessHeartbeat {
     }, this.interval);
   }
   stop(): void {
-    clearInterval(this.handler);
+    if (this.handler) {
+      clearInterval(this.handler);
+    }
   }
 }
