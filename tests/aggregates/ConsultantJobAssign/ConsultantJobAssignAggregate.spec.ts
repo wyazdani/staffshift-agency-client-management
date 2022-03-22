@@ -7,6 +7,26 @@ describe('ConsultantJobAssignAggregate', () => {
     job_id: 'some-id'
   };
 
+  describe('getProgressedClientIds()', () => {
+    it('should return progressed client ids', () => {
+      const aggregateRecord = {
+        progressed_client_ids: ['client a'],
+        last_sequence_id: 1
+      };
+      const aggregate = new ConsultantJobAssignAggregate(aggregateId, aggregateRecord);
+
+      aggregate.getProgressedClientIds().should.deep.equal(['client a']);
+    });
+    it('should return empty array if not set', () => {
+      const aggregateRecord = {
+        last_sequence_id: 1
+      };
+      const aggregate = new ConsultantJobAssignAggregate(aggregateId, aggregateRecord);
+
+      aggregate.getProgressedClientIds().should.deep.equal([]);
+    });
+  });
+
   describe('getId()', () => {
     it('should return aggregate id', () => {
       const aggregate = {

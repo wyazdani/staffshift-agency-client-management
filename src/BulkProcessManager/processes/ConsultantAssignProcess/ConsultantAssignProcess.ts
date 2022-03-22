@@ -87,6 +87,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
 
     try {
       await retryService.exec(() => this.assignClient(clientId));
+      return true;
     } catch (error) {
       await this.eventStoreHelper.failItemProcess(
         clientId,

@@ -62,7 +62,7 @@ export class BulkProcessManager {
       if (bulkRecords.length > 0) {
         this.logger.info(`Starting to process ${bulkRecords.length} processes`);
         await each(bulkRecords, async (record) => {
-          const heartbeat = new HeartbeatService(this.logger, record._id, this.opts.heartbeat_interval);
+          const heartbeat = HeartbeatService.createInstance(this.logger, record._id, this.opts.heartbeat_interval);
 
           try {
             if (await this.updateToProcessing(record)) {

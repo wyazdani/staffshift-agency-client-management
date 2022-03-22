@@ -143,6 +143,59 @@ describe('ConsultantJobAggregate', () => {
       await consultantJobAggregate.validateAssignConsultant(command);
     });
   });
+  describe('validateCompleteJob()', () => {
+    it('Test when job is in initiated state', async () => {
+      const processId = 'process id';
+      const aggregate: any = {
+        last_sequence_id: 1,
+        processes: [
+          {
+            _id: processId,
+            status: 'initiated'
+          }
+        ]
+      };
+      const agencyRepository = stubInterface<AgencyRepository>();
+
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+
+      consultantJobAggregate.validateCompleteJob(processId).should.be.true;
+    });
+    it('Test when job is in completed state', async () => {
+      const processId = 'process id';
+      const aggregate: any = {
+        last_sequence_id: 1,
+        processes: [
+          {
+            _id: processId,
+            status: 'completed'
+          }
+        ]
+      };
+      const agencyRepository = stubInterface<AgencyRepository>();
+
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+
+      consultantJobAggregate.validateCompleteJob(processId).should.be.false;
+    });
+    it('Test when job not found', async () => {
+      const processId = 'process id';
+      const aggregate: any = {
+        last_sequence_id: 1,
+        processes: [
+          {
+            _id: 'oops',
+            status: 'initiated'
+          }
+        ]
+      };
+      const agencyRepository = stubInterface<AgencyRepository>();
+
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+
+      consultantJobAggregate.validateCompleteJob(processId).should.be.false;
+    });
+  });
   describe('getId()', () => {
     it('should return aggregate id', () => {
       const aggregate = {

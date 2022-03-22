@@ -6,6 +6,9 @@ import {BulkProcessManagerV1} from '../models/BulkProcessManagerV1';
  * we start the interval when start processing and when we are done we stop processing
  */
 export class HeartbeatService {
+  static createInstance(logger: LoggerContext, processId: string, interval: number) {
+    return new HeartbeatService(logger, processId, interval);
+  }
   private handler: NodeJS.Timer;
   constructor(private logger: LoggerContext, private processId: string, private interval: number) {}
   start(): void {
