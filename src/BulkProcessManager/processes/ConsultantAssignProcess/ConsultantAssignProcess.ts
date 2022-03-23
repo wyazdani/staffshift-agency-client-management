@@ -122,7 +122,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
         throw new RetryableError(error);
       } else if (error instanceof ValidationError || error instanceof ResourceNotFoundError) {
         // non-retryable errors
-        this.logger.info('Assigning consultant to client was not possible due to business validation', error);
+        this.logger.debug('Assigning consultant to client was not possible due to business validation', error);
         throw new NonRetryableError(error);
       } else {
         this.logger.error('Unknown error occurred during assigning consultant to client', error);

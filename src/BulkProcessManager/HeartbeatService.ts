@@ -14,7 +14,7 @@ export class HeartbeatService {
   start(): void {
     this.handler = setInterval(async () => {
       try {
-        this.logger.info('Updating heartbeat for process', {processId: this.processId});
+        this.logger.debug('Updating heartbeat for process', {processId: this.processId});
         await BulkProcessManagerV1.updateOne(
           {_id: this.processId},
           {

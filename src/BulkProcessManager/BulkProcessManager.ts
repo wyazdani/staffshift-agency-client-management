@@ -28,13 +28,14 @@ export class BulkProcessManager {
    * Starts bulk process manager
    * Steps:
    * loop:
-   *  1. find processManager records with status new
+   *  1. find processManager records with
+   *    a. status new
+   *   or
+   *    b. status processing and  heart beat not updated for a while
+   *          (This way we can detect crashed processes and make them survive)
    *  2. change status to `processing`
    *  3. map `initiate event` to related `process` using `ProcessFactory`
    *  4. call process function
-   *
-   *  We do $or on `processing` status for those records the heartbeat is not updated for a while
-   *  This way we can detect crashed processes and make them survive
    *
    */
   async start(): Promise<void> {
