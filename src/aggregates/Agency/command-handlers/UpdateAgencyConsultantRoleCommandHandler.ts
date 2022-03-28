@@ -21,7 +21,7 @@ export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHa
 
     aggregate.validateUpdateConsultantRole(commandData._id);
 
-    const eventId = aggregate.getLastEventId();
+    const eventId = aggregate.getLastSequenceId();
 
     await this.agencyRepository.save([
       {

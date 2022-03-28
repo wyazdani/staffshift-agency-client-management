@@ -18,7 +18,7 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
    */
   async execute(agencyId: string, commandData: EnableAgencyConsultantRoleCommandDataInterface): Promise<void> {
     const aggregate = await this.agencyRepository.getAggregate(agencyId);
-    const eventId = aggregate.getLastEventId();
+    const seqId = aggregate.getLastSequenceId();
 
     if (!aggregate.canEnableConsultantRole(commandData._id)) {
       return;
@@ -30,7 +30,7 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
         data: {
           _id: commandData._id
         } as AgencyConsultantRoleEnabledEventStoreDataInterface,
-        sequence_id: eventId + 1
+        sequence_id: seqId + 1
       }
     ]);
   }
