@@ -68,6 +68,7 @@ describe('/agency/{agency_id}/consultant-roles', () => {
                     'OBJECT_ADDITIONAL_PROPERTIES',
                     'OBJECT_MISSING_REQUIRED_PROPERTY',
                     'ARRAY_LENGTH_SHORT',
+                    'ARRAY_UNIQUE',
                     'CONSULTANT_ROLE_NOT_FOUND',
                     'CONSULTANT_ROLE_NOT_ENABLED',
                     'ANOTHER_CONSULTANT_PROCESS_ACTIVE'

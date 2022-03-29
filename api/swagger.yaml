@@ -732,6 +732,7 @@ definitions:
         pattern: ^[0-9a-fA-F]{24}$
       client_ids:
         type: array
+        uniqueItems: true
         minItems: 1
         items:
           type: string
@@ -992,6 +993,7 @@ definitions:
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - OBJECT_MISSING_REQUIRED_PROPERTY
                 - ARRAY_LENGTH_SHORT
+                - ARRAY_UNIQUE
                 - CONSULTANT_ROLE_NOT_FOUND
                 - CONSULTANT_ROLE_NOT_ENABLED
                 - ANOTHER_CONSULTANT_PROCESS_ACTIVE
