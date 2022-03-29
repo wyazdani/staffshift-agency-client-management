@@ -2,6 +2,7 @@ import {ObjectID} from 'mongodb';
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../aggregates/AgencyClient/types';
+import {CommandIssuer} from '../aggregates/CommandIssuer';
 import {GenericRepository} from '../GenericRepository';
 import {
   AgencyClientConsultantV3DocumentType,
@@ -36,20 +37,16 @@ export const addAgencyClientConsultant = async (
     const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const commandType = AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT;
     const eventRepository = get(req, 'eventRepository');
-    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
-    const commandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository, agencyRepository);
-    const agencyClientConsultantId = new ObjectID().toString();
-    const command: AddAgencyClientConsultantCommandInterface = {
-      type: commandType,
-      data: {
-        ...payload,
-        _id: agencyClientConsultantId
-      }
-    };
 
     await commandBus.execute(agencyId, clientId, command);
+
+    const commandIssuer = new CommandIssuer(eventRepository);
+
+    await commandIssuer.addAgencyClientConsultant(agencyId, clientId, {
+      ...payload,
+      _id: agencyClientConsultantId
+    });
     res.statusCode = 202;
     res.setHeader('Location', `${req.basePathName}/${agencyClientConsultantId}`);
     res.end();
