@@ -4,7 +4,7 @@ import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get, isEmpty} from 'lodash';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
-import {CommandIssuer} from '../aggregates/CommandIssuer';
+import {CommandBus} from '../aggregates/CommandBus';
 import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
 import {
   AddAgencyConsultantRoleCommandInterface,
@@ -37,10 +37,9 @@ export const addAgencyConsultantRole = async (
   try {
     const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const commandIssuer = new CommandIssuer(get(req, 'eventRepository'));
     const roleId = new ObjectID().toString();
 
-    await commandIssuer.addAgencyConsultantRole(agencyId, {_id: roleId, ...payload});
+    await req.commandBus.addAgencyConsultantRole(agencyId, {_id: roleId, ...payload});
     res.statusCode = 202;
     res.setHeader('Location', LocationHelper.getRelativeLocation(`/agency/${agencyId}/consultant-roles/${roleId}`));
     res.end();

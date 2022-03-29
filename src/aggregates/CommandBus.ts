@@ -10,7 +10,7 @@ import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
 import {AgencyClientCommandEnum} from './AgencyClient/types';
 import {AddAgencyClientConsultantCommandDataInterface} from './AgencyClient/types/CommandDataTypes';
 
-export class CommandIssuer {
+export class CommandBus {
   private _agencyCommandBus: AgencyCommandBus;
   private _agencyClientCommandBus: AgencyClientCommandBus;
   constructor(private eventRepository: EventRepository) {}

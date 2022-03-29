@@ -2,7 +2,7 @@ import {ObjectID} from 'mongodb';
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../aggregates/AgencyClient/types';
-import {CommandIssuer} from '../aggregates/CommandIssuer';
+import {CommandBus} from '../aggregates/CommandBus';
 import {GenericRepository} from '../GenericRepository';
 import {
   AgencyClientConsultantV3DocumentType,
@@ -37,13 +37,9 @@ export const addAgencyClientConsultant = async (
     const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const eventRepository = get(req, 'eventRepository');
+    const agencyClientConsultantId = new ObjectID().toString();
 
-    await commandBus.execute(agencyId, clientId, command);
-
-    const commandIssuer = new CommandIssuer(eventRepository);
-
-    await commandIssuer.addAgencyClientConsultant(agencyId, clientId, {
+    await req.commandBus.addAgencyClientConsultant(agencyId, clientId, {
       ...payload,
       _id: agencyClientConsultantId
     });
