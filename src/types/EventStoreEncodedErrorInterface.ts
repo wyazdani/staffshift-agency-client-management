@@ -3,7 +3,7 @@ export interface EventStoreEncodedErrorInterface {
   message: string;
   status?: number;
   originalError?: EventStoreEncodedErrorInterface;
-  results?: [
+  errors?: [
     {
       code: string;
       message: string;

@@ -13,7 +13,7 @@ export class EventStoreErrorEncoder {
       result.originalError = EventStoreErrorEncoder.encodeError(get(error, 'originalError'));
     }
     if (code === 'MODEL_VALIDATION_FAILED') {
-      result.results = get(error, 'results.errors', []);
+      result.errors = get(error, 'results.errors', []);
     }
     if (has(error, 'status')) {
       result.status = get(error, 'status');
