@@ -1,3 +1,5 @@
-import {AssignConsultantCommandDataInterface} from './CommandDataTypes';
+import {AssignConsultantCommandDataInterface, CompleteAssignConsultantCommandDataInterface} from './CommandDataTypes';
 
-export type ConsultantJobCommandDataType = AssignConsultantCommandDataInterface;
+export type ConsultantJobCommandDataType =
+  | AssignConsultantCommandDataInterface
+  | CompleteAssignConsultantCommandDataInterface;

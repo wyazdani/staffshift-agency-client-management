@@ -1,9 +1,11 @@
 import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
 import {reduce, map} from 'lodash';
 import {FilterQuery} from 'mongoose';
+import {SequenceIdMismatch} from './errors/SequenceIdMismatch';
 import {AggregateIdType, EventStore, EventStoreModelInterface} from './models/EventStore';
-import {WriteProjectionInterface} from './WriteProjectionInterface';
+import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
+import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
 // Might be worth having a UserEventMeta and SystemEventMeta concept
 export interface EventMetaInterface {
@@ -48,7 +50,8 @@ export class EventRepository {
   constructor(
     private store: typeof EventStore,
     private correlation_id: string,
-    private eventMeta?: EventMetaInterface
+    private eventMeta?: EventMetaInterface,
+    private causation_id?: string
   ) {}
 
   async leftFoldEvents<AggregateType extends BaseAggregateRecordInterface>(
@@ -77,9 +80,26 @@ export class EventRepository {
     const enrichedEvents: (EventInterface & BaseEventInterface)[] = map(events, (aggEvent) => ({
       ...aggEvent,
       correlation_id: this.correlation_id,
-      meta_data: this.eventMeta
+      meta_data: this.eventMeta,
+      ...(this.causation_id && {causation_id: this.causation_id})
     }));
 
-    return this.store.insertMany(enrichedEvents);
+    try {
+      return await this.store.insertMany(enrichedEvents);
+    } catch (error) {
+      if (error.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
+        /**
+         * We only have two unique indexes on EventStore collection:
+         * - _id
+         * - compound index: aggregate id and sequence id
+         * The odds of having duplicate _id is zero (unless we have a bug in code)
+         * So we count 11000 as sequence id duplicate(other process wrote to EventStore in mean time)
+         * if some day we have multiple unique indexes on the collection, we need to parse the error and see
+         * is it sequence id related or not
+         */
+        throw new SequenceIdMismatch('There is already an event in event store with same aggregate id and sequence id');
+      }
+      throw error;
+    }
   }
 }

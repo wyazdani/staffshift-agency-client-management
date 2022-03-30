@@ -1,9 +1,11 @@
+import {ConsultantJobAssignProcessStartedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';
 import {StartConsultantJobAssignCommandDataInterface} from '../types/CommandDataTypes';
 import {ConsultantJobAssignCommandEnum} from '../types';
 
-export class StartConsultantAssignCommandHandler implements ConsultantJobAssignCommandHandlerInterface {
+export class StartConsultantJobAssignCommandHandler implements ConsultantJobAssignCommandHandlerInterface {
   public commandType = ConsultantJobAssignCommandEnum.START;
 
   constructor(private repository: ConsultantJobAssignRepository) {}
@@ -15,12 +17,15 @@ export class StartConsultantAssignCommandHandler implements ConsultantJobAssignC
   ): Promise<void> {
     const aggregate = await this.repository.getAggregate(agencyId, jobId);
 
-    const eventId = aggregate.getLastEventId();
+    let eventId = aggregate.getLastEventId();
 
-    // will be implemented in next prs
-    // await this.repository.save([
-    //   {
-    //   }
-    // ]);
+    await this.repository.save([
+      {
+        type: EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_STARTED,
+        aggregate_id: aggregate.getId(),
+        data: commandData as ConsultantJobAssignProcessStartedEventStoreDataInterface,
+        sequence_id: ++eventId
+      }
+    ]);
   }
 }

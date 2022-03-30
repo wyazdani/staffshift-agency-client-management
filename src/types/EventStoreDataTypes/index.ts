@@ -1,27 +1,16 @@
-import {AgencyClientConsultantAssignedEventStoreDataInterface} from './AgencyClientConsultantAssignedEventStoreDataInterface';
-import {AgencyClientConsultantUnassignedEventStoreDataInterface} from './AgencyClientConsultantUnassignedEventStoreDataInterface';
-import {AgencyClientLinkedEventStoreDataInterface} from './AgencyClientLinkedEventStoreDataInterface';
-import {AgencyClientSyncedEventStoreDataInterface} from './AgencyClientSyncedEventStoreDataInterface';
-import {AgencyClientUnlinkedEventStoreDataInterface} from './AgencyClientUnlinkedEventStoreDataInterface';
-import {AgencyConsultantRoleAddedEventStoreDataInterface} from './AgencyConsultantRoleAddedEventStoreDataInterface';
-import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from './AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface';
-import {AgencyConsultantRoleDisabledEventStoreDataInterface} from './AgencyConsultantRoleDisabledEventStoreDataInterface';
-import {AgencyConsultantRoleEnabledEventStoreDataInterface} from './AgencyConsultantRoleEnabledEventStoreDataInterface';
-import {ConsultantJobAssignInitiatedEventStoreDataInterface} from './ConsultantJobAssignInitiatedEventStoreDataInterface';
-import {ConsultantJobAssignCompletedEventStoreDataInterface} from './ConsultantJobAssignCompletedEventStoreDataInterface';
-import {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';
-
-export {
-  AgencyClientConsultantAssignedEventStoreDataInterface,
-  AgencyClientConsultantUnassignedEventStoreDataInterface,
-  AgencyClientLinkedEventStoreDataInterface,
-  AgencyClientSyncedEventStoreDataInterface,
-  AgencyClientUnlinkedEventStoreDataInterface,
-  AgencyConsultantRoleAddedEventStoreDataInterface,
-  AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
-  AgencyConsultantRoleDisabledEventStoreDataInterface,
-  AgencyConsultantRoleEnabledEventStoreDataInterface,
-  ConsultantJobAssignInitiatedEventStoreDataInterface,
-  ConsultantJobAssignCompletedEventStoreDataInterface,
-  BaseEventStoreDataInterface
-};
+export {AgencyClientConsultantAssignedEventStoreDataInterface} from './AgencyClientConsultantAssignedEventStoreDataInterface';
+export {AgencyClientConsultantUnassignedEventStoreDataInterface} from './AgencyClientConsultantUnassignedEventStoreDataInterface';
+export {AgencyClientLinkedEventStoreDataInterface} from './AgencyClientLinkedEventStoreDataInterface';
+export {AgencyClientSyncedEventStoreDataInterface} from './AgencyClientSyncedEventStoreDataInterface';
+export {AgencyClientUnlinkedEventStoreDataInterface} from './AgencyClientUnlinkedEventStoreDataInterface';
+export {AgencyConsultantRoleAddedEventStoreDataInterface} from './AgencyConsultantRoleAddedEventStoreDataInterface';
+export {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from './AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface';
+export {AgencyConsultantRoleDisabledEventStoreDataInterface} from './AgencyConsultantRoleDisabledEventStoreDataInterface';
+export {AgencyConsultantRoleEnabledEventStoreDataInterface} from './AgencyConsultantRoleEnabledEventStoreDataInterface';
+export {ConsultantJobAssignInitiatedEventStoreDataInterface} from './ConsultantJobAssignInitiatedEventStoreDataInterface';
+export {ConsultantJobAssignCompletedEventStoreDataInterface} from './ConsultantJobAssignCompletedEventStoreDataInterface';
+export {ConsultantJobAssignProcessCompletedEventStoreDataInterface} from './ConsultantJobAssignProcessCompletedEventStoreDataInterface';
+export {ConsultantJobAssignProcessItemFailedEventStoreDataInterface} from './ConsultantJobAssignProcessItemFailedEventStoreDataInterface';
+export {ConsultantJobAssignProcessItemSucceededEventStoreDataInterface} from './ConsultantJobAssignProcessItemSucceededEventStoreDataInterface';
+export {ConsultantJobAssignProcessStartedEventStoreDataInterface} from './ConsultantJobAssignProcessStartedEventStoreDataInterface';
+export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

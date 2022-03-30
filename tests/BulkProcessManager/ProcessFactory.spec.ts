@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import {ConsultantAssignProcess} from '../../src/BulkProcessManager/processes/ConsultantAssignProcess';
+import {ConsultantAssignProcess} from '../../src/BulkProcessManager/processes/ConsultantAssignProcess/ConsultantAssignProcess';
 import {ProcessFactory} from '../../src/BulkProcessManager/ProcessFactory';
 import {EventsEnum} from '../../src/Events';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';

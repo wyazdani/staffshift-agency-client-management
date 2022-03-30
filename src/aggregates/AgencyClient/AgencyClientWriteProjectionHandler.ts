@@ -1,6 +1,6 @@
 import {differenceWith} from 'lodash';
 import {AgencyClientAggregateRecordInterface, AgencyClientConsultantInterface} from './types';
-import {WriteProjectionInterface} from '../../WriteProjectionInterface';
+import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
 import {EventStoreModelInterface} from '../../models/EventStore';
 import {

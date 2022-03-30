@@ -1,5 +1,5 @@
 import {map} from 'lodash';
-import {WriteProjectionInterface} from '../../WriteProjectionInterface';
+import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {AgencyAggregateRecordInterface, AgencyConsultantRoleEnum, AgencyConsultantRoleInterface} from './types';
 import {EventStoreModelInterface} from '../../models/EventStore';
 import {EventsEnum} from '../../Events';

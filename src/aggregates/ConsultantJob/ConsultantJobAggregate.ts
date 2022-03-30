@@ -55,6 +55,10 @@ export class ConsultantJobAggregate {
     }
   }
 
+  validateCompleteJob(processId: string): boolean {
+    return !!find(this.aggregate.processes, {_id: processId, status: 'initiated'});
+  }
+
   /**
    * Return the aggregate ID
    */

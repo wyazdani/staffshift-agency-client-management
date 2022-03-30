@@ -1,10 +1,22 @@
 import {ConsultantJobAssignAggregateIdInterface, ConsultantJobAssignAggregateRecordInterface} from './types';
+import {ConsultantJobAssignAggregateStatusEnum} from './types/ConsultantJobAssignAggregateStatusEnum';
 
 export class ConsultantJobAssignAggregate {
   constructor(
     private id: ConsultantJobAssignAggregateIdInterface,
     private aggregate: ConsultantJobAssignAggregateRecordInterface
   ) {}
+
+  /**
+   * retrieves all client ids that we already processed despite their success
+   */
+  getProgressedClientIds(): string[] {
+    return this.aggregate.progressed_client_ids || [];
+  }
+
+  getCurrentStatus(): ConsultantJobAssignAggregateStatusEnum {
+    return this.aggregate.status || ConsultantJobAssignAggregateStatusEnum.NEW;
+  }
 
   /**
    * Return the aggregate ID

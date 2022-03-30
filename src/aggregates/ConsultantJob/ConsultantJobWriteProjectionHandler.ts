@@ -4,7 +4,7 @@ import {
 } from 'EventStoreDataTypes';
 import {find} from 'lodash';
 import {ConsultantJobAggregateRecordInterface} from './types';
-import {WriteProjectionInterface} from '../../WriteProjectionInterface';
+import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
 import {EventStoreModelInterface} from '../../models/EventStore';
 import {ConsultantJobAggregateRecordProcessInterface} from './types/ConsultantJobAggregateRecordInterface';
