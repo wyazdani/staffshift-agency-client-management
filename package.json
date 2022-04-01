@@ -51,7 +51,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^5.13.5",
     "mongration": "^1.0.1",
-    "ss-eventstore": "git+ssh://git@github.com/A24Group/ss-eventstore.git#semver:1.10.0",
+    "ss-eventstore": "git+ssh://git@github.com/A24Group/ss-eventstore.git#semver:1.11.0",
     "staffshift-node-enums": "git+ssh://git@github.com/A24Group/staffshift-node-enums.git#v1.2.0",
     "swagger-tools": "0.10.4",
     "url": "0.11.0",
