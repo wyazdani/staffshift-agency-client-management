@@ -1,4 +1,6 @@
-import {BaseEventStoreDataInterface} from 'EventTypes/BaseEventStoreDataInterface';
+import {BaseEventStoreDataInterface} from 'EventTypes';
+import {EventStorePubSubModelInterface} from 'ss-eventstore';
+import {ConsultantJobAggregateIdInterface} from '../../aggregates/ConsultantJob/types';
 
 export interface ConsultantJobAssignInitiatedEventStoreDataInterface extends BaseEventStoreDataInterface {
   _id: string;
@@ -6,3 +8,10 @@ export interface ConsultantJobAssignInitiatedEventStoreDataInterface extends Bas
   consultant_role_id: string;
   client_ids: string[];
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConsultantJobAssignInitiatedEventInterface
+  extends EventStorePubSubModelInterface<
+    ConsultantJobAssignInitiatedEventStoreDataInterface,
+    ConsultantJobAggregateIdInterface
+  > {}
