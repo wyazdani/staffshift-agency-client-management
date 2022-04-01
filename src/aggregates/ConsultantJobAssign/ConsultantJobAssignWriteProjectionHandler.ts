@@ -1,7 +1,7 @@
 import {
   ConsultantJobAssignProcessItemSucceededEventStoreDataInterface,
   ConsultantJobAssignProcessItemFailedEventStoreDataInterface
-} from 'EventStoreDataTypes';
+} from 'EventTypes';
 import {has} from 'lodash';
 import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';

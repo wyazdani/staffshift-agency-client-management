@@ -1,4 +1,4 @@
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes/BaseEventStoreDataInterface';
+import {BaseEventStoreDataInterface} from 'EventTypes/BaseEventStoreDataInterface';
 import {EventStoreEncodedErrorInterface} from 'EventStoreEncodedErrorInterface';
 
 export interface ConsultantJobAssignProcessItemFailedEventStoreDataInterface extends BaseEventStoreDataInterface {

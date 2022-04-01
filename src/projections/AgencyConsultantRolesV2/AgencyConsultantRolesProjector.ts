@@ -7,7 +7,7 @@ import {
   AgencyConsultantRoleDisabledEventStoreDataInterface,
   AgencyConsultantRoleEnabledEventStoreDataInterface,
   AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface
-} from 'EventStoreDataTypes';
+} from 'EventTypes';
 import {EventsEnum} from '../../Events';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 import {

@@ -1,4 +1,4 @@
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes/BaseEventStoreDataInterface';
+import {BaseEventStoreDataInterface} from 'EventTypes/BaseEventStoreDataInterface';
 
 export interface AgencyClientSyncedEventStoreDataInterface extends BaseEventStoreDataInterface {
   client_type: string;

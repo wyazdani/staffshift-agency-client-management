@@ -1,4 +1,4 @@
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes/BaseEventStoreDataInterface';
+import {BaseEventStoreDataInterface} from 'EventTypes/BaseEventStoreDataInterface';
 
 export interface ConsultantJobAssignInitiatedEventStoreDataInterface extends BaseEventStoreDataInterface {
   _id: string;

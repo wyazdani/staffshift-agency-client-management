@@ -1,4 +1,4 @@
-import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from 'EventTypes';
 import {EventHandlerInterface} from 'EventHandlerInterface';
 import {AgencyClientConsultantsProjectionV3} from '../../../models/AgencyClientConsultantsProjectionV3';
 import {EventStoreModelInterface} from '../../../models/EventStore';

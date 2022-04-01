@@ -1,4 +1,4 @@
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
+import {BaseEventStoreDataInterface} from 'EventTypes';
 import {Document, Schema, model} from 'mongoose';
 import {EventsEnum} from '../Events';
 

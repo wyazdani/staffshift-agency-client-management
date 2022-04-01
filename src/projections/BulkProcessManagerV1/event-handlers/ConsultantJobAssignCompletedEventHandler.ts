@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {ConsultantJobAssignCompletedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {ConsultantJobAssignCompletedEventStoreDataInterface} from 'EventTypes';
 import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../models/BulkProcessManagerV1';

@@ -1,4 +1,4 @@
-import {ConsultantJobAssignCompletedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {ConsultantJobAssignCompletedEventStoreDataInterface} from 'EventTypes';
 import {ConsultantJobRepository} from '../ConsultantJobRepository';
 import {ConsultantJobCommandHandlerInterface} from '../types/ConsultantJobCommandHandlerInterface';
 import {CompleteAssignConsultantCommandDataInterface} from '../types/CommandDataTypes';
