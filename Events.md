@@ -6,21 +6,684 @@ Event Type: The event name that gets stored in the database
 Description: A short description of the event
 
 <!--DATA_START-->
-| Event Code | Event Type | Description |
-| --- | --- | --- |
-| AGENCY_CONSULTANT_ROLE_ADDED | AgencyConsultantRoleAdded | The Agency Consultant Role has been created |
-| AGENCY_CONSULTANT_ROLE_ENABLED | AgencyConsultantRoleEnabled | The Agency Consultant Role has been enabled |
-| AGENCY_CONSULTANT_ROLE_DISABLED | AgencyConsultantRoleDisabled | The Agency Consultant Role has been disabled |
-| AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED | AgencyConsultantRoleDetailsUpdated | The Agency Consultant Role has been updated |
-| AGENCY_CLIENT_CONSULTANT_ASSIGNED | AgencyClientConsultantAssigned | The Agency Client Consultant has been assigned |
-| AGENCY_CLIENT_CONSULTANT_UNASSIGNED | AgencyClientConsultantUnassigned | The Agency Client Consultant has been unassigned |
-| AGENCY_CLIENT_LINKED | AgencyClientLinked | The Agency Client was linked |
-| AGENCY_CLIENT_UNLINKED | AgencyClientUnLinked | The Agency Client was unlinked, does not indicate a deletion |
-| AGENCY_CLIENT_SYNCED | AgencyClientSynced | Sync event to move data from legacy application to microservice |
-| CONSULTANT_JOB_ASSIGN_INITIATED | ConsultantJobAssignInitiated | Initiate a job to assign a consultant to multiple clients for an agency |
-| CONSULTANT_JOB_ASSIGN_COMPLETED | ConsultantJobAssignCompleted | Job assigning a consultant to multiple clients for an agency has completed |
-| CONSULTANT_JOB_ASSIGN_PROCESS_STARTED | ConsultantJobAssignProcessStarted | Background process assigning a consultant to multiple clients for an agency is started |
-| CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED | ConsultantJobAssignProcessItemSucceeded | Background process assigning a consultant to multiple clients for an agency is succeeded for one client |
-| CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED | ConsultantJobAssignProcessItemFailed | Background process assigning a consultant to multiple clients for an agency is failed for one client |
-| CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED | ConsultantJobAssignProcessCompleted | Background process assigning a consultant to multiple clients for an agency is completed |
-<!--DATA_END-->
+<table><tr><td> Event Code </td><td> Event Type </td><td> Event Data </td><td> Event Aggregate </td><td> Description </td></tr> 
+<tr><td> AGENCY_CONSULTANT_ROLE_ADDED </td><td> AgencyConsultantRoleAdded </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "max_consultants": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "_id",
+    "name",
+    "description",
+    "max_consultants"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Consultant Role has been created </td></tr>
+<tr><td> AGENCY_CONSULTANT_ROLE_ENABLED </td><td> AgencyConsultantRoleEnabled </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Consultant Role has been enabled </td></tr>
+<tr><td> AGENCY_CONSULTANT_ROLE_DISABLED </td><td> AgencyConsultantRoleDisabled </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Consultant Role has been disabled </td></tr>
+<tr><td> AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED </td><td> AgencyConsultantRoleDetailsUpdated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "max_consultants": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Consultant Role has been updated </td></tr>
+<tr><td> AGENCY_CLIENT_CONSULTANT_ASSIGNED </td><td> AgencyClientConsultantAssigned </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
+      "type": "string"
+    },
+    "consultant_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "consultant_role_id",
+    "consultant_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Client Consultant has been assigned </td></tr>
+<tr><td> AGENCY_CLIENT_CONSULTANT_UNASSIGNED </td><td> AgencyClientConsultantUnassigned </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Client Consultant has been unassigned </td></tr>
+<tr><td> AGENCY_CLIENT_LINKED </td><td> AgencyClientLinked </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "client_type": {
+      "type": "string"
+    },
+    "organisation_id": {
+      "type": "string"
+    },
+    "site_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_type"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Client was linked </td></tr>
+<tr><td> AGENCY_CLIENT_UNLINKED </td><td> AgencyClientUnLinked </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "client_type": {
+      "type": "string"
+    },
+    "organisation_id": {
+      "type": "string"
+    },
+    "site_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_type"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> The Agency Client was unlinked, does not indicate a deletion </td></tr>
+<tr><td> AGENCY_CLIENT_SYNCED </td><td> AgencyClientSynced </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "client_type": {
+      "type": "string"
+    },
+    "linked": {
+      "type": "boolean"
+    },
+    "linked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "organisation_id": {
+      "type": "string"
+    },
+    "site_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_type",
+    "linked",
+    "linked_at"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Sync event to move data from legacy application to microservice </td></tr>
+<tr><td> CONSULTANT_JOB_ASSIGN_INITIATED </td><td> ConsultantJobAssignInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "consultant_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
+      "type": "string"
+    },
+    "client_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "_id",
+    "consultant_id",
+    "consultant_role_id",
+    "client_ids"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Initiate a job to assign a consultant to multiple clients for an agency </td></tr>
+<tr><td> CONSULTANT_JOB_ASSIGN_COMPLETED </td><td> ConsultantJobAssignCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Job assigning a consultant to multiple clients for an agency has completed </td></tr>
+<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_STARTED </td><td> ConsultantJobAssignProcessStarted </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process assigning a consultant to multiple clients for an agency is started </td></tr>
+<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED </td><td> ConsultantJobAssignProcessItemSucceeded </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process assigning a consultant to multiple clients for an agency is succeeded for one client </td></tr>
+<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED </td><td> ConsultantJobAssignProcessItemFailed </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/EventStoreEncodedErrorInterface"
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "errors"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process assigning a consultant to multiple clients for an agency is failed for one client </td></tr>
+<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED </td><td> ConsultantJobAssignProcessCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process assigning a consultant to multiple clients for an agency is completed </td></tr>
+</table><!--DATA_END-->
