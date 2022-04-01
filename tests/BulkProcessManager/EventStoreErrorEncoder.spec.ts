@@ -47,7 +47,7 @@ describe('EventStoreErrorEncoder', () => {
           code: 'MODEL_VALIDATION_FAILED',
           status: 400,
           message: 'Error parsing aggregate id',
-          originalError: {
+          original_error: {
             code: 'UNKNOWN_ERROR',
             message: 'sample'
           },
@@ -71,7 +71,7 @@ describe('EventStoreErrorEncoder', () => {
           code: 'RUNTIME_ERROR',
           status: 500,
           message: 'oops runtime',
-          originalError: {
+          original_error: {
             code: 'UNKNOWN_ERROR',
             message: 'sample'
           }
