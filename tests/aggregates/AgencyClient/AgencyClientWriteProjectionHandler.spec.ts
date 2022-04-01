@@ -5,7 +5,7 @@ import {
   AgencyClientConsultantUnassignedEventStoreDataInterface,
   AgencyClientLinkedEventStoreDataInterface,
   AgencyClientSyncedEventStoreDataInterface
-} from '../../../src/types/EventStoreDataTypes';
+} from '../../../src/types/EventTypes';
 
 import {EventsEnum} from '../../../src/Events';
 import {EventStore} from '../../../src/models/EventStore';

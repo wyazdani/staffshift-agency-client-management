@@ -3,7 +3,7 @@ import {ConsultantJobAssignAggregateStatusEnum} from '../../../src/aggregates/Co
 import {EventsEnum} from '../../../src/Events';
 import {EventStore} from '../../../src/models/EventStore';
 import {assert} from 'chai';
-import {AgencyConsultantRoleEnabledEventStoreDataInterface} from '../../../src/types/EventStoreDataTypes';
+import {AgencyConsultantRoleEnabledEventStoreDataInterface} from '../../../src/types/EventTypes';
 
 describe('ConsultantJobAssignWriteProjectionHandler', () => {
   describe('execute()', () => {
