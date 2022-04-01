@@ -29,7 +29,7 @@ fi
 npm run dev-generate-event-docs
 
 # Check if the Events.md was changed
-REGENERATED=$( git status -s | grep "Events.md" )
+REGENERATED=$( git status -s | grep "Events.md" || true)
 
 if [ -z "$REGENERATED" ]; then
     echo "Events.md had no changes"
