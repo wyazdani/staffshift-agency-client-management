@@ -61,6 +61,21 @@ export class AgencyClientAggregate {
       ]);
     }
 
+    if (
+      find(this.aggregate.consultants, {
+        consultant_role_id: consultant.consultant_role_id,
+        consultant_id: consultant.consultant_id
+      })
+    ) {
+      throw new ValidationError('Consultant already assigned', [
+        {
+          code: 'CONSULTANT_ALREADY_ASSIGNED_ROLE',
+          message: `Consultant ${consultant.consultant_id} already assigned to role ${consultant.consultant_role_id}`,
+          path: []
+        }
+      ]);
+    }
+
     if (isUndefined(this.aggregate.linked)) {
       throw new ResourceNotFoundError('Agency client not found');
     }
