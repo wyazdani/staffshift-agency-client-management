@@ -3,7 +3,7 @@ import {
   AgencyClientLinkedEventStoreDataInterface,
   AgencyClientSyncedEventStoreDataInterface,
   AgencyClientUnlinkedEventStoreDataInterface
-} from 'EventStoreDataTypes';
+} from 'EventTypes';
 import {FilterQuery} from 'mongoose';
 import {EventStorePubSubModelInterface, EventStoreProjectorInterface} from 'ss-eventstore';
 import {EventsEnum} from '../../Events';

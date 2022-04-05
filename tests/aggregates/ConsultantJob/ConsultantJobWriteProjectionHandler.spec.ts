@@ -6,7 +6,7 @@ import {
   AgencyConsultantRoleEnabledEventStoreDataInterface,
   ConsultantJobAssignInitiatedEventStoreDataInterface,
   ConsultantJobAssignCompletedEventStoreDataInterface
-} from '../../../src/types/EventStoreDataTypes';
+} from '../../../src/types/EventTypes';
 
 describe('ConsultantJobWriteProjectionHandler', () => {
   describe('execute()', () => {

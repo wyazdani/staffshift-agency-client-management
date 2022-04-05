@@ -1,4 +1,4 @@
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
+import {BaseEventStoreDataInterface} from 'EventTypes';
 import {reduce, map} from 'lodash';
 import {FilterQuery} from 'mongoose';
 import {SequenceIdMismatch} from './errors/SequenceIdMismatch';

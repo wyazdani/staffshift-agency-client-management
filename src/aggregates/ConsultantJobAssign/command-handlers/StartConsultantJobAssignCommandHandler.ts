@@ -1,4 +1,4 @@
-import {ConsultantJobAssignProcessStartedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {ConsultantJobAssignProcessStartedEventStoreDataInterface} from 'EventTypes';
 import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';

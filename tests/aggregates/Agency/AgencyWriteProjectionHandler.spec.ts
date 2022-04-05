@@ -7,7 +7,7 @@ import {
   AgencyConsultantRoleAddedEventStoreDataInterface,
   AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
   AgencyConsultantRoleEnabledEventStoreDataInterface
-} from '../../../src/types/EventStoreDataTypes';
+} from '../../../src/types/EventTypes';
 
 describe('AgencyWriteProjectionHandler', () => {
   describe('execute()', () => {

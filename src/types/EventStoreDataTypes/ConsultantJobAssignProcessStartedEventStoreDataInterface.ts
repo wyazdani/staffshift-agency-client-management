@@ -1,3 +1,0 @@
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes/BaseEventStoreDataInterface';
-
-export interface ConsultantJobAssignProcessStartedEventStoreDataInterface extends BaseEventStoreDataInterface {}

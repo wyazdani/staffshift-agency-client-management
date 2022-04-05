@@ -1,4 +1,4 @@
-import {AgencyClientUnlinkedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {AgencyClientUnlinkedEventStoreDataInterface} from 'EventTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum} from '../types';

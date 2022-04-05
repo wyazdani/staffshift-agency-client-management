@@ -1,6 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {RuntimeError} from 'a24-node-error-utils';
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
+import {BaseEventStoreDataInterface} from 'EventTypes';
 import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {EventRepository} from '../../../EventRepository';
 import {EventHandlerInterface} from 'EventHandlerInterface';

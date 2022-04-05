@@ -1,6 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {EventHandlerInterface} from 'EventHandlerInterface';
-import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventTypes';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../models/BulkProcessManagerV1';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';

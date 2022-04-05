@@ -1,7 +1,7 @@
 import {
   AgencyConsultantRoleAddedEventStoreDataInterface,
   AgencyConsultantRoleEnabledEventStoreDataInterface
-} from 'EventStoreDataTypes';
+} from 'EventTypes';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';

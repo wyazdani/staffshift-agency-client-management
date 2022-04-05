@@ -8,7 +8,7 @@ import {
   AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
   AgencyConsultantRoleEnabledEventStoreDataInterface,
   AgencyConsultantRoleDisabledEventStoreDataInterface
-} from 'EventStoreDataTypes';
+} from 'EventTypes';
 
 /**
  * Responsible for handling all agency events to build the current state of the aggregate

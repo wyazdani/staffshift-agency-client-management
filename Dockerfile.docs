@@ -10,4 +10,4 @@ ARG BRANCH_NAME
 
 ENV GIT_BRANCH=$BRANCH_NAME
 
-RUN  echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa && chmod o-rw $HOME/.ssh/id_rsa && chmod g-rw $HOME/.ssh/id_rsa && /bin/bash ./generate_docs.sh && rm $HOME/.ssh/id_rsa
+RUN  echo -e $PRIVATE_SSH_KEY >> $HOME/.ssh/id_rsa && chmod o-rw $HOME/.ssh/id_rsa && chmod g-rw $HOME/.ssh/id_rsa && /bin/bash -e ./generate_docs.sh && rm $HOME/.ssh/id_rsa

@@ -1,6 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {EventHandlerInterface} from 'EventHandlerInterface';
-import {BaseEventStoreDataInterface} from 'EventStoreDataTypes';
+import {BaseEventStoreDataInterface} from 'EventTypes';
 import {EventsEnum} from '../../Events';
 import {ConsultantJobAssignCompletedEventHandler} from './event-handlers/ConsultantJobAssignCompletedEventHandler';
 import {ConsultantJobAssignInitiatedEventHandler} from './event-handlers/ConsultantJobAssignInitiatedEventHandler';

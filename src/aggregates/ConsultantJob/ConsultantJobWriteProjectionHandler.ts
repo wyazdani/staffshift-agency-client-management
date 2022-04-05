@@ -1,7 +1,7 @@
 import {
   ConsultantJobAssignInitiatedEventStoreDataInterface,
   ConsultantJobAssignCompletedEventStoreDataInterface
-} from 'EventStoreDataTypes';
+} from 'EventTypes';
 import {find} from 'lodash';
 import {ConsultantJobAggregateRecordInterface} from './types';
 import {WriteProjectionInterface} from 'WriteProjectionInterface';

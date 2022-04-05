@@ -1,6 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
-import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventStoreDataTypes';
+import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventTypes';
 import {difference} from 'lodash';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';

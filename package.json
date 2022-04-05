@@ -1,6 +1,6 @@
 {
   "name": "staffshift-agency-client-management",
-  "version": "1.29.2",
+  "version": "1.30.1",
   "description": "Micro service for managing staffshift agency clients",
   "main": "src/http_server.ts",
   "scripts": {
@@ -102,6 +102,7 @@
     "supertest": "6.1.4",
     "swagger-parser": "10.0.3",
     "swagger-test-templates": "1.6.0",
+    "ts-json-schema-generator": "^1.0.0",
     "ts-node": "10.2.1",
     "ts-sinon": "^2.0.2",
     "typescript": "4.4.2",

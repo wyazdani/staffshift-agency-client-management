@@ -8,7 +8,7 @@ import {
   AgencyClientConsultantUnassignedEventStoreDataInterface,
   AgencyClientLinkedEventStoreDataInterface,
   AgencyClientSyncedEventStoreDataInterface
-} from 'EventStoreDataTypes';
+} from 'EventTypes';
 
 /**
  * Responsible for handling all agency client events to build the current state of the aggregate
