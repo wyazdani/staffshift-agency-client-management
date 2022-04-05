@@ -1,14 +1,19 @@
+import {AbstractRepository} from '../AbstractRepository';
 import {AgencyAggregate} from './AgencyAggregate';
-import {EventRepository, EventInterface} from '../../EventRepository';
+import {EventRepository} from '../../EventRepository';
 import {AgencyAggregateRecordInterface} from './types';
-import {EventStoreModelInterface} from '../../models/EventStore';
 import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
 
 /**
  * Class responsible for interacting with agency aggregate data source
  */
-export class AgencyRepository {
-  constructor(private eventRepository: EventRepository, private writeProjectionHandler: AgencyWriteProjectionHandler) {}
+export class AgencyRepository extends AbstractRepository {
+  constructor(
+    protected eventRepository: EventRepository,
+    private writeProjectionHandler: AgencyWriteProjectionHandler
+  ) {
+    super(eventRepository);
+  }
 
   /**
    * Build and return agency aggregate
@@ -21,12 +26,5 @@ export class AgencyRepository {
     );
 
     return new AgencyAggregate({agency_id: agencyId}, projection);
-  }
-
-  /**
-   * Persist agency related events into event store
-   */
-  async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
-    return this.eventRepository.save(events);
   }
 }

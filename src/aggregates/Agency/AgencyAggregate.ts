@@ -1,4 +1,5 @@
 import {find} from 'lodash';
+import {AbstractAggregate} from '../AbstractAggregate';
 import {
   AgencyAggregateIdInterface,
   AgencyAggregateRecordInterface,
@@ -7,9 +8,7 @@ import {
 } from './types';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 
-export class AgencyAggregate {
-  constructor(private id: AgencyAggregateIdInterface, private aggregate: AgencyAggregateRecordInterface) {}
-
+export class AgencyAggregate extends AbstractAggregate<AgencyAggregateIdInterface, AgencyAggregateRecordInterface>{
   validateUpdateConsultantRole(consultantRoleId: string): void {
     if (!find(this.aggregate.consultant_roles, {_id: consultantRoleId})) {
       throw new ResourceNotFoundError('consultant role not found');
@@ -42,18 +41,5 @@ export class AgencyAggregate {
     }
 
     return role.status !== AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_DISABLED;
-  }
-
-  getId(): AgencyAggregateIdInterface {
-    return this.id;
-  }
-
-  getLastEventId(): number {
-    return this.aggregate.last_sequence_id;
-  }
-
-  // Base class method for all aggregates
-  toJSON(): AgencyAggregateRecordInterface {
-    return this.aggregate;
   }
 }
