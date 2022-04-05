@@ -997,6 +997,7 @@ definitions:
                 - CONSULTANT_ROLE_NOT_FOUND
                 - CONSULTANT_ROLE_NOT_ENABLED
                 - ANOTHER_CONSULTANT_PROCESS_ACTIVE
+                - CONSULTANT_ALREADY_ASSIGNED_ROLE
             message:
               type: string
             path:
