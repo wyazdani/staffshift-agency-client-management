@@ -5,7 +5,7 @@ import {get, isEmpty} from 'lodash';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
 import {CommandBus} from '../aggregates/CommandBus';
-import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
+import {AgencyCommandBus} from '../aggregates/Agency/AgencyCommandBus';
 import {
   AddAgencyConsultantRoleCommandInterface,
   DisableAgencyConsultantRoleCommandInterface,
@@ -38,8 +38,13 @@ export const addAgencyConsultantRole = async (
     const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const roleId = new ObjectID().toString();
+    const cmd = {
+      _id: {agency_id: agencyId},
+      type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
+      data: {_id: roleId, ...payload}
+    };
 
-    await req.commandBus.addAgencyConsultantRole(agencyId, {_id: roleId, ...payload});
+    await req.commandBus.execute(cmd);
     res.statusCode = 202;
     res.setHeader('Location', LocationHelper.getRelativeLocation(`/agency/${agencyId}/consultant-roles/${roleId}`));
     res.end();
@@ -65,7 +70,7 @@ export const updateAgencyConsultantRole = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
     const commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;
-    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const commandBus = AgencyCommandBus.getCommandBus(get(req, 'eventRepository'));
     const command: UpdateAgencyConsultantRoleCommandInterface = {
       type: commandType,
       data: {...payload, _id: consultantRoleId}
@@ -105,7 +110,7 @@ export const enableAgencyConsultantRole = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
     const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
-    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const commandBus = AgencyCommandBus.getCommandBus(get(req, 'eventRepository'));
     // Decide how auth / audit data gets from here to the event in the event store.
     const command: EnableAgencyConsultantRoleCommandInterface = {
       type: commandType,
@@ -142,7 +147,7 @@ export const disableAgencyConsultantRole = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
     const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
-    const commandBus = AgencyCommandBusFactory.getCommandBus(get(req, 'eventRepository'));
+    const commandBus = AgencyCommandBus.getCommandBus(get(req, 'eventRepository'));
     // Decide how auth / audit data gets from here to the event in the event store.
     const command: DisableAgencyConsultantRoleCommandInterface = {
       type: commandType,

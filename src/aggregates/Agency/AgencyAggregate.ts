@@ -8,7 +8,7 @@ import {
 } from './types';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 
-export class AgencyAggregate extends AbstractAggregate<AgencyAggregateIdInterface, AgencyAggregateRecordInterface>{
+export class AgencyAggregate extends AbstractAggregate<AgencyAggregateIdInterface, AgencyAggregateRecordInterface> {
   validateUpdateConsultantRole(consultantRoleId: string): void {
     if (!find(this.aggregate.consultant_roles, {_id: consultantRoleId})) {
       throw new ResourceNotFoundError('consultant role not found');

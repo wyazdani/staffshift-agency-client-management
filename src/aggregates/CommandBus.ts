@@ -1,6 +1,5 @@
 import {EventRepository} from '../EventRepository';
 import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
-import {AgencyCommandBusFactory} from '../factories/AgencyCommandBusFactory';
 import {AgencyCommandBus} from './Agency/AgencyCommandBus';
 import {AgencyRepository} from './Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from './Agency/AgencyWriteProjectionHandler';
@@ -16,7 +15,7 @@ export class CommandBus {
   constructor(private eventRepository: EventRepository) {}
   private get agencyCommandBus() {
     if (!this._agencyCommandBus) {
-      this._agencyCommandBus = AgencyCommandBusFactory.getCommandBus(this.eventRepository);
+      this._agencyCommandBus = AgencyCommandBus.getCommandBus(this.eventRepository);
     }
     return this._agencyCommandBus;
   }
@@ -31,6 +30,11 @@ export class CommandBus {
     }
     return this._agencyClientCommandBus;
   }
+
+  async execute(cmd: unknown) {
+    //TODO add suishy bits here
+  }
+
   async addAgencyConsultantRole(agencyId: string, data: AddAgencyConsultantRoleCommandDataInterface): Promise<void> {
     await this.agencyCommandBus.execute(agencyId, {
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
