@@ -42,7 +42,7 @@ export const addAgencyConsultantRole = async (
       aggregateId: {agency_id: agencyId},
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
       data: {_id: roleId, ...payload}
-    } as AgencyAggregateCommandInterface;
+    } as AddAgencyConsultantRoleCommandInterface;
 
     await req.commandBus.execute(cmd);
     res.statusCode = 202;
@@ -69,18 +69,18 @@ export const updateAgencyConsultantRole = async (
     const payload = get(req, 'swagger.params.agency_consultant_role_update_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-    const commandType = AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE;
-    const commandBus = AgencyCommandBus.getCommandBus(get(req, 'eventRepository'));
-    const command: UpdateAgencyConsultantRoleCommandInterface = {
-      type: commandType,
-      data: {...payload, _id: consultantRoleId}
-    };
 
     if (isEmpty(payload)) {
       throw new ValidationError('Nothing to update, you need to put at least one property to update');
     }
 
-    await commandBus.execute(agencyId, command);
+    const cmd = {
+      aggregateId: {agency_id: agencyId},
+      type: AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
+      data: {...payload, _id: consultantRoleId}
+    } as UpdateAgencyConsultantRoleCommandInterface;
+
+    await req.commandBus.execute(cmd);
     res.statusCode = 202;
     res.end();
   } catch (err) {
@@ -109,16 +109,13 @@ export const enableAgencyConsultantRole = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-    const commandType = AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE;
-    const commandBus = AgencyCommandBus.getCommandBus(get(req, 'eventRepository'));
-    // Decide how auth / audit data gets from here to the event in the event store.
-    const command: EnableAgencyConsultantRoleCommandInterface = {
-      type: commandType,
+    const cmd = {
+      aggregateId: {agency_id: agencyId},
+      type: AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
       data: {_id: consultantRoleId}
-    };
+    } as EnableAgencyConsultantRoleCommandInterface;
 
-    // Passing in the agency id here feels strange
-    await commandBus.execute(agencyId, command);
+    await req.commandBus.execute(cmd);
     // This needs to be centralised and done better
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
@@ -146,16 +143,13 @@ export const disableAgencyConsultantRole = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-    const commandType = AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE;
-    const commandBus = AgencyCommandBus.getCommandBus(get(req, 'eventRepository'));
-    // Decide how auth / audit data gets from here to the event in the event store.
-    const command: DisableAgencyConsultantRoleCommandInterface = {
-      type: commandType,
+    const cmd = {
+      aggregateId: {agency_id: agencyId},
+      type: AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE,
       data: {_id: consultantRoleId}
-    };
+    } as DisableAgencyConsultantRoleCommandInterface;
 
-    // Passing in the agency id here feels strange
-    await commandBus.execute(agencyId, command);
+    await req.commandBus.execute(cmd);
     // This needs to be centralised and done better
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');

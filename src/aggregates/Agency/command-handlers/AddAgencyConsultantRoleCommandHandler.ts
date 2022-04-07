@@ -5,7 +5,7 @@ import {
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
-import {AgencyCommandEnum} from '../types';
+import {AgencyAggregateCommandInterface, AgencyCommandEnum} from '../types';
 import {EventsEnum} from '../../../Events';
 
 /**
@@ -19,10 +19,11 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
   /**
    * Build and save events caused by disableAgencyConsultantRole command
    */
-  async execute(agencyId: string, commandData: AddAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyRepository.getAggregate({agency_id: agencyId});
+  async execute(command: AgencyAggregateCommandInterface): Promise<void> {
+    const aggregate = await this.agencyRepository.getAggregate(command.aggregateId);
     let seqId = aggregate.getLastSequenceId();
     // We are looking to auto enable newly created consultant roles hence the two events
+    const commandData = command.data as AddAgencyConsultantRoleCommandDataInterface;
 
     await this.agencyRepository.save([
       {

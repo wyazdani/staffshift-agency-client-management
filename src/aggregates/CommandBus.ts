@@ -28,12 +28,6 @@ export class CommandBus {
     this._commandRegistry[cmd.commandType] = cmd;
   }
 
-  private get agencyCommandBus() {
-    if (!this._agencyCommandBus) {
-      this._agencyCommandBus = AgencyCommandBus.getCommandBus(this.eventRepository);
-    }
-    return this._agencyCommandBus;
-  }
   private get agencyClientCommandBus() {
     if (!this._agencyClientCommandBus) {
       const agencyRepository = new AgencyRepository(this.eventRepository, new AgencyWriteProjectionHandler());
@@ -46,18 +40,11 @@ export class CommandBus {
     return this._agencyClientCommandBus;
   }
 
-  async execute(cmd: AggregateCommandInterface) {
+  async execute(cmd: AggregateCommandInterface): Promise<void> {
     if (!this._commandRegistry[cmd.type]) {
       // console.log(`THERE WAS NO CMD REGISTERED FOR ${cmd.type}`);
     }
     return this._commandRegistry[cmd.type].execute(cmd);
-  }
-
-  async addAgencyConsultantRole(agencyId: string, data: AddAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    await this.agencyCommandBus.execute(agencyId, {
-      type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
-      data
-    });
   }
 
   async addAgencyClientConsultant(

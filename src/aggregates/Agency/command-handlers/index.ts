@@ -2,12 +2,10 @@ import {AddAgencyConsultantRoleCommandHandler} from './AddAgencyConsultantRoleCo
 import {DisableAgencyConsultantRoleCommandHandler} from './DisableAgencyConsultantRoleCommandHandler';
 import {EnableAgencyConsultantRoleCommandHandler} from './EnableAgencyConsultantRoleCommandHandler';
 import {UpdateAgencyConsultantRoleCommandHandler} from './UpdateAgencyConsultantRoleCommandHandler';
-import {AddAgencyConsultantRoleCommandHandlerNeil} from './AddAgencyConsultantRoleCommandHandlerNeil';
 
 export {
   AddAgencyConsultantRoleCommandHandler,
   UpdateAgencyConsultantRoleCommandHandler,
   DisableAgencyConsultantRoleCommandHandler,
-  EnableAgencyConsultantRoleCommandHandler,
-  AddAgencyConsultantRoleCommandHandlerNeil
+  EnableAgencyConsultantRoleCommandHandler
 };

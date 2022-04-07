@@ -1,7 +1,7 @@
 import {AgencyConsultantRoleEnabledEventStoreDataInterface} from 'EventTypes';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
-import {AgencyCommandEnum} from '../types';
+import {AgencyAggregateCommandInterface, AgencyCommandEnum} from '../types';
 import {EnableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
 import {EventsEnum} from '../../../Events';
 
@@ -16,9 +16,10 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
   /**
    * Build and save event caused by enableAgencyConsultantRole command
    */
-  async execute(agencyId: string, commandData: EnableAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyRepository.getAggregate({agency_id: agencyId});
+  async execute(command: AgencyAggregateCommandInterface): Promise<void> {
+    const aggregate = await this.agencyRepository.getAggregate(command.aggregateId);
     const seqId = aggregate.getLastSequenceId();
+    const commandData = command.data as EnableAgencyConsultantRoleCommandDataInterface;
 
     if (!aggregate.canEnableConsultantRole(commandData._id)) {
       return;
