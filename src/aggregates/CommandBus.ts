@@ -3,27 +3,22 @@ import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBus
 import {AgencyCommandBus} from './Agency/AgencyCommandBus';
 import {AgencyRepository} from './Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from './Agency/AgencyWriteProjectionHandler';
-import {AgencyCommandEnum} from './Agency/types';
-import {AddAgencyConsultantRoleCommandDataInterface} from './Agency/types/CommandDataTypes';
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
 import {AgencyClientCommandEnum} from './AgencyClient/types';
 import {AddAgencyClientConsultantCommandDataInterface} from './AgencyClient/types/CommandDataTypes';
-import {AggregateCommandBusType} from './AggregateCommandBusType';
 import {AggregateCommandHandlerInterface} from './AggregateCommandHandlerInterface';
 import {AggregateCommandInterface} from './AggregateCommandInterface';
 
 export class CommandBus {
   private _commandRegistry: {[key: string]: AggregateCommandHandlerInterface} = {};
-  private _agencyCommandBus: AgencyCommandBus;
   private _agencyClientCommandBus: AgencyClientCommandBus;
   constructor(private eventRepository: EventRepository) {
     AgencyCommandBus.registerCommandHandlers(eventRepository, this);
-    // console.log(this._commandRegistry);
   }
 
   registerAggregateCommand(cmd: AggregateCommandHandlerInterface): void {
     if (this._commandRegistry[cmd.commandType]) {
-      // console.log('DUPLICATE REGISTRY THINGS ARE BAD AND EXPLODE');
+      throw new Error(`Duplicate command type registered, ${cmd.commandType} already exists`);
     }
     this._commandRegistry[cmd.commandType] = cmd;
   }
@@ -42,7 +37,7 @@ export class CommandBus {
 
   async execute(cmd: AggregateCommandInterface): Promise<void> {
     if (!this._commandRegistry[cmd.type]) {
-      // console.log(`THERE WAS NO CMD REGISTERED FOR ${cmd.type}`);
+      throw new Error(`Command type: ${cmd.type} has not been registered`);
     }
     return this._commandRegistry[cmd.type].execute(cmd);
   }

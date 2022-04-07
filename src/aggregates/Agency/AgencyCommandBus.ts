@@ -1,5 +1,4 @@
 import {AgencyCommandHandlerInterface} from './types/AgencyCommandHandlerInterface';
-import {AgencyCommandInterface} from './types';
 import {
   AddAgencyConsultantRoleCommandHandler,
   UpdateAgencyConsultantRoleCommandHandler,
@@ -9,12 +8,13 @@ import {
 import {AgencyRepository} from './AgencyRepository';
 import {EventRepository} from '../../EventRepository';
 import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
-import {AggregateCommandBusInterface} from '../AggregateCommandBusInterface';
-import {AggregateCommandInterface} from '../AggregateCommandInterface';
 import {CommandBus} from '../CommandBus';
-import {AggregateCommandHandlerInterface} from '../AggregateCommandHandlerInterface';
-
-const handlers = [AddAgencyConsultantRoleCommandHandler];
+const handlers = [
+  AddAgencyConsultantRoleCommandHandler,
+  UpdateAgencyConsultantRoleCommandHandler,
+  EnableAgencyConsultantRoleCommandHandler,
+  DisableAgencyConsultantRoleCommandHandler
+];
 
 /**
  * Responsible for routing all agency related commands to their corresponding handlers
