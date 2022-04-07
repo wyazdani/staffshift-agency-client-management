@@ -1,7 +1,7 @@
 import {AgencyConsultantRoleDisabledEventStoreDataInterface} from 'EventTypes';
 import {AgencyRepository} from '../AgencyRepository';
-import {AgencyAggregateCommandInterface, AgencyCommandEnum} from '../types';
-import {DisableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
+import {AgencyCommandEnum} from '../types';
+import {DisableAgencyConsultantRoleCommandInterface} from '../types/CommandTypes';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {EventsEnum} from '../../../Events';
 
@@ -16,12 +16,11 @@ export class DisableAgencyConsultantRoleCommandHandler implements AgencyCommandH
   /**
    * Build and save event caused by disableAgencyConsultantRole command
    */
-  async execute(command: AgencyAggregateCommandInterface): Promise<void> {
+  async execute(command: DisableAgencyConsultantRoleCommandInterface): Promise<void> {
     const aggregate = await this.agencyRepository.getAggregate(command.aggregateId);
     const seqId = aggregate.getLastSequenceId();
-    const commandData = command.data as DisableAgencyConsultantRoleCommandDataInterface;
 
-    if (!aggregate.canDisableConsultantRole(commandData._id)) {
+    if (!aggregate.canDisableConsultantRole(command.data._id)) {
       return;
     }
     await this.agencyRepository.save([
@@ -29,7 +28,7 @@ export class DisableAgencyConsultantRoleCommandHandler implements AgencyCommandH
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData._id
+          _id: command.data._id
         } as AgencyConsultantRoleDisabledEventStoreDataInterface,
         sequence_id: seqId + 1
       }

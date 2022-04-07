@@ -4,15 +4,13 @@ import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get, isEmpty} from 'lodash';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {Error} from 'mongoose';
-import {CommandBus} from '../aggregates/CommandBus';
-import {AgencyCommandBus} from '../aggregates/Agency/AgencyCommandBus';
 import {
   AddAgencyConsultantRoleCommandInterface,
   DisableAgencyConsultantRoleCommandInterface,
   EnableAgencyConsultantRoleCommandInterface,
   UpdateAgencyConsultantRoleCommandInterface
 } from '../aggregates/Agency/types/CommandTypes';
-import {AgencyAggregateCommandInterface, AgencyCommandEnum} from '../aggregates/Agency/types';
+import {AgencyCommandEnum} from '../aggregates/Agency/types';
 import {GenericRepository} from '../GenericRepository';
 import {LocationHelper} from '../helpers/LocationHelper';
 import {QueryHelper} from 'a24-node-query-utils';
