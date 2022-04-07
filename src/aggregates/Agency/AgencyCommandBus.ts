@@ -1,4 +1,3 @@
-import {AgencyCommandHandlerInterface} from './types/AgencyCommandHandlerInterface';
 import {
   AddAgencyConsultantRoleCommandHandler,
   UpdateAgencyConsultantRoleCommandHandler,
@@ -20,9 +19,7 @@ const handlers = [
  * Responsible for routing all agency related commands to their corresponding handlers
  */
 export class AgencyCommandBus {
-  private commandHandlers: AgencyCommandHandlerInterface[] = [];
-
-  static registerCommandHandlers(eventRepository: EventRepository, commandBus: CommandBus) {
+  static registerCommandHandlers(eventRepository: EventRepository, commandBus: CommandBus): void {
     const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
 
     for (const item of handlers) {

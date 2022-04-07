@@ -6,12 +6,12 @@ import {AgencyWriteProjectionHandler} from './Agency/AgencyWriteProjectionHandle
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
 import {AgencyClientCommandEnum} from './AgencyClient/types';
 import {AddAgencyClientConsultantCommandDataInterface} from './AgencyClient/types/CommandDataTypes';
-import {AggregateCommandHandlerInterface} from './AggregateCommandHandlerInterface';
-import {AggregateCommandInterface} from './AggregateCommandInterface';
+import {AggregateCommandInterface, AggregateCommandHandlerInterface} from './types';
 
 export class CommandBus {
   private _commandRegistry: {[key: string]: AggregateCommandHandlerInterface} = {};
   private _agencyClientCommandBus: AgencyClientCommandBus;
+
   constructor(private eventRepository: EventRepository) {
     AgencyCommandBus.registerCommandHandlers(eventRepository, this);
   }

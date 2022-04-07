@@ -1,5 +1,5 @@
 import {AgencyAggregateIdInterface} from '.';
-import {AggregateCommandInterface} from '../../AggregateCommandInterface';
+import {AggregateCommandInterface} from '../../types/AggregateCommandInterface';
 import {AgencyCommandDataType} from './AgencyCommandDataType';
 
 export interface AgencyAggregateCommandInterface extends AggregateCommandInterface {
