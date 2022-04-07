@@ -38,10 +38,10 @@ describe('AgencyClientAggregate', () => {
 
       const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Not allowed consultant role');
+        .should.be.rejectedWith(ValidationError, 'Consultant role not found');
 
       error.should.deep.equal(
-        new ValidationError('Not allowed consultant role', [
+        new ValidationError('Consultant role not found', [
           {
             code: 'CONSULTANT_ROLE_NOT_FOUND',
             message: `Consultant role ${consultant.consultant_role_id} does not not exist`,
@@ -75,14 +75,61 @@ describe('AgencyClientAggregate', () => {
 
       const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Not allowed consultant role');
+        .should.be.rejectedWith(ValidationError, 'Max consultants already assigned');
 
       error.should.deep.equal(
-        new ValidationError('Not allowed consultant role', [
+        new ValidationError('Max consultants already assigned', [
           {
             code: 'MAX_CONSULTANTS_ASSIGNED',
             message: `Max consultants already assigned for consultant role id: ${consultant.consultant_role_id}`,
             path: ['consultant_role_id']
+          }
+        ])
+      );
+      assert.equal(
+        agencyRepositoryStub.getAggregate.getCall(0).args[0],
+        agencyId,
+        'getAggregate called with incorrect args'
+      );
+      assert.equal(
+        AgencyAggregateStub.getConsultantRole.getCall(0).args[0],
+        roleId,
+        'getConsultantRole called with incorrect args'
+      );
+    });
+
+    it('should return validation error when consultant already assigned for the role', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site',
+        consultants: [consultant]
+      };
+      const consultantRole = {
+        _id: '1010',
+        name: 'ooh',
+        description: 'blah',
+        max_consultants: 2,
+        status: AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED
+      };
+
+      const AgencyAggregateStub = stubConstructor(AgencyAggregate);
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+
+      agencyRepositoryStub.getAggregate.resolves(AgencyAggregateStub);
+      AgencyAggregateStub.getConsultantRole.returns(consultantRole);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      const error = await agencyClientAggregate
+        .validateAddClientConsultant(consultant)
+        .should.be.rejectedWith(ValidationError, 'Consultant already assigned');
+
+      error.should.deep.equal(
+        new ValidationError('Consultant already assigned', [
+          {
+            code: 'CONSULTANT_ALREADY_ASSIGNED_ROLE',
+            message: `Consultant ${consultant.consultant_id} already assigned to role ${consultant.consultant_role_id}`,
+            path: ['consultant_id']
           }
         ])
       );
@@ -122,10 +169,10 @@ describe('AgencyClientAggregate', () => {
 
       const error = await agencyClientAggregate
         .validateAddClientConsultant(consultant)
-        .should.be.rejectedWith(ValidationError, 'Not allowed consultant role');
+        .should.be.rejectedWith(ValidationError, 'Consultant role not enabled');
 
       error.should.deep.equal(
-        new ValidationError('Not allowed consultant role', [
+        new ValidationError('Consultant role not enabled', [
           {
             code: 'CONSULTANT_ROLE_NOT_ENABLED',
             message: `Consultant role ${consultant.consultant_role_id} is not enabled`,
@@ -147,14 +194,23 @@ describe('AgencyClientAggregate', () => {
 
     it('should return validation error when client is not linked to agency', async function () {
       const aggregate = {
-        last_sequence_id: 0
+        last_sequence_id: 1,
+        client_type: 'site',
+        consultants: [consultant]
       };
       const consultantRole = {
-        _id: '2020',
+        _id: 'other_role',
         name: 'ooh',
         description: 'blah',
-        max_consultants: 5,
+        max_consultants: 1,
         status: AgencyConsultantRoleEnum.AGENCY_CONSULTANT_ROLE_STATUS_ENABLED
+      };
+      const assignConsultant = {
+        consultant_role_id: 'other_role',
+        _id: '1010',
+        consultant_id: '3030',
+        client_type: 'site',
+        site_id: '12345'
       };
 
       const AgencyAggregateStub = stubConstructor(AgencyAggregate);
@@ -165,7 +221,7 @@ describe('AgencyClientAggregate', () => {
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
 
       await agencyClientAggregate
-        .validateAddClientConsultant(consultant)
+        .validateAddClientConsultant(assignConsultant)
         .should.be.rejectedWith(ResourceNotFoundError, 'Agency client not found');
       assert.equal(
         agencyRepositoryStub.getAggregate.getCall(0).args[0],
@@ -174,7 +230,7 @@ describe('AgencyClientAggregate', () => {
       );
       assert.equal(
         AgencyAggregateStub.getConsultantRole.getCall(0).args[0],
-        roleId,
+        'other_role',
         'getConsultantRole called with incorrect args'
       );
     });

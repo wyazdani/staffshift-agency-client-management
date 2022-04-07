@@ -951,6 +951,7 @@ definitions:
                 - MAX_CONSULTANTS_ASSIGNED
                 - CONSULTANT_ROLE_NOT_FOUND
                 - CONSULTANT_ROLE_NOT_ENABLED
+                - CONSULTANT_ALREADY_ASSIGNED_ROLE
             message:
               type: string
             path:

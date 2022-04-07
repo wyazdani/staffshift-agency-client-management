@@ -32,7 +32,7 @@ export class AgencyClientAggregate {
       countBy(this.aggregate.consultants, {consultant_role_id: consultant.consultant_role_id}).true || 0;
 
     if (!consultantRole) {
-      throw new ValidationError('Not allowed consultant role', [
+      throw new ValidationError('Consultant role not found', [
         {
           code: 'CONSULTANT_ROLE_NOT_FOUND',
           message: `Consultant role ${consultant.consultant_role_id} does not not exist`,
@@ -42,7 +42,7 @@ export class AgencyClientAggregate {
     }
 
     if (currentCount + 1 > consultantRole.max_consultants) {
-      throw new ValidationError('Not allowed consultant role', [
+      throw new ValidationError('Max consultants already assigned', [
         {
           code: 'MAX_CONSULTANTS_ASSIGNED',
           message: `Max consultants already assigned for consultant role id: ${consultant.consultant_role_id}`,
@@ -52,11 +52,26 @@ export class AgencyClientAggregate {
     }
 
     if (consultantRole.status != 'enabled') {
-      throw new ValidationError('Not allowed consultant role', [
+      throw new ValidationError('Consultant role not enabled', [
         {
           code: 'CONSULTANT_ROLE_NOT_ENABLED',
           message: `Consultant role ${consultant.consultant_role_id} is not enabled`,
           path: ['consultant_role_id']
+        }
+      ]);
+    }
+
+    if (
+      find(this.aggregate.consultants, {
+        consultant_role_id: consultant.consultant_role_id,
+        consultant_id: consultant.consultant_id
+      })
+    ) {
+      throw new ValidationError('Consultant already assigned', [
+        {
+          code: 'CONSULTANT_ALREADY_ASSIGNED_ROLE',
+          message: `Consultant ${consultant.consultant_id} already assigned to role ${consultant.consultant_role_id}`,
+          path: ['consultant_id']
         }
       ]);
     }
