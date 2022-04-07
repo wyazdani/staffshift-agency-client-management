@@ -22,7 +22,7 @@ export class LinkAgencyClientCommandHandler implements AgencyClientCommandHandle
     const isNotLinked = !aggregate.isLinked();
 
     if (isNotLinked) {
-      const eventId = aggregate.getLastEventId();
+      const eventId = aggregate.getLastSequenceId();
 
       await this.agencyClientRepository.save([
         {

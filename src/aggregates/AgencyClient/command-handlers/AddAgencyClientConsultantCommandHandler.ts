@@ -20,7 +20,7 @@ export class AddAgencyClientConsultantCommandHandler implements AgencyClientComm
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     await aggregate.validateAddClientConsultant(command.data);
-    const eventId = aggregate.getLastEventId();
+    const eventId = aggregate.getLastSequenceId();
 
     await this.agencyClientRepository.save([
       {

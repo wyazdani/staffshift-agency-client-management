@@ -20,7 +20,7 @@ export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientC
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     await aggregate.validateRemoveClientConsultant(command.data);
-    const eventId = aggregate.getLastEventId();
+    const eventId = aggregate.getLastSequenceId();
 
     await this.agencyClientRepository.save([
       {

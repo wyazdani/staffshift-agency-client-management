@@ -20,8 +20,8 @@ export class SyncAgencyClientCommandHandler implements AgencyClientCommandHandle
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     // Only create the event if we are not aware of this aggregate
-    if (aggregate.getLastEventId() === 0) {
-      let eventId = aggregate.getLastEventId();
+    if (aggregate.getLastSequenceId() === 0) {
+      let eventId = aggregate.getLastSequenceId();
 
       await this.agencyClientRepository.save([
         {

@@ -22,8 +22,8 @@ export class UnlinkAgencyClientCommandHandler implements AgencyClientCommandHand
     const isLinked = aggregate.isLinked();
 
     // If linked OR this is the first time we are dealing with this aggregate
-    if (isLinked || aggregate.getLastEventId() == 0) {
-      const eventId = aggregate.getLastEventId();
+    if (isLinked || aggregate.getLastSequenceId() == 0) {
+      const eventId = aggregate.getLastSequenceId();
 
       await this.agencyClientRepository.save([
         {

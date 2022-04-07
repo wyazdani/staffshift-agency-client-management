@@ -6,13 +6,19 @@ import {
   AgencyClientAggregateRecordInterface,
   AgencyClientConsultantInterface
 } from './types';
+import {AbstractAggregate} from '../AbstractAggregate';
 
-export class AgencyClientAggregate {
+export class AgencyClientAggregate extends AbstractAggregate<
+  AgencyClientAggregateIdInterface,
+  AgencyClientAggregateRecordInterface
+> {
   constructor(
-    private id: AgencyClientAggregateIdInterface,
-    private aggregate: AgencyClientAggregateRecordInterface,
+    protected id: AgencyClientAggregateIdInterface,
+    protected aggregate: AgencyClientAggregateRecordInterface,
     private agencyRepository: AgencyRepository
-  ) {}
+  ) {
+    super(id, aggregate);
+  }
 
   /**
    * Check if agency client is linked or not
@@ -95,24 +101,5 @@ export class AgencyClientAggregate {
    */
   getConsultants(): AgencyClientConsultantInterface[] {
     return this.aggregate.consultants;
-  }
-
-  /**
-   * Return the agency client aggregate ID
-   */
-  getId(): AgencyClientAggregateIdInterface {
-    return this.id;
-  }
-
-  /**
-   * Return the previous agency client aggregate ID
-   */
-  getLastEventId(): number {
-    return this.aggregate.last_sequence_id;
-  }
-
-  // Base class method for all aggregates
-  toJSON(): AgencyClientAggregateRecordInterface {
-    return this.aggregate;
   }
 }
