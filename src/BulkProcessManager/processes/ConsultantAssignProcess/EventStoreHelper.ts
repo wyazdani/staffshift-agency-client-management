@@ -1,10 +1,7 @@
 import {EventStoreEncodedErrorInterface} from 'EventStoreEncodedErrorInterface';
 import {ObjectID} from 'mongodb';
-import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../../../aggregates/Agency/AgencyWriteProjectionHandler';
-import {AgencyClientCommandBus} from '../../../aggregates/AgencyClient/AgencyClientCommandBus';
+import {CommandBus} from '../../../aggregates/CommandBus';
 import {AgencyClientCommandEnum} from '../../../aggregates/AgencyClient/types';
-import {AddAgencyClientConsultantCommandDataInterface} from '../../../aggregates/AgencyClient/types/CommandDataTypes';
 import {ConsultantJobCommandBus} from '../../../aggregates/ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobCommandEnum} from '../../../aggregates/ConsultantJob/types';
 import {CompleteAssignConsultantCommandDataInterface} from '../../../aggregates/ConsultantJob/types/CommandDataTypes';
@@ -22,20 +19,19 @@ import {
 import {EventRepository} from '../../../EventRepository';
 import {ConsultantJobAssignCommandBusFactory} from '../../../factories/ConsultantJobAssignCommandBusFactory';
 import {ConsultantJobCommandBusFactory} from '../../../factories/ConsultantJobCommandBusFactory';
+import {AddAgencyClientConsultantCommandInterface} from '../../../aggregates/AgencyClient/types/CommandTypes';
 
 /**
  * Helper class to produce related events
  */
 export class EventStoreHelper {
   private consultantJobAssignCommandBus: ConsultantJobAssignCommandBus;
-  private agencyClientCommandBus: AgencyClientCommandBus;
+  private commandBus: CommandBus;
   private consultantJobAssignRepository: ConsultantJobAssignRepository;
   private consultantJobCommandBus: ConsultantJobCommandBus;
   constructor(private agencyId: string, private jobId: string, private eventRepository: EventRepository) {
     this.consultantJobAssignCommandBus = ConsultantJobAssignCommandBusFactory.getCommandBus(eventRepository);
-    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
-
-    this.agencyClientCommandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository, agencyRepository);
+    this.commandBus = new CommandBus(eventRepository);
 
     this.consultantJobAssignRepository = new ConsultantJobAssignRepository(
       eventRepository,
@@ -80,15 +76,20 @@ export class EventStoreHelper {
 
   async assignConsultantToClient(consultantRoleId: string, consultantId: string, clientId: string): Promise<void> {
     const id = new ObjectID().toString();
-
-    await this.agencyClientCommandBus.execute(this.agencyId, clientId, {
+    const command = {
+      aggregateId: {
+        agency_id: this.agencyId,
+        client_id: clientId
+      },
       type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
       data: {
         _id: id,
         consultant_role_id: consultantRoleId,
         consultant_id: consultantId
-      } as AddAgencyClientConsultantCommandDataInterface
-    });
+      }
+    } as AddAgencyClientConsultantCommandInterface;
+
+    await this.commandBus.execute(command);
   }
 
   async getConsultantJobAssignAggregate(agencyId: string, jobId: string): Promise<ConsultantJobAssignAggregate> {
