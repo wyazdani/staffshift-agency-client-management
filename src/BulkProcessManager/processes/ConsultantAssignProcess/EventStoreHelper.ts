@@ -20,7 +20,6 @@ import {
   FailItemConsultantJobAssignCommandDataInterface
 } from '../../../aggregates/ConsultantJobAssign/types/CommandDataTypes';
 import {EventRepository} from '../../../EventRepository';
-import {AgencyClientCommandBusFactory} from '../../../factories/AgencyClientCommandBusFactory';
 import {ConsultantJobAssignCommandBusFactory} from '../../../factories/ConsultantJobAssignCommandBusFactory';
 import {ConsultantJobCommandBusFactory} from '../../../factories/ConsultantJobCommandBusFactory';
 

@@ -2,8 +2,8 @@ import {AgencyClientUnlinkedEventStoreDataInterface} from 'EventTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum} from '../types';
-import {UnlinkAgencyClientCommandDataInterface} from '../types/CommandDataTypes';
 import {EventsEnum} from '../../../Events';
+import {UnlinkAgencyClientCommandInterface} from '../types/CommandTypes';
 
 /**
  * Class responsible for handling unlinkAgencyClient command
@@ -16,12 +16,8 @@ export class UnlinkAgencyClientCommandHandler implements AgencyClientCommandHand
   /**
    * Build and save event caused by unlinkAgencyClient command
    */
-  async execute(
-    agencyId: string,
-    clientId: string,
-    commandData: UnlinkAgencyClientCommandDataInterface
-  ): Promise<void> {
-    const aggregate = await this.agencyClientRepository.getAggregate(agencyId, clientId);
+  async execute(command: UnlinkAgencyClientCommandInterface): Promise<void> {
+    const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     const isLinked = aggregate.isLinked();
 
@@ -33,7 +29,7 @@ export class UnlinkAgencyClientCommandHandler implements AgencyClientCommandHand
         {
           type: EventsEnum.AGENCY_CLIENT_UNLINKED,
           aggregate_id: aggregate.getId(),
-          data: {...commandData} as AgencyClientUnlinkedEventStoreDataInterface,
+          data: {...command.data} as AgencyClientUnlinkedEventStoreDataInterface,
           sequence_id: eventId + 1
         }
       ]);

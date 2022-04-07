@@ -2,7 +2,6 @@ import {ObjectID} from 'mongodb';
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../aggregates/AgencyClient/types';
-import {CommandBus} from '../aggregates/CommandBus';
 import {GenericRepository} from '../GenericRepository';
 import {
   AgencyClientConsultantV3DocumentType,
@@ -12,7 +11,6 @@ import {PaginationHelper} from '../helpers/PaginationHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {QueryHelper} from 'a24-node-query-utils';
 import {Error} from 'mongoose';
-import {AgencyClientCommandBusFactory} from '../factories/AgencyClientCommandBusFactory';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {
   AddAgencyClientConsultantCommandInterface,
@@ -38,11 +36,13 @@ export const addAgencyClientConsultant = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const agencyClientConsultantId = new ObjectID().toString();
+    const cmd = {
+      aggregateId: {agency_id: agencyId, client_id: clientId},
+      type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
+      data: {...payload, _id: agencyClientConsultantId}
+    } as AddAgencyClientConsultantCommandInterface;
 
-    await req.commandBus.addAgencyClientConsultant(agencyId, clientId, {
-      ...payload,
-      _id: agencyClientConsultantId
-    });
+    await req.commandBus.execute(cmd);
     res.statusCode = 202;
     res.setHeader('Location', `${req.basePathName}/${agencyClientConsultantId}`);
     res.end();
@@ -67,16 +67,13 @@ export const removeAgencyClientConsultant = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const clientConsultantId = get(req, 'swagger.params.client_consultant_id.value', '');
-    const commandType = AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT;
-    const eventRepository = get(req, 'eventRepository');
-    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
-    const commandBus = AgencyClientCommandBusFactory.getCommandBus(eventRepository, agencyRepository);
-    const command: RemoveAgencyClientConsultantCommandInterface = {
-      type: commandType,
+    const cmd = {
+      aggregateId: {agency_id: agencyId, client_id: clientId},
+      type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
       data: {_id: clientConsultantId}
-    };
+    } as RemoveAgencyClientConsultantCommandInterface;
 
-    await commandBus.execute(agencyId, clientId, command);
+    await req.commandBus.execute(cmd);
     res.statusCode = 202;
     res.end();
   } catch (err) {

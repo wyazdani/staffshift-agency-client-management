@@ -5,20 +5,15 @@ import {EventStore} from '../../models/EventStore';
 import {connect, disconnect} from 'mongoose';
 import {EventRepository} from '../../EventRepository';
 import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../aggregates/AgencyClient/types';
-import {AgencyClientCommandBusFactory} from '../../factories/AgencyClientCommandBusFactory';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
-import {AgencyRepository} from '../../aggregates/Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../../aggregates/Agency/AgencyWriteProjectionHandler';
 import {AgencyOrganisationLinkDataType} from 'a24-node-staffshift-facade-client';
+import {CommandBus} from '../../aggregates/CommandBus';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
 const client = new FacadeClientHelper(loggerContext);
 const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
-const commandBus = AgencyClientCommandBusFactory.getCommandBus(
-  eventRepository,
-  new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler())
-);
+const commandBus = new CommandBus(eventRepository);
 
 const itemsPerPage = 100;
 
@@ -76,7 +71,7 @@ const syncAgencyClients = async (page: number): Promise<number> => {
   for (const item of response) {
     const details = getSyncCommandDetails(item);
 
-    await commandBus.execute(item.agency_id, details.clientId, details.command);
+    await commandBus.execute(details.command);
   }
 
   return response.length;
@@ -93,6 +88,10 @@ const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType)
     case 'organisation':
       return {
         command: {
+          aggregateId: {
+            agency_id: agencyClientLink.agency_id,
+            client_id: agencyClientLink.organisation_id
+          },
           type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
           data: {
             client_type: 'organisation',
@@ -105,6 +104,10 @@ const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType)
     case 'site':
       return {
         command: {
+          aggregateId: {
+            agency_id: agencyClientLink.agency_id,
+            client_id: agencyClientLink.organisation_id
+          },
           type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
           data: {
             organisation_id: agencyClientLink.organisation_id,
@@ -118,6 +121,10 @@ const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType)
     case 'ward':
       return {
         command: {
+          aggregateId: {
+            agency_id: agencyClientLink.agency_id,
+            client_id: agencyClientLink.organisation_id
+          },
           type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
           data: {
             organisation_id: agencyClientLink.organisation_id,

@@ -1,10 +1,10 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {FacadeClientHelper} from '../helpers/FacadeClientHelper';
-import {AgencyClientCommandBus} from '../aggregates/AgencyClient/AgencyClientCommandBus';
 import {RuntimeError} from 'a24-node-error-utils';
 import {DomainEventMessageInterface} from 'DomainEventTypes/DomainEventMessageInterface';
 import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEventDataInterface';
 import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../aggregates/AgencyClient/types';
+import {CommandBus} from '../aggregates/CommandBus';
 
 interface TriageEventToCommandInterface {
   agency_id: string;
@@ -19,7 +19,7 @@ interface TriageEventToCommandInterface {
 export class AgencyClientLinkStatus {
   constructor(
     private logger: LoggerContext,
-    private agencyClientCommandBus: AgencyClientCommandBus,
+    private commandBus: CommandBus,
     private facadeClientHelper: FacadeClientHelper
   ) {}
 
@@ -29,13 +29,9 @@ export class AgencyClientLinkStatus {
    * @param {Object} message  - The PubSub Triage Domain Event Message
    */
   public async apply(message: DomainEventMessageInterface<AgencyClientLinkDomainEventDataInterface>): Promise<void> {
-    const conversionData = await this.convertTriageEventToCommand(message.event.name, message.event_data);
+    const command = await this.convertTriageEventToCommand(message.event.name, message.event_data);
 
-    return this.agencyClientCommandBus.execute(
-      conversionData.agency_id,
-      conversionData.client_id,
-      conversionData.command
-    );
+    return this.commandBus.execute(command);
   }
 
   /**
@@ -48,41 +44,41 @@ export class AgencyClientLinkStatus {
   private async convertTriageEventToCommand(
     eventName: string,
     data: AgencyClientLinkDomainEventDataInterface
-  ): Promise<TriageEventToCommandInterface> {
+  ): Promise<AgencyClientCommandInterface> {
     try {
       // Handle the Organisation Delete
       if (eventName == 'agency_organisation_link_deleted') {
         return {
-          command: {
-            type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
-            data: {client_type: 'organisation'}
+          aggregateId: {
+            agency_id: data.agency_id,
+            client_id: data.organisation_id
           },
-          agency_id: data.agency_id,
-          client_id: data.organisation_id
+          type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
+          data: {client_type: 'organisation'}
         };
       }
 
       // Handle the Site Delete
       if (eventName == 'agency_organisation_site_link_deleted') {
         return {
-          command: {
-            type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
-            data: {organisation_id: data.organisation_id, client_type: 'site'}
+          aggregateId: {
+            agency_id: data.agency_id,
+            client_id: data.organisation_id
           },
-          agency_id: data.agency_id,
-          client_id: data.site_id
+          type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
+          data: {organisation_id: data.organisation_id, client_type: 'site'}
         };
       }
 
       // Handle the Ward Delete
       if (eventName == 'agency_organisation_site_ward_link_deleted') {
         return {
-          command: {
-            type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
-            data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
+          aggregateId: {
+            agency_id: data.agency_id,
+            client_id: data.organisation_id
           },
-          agency_id: data.agency_id,
-          client_id: data.ward_id
+          type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
+          data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
         };
       }
 
@@ -91,12 +87,12 @@ export class AgencyClientLinkStatus {
         const commandType = await this.getCommandType(data);
 
         return {
-          command: {
-            type: commandType,
-            data: {client_type: 'organisation'}
+          aggregateId: {
+            agency_id: data.agency_id,
+            client_id: data.organisation_id
           },
-          agency_id: data.agency_id,
-          client_id: data.organisation_id
+          type: commandType,
+          data: {client_type: 'organisation'}
         };
       }
 
@@ -108,12 +104,12 @@ export class AgencyClientLinkStatus {
         const commandType = await this.getCommandType(data);
 
         return {
-          command: {
-            type: commandType,
-            data: {organisation_id: data.organisation_id, client_type: 'site'}
+          aggregateId: {
+            agency_id: data.agency_id,
+            client_id: data.organisation_id
           },
-          agency_id: data.agency_id,
-          client_id: data.site_id
+          type: commandType,
+          data: {organisation_id: data.organisation_id, client_type: 'site'}
         };
       }
 
@@ -125,12 +121,12 @@ export class AgencyClientLinkStatus {
         const commandType = await this.getCommandType(data);
 
         return {
-          command: {
-            type: commandType,
-            data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
+          aggregateId: {
+            agency_id: data.agency_id,
+            client_id: data.organisation_id
           },
-          agency_id: data.agency_id,
-          client_id: data.ward_id
+          type: commandType,
+          data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
         };
       }
     } catch (err) {

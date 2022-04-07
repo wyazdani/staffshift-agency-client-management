@@ -2,8 +2,8 @@ import {AgencyClientLinkedEventStoreDataInterface} from 'EventTypes';
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum} from '../types';
-import {LinkAgencyClientCommandDataInterface} from '../types/CommandDataTypes';
 import {EventsEnum} from '../../../Events';
+import {LinkAgencyClientCommandInterface} from '../types/CommandTypes';
 
 /**
  * Class responsible for handling linkAgencyClient command
@@ -16,8 +16,8 @@ export class LinkAgencyClientCommandHandler implements AgencyClientCommandHandle
   /**
    * Build and save event caused by linkAgencyClient command
    */
-  async execute(agencyId: string, clientId: string, commandData: LinkAgencyClientCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyClientRepository.getAggregate(agencyId, clientId);
+  async execute(command: LinkAgencyClientCommandInterface): Promise<void> {
+    const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     const isNotLinked = !aggregate.isLinked();
 
@@ -28,7 +28,7 @@ export class LinkAgencyClientCommandHandler implements AgencyClientCommandHandle
         {
           type: EventsEnum.AGENCY_CLIENT_LINKED,
           aggregate_id: aggregate.getId(),
-          data: {...commandData} as AgencyClientLinkedEventStoreDataInterface,
+          data: {...command.data} as AgencyClientLinkedEventStoreDataInterface,
           sequence_id: eventId + 1
         }
       ]);
