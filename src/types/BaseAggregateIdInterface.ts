@@ -1,1 +1,3 @@
-export interface BaseAggregateIdInterface {}
+export interface BaseAggregateIdInterface {
+  agency_id: string;
+}
