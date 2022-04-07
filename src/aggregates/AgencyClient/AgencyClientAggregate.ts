@@ -25,7 +25,7 @@ export class AgencyClientAggregate {
    * Check all invariants of the agency client aggregate before adding a new agency client consultant
    */
   async validateAddClientConsultant(consultant: AgencyClientConsultantInterface): Promise<void> {
-    const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
+    const agencyAggregate = await this.agencyRepository.getAggregate({agency_id: this.id.agency_id});
     // Should this be another aggregate?
     const consultantRole = agencyAggregate.getConsultantRole(consultant.consultant_role_id);
     const currentCount =

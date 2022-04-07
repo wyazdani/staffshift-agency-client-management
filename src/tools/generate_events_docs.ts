@@ -21,7 +21,8 @@ let generatedSection = '';
 generatedSection += '<!--DATA_START-->\n';
 //Set the table headings
 generatedSection += '<table>';
-generatedSection += '<tr><td> Event Code </td><td> Event Type </td><td> Event Data </td><td> Event Aggregate </td><td> Description </td></tr> \n';
+generatedSection +=
+  '<tr><td> Event Code </td><td> Event Type </td><td> Event Data </td><td> Event Aggregate </td><td> Description </td></tr> \n';
 
 for (const [eventEnum, eventName] of Object.entries(EventsEnum)) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

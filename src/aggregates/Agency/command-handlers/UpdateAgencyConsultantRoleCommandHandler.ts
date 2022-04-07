@@ -17,7 +17,7 @@ export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHa
    * Build and save event caused by updateAgencyConsultantRole command
    */
   async execute(agencyId: string, commandData: UpdateAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyRepository.getAggregate(agencyId);
+    const aggregate = await this.agencyRepository.getAggregate({agency_id: agencyId});
 
     aggregate.validateUpdateConsultantRole(commandData._id);
 

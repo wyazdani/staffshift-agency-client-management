@@ -17,7 +17,7 @@ export class DisableAgencyConsultantRoleCommandHandler implements AgencyCommandH
    * Build and save event caused by disableAgencyConsultantRole command
    */
   async execute(agencyId: string, commandData: DisableAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyRepository.getAggregate(agencyId);
+    const aggregate = await this.agencyRepository.getAggregate({agency_id: agencyId});
     const seqId = aggregate.getLastSequenceId();
 
     if (!aggregate.canDisableConsultantRole(commandData._id)) {

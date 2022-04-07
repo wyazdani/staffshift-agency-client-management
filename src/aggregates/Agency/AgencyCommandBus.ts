@@ -4,17 +4,32 @@ import {
   AddAgencyConsultantRoleCommandHandler,
   UpdateAgencyConsultantRoleCommandHandler,
   EnableAgencyConsultantRoleCommandHandler,
-  DisableAgencyConsultantRoleCommandHandler
+  DisableAgencyConsultantRoleCommandHandler,
+  AddAgencyConsultantRoleCommandHandlerNeil
 } from './command-handlers';
 import {AgencyRepository} from './AgencyRepository';
 import {EventRepository} from '../../EventRepository';
 import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
+import {AggregateCommandBusInterface} from '../AggregateCommandBusInterface';
+import {AggregateCommandInterface} from '../AggregateCommandInterface';
+import {CommandBus} from '../CommandBus';
+import {AggregateCommandHandlerInterface} from '../AggregateCommandHandlerInterface';
+
+const handlers = [AddAgencyConsultantRoleCommandHandlerNeil];
 
 /**
  * Responsible for routing all agency related commands to their corresponding handlers
  */
-export class AgencyCommandBus {
+export class AgencyCommandBus implements AggregateCommandBusInterface {
   private commandHandlers: AgencyCommandHandlerInterface[] = [];
+
+  static registerCommandHandlers(eventRepository: EventRepository, commandBus: CommandBus) {
+    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
+
+    for (const item of handlers) {
+      commandBus.registerAggregateCommand(new item(agencyRepository));
+    }
+  }
 
   /**
    * Returns an instance of AgencyCommandBus with a list of supported command handlers configured
@@ -37,6 +52,17 @@ export class AgencyCommandBus {
   addHandler(commandHandler: AgencyCommandHandlerInterface) {
     this.commandHandlers.push(commandHandler);
     return this;
+  }
+
+  /**
+   * Execute the command by finding it's corresponding handler
+   */
+  async run(command: AggregateCommandInterface): Promise<void> {
+    const commandHandler = this.commandHandlers.find((handler) => handler.commandType === command.type);
+
+    if (!commandHandler) {
+      throw new Error(`Command type:${command.type} is not supported`);
+    }
   }
 
   /**

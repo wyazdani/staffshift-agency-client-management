@@ -8,11 +8,26 @@ import {AddAgencyConsultantRoleCommandDataInterface} from './Agency/types/Comman
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
 import {AgencyClientCommandEnum} from './AgencyClient/types';
 import {AddAgencyClientConsultantCommandDataInterface} from './AgencyClient/types/CommandDataTypes';
+import {AggregateCommandBusType} from './AggregateCommandBusType';
+import {AggregateCommandHandlerInterface} from './AggregateCommandHandlerInterface';
+import {AggregateCommandInterface} from './AggregateCommandInterface';
 
 export class CommandBus {
+  private _commandRegistry: {[key: string]: AggregateCommandHandlerInterface} = {};
   private _agencyCommandBus: AgencyCommandBus;
   private _agencyClientCommandBus: AgencyClientCommandBus;
-  constructor(private eventRepository: EventRepository) {}
+  constructor(private eventRepository: EventRepository) {
+    AgencyCommandBus.registerCommandHandlers(eventRepository, this);
+    // console.log(this._commandRegistry);
+  }
+
+  registerAggregateCommand(cmd: AggregateCommandHandlerInterface): void {
+    if (this._commandRegistry[cmd.commandType]) {
+      // console.log('DUPLICATE REGISTRY THINGS ARE BAD AND EXPLODE');
+    }
+    this._commandRegistry[cmd.commandType] = cmd;
+  }
+
   private get agencyCommandBus() {
     if (!this._agencyCommandBus) {
       this._agencyCommandBus = AgencyCommandBus.getCommandBus(this.eventRepository);
@@ -31,8 +46,11 @@ export class CommandBus {
     return this._agencyClientCommandBus;
   }
 
-  async execute(cmd: unknown) {
-    //TODO add suishy bits here
+  async execute(cmd: AggregateCommandInterface) {
+    if (!this._commandRegistry[cmd.type]) {
+      // console.log(`THERE WAS NO CMD REGISTERED FOR ${cmd.type}`);
+    }
+    return this._commandRegistry[cmd.type].execute(cmd);
   }
 
   async addAgencyConsultantRole(agencyId: string, data: AddAgencyConsultantRoleCommandDataInterface): Promise<void> {

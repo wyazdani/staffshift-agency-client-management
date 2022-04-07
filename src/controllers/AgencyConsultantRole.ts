@@ -12,7 +12,7 @@ import {
   EnableAgencyConsultantRoleCommandInterface,
   UpdateAgencyConsultantRoleCommandInterface
 } from '../aggregates/Agency/types/CommandTypes';
-import {AgencyCommandEnum} from '../aggregates/Agency/types';
+import {AgencyAggregateCommandInterface, AgencyCommandEnum} from '../aggregates/Agency/types';
 import {GenericRepository} from '../GenericRepository';
 import {LocationHelper} from '../helpers/LocationHelper';
 import {QueryHelper} from 'a24-node-query-utils';
@@ -39,10 +39,10 @@ export const addAgencyConsultantRole = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const roleId = new ObjectID().toString();
     const cmd = {
-      _id: {agency_id: agencyId},
+      aggregateId: {agency_id: agencyId},
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
       data: {_id: roleId, ...payload}
-    };
+    } as AgencyAggregateCommandInterface;
 
     await req.commandBus.execute(cmd);
     res.statusCode = 202;
