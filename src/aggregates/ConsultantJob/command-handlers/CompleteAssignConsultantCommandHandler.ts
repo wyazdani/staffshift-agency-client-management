@@ -14,7 +14,7 @@ export class CompleteAssignConsultantCommandHandler implements ConsultantJobComm
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     if (aggregate.validateCompleteJob(command.data._id)) {
-      let eventId = aggregate.getLastEventId();
+      let eventId = aggregate.getLastSequenceId();
 
       await this.repository.save([
         {

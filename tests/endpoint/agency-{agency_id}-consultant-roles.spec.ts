@@ -126,6 +126,7 @@ describe('/agency/{agency_id}/consultant-roles', () => {
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
   });
+
   describe('get', () => {
     beforeEach(async () => {
       await AgencyConsultantRolesProjectionScenarios.removeAll();

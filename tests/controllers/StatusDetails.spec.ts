@@ -2,8 +2,13 @@ import sinon from 'ts-sinon';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {getSystemStatus} from '../../src/controllers/StatusDetails';
 import {assert} from 'chai';
+import {CommandBus} from '../../src/aggregates/CommandBus';
+import {EventRepository} from '../../src/EventRepository';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('StatusDetails', () => {
+  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+
   afterEach(function () {
     sinon.restore();
   });
@@ -12,7 +17,8 @@ describe('StatusDetails', () => {
     it('should return uptime on success', async () => {
       const req = fakeRequest({
         swaggerParams: {},
-        basePathName: '/v1/localhost/path'
+        basePathName: '/v1/localhost/path',
+        commandBus
       });
       const res = fakeResponse();
       const setHeader = sinon.stub(res, 'setHeader');

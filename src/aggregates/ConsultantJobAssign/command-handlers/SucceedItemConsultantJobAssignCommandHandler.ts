@@ -13,7 +13,7 @@ export class SucceedItemConsultantJobAssignCommandHandler implements ConsultantJ
   async execute(command: SucceedItemConsultantJobAssignCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
-    let eventId = aggregate.getLastEventId();
+    let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
       {

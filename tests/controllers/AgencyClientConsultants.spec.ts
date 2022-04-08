@@ -8,12 +8,16 @@ import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {ObjectID} from 'mongodb';
 import {AgencyClientCommandEnum} from '../../src/aggregates/AgencyClient/types';
-import {AgencyClientCommandBus} from '../../src/aggregates/AgencyClient/AgencyClientCommandBus';
 import {GenericRepository} from '../../src/GenericRepository';
 import {QueryHelper} from 'a24-node-query-utils';
 import {PaginationHelper} from '../../src/helpers/PaginationHelper';
+import {CommandBus} from '../../src/aggregates/CommandBus';
+import {EventRepository} from '../../src/EventRepository';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('AgencyClientConsultants', () => {
+  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+
   afterEach(() => {
     sinon.restore();
   });
@@ -43,7 +47,8 @@ describe('AgencyClientConsultants', () => {
     it('success scenario', async () => {
       const req = fakeRequest({
         swaggerParams: params,
-        basePathName: '/v1/localhost/path'
+        basePathName: '/v1/localhost/path',
+        commandBus: commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
@@ -52,54 +57,47 @@ describe('AgencyClientConsultants', () => {
 
       sinon.stub(ObjectID.prototype, 'toString').returns(id);
 
-      const execute = sinon.stub(AgencyClientCommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
       await addAgencyClientConsultant(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.deepEqual(setHeader.getCall(0).args, ['Location', location], 'Incorrect location header set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
-      assert.deepEqual(
-        execute.getCall(0).args,
-        [
-          agencyId,
-          clientId,
-          {
-            type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
-            data: payload
-          }
-        ],
-        'AgencyClientCommandBus.execute called with incorrect arguments'
-      );
+      execute.should.have.been.calledOnceWith({
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
+        data: payload
+      });
     });
 
     it('failure scenario', async () => {
       const req = fakeRequest({
         swaggerParams: params,
-        basePathName: '/v1/localhost/path'
+        basePathName: '/v1/localhost/path',
+        commandBus: commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
 
       sinon.stub(ObjectID.prototype, 'toString').returns(id);
       const error = new Error('custom');
-      const execute = sinon.stub(AgencyClientCommandBus.prototype, 'execute').rejects(error);
+      const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 
       await addAgencyClientConsultant(req, res, next);
       assert.equal(next.callCount, 1, 'Expected next to be called once');
       assert.equal(next.getCall(0).args[0], error, 'Returned error does not match expected');
-      assert.deepEqual(
-        execute.getCall(0).args,
-        [
-          agencyId,
-          clientId,
-          {
-            type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
-            data: payload
-          }
-        ],
-        'AgencyClientCommandBus.execute expected parameters failed'
-      );
+      execute.should.have.been.calledOnceWith({
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
+        data: payload
+      });
     });
   });
 
@@ -122,56 +120,50 @@ describe('AgencyClientConsultants', () => {
     it('success scenario', async () => {
       const req = fakeRequest({
         swaggerParams: params,
-        basePathName: '/v1/localhost/path'
+        basePathName: '/v1/localhost/path',
+        commandBus: commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
-      const execute = sinon.stub(AgencyClientCommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
       await removeAgencyClientConsultant(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
-      assert.deepEqual(
-        execute.getCall(0).args,
-        [
-          agencyId,
-          clientId,
-          {
-            type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
-            data: {_id: id}
-          }
-        ],
-        'AgencyClientCommandBus.execute called with incorrect arguments'
-      );
+      execute.should.have.been.calledOnceWith({
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
+        data: {_id: id}
+      });
     });
 
     it('failure scenario', async () => {
       const req = fakeRequest({
         swaggerParams: params,
-        basePathName: '/v1/localhost/path'
+        basePathName: '/v1/localhost/path',
+        commandBus: commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
       const error = new Error('custom');
-      const execute = sinon.stub(AgencyClientCommandBus.prototype, 'execute').rejects(error);
+      const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 
       await removeAgencyClientConsultant(req, res, next);
       assert.equal(next.callCount, 1, 'Expected next to be called once');
       assert.equal(next.getCall(0).args[0], error, 'Returned error does not match expected');
-      assert.deepEqual(
-        execute.getCall(0).args,
-        [
-          agencyId,
-          clientId,
-          {
-            type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
-            data: {_id: id}
-          }
-        ],
-        'AgencyClientCommandBus.execute expected parameters failed'
-      );
+      execute.should.have.been.calledOnceWith({
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
+        data: {_id: id}
+      });
     });
   });
 
@@ -188,7 +180,8 @@ describe('AgencyClientConsultants', () => {
 
     it('success scenario', async () => {
       const req = fakeRequest({
-        swaggerParams: params
+        swaggerParams: params,
+        commandBus: commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
@@ -232,7 +225,8 @@ describe('AgencyClientConsultants', () => {
 
     it('empty scenario', async () => {
       const req = fakeRequest({
-        swaggerParams: params
+        swaggerParams: params,
+        commandBus: commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();

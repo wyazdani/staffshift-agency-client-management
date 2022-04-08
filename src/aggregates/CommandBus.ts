@@ -1,6 +1,8 @@
 import {EventRepository} from '../EventRepository';
 import {AgencyCommandBus} from './Agency/AgencyCommandBus';
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
+import {ConsultantJobCommandBus} from './ConsultantJob/ConsultantJobCommandBus';
+import {ConsultantJobAssignCommandBus} from './ConsultantJobAssign/ConsultantJobAssignCommandBus';
 import {AggregateCommandInterface, AggregateCommandHandlerInterface} from './types';
 
 export class CommandBus {
@@ -9,6 +11,8 @@ export class CommandBus {
   constructor(eventRepository: EventRepository) {
     AgencyCommandBus.registerCommandHandlers(eventRepository, this);
     AgencyClientCommandBus.registerCommandHandlers(eventRepository, this);
+    ConsultantJobCommandBus.registerCommandHandlers(eventRepository, this);
+    ConsultantJobAssignCommandBus.registerCommandHandlers(eventRepository, this);
   }
 
   registerAggregateCommand(cmd: AggregateCommandHandlerInterface): void {

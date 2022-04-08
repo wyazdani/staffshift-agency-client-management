@@ -6,8 +6,12 @@ import {PaginationHelper} from '../../src/helpers/PaginationHelper';
 import {EventRepository} from '../../src/EventRepository';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
+import {CommandBus} from '../../src/aggregates/CommandBus';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('PaginationHelper', () => {
+  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+
   beforeEach(() => {
     sinon.restore();
   });
@@ -45,7 +49,8 @@ describe('PaginationHelper', () => {
         swaggerParams,
         Logger: TestUtilsLogger.getLogger(sinon.spy()),
         eventRepository: stubConstructor(EventRepository),
-        basePathName: `/${config.get('exposed_server.version')}/some/path`
+        basePathName: `/${config.get('exposed_server.version')}/some/path`,
+        commandBus
       });
       const response = fakeResponse();
       const count = 10;
@@ -68,7 +73,8 @@ describe('PaginationHelper', () => {
         swaggerParams,
         Logger: TestUtilsLogger.getLogger(sinon.spy()),
         eventRepository: stubConstructor(EventRepository),
-        basePathName: `/${config.get('exposed_server.version')}/some/path`
+        basePathName: `/${config.get('exposed_server.version')}/some/path`,
+        commandBus
       });
       const response = fakeResponse();
       const count = 0;

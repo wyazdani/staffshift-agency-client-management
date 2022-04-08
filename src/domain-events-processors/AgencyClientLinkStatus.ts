@@ -57,7 +57,7 @@ export class AgencyClientLinkStatus {
         return {
           aggregateId: {
             agency_id: data.agency_id,
-            client_id: data.organisation_id
+            client_id: data.site_id
           },
           type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
           data: {organisation_id: data.organisation_id, client_type: 'site'}
@@ -69,7 +69,7 @@ export class AgencyClientLinkStatus {
         return {
           aggregateId: {
             agency_id: data.agency_id,
-            client_id: data.organisation_id
+            client_id: data.ward_id
           },
           type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
           data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}
@@ -100,7 +100,7 @@ export class AgencyClientLinkStatus {
         return {
           aggregateId: {
             agency_id: data.agency_id,
-            client_id: data.organisation_id
+            client_id: data.site_id
           },
           type: commandType,
           data: {organisation_id: data.organisation_id, client_type: 'site'}
@@ -117,7 +117,7 @@ export class AgencyClientLinkStatus {
         return {
           aggregateId: {
             agency_id: data.agency_id,
-            client_id: data.organisation_id
+            client_id: data.ward_id
           },
           type: commandType,
           data: {organisation_id: data.organisation_id, site_id: data.site_id, client_type: 'ward'}

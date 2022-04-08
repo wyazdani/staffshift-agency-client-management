@@ -13,7 +13,7 @@ export class StartConsultantJobAssignCommandHandler implements ConsultantJobAssi
   async execute(command: StartConsultantJobAssignCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
-    let eventId = aggregate.getLastEventId();
+    let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
       {

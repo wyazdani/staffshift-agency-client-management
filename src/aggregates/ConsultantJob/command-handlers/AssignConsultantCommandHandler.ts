@@ -15,7 +15,7 @@ export class AssignConsultantCommandHandler implements ConsultantJobCommandHandl
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateAssignConsultant(command.data);
-    let eventId = aggregate.getLastEventId();
+    let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
       {

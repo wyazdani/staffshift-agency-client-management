@@ -1,4 +1,10 @@
-import {AddAgencyClientConsultantCommandHandler} from './command-handlers';
+import {
+  AddAgencyClientConsultantCommandHandler,
+  RemoveAgencyClientConsultantCommandHandler,
+  LinkAgencyClientCommandHandler,
+  UnlinkAgencyClientCommandHandler,
+  SyncAgencyClientCommandHandler
+} from './command-handlers';
 import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionHandler';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
@@ -6,7 +12,13 @@ import {CommandBus} from '../CommandBus';
 import {EventRepository} from '../../../src/EventRepository';
 import {AgencyClientRepository} from './AgencyClientRepository';
 
-const handlers = [AddAgencyClientConsultantCommandHandler];
+const handlers = [
+  AddAgencyClientConsultantCommandHandler,
+  RemoveAgencyClientConsultantCommandHandler,
+  LinkAgencyClientCommandHandler,
+  UnlinkAgencyClientCommandHandler,
+  SyncAgencyClientCommandHandler
+];
 
 /**
  * Responsible for routing all agency client related commands to their corresponding handlers

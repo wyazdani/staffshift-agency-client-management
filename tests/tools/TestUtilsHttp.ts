@@ -6,6 +6,7 @@ import {EventStore} from '../../src/models/EventStore';
 import sinon from 'sinon';
 import {createRequest, createResponse} from 'node-mocks-http';
 import {ServerResponse} from 'http';
+import {CommandBus} from '../../src/aggregates/CommandBus';
 
 /**
  * creates fake Http Request object to use in controller unit test cases
@@ -17,6 +18,7 @@ export const fakeRequest = (opts: {
   swaggerParams: {[key in string]: unknown};
   eventRepository?: EventRepository;
   basePathName?: string;
+  commandBus: CommandBus;
 }): SwaggerRequestInterface =>
   createRequest<SwaggerRequestInterface>({
     Logger: opts.Logger || TestUtilsLogger.getLogger(sinon.spy()),
@@ -25,7 +27,8 @@ export const fakeRequest = (opts: {
       operation: {}
     },
     eventRepository: opts.eventRepository || new EventRepository(EventStore, 'some-id'),
-    basePathName: opts.basePathName || 'sample'
+    basePathName: opts.basePathName || 'sample',
+    commandBus: opts.commandBus
   });
 
 /**
