@@ -1,30 +1,23 @@
-import {ConsultantJobAssignCommandHandlerInterface} from './types/ConsultantJobAssignCommandHandlerInterface';
-import {ConsultantJobAssignCommandInterface} from './types';
+import {StartConsultantJobAssignCommandHandler} from './command-handlers';
+import {EventRepository} from '../../EventRepository';
+import {ConsultantJobAssignRepository} from './ConsultantJobAssignRepository';
+import {ConsultantJobAssignWriteProjectionHandler} from './ConsultantJobAssignWriteProjectionHandler';
+import {CommandBus} from '../CommandBus';
+
+const handlers = [StartConsultantJobAssignCommandHandler];
 
 /**
  * Responsible for routing all commands to their corresponding handlers
  */
 export class ConsultantJobAssignCommandBus {
-  private commandHandlers: ConsultantJobAssignCommandHandlerInterface[] = [];
+  static registerCommandHandlers(eventRepository: EventRepository, commandBus: CommandBus): void {
+    const repository = new ConsultantJobAssignRepository(
+      eventRepository,
+      new ConsultantJobAssignWriteProjectionHandler()
+    );
 
-  /**
-   * Add a command handler to the list of supported handlers
-   */
-  addHandler(commandHandler: ConsultantJobAssignCommandHandlerInterface) {
-    this.commandHandlers.push(commandHandler);
-    return this;
-  }
-
-  /**
-   * Execute the command by finding it's corresponding handler
-   */
-  async execute(agencyId: string, jobId: string, command: ConsultantJobAssignCommandInterface): Promise<void> {
-    const commandHandler = this.commandHandlers.find((handler) => handler.commandType === command.type);
-
-    if (!commandHandler) {
-      throw new Error(`Command type:${command.type} is not supported`);
+    for (const item of handlers) {
+      commandBus.registerAggregateCommand(new item(repository));
     }
-
-    await commandHandler.execute(agencyId, jobId, command.data);
   }
 }

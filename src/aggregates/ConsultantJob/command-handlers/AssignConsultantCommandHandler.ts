@@ -1,28 +1,29 @@
 import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventTypes';
 import {ConsultantJobRepository} from '../ConsultantJobRepository';
 import {ConsultantJobCommandHandlerInterface} from '../types/ConsultantJobCommandHandlerInterface';
-import {AssignConsultantCommandDataInterface} from '../types/CommandDataTypes';
 import {ConsultantJobCommandEnum} from '../types';
 import {EventsEnum} from '../../../Events';
+import {AssignConsultantCommandInterface} from '../types/CommandTypes';
+import {ConsultantJobAssignInitiatedEventInterface} from 'EventTypes/ConsultantJobAssignInitiatedEventInterface';
 
 export class AssignConsultantCommandHandler implements ConsultantJobCommandHandlerInterface {
   public commandType = ConsultantJobCommandEnum.ASSIGN_CONSULTANT;
 
   constructor(private repository: ConsultantJobRepository) {}
 
-  async execute(agencyId: string, commandData: AssignConsultantCommandDataInterface): Promise<void> {
-    const aggregate = await this.repository.getAggregate(agencyId);
+  async execute(command: AssignConsultantCommandInterface): Promise<void> {
+    const aggregate = await this.repository.getAggregate(command.aggregateId);
 
-    await aggregate.validateAssignConsultant(commandData);
+    await aggregate.validateAssignConsultant(command.data);
     let eventId = aggregate.getLastEventId();
 
     await this.repository.save([
       {
         type: EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
         aggregate_id: aggregate.getId(),
-        data: commandData as ConsultantJobAssignInitiatedEventStoreDataInterface,
+        data: command.data,
         sequence_id: ++eventId
-      }
+      } as ConsultantJobAssignInitiatedEventInterface
     ]);
   }
 }

@@ -1,5 +1,5 @@
-import {AgencyClientAggregateCommandInterface} from './AgencyClientAggregateCommandInterface';
+import {AgencyClientCommandInterface} from './AgencyClientCommandInterface';
 export interface AgencyClientCommandHandlerInterface {
   commandType: string;
-  execute(command: AgencyClientAggregateCommandInterface): Promise<void>;
+  execute(command: AgencyClientCommandInterface): Promise<void>;
 }

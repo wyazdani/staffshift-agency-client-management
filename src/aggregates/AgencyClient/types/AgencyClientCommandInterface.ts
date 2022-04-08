@@ -1,8 +1,9 @@
-import {AgencyClientCommandEnum} from './AgencyClientCommandEnum';
+import {AgencyClientAggregateIdInterface, AgencyClientCommandEnum} from '.';
+import {AggregateCommandInterface} from '../../types/AggregateCommandInterface';
 import {AgencyClientCommandDataType} from './AgencyClientCommandDataType';
-import {AggregateCommandInterface} from '../../types';
 
 export interface AgencyClientCommandInterface extends AggregateCommandInterface {
+  aggregateId: AgencyClientAggregateIdInterface;
   type: AgencyClientCommandEnum;
   data: AgencyClientCommandDataType;
 }

@@ -2,8 +2,10 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventTypes';
 import {difference} from 'lodash';
+import {ObjectID} from 'mongodb';
+import {AgencyClientCommandEnum} from '../../../aggregates/AgencyClient/types';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
-import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';
+import {ConsultantJobAggregateIdInterface, ConsultantJobCommandEnum} from '../../../aggregates/ConsultantJob/types';
 import {ConsultantJobAssignAggregateStatusEnum} from '../../../aggregates/ConsultantJobAssign/types/ConsultantJobAssignAggregateStatusEnum';
 import {SequenceIdMismatch} from '../../../errors/SequenceIdMismatch';
 import {EventRepository} from '../../../EventRepository';
@@ -11,7 +13,21 @@ import {EventStore} from '../../../models/EventStore';
 import {EventStoreErrorEncoder} from '../../EventStoreErrorEncoder';
 import {RetryService, RetryableError, NonRetryableError} from '../../RetryService';
 import {ProcessInterface} from '../../types/ProcessInterface';
-import {EventStoreHelper} from './EventStoreHelper';
+import {CommandBus} from '../../../aggregates/CommandBus';
+import {AddAgencyClientConsultantCommandInterface} from '../../../aggregates/AgencyClient/types/CommandTypes';
+import {
+  StartConsultantJobAssignCommandInterface,
+  SucceedItemConsultantJobAssignCommandInterface,
+  FailItemConsultantJobAssignCommandInterface,
+  CompleteConsultantJobAssignCommandInterface
+} from '../../../aggregates/ConsultantJobAssign/types/CommandTypes';
+import {
+  ConsultantJobAssignAggregateIdInterface,
+  ConsultantJobAssignCommandEnum
+} from '../../../aggregates/ConsultantJobAssign/types';
+import {ConsultantJobAssignRepository} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
+import {ConsultantJobAssignWriteProjectionHandler} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignWriteProjectionHandler';
+import {CompleteAssignConsultantCommandInterface} from '../../../aggregates/ConsultantJob/types/CommandTypes';
 
 interface ConsultantAssignProcessOptsInterface {
   maxRetry: number;
@@ -31,7 +47,10 @@ export class ConsultantAssignProcess implements ProcessInterface {
     ConsultantJobAssignInitiatedEventStoreDataInterface,
     ConsultantJobAggregateIdInterface
   >;
-  private eventStoreHelper: EventStoreHelper;
+  private commandBus: CommandBus;
+  private consultantJobAssignCommandAggregateId: ConsultantJobAssignAggregateIdInterface;
+  private consultantJobCommandAggregateId: ConsultantJobAggregateIdInterface;
+  private consultantJobAssignRepository: ConsultantJobAssignRepository;
   constructor(private logger: LoggerContext, private opts: ConsultantAssignProcessOptsInterface) {}
 
   async execute(
@@ -51,20 +70,33 @@ export class ConsultantAssignProcess implements ProcessInterface {
       eventId
     );
 
-    this.eventStoreHelper = new EventStoreHelper(
-      initiateEvent.aggregate_id.agency_id,
-      initiateEvent.data._id,
-      eventRepository
+    this.commandBus = new CommandBus(eventRepository);
+    this.consultantJobAssignRepository = new ConsultantJobAssignRepository(
+      eventRepository,
+      new ConsultantJobAssignWriteProjectionHandler()
     );
-
-    const jobAssignAggregate = await this.eventStoreHelper.getConsultantJobAssignAggregate(
-      this.initiateEvent.aggregate_id.agency_id,
-      initiateEvent.data._id
+    this.consultantJobCommandAggregateId = {
+      name: 'consultant_job',
+      agency_id: this.initiateEvent.aggregate_id.agency_id
+    };
+    this.consultantJobAssignCommandAggregateId = {
+      name: 'consultant_job_assign',
+      agency_id: this.initiateEvent.aggregate_id.agency_id,
+      job_id: initiateEvent.data._id
+    };
+    const jobAssignAggregate = await this.consultantJobAssignRepository.getAggregate(
+      this.consultantJobAssignCommandAggregateId
     );
     const currentStatus = jobAssignAggregate.getCurrentStatus();
 
     if (currentStatus === ConsultantJobAssignAggregateStatusEnum.NEW) {
-      await this.eventStoreHelper.startProcess();
+      const command: StartConsultantJobAssignCommandInterface = {
+        aggregateId: this.consultantJobAssignCommandAggregateId,
+        type: ConsultantJobAssignCommandEnum.START,
+        data: {}
+      };
+
+      await this.commandBus.execute(command);
     } else if (currentStatus === ConsultantJobAssignAggregateStatusEnum.COMPLETED) {
       this.logger.info('Consultant Assignment process already completed', {id: initiateEvent._id});
       return;
@@ -75,10 +107,24 @@ export class ConsultantAssignProcess implements ProcessInterface {
     for (const clientId of clientIds) {
       if (await this.assignClientWithRetry(clientId)) {
         this.logger.info(`Assigned client ${clientId} to consultant ${this.initiateEvent.data.consultant_id}`);
-        await this.eventStoreHelper.succeedItemProcess(clientId);
+        const command: SucceedItemConsultantJobAssignCommandInterface = {
+          aggregateId: this.consultantJobAssignCommandAggregateId,
+          type: ConsultantJobAssignCommandEnum.SUCCEED_ITEM,
+          data: {
+            client_id: clientId
+          }
+        };
+
+        await this.commandBus.execute(command);
       }
     }
-    await this.eventStoreHelper.completeProcess();
+    const command: CompleteConsultantJobAssignCommandInterface = {
+      aggregateId: this.consultantJobAssignCommandAggregateId,
+      type: ConsultantJobAssignCommandEnum.COMPLETE,
+      data: {}
+    };
+
+    await this.commandBus.execute(command);
     this.logger.info('Consultant Assign background process finished', {eventId});
   }
 
@@ -89,10 +135,16 @@ export class ConsultantAssignProcess implements ProcessInterface {
       await retryService.exec(() => this.assignClient(clientId));
       return true;
     } catch (error) {
-      await this.eventStoreHelper.failItemProcess(
-        clientId,
-        EventStoreErrorEncoder.encodeArray(retryService.getErrors())
-      );
+      const command: FailItemConsultantJobAssignCommandInterface = {
+        aggregateId: this.consultantJobAssignCommandAggregateId,
+        type: ConsultantJobAssignCommandEnum.FAIL_ITEM,
+        data: {
+          client_id: clientId,
+          errors: EventStoreErrorEncoder.encodeArray(retryService.getErrors())
+        }
+      };
+
+      await this.commandBus.execute(command);
       return false;
     }
   }
@@ -106,11 +158,21 @@ export class ConsultantAssignProcess implements ProcessInterface {
         clientId,
         consultantId: this.initiateEvent.data.consultant_id
       });
-      await this.eventStoreHelper.assignConsultantToClient(
-        this.initiateEvent.data.consultant_role_id,
-        this.initiateEvent.data.consultant_id,
-        clientId
-      );
+      const id = new ObjectID().toString();
+      const command: AddAgencyClientConsultantCommandInterface = {
+        aggregateId: {
+          agency_id: this.initiateEvent.aggregate_id.agency_id,
+          client_id: clientId
+        },
+        type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
+        data: {
+          _id: id,
+          consultant_role_id: this.initiateEvent.data.consultant_role_id,
+          consultant_id: this.initiateEvent.data.consultant_id
+        }
+      };
+
+      await this.commandBus.execute(command);
     } catch (error) {
       if (error instanceof SequenceIdMismatch) {
         // You might need to reload the aggregate for retry
@@ -132,9 +194,12 @@ export class ConsultantAssignProcess implements ProcessInterface {
   }
 
   async complete(): Promise<void> {
-    await this.eventStoreHelper.completeConsultantJob(
-      this.initiateEvent.aggregate_id.agency_id,
-      this.initiateEvent.data._id
-    );
+    const command: CompleteAssignConsultantCommandInterface = {
+      aggregateId: this.consultantJobCommandAggregateId,
+      type: ConsultantJobCommandEnum.COMPLETE_ASSIGN_CONSULTANT,
+      data: {_id: this.initiateEvent.data._id}
+    };
+
+    await this.commandBus.execute(command);
   }
 }

@@ -1,6 +1,6 @@
 import {AggregateCommandHandlerInterface} from '../../../../src/aggregates/types';
-import {AgencyAggregateCommandInterface} from '.';
+import {AgencyCommandInterface} from '.';
 
 export interface AgencyCommandHandlerInterface extends AggregateCommandHandlerInterface {
-  execute(command: AgencyAggregateCommandInterface): Promise<void>;
+  execute(command: AgencyCommandInterface): Promise<void>;
 }

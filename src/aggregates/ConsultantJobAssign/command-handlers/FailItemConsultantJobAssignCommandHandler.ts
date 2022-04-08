@@ -1,21 +1,17 @@
-import {ConsultantJobAssignProcessItemFailedEventStoreDataInterface} from 'EventTypes';
 import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';
-import {FailItemConsultantJobAssignCommandDataInterface} from '../types/CommandDataTypes';
 import {ConsultantJobAssignCommandEnum} from '../types';
+import {ConsultantJobAssignProcessItemFailedEventInterface} from 'EventTypes/ConsultantJobAssignProcessItemFailedEventInterface';
+import {FailItemConsultantJobAssignCommandInterface} from '../types/CommandTypes/FailItemConsultantJobAssignCommandInterface';
 
 export class FailItemConsultantJobAssignCommandHandler implements ConsultantJobAssignCommandHandlerInterface {
   public commandType = ConsultantJobAssignCommandEnum.FAIL_ITEM;
 
   constructor(private repository: ConsultantJobAssignRepository) {}
 
-  async execute(
-    agencyId: string,
-    jobId: string,
-    commandData: FailItemConsultantJobAssignCommandDataInterface
-  ): Promise<void> {
-    const aggregate = await this.repository.getAggregate(agencyId, jobId);
+  async execute(command: FailItemConsultantJobAssignCommandInterface): Promise<void> {
+    const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let eventId = aggregate.getLastEventId();
 
@@ -23,9 +19,9 @@ export class FailItemConsultantJobAssignCommandHandler implements ConsultantJobA
       {
         type: EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED,
         aggregate_id: aggregate.getId(),
-        data: commandData as ConsultantJobAssignProcessItemFailedEventStoreDataInterface,
+        data: command.data,
         sequence_id: ++eventId
-      }
+      } as ConsultantJobAssignProcessItemFailedEventInterface
     ]);
   }
 }

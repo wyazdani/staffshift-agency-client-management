@@ -3,7 +3,7 @@ import {AgencyCommandEnum} from './AgencyCommandEnum';
 import {AgencyAggregateIdInterface} from './AgencyAggregateIdInterface';
 import {AgencyAggregateRecordInterface} from './AgencyAggregateRecordInterface';
 import {AgencyConsultantRoleInterface} from './AgencyConsultantRoleInterface';
-import {AgencyAggregateCommandInterface} from './AgencyAggregateCommandInterface';
+import {AgencyCommandInterface} from './AgencyCommandInterface';
 
 export {
   AgencyCommandEnum,
@@ -11,5 +11,5 @@ export {
   AgencyAggregateIdInterface,
   AgencyAggregateRecordInterface,
   AgencyConsultantRoleInterface,
-  AgencyAggregateCommandInterface
+  AgencyCommandInterface
 };

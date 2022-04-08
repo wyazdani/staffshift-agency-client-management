@@ -36,13 +36,13 @@ export const addAgencyConsultantRole = async (
     const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const roleId = new ObjectID().toString();
-    const cmd = {
+    const command: AddAgencyConsultantRoleCommandInterface = {
       aggregateId: {agency_id: agencyId},
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
       data: {_id: roleId, ...payload}
-    } as AddAgencyConsultantRoleCommandInterface;
+    };
 
-    await req.commandBus.execute(cmd);
+    await req.commandBus.execute(command);
     res.statusCode = 202;
     res.setHeader('Location', LocationHelper.getRelativeLocation(`/agency/${agencyId}/consultant-roles/${roleId}`));
     res.end();
@@ -72,13 +72,13 @@ export const updateAgencyConsultantRole = async (
       throw new ValidationError('Nothing to update, you need to put at least one property to update');
     }
 
-    const cmd = {
+    const command: UpdateAgencyConsultantRoleCommandInterface = {
       aggregateId: {agency_id: agencyId},
       type: AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
       data: {...payload, _id: consultantRoleId}
-    } as UpdateAgencyConsultantRoleCommandInterface;
+    };
 
-    await req.commandBus.execute(cmd);
+    await req.commandBus.execute(command);
     res.statusCode = 202;
     res.end();
   } catch (err) {
@@ -107,13 +107,13 @@ export const enableAgencyConsultantRole = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-    const cmd = {
+    const command: EnableAgencyConsultantRoleCommandInterface = {
       aggregateId: {agency_id: agencyId},
       type: AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
       data: {_id: consultantRoleId}
-    } as EnableAgencyConsultantRoleCommandInterface;
+    };
 
-    await req.commandBus.execute(cmd);
+    await req.commandBus.execute(command);
     // This needs to be centralised and done better
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');
@@ -141,13 +141,13 @@ export const disableAgencyConsultantRole = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const consultantRoleId = get(req, 'swagger.params.consultant_role_id.value', '');
-    const cmd = {
+    const command: DisableAgencyConsultantRoleCommandInterface = {
       aggregateId: {agency_id: agencyId},
       type: AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE,
       data: {_id: consultantRoleId}
-    } as DisableAgencyConsultantRoleCommandInterface;
+    };
 
-    await req.commandBus.execute(cmd);
+    await req.commandBus.execute(command);
     // This needs to be centralised and done better
     res.statusCode = 202;
     res.setHeader('Content-Type', 'application/json');

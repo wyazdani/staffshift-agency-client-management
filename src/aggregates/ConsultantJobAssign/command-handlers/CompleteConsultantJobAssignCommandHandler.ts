@@ -1,21 +1,17 @@
-import {ConsultantJobAssignProcessCompletedEventStoreDataInterface} from 'EventTypes';
 import {EventsEnum} from '../../../Events';
 import {ConsultantJobAssignRepository} from '../ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandHandlerInterface} from '../types/ConsultantJobAssignCommandHandlerInterface';
-import {CompleteConsultantJobAssignCommandDataInterface} from '../types/CommandDataTypes';
 import {ConsultantJobAssignCommandEnum} from '../types';
+import {CompleteConsultantJobAssignCommandInterface} from '../types/CommandTypes/CompleteConsultantJobAssignCommandInterface';
+import {ConsultantJobAssignProcessCompletedEventInterface} from 'EventTypes/ConsultantJobAssignProcessCompletedEventInterface';
 
 export class CompleteConsultantJobAssignCommandHandler implements ConsultantJobAssignCommandHandlerInterface {
   public commandType = ConsultantJobAssignCommandEnum.COMPLETE;
 
   constructor(private repository: ConsultantJobAssignRepository) {}
 
-  async execute(
-    agencyId: string,
-    jobId: string,
-    commandData: CompleteConsultantJobAssignCommandDataInterface
-  ): Promise<void> {
-    const aggregate = await this.repository.getAggregate(agencyId, jobId);
+  async execute(command: CompleteConsultantJobAssignCommandInterface): Promise<void> {
+    const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let eventId = aggregate.getLastEventId();
 
@@ -23,9 +19,9 @@ export class CompleteConsultantJobAssignCommandHandler implements ConsultantJobA
       {
         type: EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED,
         aggregate_id: aggregate.getId(),
-        data: commandData as ConsultantJobAssignProcessCompletedEventStoreDataInterface,
+        data: command.data,
         sequence_id: ++eventId
-      }
+      } as ConsultantJobAssignProcessCompletedEventInterface
     ]);
   }
 }
