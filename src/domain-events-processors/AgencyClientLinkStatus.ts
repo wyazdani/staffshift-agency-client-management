@@ -6,12 +6,6 @@ import {AgencyClientLinkDomainEventDataInterface} from 'AgencyClientLinkDomainEv
 import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../aggregates/AgencyClient/types';
 import {CommandBus} from '../aggregates/CommandBus';
 
-interface TriageEventToCommandInterface {
-  agency_id: string;
-  client_id: string;
-  command: AgencyClientCommandInterface;
-}
-
 /**
  * Responsible for handling triage domain events and trigger the relevant commands
  * based off the event.
