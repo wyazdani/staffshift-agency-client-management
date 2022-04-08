@@ -1,7 +1,6 @@
 import {ConsultantJobAssignAggregate} from './ConsultantJobAssignAggregate';
-import {EventRepository, EventInterface} from '../../EventRepository';
+import {EventRepository} from '../../EventRepository';
 import {ConsultantJobAssignAggregateIdInterface, ConsultantJobAssignAggregateRecordInterface} from './types';
-import {EventStoreModelInterface} from '../../models/EventStore';
 import {ConsultantJobAssignWriteProjectionHandler} from './ConsultantJobAssignWriteProjectionHandler';
 import {AbstractRepository} from '../AbstractRepository';
 
@@ -9,7 +8,6 @@ import {AbstractRepository} from '../AbstractRepository';
  * Class responsible for interacting with aggregate data source
  */
 export class ConsultantJobAssignRepository extends AbstractRepository {
-  private static readonly AGGREGATE_ID_NAME = 'consultant_job_assign';
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: ConsultantJobAssignWriteProjectionHandler

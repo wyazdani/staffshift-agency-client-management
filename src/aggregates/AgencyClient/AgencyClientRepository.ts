@@ -23,10 +23,14 @@ export class AgencyClientRepository extends AbstractRepository {
   ): Promise<AgencyClientAggregate> {
     const projection: AgencyClientAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
       this.agencyClientWriteProjectionHandler,
-      aggregateId,
+      {agency_id: aggregateId.agency_id, client_id: aggregateId.client_id},
       sequenceId
     );
 
-    return new AgencyClientAggregate(aggregateId, projection, this.agencyRepository);
+    return new AgencyClientAggregate(
+      {agency_id: aggregateId.agency_id, client_id: aggregateId.client_id},
+      projection,
+      this.agencyRepository
+    );
   }
 }

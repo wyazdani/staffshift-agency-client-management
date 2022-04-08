@@ -5,9 +5,8 @@ import {AggregateCommandInterface, AggregateCommandHandlerInterface} from './typ
 
 export class CommandBus {
   private _commandRegistry: {[key: string]: AggregateCommandHandlerInterface} = {};
-  private _agencyClientCommandBus: AgencyClientCommandBus;
 
-  constructor(private eventRepository: EventRepository) {
+  constructor(eventRepository: EventRepository) {
     AgencyCommandBus.registerCommandHandlers(eventRepository, this);
     AgencyClientCommandBus.registerCommandHandlers(eventRepository, this);
   }
