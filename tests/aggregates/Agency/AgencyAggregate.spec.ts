@@ -234,7 +234,7 @@ describe('AgencyAggregate class', () => {
     });
   });
 
-  describe('getLastEventId()', function () {
+  describe('getLastSequenceId()', function () {
     it('should return last event id', function () {
       const agencyAggregate = new AgencyAggregate(
         {agency_id: 'id'},
@@ -244,7 +244,7 @@ describe('AgencyAggregate class', () => {
         }
       );
 
-      assert.equal(agencyAggregate.getLastEventId(), 10, 'incorrect last sequence id returned');
+      assert.equal(agencyAggregate.getLastSequenceId(), 10, 'incorrect last sequence id returned');
     });
   });
 

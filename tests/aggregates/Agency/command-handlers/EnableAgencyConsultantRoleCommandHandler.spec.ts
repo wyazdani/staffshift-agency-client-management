@@ -6,6 +6,7 @@ import {AgencyRepository} from '../../../../src/aggregates/Agency/AgencyReposito
 import {EnableAgencyConsultantRoleCommandHandler} from '../../../../src/aggregates/Agency/command-handlers/EnableAgencyConsultantRoleCommandHandler';
 import {AgencyCommandEnum} from '../../../../src/aggregates/Agency/types';
 import {EnableAgencyConsultantRoleCommandDataInterface} from '../../../../src/aggregates/Agency/types/CommandDataTypes';
+import {EnableAgencyConsultantRoleCommandInterface} from '../../../../src/aggregates/Agency/types/CommandTypes';
 import {EventsEnum} from '../../../../src/Events';
 
 describe('EnableAgencyConsultantRoleCommandHandler', () => {
@@ -13,18 +14,25 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
     sinon.restore();
   });
   describe('execute()', () => {
-    it('Test correct events are persisted', async () => {
-      const agencyId = 'agency id';
-      const roleId = 'some-id';
-      const commandData = {
+    const agencyId = 'agency id';
+    const roleId = 'some-id';
+    const command: EnableAgencyConsultantRoleCommandInterface = {
+      aggregateId: {
+        agency_id: agencyId
+      },
+      type: AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
+      data: {
         _id: roleId
-      } as EnableAgencyConsultantRoleCommandDataInterface;
+      }
+    };
+
+    it('Test correct events are persisted', async () => {
       const agencyRepository = stubConstructor(AgencyRepository);
       const aggregate = stubConstructor(AgencyAggregate);
 
       agencyRepository.save.resolves();
       agencyRepository.getAggregate.resolves(aggregate);
-      aggregate.getLastEventId.returns(100);
+      aggregate.getLastSequenceId.returns(100);
       aggregate.getId.returns({agency_id: agencyId});
       aggregate.canEnableConsultantRole.returns(true);
       const handler = new EnableAgencyConsultantRoleCommandHandler(agencyRepository);
@@ -34,30 +42,22 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
         AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
         'Expected command type to match'
       );
-      await handler.execute(agencyId, commandData);
+      await handler.execute(command);
 
-      agencyRepository.save.should.have.been.calledWith([
+      agencyRepository.save.should.have.been.calledOnceWith([
         {
           type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
           aggregate_id: {agency_id: agencyId},
-          data: commandData,
+          data: command.data,
           sequence_id: 101
         }
       ]);
 
-      agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
+      agencyRepository.getAggregate.should.have.been.calledOnceWith(command.aggregateId);
       aggregate.canEnableConsultantRole.should.have.calledOnceWith(roleId);
     });
 
     it('Test exception is thrown for validate consultant role', async () => {
-      const agencyId = 'agency id';
-      const roleId = 'some-id';
-      const commandData = {
-        _id: roleId,
-        name: 'some name',
-        description: 'description',
-        max_consultants: 2
-      } as EnableAgencyConsultantRoleCommandDataInterface;
       const agencyRepository = stubConstructor(AgencyRepository);
       const aggregate = stubConstructor(AgencyAggregate);
       const error = new Error('sample error');
@@ -66,23 +66,18 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
       aggregate.canEnableConsultantRole.throws(error);
       const handler = new EnableAgencyConsultantRoleCommandHandler(agencyRepository);
 
-      await handler.execute(agencyId, commandData).should.be.rejectedWith(Error, 'sample error');
+      await handler.execute(command).should.be.rejectedWith(Error, 'sample error');
 
       aggregate.canEnableConsultantRole.should.have.been.calledOnce;
       agencyRepository.save.should.not.have.been.called;
     });
 
     it('should resolve successfully when role cannot be enabled', async () => {
-      const agencyId = 'agency id';
-      const roleId = 'some-id';
-      const commandData = {
-        _id: roleId
-      } as EnableAgencyConsultantRoleCommandDataInterface;
       const agencyRepository = stubConstructor(AgencyRepository);
       const aggregate = stubConstructor(AgencyAggregate);
 
       agencyRepository.getAggregate.resolves(aggregate);
-      aggregate.getLastEventId.returns(100);
+      aggregate.getLastSequenceId.returns(100);
       aggregate.canEnableConsultantRole.returns(false);
       const handler = new EnableAgencyConsultantRoleCommandHandler(agencyRepository);
 
@@ -91,10 +86,10 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
         AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
         'Expected command type to match'
       );
-      await handler.execute(agencyId, commandData);
+      await handler.execute(command);
 
       assert.isFalse(agencyRepository.save.called, 'Save must not be called');
-      agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
+      agencyRepository.getAggregate.should.have.been.calledOnceWith(command.aggregateId);
       aggregate.canEnableConsultantRole.should.have.calledOnceWith(roleId);
     });
   });

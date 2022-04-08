@@ -5,7 +5,7 @@ import {AgencyAggregate} from '../../../../src/aggregates/Agency/AgencyAggregate
 import {AgencyRepository} from '../../../../src/aggregates/Agency/AgencyRepository';
 import {UpdateAgencyConsultantRoleCommandHandler} from '../../../../src/aggregates/Agency/command-handlers/UpdateAgencyConsultantRoleCommandHandler';
 import {AgencyCommandEnum} from '../../../../src/aggregates/Agency/types';
-import {UpdateAgencyConsultantRoleCommandDataInterface} from '../../../../src/aggregates/Agency/types/CommandDataTypes';
+import {UpdateAgencyConsultantRoleCommandInterface} from '../../../../src/aggregates/Agency/types/CommandTypes';
 import {EventsEnum} from '../../../../src/Events';
 
 describe('UpdateAgencyConsultantRoleCommandHandler', () => {
@@ -13,21 +13,28 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
     sinon.restore();
   });
   describe('execute()', () => {
-    it('Test correct events are persisted', async () => {
-      const agencyId = 'agency id';
-      const roleId = 'some-id';
-      const commandData = {
+    const agencyId = 'agency id';
+    const roleId = 'some-id';
+    const command: UpdateAgencyConsultantRoleCommandInterface = {
+      aggregateId: {
+        agency_id: agencyId
+      },
+      type: AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
+      data: {
         _id: roleId,
         name: 'some name',
         description: 'description',
         max_consultants: 2
-      } as UpdateAgencyConsultantRoleCommandDataInterface;
+      }
+    };
+
+    it('Test correct events are persisted', async () => {
       const agencyRepository = stubConstructor(AgencyRepository);
       const aggregate = stubConstructor(AgencyAggregate);
 
       agencyRepository.save.resolves();
       agencyRepository.getAggregate.resolves(aggregate);
-      aggregate.getLastEventId.returns(100);
+      aggregate.getLastSequenceId.returns(100);
       aggregate.getId.returns({agency_id: agencyId});
       aggregate.validateUpdateConsultantRole.returns();
       const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
@@ -37,29 +44,20 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
         AgencyCommandEnum.UPDATE_AGENCY_CONSULTANT_ROLE,
         'Expected command type to match'
       );
-      await handler.execute(agencyId, commandData);
-
-      agencyRepository.save.should.have.been.calledWith([
+      await handler.execute(command);
+      agencyRepository.save.should.have.been.calledOnceWith([
         {
           type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
           aggregate_id: {agency_id: agencyId},
-          data: commandData,
+          data: command.data,
           sequence_id: 101
         }
       ]);
-      agencyRepository.getAggregate.should.have.been.calledOnceWith(agencyId);
+      agencyRepository.getAggregate.should.have.been.calledOnceWith(command.aggregateId);
       aggregate.validateUpdateConsultantRole.should.have.calledOnceWith(roleId);
     });
 
     it('Test exception is thrown for validate consultant role', async () => {
-      const agencyId = 'agency id';
-      const roleId = 'some-id';
-      const commandData = {
-        _id: roleId,
-        name: 'some name',
-        description: 'description',
-        max_consultants: 2
-      } as UpdateAgencyConsultantRoleCommandDataInterface;
       const agencyRepository = stubConstructor(AgencyRepository);
       const aggregate = stubConstructor(AgencyAggregate);
       const error = new Error('sample error');
@@ -68,7 +66,7 @@ describe('UpdateAgencyConsultantRoleCommandHandler', () => {
       aggregate.validateUpdateConsultantRole.throws(error);
       const handler = new UpdateAgencyConsultantRoleCommandHandler(agencyRepository);
 
-      await handler.execute(agencyId, commandData).should.be.rejectedWith(Error, 'sample error');
+      await handler.execute(command).should.be.rejectedWith(Error, 'sample error');
 
       aggregate.validateUpdateConsultantRole.should.have.been.calledOnce;
       agencyRepository.save.should.not.have.been.called;
