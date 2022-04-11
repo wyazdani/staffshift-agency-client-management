@@ -41,6 +41,9 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
   "properties": {
     "agency_id": {
       "type": "string"
@@ -48,10 +51,7 @@ Description: A short description of the event
   },
   "required": [
     "agency_id"
-  ],
-  "additionalProperties": {
-    "type": "string"
-  }
+  ]
 }
 ```
 
@@ -78,6 +78,9 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
   "properties": {
     "agency_id": {
       "type": "string"
@@ -85,10 +88,7 @@ Description: A short description of the event
   },
   "required": [
     "agency_id"
-  ],
-  "additionalProperties": {
-    "type": "string"
-  }
+  ]
 }
 ```
 
@@ -115,6 +115,9 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
   "properties": {
     "agency_id": {
       "type": "string"
@@ -122,10 +125,7 @@ Description: A short description of the event
   },
   "required": [
     "agency_id"
-  ],
-  "additionalProperties": {
-    "type": "string"
-  }
+  ]
 }
 ```
 
@@ -161,6 +161,9 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
+  "additionalProperties": {
+    "type": "string"
+  },
   "properties": {
     "agency_id": {
       "type": "string"
@@ -168,10 +171,7 @@ Description: A short description of the event
   },
   "required": [
     "agency_id"
-  ],
-  "additionalProperties": {
-    "type": "string"
-  }
+  ]
 }
 ```
 
@@ -458,7 +458,8 @@ Description: A short description of the event
       "type": "string"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "const": "consultant_job"
     }
   },
   "required": [
@@ -499,7 +500,8 @@ Description: A short description of the event
       "type": "string"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "const": "consultant_job"
     }
   },
   "required": [
@@ -533,7 +535,8 @@ Description: A short description of the event
       "type": "string"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "const": "consultant_job_assign"
     },
     "job_id": {
       "type": "string"
@@ -578,7 +581,8 @@ Description: A short description of the event
       "type": "string"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "const": "consultant_job_assign"
     },
     "job_id": {
       "type": "string"
@@ -630,7 +634,8 @@ Description: A short description of the event
       "type": "string"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "const": "consultant_job_assign"
     },
     "job_id": {
       "type": "string"
@@ -668,7 +673,8 @@ Description: A short description of the event
       "type": "string"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "const": "consultant_job_assign"
     },
     "job_id": {
       "type": "string"
