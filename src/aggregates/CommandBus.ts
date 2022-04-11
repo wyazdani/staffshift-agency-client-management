@@ -28,7 +28,7 @@ export class CommandBus {
     this.registerAggregateCommandHandlers(ConsultantJobAssignCommandBus.getCommandHandlers(eventRepository));
   }
 
-  registerAggregateCommandHandlers(handlers: AggregateCommandHandlerInterface[]): void {
+  private registerAggregateCommandHandlers(handlers: AggregateCommandHandlerInterface[]): void {
     for (const handler of handlers) {
       if (this._commandRegistry[handler.commandType]) {
         throw new Error(`Duplicate command type registered, ${handler.commandType} already exists`);
