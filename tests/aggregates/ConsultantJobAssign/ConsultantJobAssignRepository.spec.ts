@@ -2,7 +2,8 @@ import sinon from 'sinon';
 import {ConsultantJobAssignRepository} from '../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
 import {EventRepository} from '../../../src/EventRepository';
 import {EventStore} from '../../../src/models/EventStore';
-import {AgencyWriteProjectionHandler} from '../../../src/aggregates/Agency/AgencyWriteProjectionHandler';
+import {ConsultantJobAssignWriteProjectionHandler} from '../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignWriteProjectionHandler';
+import {ConsultantJobAssignAggregateIdInterface} from '../../../src/aggregates/ConsultantJobAssign/types';
 
 describe('ConsultantJobAssignRepository class', () => {
   afterEach(() => {
@@ -10,20 +11,20 @@ describe('ConsultantJobAssignRepository class', () => {
   });
   const agencyId = 'agency id';
   const jobId = 'job id';
+  const aggregateId: ConsultantJobAssignAggregateIdInterface = {
+    name: 'consultant_job_assign',
+    agency_id: agencyId,
+    job_id: jobId
+  };
 
   describe('getAggregate()', () => {
     it('Test calling AgencyAggregate', async () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
-      const writeProjectionHandler = new AgencyWriteProjectionHandler();
+      const writeProjectionHandler = new ConsultantJobAssignWriteProjectionHandler();
       const consultantRepository = new ConsultantJobAssignRepository(eventRepository, writeProjectionHandler);
-
-      const projection: any = {
-        oops: 'ok'
-      };
-
+      const projection: any = {oops: 'ok'};
       const leftFoldEvents = sinon.stub(eventRepository, 'leftFoldEvents').resolves(projection);
-
-      const aggregate = await consultantRepository.getAggregate(agencyId, jobId);
+      const aggregate = await consultantRepository.getAggregate(aggregateId);
 
       leftFoldEvents.should.have.been.calledWith(
         writeProjectionHandler,
@@ -43,7 +44,7 @@ describe('ConsultantJobAssignRepository class', () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
       const consultantRepository = new ConsultantJobAssignRepository(
         eventRepository,
-        new AgencyWriteProjectionHandler()
+        new ConsultantJobAssignWriteProjectionHandler()
       );
       const save = sinon.stub(eventRepository, 'save').resolves([]);
       const events: any = [

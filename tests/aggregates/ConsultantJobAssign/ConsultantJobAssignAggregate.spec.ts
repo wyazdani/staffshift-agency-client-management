@@ -1,7 +1,8 @@
 import {ConsultantJobAssignAggregate} from '../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignAggregate';
+import {ConsultantJobAssignAggregateIdInterface} from '../../../src/aggregates/ConsultantJobAssign/types';
 
 describe('ConsultantJobAssignAggregate', () => {
-  const aggregateId = {
+  const aggregateId: ConsultantJobAssignAggregateIdInterface = {
     name: 'consultant_job_assign',
     agency_id: 'agency id',
     job_id: 'some-id'
@@ -39,13 +40,13 @@ describe('ConsultantJobAssignAggregate', () => {
     });
   });
 
-  describe('getLastEventId()', () => {
+  describe('getLastSequenceId()', () => {
     it('should return aggregate last event id', () => {
       const aggregate = {
         last_sequence_id: 1
       };
       const consultantJobAggregate = new ConsultantJobAssignAggregate(aggregateId, aggregate);
-      const id = consultantJobAggregate.getLastEventId();
+      const id = consultantJobAggregate.getLastSequenceId();
 
       id.should.equal(1);
     });
