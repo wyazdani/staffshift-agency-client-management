@@ -1,23 +1,35 @@
-import {StartConsultantJobAssignCommandHandler} from './command-handlers';
+import {
+  StartConsultantJobAssignCommandHandler,
+  SucceedItemConsultantJobAssignCommandHandler,
+  FailItemConsultantJobAssignCommandHandler,
+  CompleteConsultantJobAssignCommandHandler
+} from './command-handlers';
 import {EventRepository} from '../../EventRepository';
 import {ConsultantJobAssignRepository} from './ConsultantJobAssignRepository';
 import {ConsultantJobAssignWriteProjectionHandler} from './ConsultantJobAssignWriteProjectionHandler';
-import {CommandBus} from '../CommandBus';
+import {ConsultantJobAssignCommandHandlerInterface} from './types/ConsultantJobAssignCommandHandlerInterface';
 
-const handlers = [StartConsultantJobAssignCommandHandler];
+const handlers = [
+  StartConsultantJobAssignCommandHandler,
+  SucceedItemConsultantJobAssignCommandHandler,
+  FailItemConsultantJobAssignCommandHandler,
+  CompleteConsultantJobAssignCommandHandler
+];
 
 /**
  * Responsible for routing all commands to their corresponding handlers
  */
 export class ConsultantJobAssignCommandBus {
-  static registerCommandHandlers(eventRepository: EventRepository, commandBus: CommandBus): void {
+  static getCommandHandlers(eventRepository: EventRepository): ConsultantJobAssignCommandHandlerInterface[] {
+    const items = [];
     const repository = new ConsultantJobAssignRepository(
       eventRepository,
       new ConsultantJobAssignWriteProjectionHandler()
     );
 
     for (const item of handlers) {
-      commandBus.registerAggregateCommand(new item(repository));
+      items.push(new item(repository));
     }
+    return items;
   }
 }

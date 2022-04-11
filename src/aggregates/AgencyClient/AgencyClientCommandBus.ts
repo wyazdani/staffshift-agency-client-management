@@ -8,9 +8,9 @@ import {
 import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionHandler';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
-import {CommandBus} from '../CommandBus';
 import {EventRepository} from '../../../src/EventRepository';
 import {AgencyClientRepository} from './AgencyClientRepository';
+import {AgencyClientCommandHandlerInterface} from './types/AgencyClientCommandHandlerInterface';
 
 const handlers = [
   AddAgencyClientConsultantCommandHandler,
@@ -24,16 +24,18 @@ const handlers = [
  * Responsible for routing all agency client related commands to their corresponding handlers
  */
 export class AgencyClientCommandBus {
-  static registerCommandHandlers(eventRepository: EventRepository, commandBus: CommandBus): void {
+  static getCommandHandlers(eventRepository: EventRepository): AgencyClientCommandHandlerInterface[] {
     const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
     const agencyClientRepository = new AgencyClientRepository(
       eventRepository,
       new AgencyClientWriteProjectionHandler(),
       agencyRepository
     );
+    const items = [];
 
     for (const item of handlers) {
-      commandBus.registerAggregateCommand(new item(agencyClientRepository));
+      items.push(new item(agencyClientRepository));
     }
+    return items;
   }
 }

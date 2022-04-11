@@ -22,17 +22,19 @@ export class CommandBus {
   private _commandRegistry: {[key: string]: AggregateCommandHandlerInterface} = {};
 
   constructor(eventRepository: EventRepository) {
-    AgencyCommandBus.registerCommandHandlers(eventRepository, this);
-    AgencyClientCommandBus.registerCommandHandlers(eventRepository, this);
-    ConsultantJobCommandBus.registerCommandHandlers(eventRepository, this);
-    ConsultantJobAssignCommandBus.registerCommandHandlers(eventRepository, this);
+    this.registerAggregateCommandHandlers(AgencyCommandBus.getCommandHandlers(eventRepository));
+    this.registerAggregateCommandHandlers(AgencyClientCommandBus.getCommandHandlers(eventRepository));
+    this.registerAggregateCommandHandlers(ConsultantJobCommandBus.getCommandHandlers(eventRepository));
+    this.registerAggregateCommandHandlers(ConsultantJobAssignCommandBus.getCommandHandlers(eventRepository));
   }
 
-  registerAggregateCommand(cmd: AggregateCommandHandlerInterface): void {
-    if (this._commandRegistry[cmd.commandType]) {
-      throw new Error(`Duplicate command type registered, ${cmd.commandType} already exists`);
+  registerAggregateCommandHandlers(handlers: AggregateCommandHandlerInterface[]): void {
+    for (const handler of handlers) {
+      if (this._commandRegistry[handler.commandType]) {
+        throw new Error(`Duplicate command type registered, ${handler.commandType} already exists`);
+      }
+      this._commandRegistry[handler.commandType] = handler;
     }
-    this._commandRegistry[cmd.commandType] = cmd;
   }
 
   async execute(cmd: AggregateCommandInterface): Promise<void> {
