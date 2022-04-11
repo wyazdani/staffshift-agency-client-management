@@ -4,10 +4,11 @@ import {AgencyRepository} from '../../../src/aggregates/Agency/AgencyRepository'
 import {ConsultantJobAggregate} from '../../../src/aggregates/ConsultantJob/ConsultantJobAggregate';
 import {AssignConsultantCommandDataInterface} from '../../../src/aggregates/ConsultantJob/types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
+import {ConsultantJobAggregateIdInterface} from '../../../src/aggregates/ConsultantJob/types';
 
 describe('ConsultantJobAggregate', () => {
-  const aggregateId = {
-    name: 'consultant',
+  const aggregateId: ConsultantJobAggregateIdInterface = {
+    name: 'consultant_job',
     agency_id: 'agency id'
   };
 
@@ -209,14 +210,14 @@ describe('ConsultantJobAggregate', () => {
     });
   });
 
-  describe('getLastEventId()', () => {
+  describe('getLastSequenceId()', () => {
     it('should return aggregate last event id', () => {
       const aggregate = {
         last_sequence_id: 1
       };
       const agencyRepositoryStub = stubInterface<AgencyRepository>();
       const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepositoryStub);
-      const id = consultantJobAggregate.getLastEventId();
+      const id = consultantJobAggregate.getLastSequenceId();
 
       id.should.equal(1);
     });

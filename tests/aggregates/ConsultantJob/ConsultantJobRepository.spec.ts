@@ -4,18 +4,23 @@ import {AgencyRepository} from '../../../src/aggregates/Agency/AgencyRepository'
 import {ConsultantJobRepository} from '../../../src/aggregates/ConsultantJob/ConsultantJobRepository';
 import {EventRepository} from '../../../src/EventRepository';
 import {EventStore} from '../../../src/models/EventStore';
-import {AgencyWriteProjectionHandler} from '../../../src/aggregates/Agency/AgencyWriteProjectionHandler';
+import {ConsultantJobWriteProjectionHandler} from '../../../src/aggregates/ConsultantJob/ConsultantJobWriteProjectionHandler';
+import {ConsultantJobAggregateIdInterface} from '../../../src/aggregates/ConsultantJob/types';
 
 describe('ConsultantJobRepository class', () => {
   afterEach(() => {
     sinon.restore();
   });
   const agencyId = 'agency id';
+  const aggregateId: ConsultantJobAggregateIdInterface = {
+    name: 'consultant_job',
+    agency_id: agencyId
+  };
 
   describe('getAggregate()', () => {
     it('Test calling AgencyAggregate', async () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
-      const writeProjectionHandler = new AgencyWriteProjectionHandler();
+      const writeProjectionHandler = new ConsultantJobWriteProjectionHandler();
       const agencyRepository = stubInterface<AgencyRepository>();
       const consultantRepository = new ConsultantJobRepository(
         eventRepository,
@@ -29,7 +34,7 @@ describe('ConsultantJobRepository class', () => {
 
       const leftFoldEvents = sinon.stub(eventRepository, 'leftFoldEvents').resolves(projection);
 
-      const aggregate = await consultantRepository.getAggregate(agencyId);
+      const aggregate = await consultantRepository.getAggregate(aggregateId);
 
       leftFoldEvents.should.have.been.calledWith(
         writeProjectionHandler,
@@ -49,7 +54,7 @@ describe('ConsultantJobRepository class', () => {
       const agencyRepository = stubInterface<AgencyRepository>();
       const consultantRepository = new ConsultantJobRepository(
         eventRepository,
-        new AgencyWriteProjectionHandler(),
+        new ConsultantJobWriteProjectionHandler(),
         agencyRepository
       );
       const save = sinon.stub(eventRepository, 'save').resolves([]);
