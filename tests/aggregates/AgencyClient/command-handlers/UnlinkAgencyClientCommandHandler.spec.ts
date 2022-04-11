@@ -5,6 +5,7 @@ import {AgencyClientAggregate} from '../../../../src/aggregates/AgencyClient/Age
 import {AgencyClientRepository} from '../../../../src/aggregates/AgencyClient/AgencyClientRepository';
 import {UnlinkAgencyClientCommandHandler} from '../../../../src/aggregates/AgencyClient/command-handlers/UnlinkAgencyClientCommandHandler';
 import {AgencyClientCommandEnum} from '../../../../src/aggregates/AgencyClient/types';
+import {UnlinkAgencyClientCommandInterface} from '../../../../src/aggregates/AgencyClient/types/CommandTypes';
 
 describe('UnlinkAgencyClientCommandHandler', function () {
   const agencyId = '5799b72e8aaf4a18b71106b4';
@@ -17,6 +18,14 @@ describe('UnlinkAgencyClientCommandHandler', function () {
     client_type: 'site',
     organisation_id: 'string 1',
     site_id: 'string 2'
+  };
+  const command: UnlinkAgencyClientCommandInterface = {
+    aggregateId: {
+      agency_id: agencyId,
+      client_id: clientId
+    },
+    type: AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT,
+    data: commandData
   };
   const expectedEvents = [
     {
@@ -34,13 +43,13 @@ describe('UnlinkAgencyClientCommandHandler', function () {
 
       agencyClientRepositoryStub.getAggregate.resolves(agencyClientAggregateStub);
       agencyClientAggregateStub.isLinked.returns(true);
-      agencyClientAggregateStub.getLastEventId.returns(1);
+      agencyClientAggregateStub.getLastSequenceId.returns(1);
       agencyClientAggregateStub.getId.returns(aggregateId);
 
       const handler = new UnlinkAgencyClientCommandHandler(agencyClientRepositoryStub);
 
       assert.equal(handler.commandType, AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT, 'Expected command type to match');
-      await handler.execute(agencyId, clientId, commandData);
+      await handler.execute(command);
 
       agencyClientRepositoryStub.save.should.have.been.calledOnceWith(expectedEvents);
     });
@@ -59,13 +68,13 @@ describe('UnlinkAgencyClientCommandHandler', function () {
 
       agencyClientRepositoryStub.getAggregate.resolves(agencyClientAggregateStub);
       agencyClientAggregateStub.isLinked.returns(false);
-      agencyClientAggregateStub.getLastEventId.returns(0);
+      agencyClientAggregateStub.getLastSequenceId.returns(0);
       agencyClientAggregateStub.getId.returns(aggregateId);
 
       const handler = new UnlinkAgencyClientCommandHandler(agencyClientRepositoryStub);
 
       assert.equal(handler.commandType, AgencyClientCommandEnum.UNLINK_AGENCY_CLIENT, 'Expected command type to match');
-      await handler.execute(agencyId, clientId, commandData);
+      await handler.execute(command);
 
       agencyClientRepositoryStub.save.should.have.been.calledOnceWith(expectedEvents);
     });
@@ -76,11 +85,11 @@ describe('UnlinkAgencyClientCommandHandler', function () {
 
       agencyClientRepositoryStub.getAggregate.resolves(agencyClientAggregateStub);
       agencyClientAggregateStub.isLinked.returns(false);
-      agencyClientAggregateStub.getLastEventId.returns(1);
+      agencyClientAggregateStub.getLastSequenceId.returns(1);
 
       const handler = new UnlinkAgencyClientCommandHandler(agencyClientRepositoryStub);
 
-      await handler.execute(agencyId, clientId, commandData);
+      await handler.execute(command);
 
       agencyClientRepositoryStub.save.should.not.have.been.called;
     });
@@ -92,7 +101,7 @@ describe('UnlinkAgencyClientCommandHandler', function () {
 
       const handler = new UnlinkAgencyClientCommandHandler(agencyClientRepositoryStub);
 
-      await handler.execute(agencyId, clientId, commandData).should.be.rejectedWith(Error, 'test error');
+      await handler.execute(command).should.be.rejectedWith(Error, 'test error');
     });
 
     it('should throw an error when the save operation fails', async function () {
@@ -101,13 +110,13 @@ describe('UnlinkAgencyClientCommandHandler', function () {
 
       agencyClientRepositoryStub.getAggregate.resolves(agencyClientAggregateStub);
       agencyClientAggregateStub.isLinked.returns(true);
-      agencyClientAggregateStub.getLastEventId.returns(1);
+      agencyClientAggregateStub.getLastSequenceId.returns(1);
       agencyClientAggregateStub.getId.returns(aggregateId);
       agencyClientRepositoryStub.save.rejects(new Error('blah error'));
 
       const handler = new UnlinkAgencyClientCommandHandler(agencyClientRepositoryStub);
 
-      await handler.execute(agencyId, clientId, commandData).should.be.rejectedWith(Error, 'blah error');
+      await handler.execute(command).should.be.rejectedWith(Error, 'blah error');
 
       agencyClientRepositoryStub.save.should.have.been.calledOnceWith(expectedEvents);
     });
