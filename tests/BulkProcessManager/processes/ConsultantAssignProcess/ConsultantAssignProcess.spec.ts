@@ -2,7 +2,10 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {assert} from 'chai';
 import {describe} from 'mocha';
 import {SinonStub} from 'sinon';
-import sinon from 'ts-sinon';
+import sinon, {stubInterface} from 'ts-sinon';
+import {ConsultantJobAssignAggregate} from '../../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignAggregate';
+import {ConsultantJobAssignRepository} from '../../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
+import {ConsultantJobAssignAggregateStatusEnum} from '../../../../src/aggregates/ConsultantJobAssign/types/ConsultantJobAssignAggregateStatusEnum';
 import {EventStoreErrorEncoder} from '../../../../src/BulkProcessManager/EventStoreErrorEncoder';
 import {ConsultantAssignProcess} from '../../../../src/BulkProcessManager/processes/ConsultantAssignProcess/ConsultantAssignProcess';
 import {RetryService, RetryableError, NonRetryableError} from '../../../../src/BulkProcessManager/RetryService';
@@ -11,7 +14,7 @@ import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {CommandBus} from '../../../../src/aggregates/CommandBus';
 
-describe.skip('ConsultantAssignProcess', () => {
+describe('ConsultantAssignProcess', () => {
   let logger: LoggerContext;
   let execRetryService: SinonStub;
   const encodedError: any = {sample: 'ok'};
@@ -31,6 +34,7 @@ describe.skip('ConsultantAssignProcess', () => {
   const correlationId = 'correlation id';
   const metaData = {user_id: 'sample'};
   const clientId = 'A';
+  const clientIdB = 'B';
   const initiateEvent: any = {
     _id: 'event id',
     aggregate_id: {
@@ -43,9 +47,18 @@ describe.skip('ConsultantAssignProcess', () => {
       _id: 'initiateJobId',
       consultant_id: 'consultant id',
       consultant_role_id: 'consultant role id',
-      client_ids: [clientId]
+      client_ids: [clientId, clientIdB]
     },
     meta_data: metaData
+  };
+  const aggregateId = {
+    name: 'consultant_job_assign',
+    agency_id: agencyId,
+    job_id: initiateEvent.data._id
+  };
+  const jobAggregateId = {
+    name: 'consultant_job',
+    agency_id: agencyId
   };
 
   const opts = {
@@ -54,8 +67,21 @@ describe.skip('ConsultantAssignProcess', () => {
   };
 
   describe('execute()', () => {
-    it('Test success scenario', async () => {
-      const executeStub = sinon.stub(CommandBus.prototype, 'execute').resolves();
+    it('Test success scenario both for execute() and complete()', async () => {
+      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+
+      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+
+      const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
+      const addAgencyClientConsultant = sinon.stub(CommandBus.prototype, 'addAgencyClientConsultant').resolves();
+      const succeedItemConsultantJobAssign = sinon
+        .stub(CommandBus.prototype, 'succeedItemConsultantJobAssign')
+        .resolves();
+      const completeConsultantJobAssign = sinon.stub(CommandBus.prototype, 'completeConsultantJobAssign').resolves();
+      const completeAssignConsultant = sinon.stub(CommandBus.prototype, 'completeAssignConsultant').resolves();
+
+      aggregate.getProgressedClientIds.returns([clientIdB]);
 
       execRetryService.callsFake((func) => func());
       const process = new ConsultantAssignProcess(logger, opts);
@@ -63,121 +89,198 @@ describe.skip('ConsultantAssignProcess', () => {
       await process.execute(initiateEvent);
 
       execRetryService.should.have.been.calledOnce;
+      getAggregate.should.have.been.calledWith(aggregateId);
+      startConsultantJobAssign.should.have.been.calledWith(aggregateId);
+      addAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        initiateEvent.data.consultant_role_id,
+        initiateEvent.data.consultant_id
+      );
+      succeedItemConsultantJobAssign.should.have.been.calledOnceWith(aggregateId, clientId);
+      completeConsultantJobAssign.should.have.been.calledOnceWith(aggregateId);
 
       await process.complete();
+      completeAssignConsultant.should.have.been.calledWith(jobAggregateId, initiateEvent.data._id);
     });
 
-    // it('Test sequence id mismatch error', async () => {
-    //   const startProcess = sinon.stub(CommandBus.prototype, 'execute').resolves();
-    //   const assignConsultantToClient = sinon
-    //     .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
-    //     .rejects(new SequenceIdMismatch('sample'));
-    //   const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-    //   const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
-    //   const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
+    it('Test process already completed', async () => {
+      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
 
-    //   execRetryService.callsFake((func) => {
-    //     assert.throws(() => func(), RetryableError);
-    //     throw new Error('sample');
-    //   });
+      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.COMPLETED);
 
-    //   const process = new ConsultantAssignProcess(logger, opts);
+      execRetryService.callsFake((func) => func());
+      const process = new ConsultantAssignProcess(logger, opts);
 
-    //   await process.execute(initiateEvent);
-    //   startProcess.should.have.been.calledOnce;
-    //   assignConsultantToClient.should.have.been.calledOnceWith(
-    //     initiateEvent.data.consultant_role_id,
-    //     initiateEvent.data.consultant_id,
-    //     clientId
-    //   );
-    //   failItemProcess.should.have.been.calledOnceWith(clientId, encodedError);
-    //   succeedItemProcess.should.not.have.been.called;
-    //   completeProcess.should.have.been.calledOnce;
-    //   execRetryService.should.have.been.calledOnce;
-    // });
+      await process.execute(initiateEvent);
 
-    // it('Test ValidationError error', async () => {
-    //   const startProcess = sinon.stub(EventStoreHelper.prototype, 'startProcess').resolves();
-    //   const assignConsultantToClient = sinon
-    //     .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
-    //     .rejects(new ValidationError('sample'));
-    //   const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-    //   const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
-    //   const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
+      execRetryService.should.not.have.been.called;
+      getAggregate.should.have.been.calledWith(aggregateId);
+    });
 
-    //   execRetryService.callsFake((func) => {
-    //     assert.throws(() => func(), NonRetryableError);
-    //     throw new Error('sample');
-    //   });
-    //   const process = new ConsultantAssignProcess(logger, opts);
+    it('Test sequence id mismatch error', async () => {
+      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
 
-    //   await process.execute(initiateEvent);
-    //   startProcess.should.have.been.calledOnce;
-    //   assignConsultantToClient.should.have.been.calledOnceWith(
-    //     initiateEvent.data.consultant_role_id,
-    //     initiateEvent.data.consultant_id,
-    //     clientId
-    //   );
-    //   failItemProcess.should.have.been.calledOnceWith(clientId, encodedError);
-    //   succeedItemProcess.should.not.have.been.called;
-    //   completeProcess.should.have.been.calledOnce;
-    //   execRetryService.should.have.been.calledOnce;
-    // });
+      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
 
-    // it('Test ResourceNotFoundError error', async () => {
-    //   const startProcess = sinon.stub(EventStoreHelper.prototype, 'startProcess').resolves();
-    //   const assignConsultantToClient = sinon
-    //     .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
-    //     .rejects(new ResourceNotFoundError('sample'));
-    //   const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-    //   const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
-    //   const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
+      const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
+      const addAgencyClientConsultant = sinon
+        .stub(CommandBus.prototype, 'addAgencyClientConsultant')
+        .resolves()
+        .rejects(new SequenceIdMismatch('sample'));
+      const failItemConsultantJobAssign = sinon.stub(CommandBus.prototype, 'failItemConsultantJobAssign').resolves();
+      const completeConsultantJobAssign = sinon.stub(CommandBus.prototype, 'completeConsultantJobAssign').resolves();
 
-    //   execRetryService.callsFake((func) => {
-    //     assert.throws(() => func(), NonRetryableError);
-    //     throw new Error('sample');
-    //   });
-    //   const process = new ConsultantAssignProcess(logger, opts);
+      aggregate.getProgressedClientIds.returns([clientIdB]);
 
-    //   await process.execute(initiateEvent);
-    //   startProcess.should.have.been.calledOnce;
-    //   assignConsultantToClient.should.have.been.calledOnceWith(
-    //     initiateEvent.data.consultant_role_id,
-    //     initiateEvent.data.consultant_id,
-    //     clientId
-    //   );
-    //   failItemProcess.should.have.been.calledOnceWith(clientId, encodedError);
-    //   succeedItemProcess.should.not.have.been.called;
-    //   completeProcess.should.have.been.calledOnce;
-    //   execRetryService.should.have.been.calledOnce;
-    // });
+      execRetryService.callsFake((func) => func());
+      const process = new ConsultantAssignProcess(logger, opts);
 
-    // it('Test unknown error', async () => {
-    //   const startProcess = sinon.stub(EventStoreHelper.prototype, 'startProcess').resolves();
-    //   const assignConsultantToClient = sinon
-    //     .stub(EventStoreHelper.prototype, 'assignConsultantToClient')
-    //     .rejects(new Error('sample'));
-    //   const failItemProcess = sinon.stub(EventStoreHelper.prototype, 'failItemProcess').resolves();
-    //   const succeedItemProcess = sinon.stub(EventStoreHelper.prototype, 'succeedItemProcess').resolves();
-    //   const completeProcess = sinon.stub(EventStoreHelper.prototype, 'completeProcess').resolves();
+      await process.execute(initiateEvent);
 
-    //   execRetryService.callsFake((func) => {
-    //     assert.throws(() => func(), Error);
-    //     throw new Error('sample');
-    //   });
-    //   const process = new ConsultantAssignProcess(logger, opts);
+      execRetryService.should.have.been.calledOnce;
+      getAggregate.should.have.been.calledWith(aggregateId);
+      startConsultantJobAssign.should.have.been.calledWith(aggregateId);
+      addAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        initiateEvent.data.consultant_role_id,
+        initiateEvent.data.consultant_id
+      );
+      failItemConsultantJobAssign.should.have.been.calledWith(aggregateId, {
+        client_id: clientId,
+        errors: encodedError
+      });
+      completeConsultantJobAssign.should.have.been.calledOnce;
+    });
 
-    //   await process.execute(initiateEvent);
-    //   startProcess.should.have.been.calledOnce;
-    //   assignConsultantToClient.should.have.been.calledOnceWith(
-    //     initiateEvent.data.consultant_role_id,
-    //     initiateEvent.data.consultant_id,
-    //     clientId
-    //   );
-    //   failItemProcess.should.have.been.calledOnceWith(clientId, encodedError);
-    //   succeedItemProcess.should.not.have.been.called;
-    //   completeProcess.should.have.been.calledOnce;
-    //   execRetryService.should.have.been.calledOnce;
-    // });
+    it('Test ValidationError', async () => {
+      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+
+      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+
+      const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
+      const addAgencyClientConsultant = sinon
+        .stub(CommandBus.prototype, 'addAgencyClientConsultant')
+        .rejects(new ValidationError('sample'));
+      const failItemConsultantJobAssign = sinon.stub(CommandBus.prototype, 'failItemConsultantJobAssign').resolves();
+      const completeConsultantJobAssign = sinon.stub(CommandBus.prototype, 'completeConsultantJobAssign').resolves();
+
+      aggregate.getProgressedClientIds.returns([clientIdB]);
+
+      execRetryService.callsFake((func) => {
+        assert.throws(() => func(), NonRetryableError);
+        throw new Error('sample');
+      });
+      const process = new ConsultantAssignProcess(logger, opts);
+
+      await process.execute(initiateEvent);
+
+      execRetryService.should.have.been.calledOnce;
+      getAggregate.should.have.been.calledWith(aggregateId);
+      startConsultantJobAssign.should.have.been.calledWith(aggregateId);
+      addAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        initiateEvent.data.consultant_role_id,
+        initiateEvent.data.consultant_id
+      );
+      failItemConsultantJobAssign.should.have.been.calledWith(aggregateId, {
+        client_id: clientId,
+        errors: encodedError
+      });
+      completeConsultantJobAssign.should.have.been.calledOnce;
+    });
+
+    it('Test ResourceNotFound', async () => {
+      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+
+      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+
+      const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
+      const addAgencyClientConsultant = sinon
+        .stub(CommandBus.prototype, 'addAgencyClientConsultant')
+        .rejects(new ResourceNotFoundError('sample'));
+      const failItemConsultantJobAssign = sinon.stub(CommandBus.prototype, 'failItemConsultantJobAssign').resolves();
+      const completeConsultantJobAssign = sinon.stub(CommandBus.prototype, 'completeConsultantJobAssign').resolves();
+
+      aggregate.getProgressedClientIds.returns([clientIdB]);
+
+      execRetryService.callsFake((func) => {
+        assert.throws(() => func(), NonRetryableError);
+        throw new Error('sample');
+      });
+      const process = new ConsultantAssignProcess(logger, opts);
+
+      await process.execute(initiateEvent);
+
+      execRetryService.should.have.been.calledOnce;
+      getAggregate.should.have.been.calledWith(aggregateId);
+      startConsultantJobAssign.should.have.been.calledWith(aggregateId);
+      addAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        initiateEvent.data.consultant_role_id,
+        initiateEvent.data.consultant_id
+      );
+      failItemConsultantJobAssign.should.have.been.calledWith(aggregateId, {
+        client_id: clientId,
+        errors: encodedError
+      });
+      completeConsultantJobAssign.should.have.been.calledOnce;
+    });
+
+    it('Test unknown error', async () => {
+      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+
+      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+
+      const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
+      const addAgencyClientConsultant = sinon
+        .stub(CommandBus.prototype, 'addAgencyClientConsultant')
+        .rejects(new ResourceNotFoundError('sample'));
+      const failItemConsultantJobAssign = sinon.stub(CommandBus.prototype, 'failItemConsultantJobAssign').resolves();
+      const completeConsultantJobAssign = sinon.stub(CommandBus.prototype, 'completeConsultantJobAssign').resolves();
+
+      aggregate.getProgressedClientIds.returns([clientIdB]);
+
+      execRetryService.callsFake((func) => {
+        assert.throws(() => func(), RetryableError);
+        throw new Error('sample');
+      });
+      const process = new ConsultantAssignProcess(logger, opts);
+
+      await process.execute(initiateEvent);
+
+      execRetryService.should.have.been.calledOnce;
+      getAggregate.should.have.been.calledWith(aggregateId);
+      startConsultantJobAssign.should.have.been.calledWith(aggregateId);
+      addAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        initiateEvent.data.consultant_role_id,
+        initiateEvent.data.consultant_id
+      );
+      failItemConsultantJobAssign.should.have.been.calledWith(aggregateId, {
+        client_id: clientId,
+        errors: encodedError
+      });
+      completeConsultantJobAssign.should.have.been.calledOnce;
+    });
   });
 });
