@@ -1,7 +1,7 @@
 import retry from 'async-retry';
 
 export class RetryableError extends Error {
-  public code: 'RetryableError';
+  public code = 'RetryableError';
   public error: Error;
   constructor(err: Error) {
     super('Error');
@@ -9,7 +9,7 @@ export class RetryableError extends Error {
   }
 }
 export class NonRetryableError extends Error {
-  public code: 'NonRetryable';
+  public code = 'NonRetryable';
   public error: Error;
   constructor(err: Error) {
     super('Error');
