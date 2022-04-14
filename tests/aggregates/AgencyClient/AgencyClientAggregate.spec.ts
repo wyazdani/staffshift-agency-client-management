@@ -15,6 +15,9 @@ describe('AgencyClientAggregate', () => {
       agency_id: agencyId,
       client_id: '12'
     };
+    const agencyAggregateId = {
+      agency_id: agencyId
+    };
     const consultant = {
       consultant_role_id: roleId,
       _id: '1010',
@@ -86,16 +89,8 @@ describe('AgencyClientAggregate', () => {
           }
         ])
       );
-      assert.equal(
-        agencyRepositoryStub.getAggregate.getCall(0).args[0],
-        agencyId,
-        'getAggregate called with incorrect args'
-      );
-      assert.equal(
-        AgencyAggregateStub.getConsultantRole.getCall(0).args[0],
-        roleId,
-        'getConsultantRole called with incorrect args'
-      );
+      agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith(agencyAggregateId);
+      AgencyAggregateStub.getConsultantRole.should.have.been.calledOnceWith(roleId);
     });
 
     it('should return validation error when consultant already assigned for the role', async () => {
@@ -133,16 +128,8 @@ describe('AgencyClientAggregate', () => {
           }
         ])
       );
-      assert.equal(
-        agencyRepositoryStub.getAggregate.getCall(0).args[0],
-        agencyId,
-        'getAggregate called with incorrect args'
-      );
-      assert.equal(
-        AgencyAggregateStub.getConsultantRole.getCall(0).args[0],
-        roleId,
-        'getConsultantRole called with incorrect args'
-      );
+      agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith(agencyAggregateId);
+      AgencyAggregateStub.getConsultantRole.should.have.been.calledOnceWith(roleId);
     });
 
     it('should return validation error when consultant role is disabled', async () => {
@@ -180,16 +167,8 @@ describe('AgencyClientAggregate', () => {
           }
         ])
       );
-      assert.equal(
-        agencyRepositoryStub.getAggregate.getCall(0).args[0],
-        agencyId,
-        'getAggregate called with incorrect args'
-      );
-      assert.equal(
-        AgencyAggregateStub.getConsultantRole.getCall(0).args[0],
-        roleId,
-        'getConsultantRole called with incorrect args'
-      );
+      agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith(agencyAggregateId);
+      AgencyAggregateStub.getConsultantRole.should.have.been.calledOnceWith(roleId);
     });
 
     it('should return validation error when client is not linked to agency', async function () {
@@ -223,16 +202,8 @@ describe('AgencyClientAggregate', () => {
       await agencyClientAggregate
         .validateAddClientConsultant(assignConsultant)
         .should.be.rejectedWith(ResourceNotFoundError, 'Agency client not found');
-      assert.equal(
-        agencyRepositoryStub.getAggregate.getCall(0).args[0],
-        agencyId,
-        'getAggregate called with incorrect args'
-      );
-      assert.equal(
-        AgencyAggregateStub.getConsultantRole.getCall(0).args[0],
-        'other_role',
-        'getConsultantRole called with incorrect args'
-      );
+      agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith(agencyAggregateId);
+      AgencyAggregateStub.getConsultantRole.should.have.been.calledOnceWith('other_role');
     });
   });
 
@@ -342,7 +313,7 @@ describe('AgencyClientAggregate', () => {
     });
   });
 
-  describe('getLastEventId()', () => {
+  describe('getLastSequenceId()', () => {
     it('should return aggregate last event id', () => {
       const aggregateId = {
         agency_id: '45',
@@ -363,7 +334,7 @@ describe('AgencyClientAggregate', () => {
       };
       const agencyRepositoryStub = stubConstructor(AgencyRepository);
       const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
-      const id = agencyClientAggregate.getLastEventId();
+      const id = agencyClientAggregate.getLastSequenceId();
 
       assert.equal(id, aggregate.last_sequence_id, 'Incorrect aggregate last_sequence_id returned');
     });

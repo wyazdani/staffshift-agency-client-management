@@ -1,54 +1,37 @@
-import sinon from 'sinon';
-import {stubConstructor} from 'ts-sinon';
-import {LoggerContext} from 'a24-logzio-winston';
-import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
-import {assert} from 'chai';
-import {AssignConsultantCommandHandler} from '../../../src/aggregates/ConsultantJob/command-handlers/AssignConsultantCommandHandler';
-import {ConsultantJobRepository} from '../../../src/aggregates/ConsultantJob/ConsultantJobRepository';
 import {ConsultantJobCommandBus} from '../../../src/aggregates/ConsultantJob/ConsultantJobCommandBus';
-import {ConsultantJobCommandEnum} from '../../../src/aggregates/ConsultantJob/types';
+import {stubConstructor} from 'ts-sinon';
+import {assert} from 'chai';
+import {EventRepository} from '../../../src/EventRepository';
+import {
+  AssignConsultantCommandHandler,
+  CompleteAssignConsultantCommandHandler
+} from '../../../src/aggregates/ConsultantJob/command-handlers';
 
-describe('ConsultantJobCommandBus', () => {
-  let logger: LoggerContext;
-  let consultantCommandBus: ConsultantJobCommandBus;
-  let consultantRepository: ConsultantJobRepository;
+const expectedHandlers = [AssignConsultantCommandHandler, CompleteAssignConsultantCommandHandler];
 
-  beforeEach(() => {
-    logger = TestUtilsLogger.getLogger(sinon.spy());
-    consultantCommandBus = new ConsultantJobCommandBus();
-    consultantRepository = stubConstructor(ConsultantJobRepository);
-  });
+describe('ConsultantJobCommandBus class', () => {
+  describe('getCommandHandlers()', () => {
+    /**
+     * This test case exists to prevent a regression by deleting a handler
+     * We also assert that each is uniquely registered
+     */
+    it('test all command handlers are uniquely registered', () => {
+      const eventRepository = stubConstructor(EventRepository);
+      const handlers = ConsultantJobCommandBus.getCommandHandlers(eventRepository);
+      let instanceOfCount = 0;
 
-  describe('addHandler()', () => {
-    it('should return class instance', () => {
-      const instance = consultantCommandBus.addHandler(new AssignConsultantCommandHandler(consultantRepository));
-
-      assert.deepEqual(instance, consultantCommandBus, 'Expected class instance not returned');
-    });
-  });
-
-  describe('execute()', () => {
-    const agencyId = '6141d9cb9fb4b44d53469145';
-    const command: any = {
-      type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
-      data: {sample: 'ok'}
-    };
-
-    it('should throw an error when there is no handler for the command', async () => {
-      await consultantCommandBus
-        .execute(agencyId, command)
-        .should.be.rejectedWith(Error, `Command type:${command.type} is not supported`);
-    });
-
-    it('should use the correct handler', async () => {
-      const handler = new AssignConsultantCommandHandler(consultantRepository);
-      const executeStub = sinon.stub(handler, 'execute');
-
-      consultantCommandBus.addHandler(handler);
-      executeStub.resolves();
-
-      await consultantCommandBus.execute(agencyId, command);
-      executeStub.should.have.been.calledOnceWith(agencyId, command.data);
+      assert.isTrue(
+        handlers.length === expectedHandlers.length,
+        'Assert we have at least the same number of handlers still registered in the class'
+      );
+      for (const item of expectedHandlers) {
+        for (const handler of handlers) {
+          if (handler instanceof item) {
+            instanceOfCount++;
+          }
+        }
+      }
+      assert.isTrue(instanceOfCount === handlers.length, 'Expected the handlers to be unique');
     });
   });
 });

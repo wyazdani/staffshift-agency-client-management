@@ -1,60 +1,44 @@
-import sinon from 'sinon';
+import {AgencyCommandBus} from '../../../src/aggregates/Agency/AgencyCommandBus';
 import {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
-import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
-import {LoggerContext} from 'a24-logzio-winston';
-import {AgencyCommandBus} from '../../../src/aggregates/Agency/AgencyCommandBus';
-import {AddAgencyConsultantRoleCommandHandler} from '../../../src/aggregates/Agency/command-handlers/AddAgencyConsultantRoleCommandHandler';
-import {AgencyRepository} from '../../../src/aggregates/Agency/AgencyRepository';
-import {AgencyCommandEnum} from '../../../src/aggregates/Agency/types';
-import {DisableAgencyConsultantRoleCommandHandler} from '../../../src/aggregates/Agency/command-handlers/DisableAgencyConsultantRoleCommandHandler';
+import {EventRepository} from '../../../src/EventRepository';
+import {
+  AddAgencyConsultantRoleCommandHandler,
+  UpdateAgencyConsultantRoleCommandHandler,
+  EnableAgencyConsultantRoleCommandHandler,
+  DisableAgencyConsultantRoleCommandHandler
+} from '../../../src/aggregates/Agency/command-handlers';
 
-describe('AgencyCommandBus', () => {
-  let logger: LoggerContext;
-  let agencyCommandBus: AgencyCommandBus;
-  let agencyRepository: AgencyRepository;
+const expectedHandlers = [
+  AddAgencyConsultantRoleCommandHandler,
+  UpdateAgencyConsultantRoleCommandHandler,
+  EnableAgencyConsultantRoleCommandHandler,
+  DisableAgencyConsultantRoleCommandHandler
+];
 
-  beforeEach(() => {
-    logger = TestUtilsLogger.getLogger(sinon.spy());
-    agencyCommandBus = new AgencyCommandBus();
-    agencyRepository = stubConstructor(AgencyRepository);
-  });
+describe('AgencyCommandBus class', () => {
+  describe('getCommandHandlers()', () => {
+    /**
+     * This test case exists to prevent a regression by deleting a handler
+     * We also assert that each is uniquely registered
+     */
+    it('test all command handlers are uniquely registered', () => {
+      const eventRepository = stubConstructor(EventRepository);
+      const handlers = AgencyCommandBus.getCommandHandlers(eventRepository);
+      let instanceOfCount = 0;
 
-  describe('addHandler()', () => {
-    it('should return class instance', () => {
-      const instance = agencyCommandBus.addHandler(new AddAgencyConsultantRoleCommandHandler(agencyRepository));
-
-      assert.deepEqual(instance, agencyCommandBus, 'Expected class instance not returned');
-    });
-  });
-
-  describe('execute()', () => {
-    const agencyId = '6141d9cb9fb4b44d53469145';
-    const command = {
-      type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
-      data: {
-        _id: 'some id',
-        name: 'OOH',
-        description: 'out of hours consultants',
-        max_consultants: 5
+      assert.isTrue(
+        handlers.length === expectedHandlers.length,
+        'Assert we have at least the same number of handlers still registered in the class'
+      );
+      for (const item of expectedHandlers) {
+        for (const handler of handlers) {
+          if (handler instanceof item) {
+            instanceOfCount++;
+          }
+        }
       }
-    };
-
-    it('should throw an error when there is no handler for the command', async () => {
-      await agencyCommandBus
-        .execute(agencyId, command)
-        .should.be.rejectedWith(Error, `Command type:${command.type} is not supported`);
-    });
-
-    it('should use the correct handler', async () => {
-      const handler = new AddAgencyConsultantRoleCommandHandler(agencyRepository);
-      const executeStub = sinon.stub(handler, 'execute');
-
-      agencyCommandBus.addHandler(new DisableAgencyConsultantRoleCommandHandler(agencyRepository)).addHandler(handler);
-      executeStub.resolves();
-
-      await agencyCommandBus.execute(agencyId, command);
-      executeStub.should.have.been.calledOnceWith(agencyId, command.data);
+      assert.isTrue(instanceOfCount === handlers.length, 'Expected the handlers to be unique');
     });
   });
 });

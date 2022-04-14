@@ -1,11 +1,17 @@
+import {AbstractAggregate} from '../AbstractAggregate';
 import {ConsultantJobAssignAggregateIdInterface, ConsultantJobAssignAggregateRecordInterface} from './types';
 import {ConsultantJobAssignAggregateStatusEnum} from './types/ConsultantJobAssignAggregateStatusEnum';
 
-export class ConsultantJobAssignAggregate {
+export class ConsultantJobAssignAggregate extends AbstractAggregate<
+  ConsultantJobAssignAggregateIdInterface,
+  ConsultantJobAssignAggregateRecordInterface
+> {
   constructor(
-    private id: ConsultantJobAssignAggregateIdInterface,
-    private aggregate: ConsultantJobAssignAggregateRecordInterface
-  ) {}
+    protected id: ConsultantJobAssignAggregateIdInterface,
+    protected aggregate: ConsultantJobAssignAggregateRecordInterface
+  ) {
+    super(id, aggregate);
+  }
 
   /**
    * retrieves all client ids that we already processed despite their success
@@ -16,24 +22,5 @@ export class ConsultantJobAssignAggregate {
 
   getCurrentStatus(): ConsultantJobAssignAggregateStatusEnum {
     return this.aggregate.status || ConsultantJobAssignAggregateStatusEnum.NEW;
-  }
-
-  /**
-   * Return the aggregate ID
-   */
-  getId(): ConsultantJobAssignAggregateIdInterface {
-    return this.id;
-  }
-
-  /**
-   * Return the previous aggregate ID
-   */
-  getLastEventId(): number {
-    return this.aggregate.last_sequence_id;
-  }
-
-  // Base class method for all aggregates
-  toJSON(): ConsultantJobAssignAggregateRecordInterface {
-    return this.aggregate;
   }
 }

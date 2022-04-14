@@ -1,64 +1,46 @@
-import sinon from 'sinon';
-import {stubConstructor} from 'ts-sinon';
-import {LoggerContext} from 'a24-logzio-winston';
-import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
-import {assert} from 'chai';
-import {AddAgencyClientConsultantCommandHandler} from '../../../src/aggregates/AgencyClient/command-handlers/AddAgencyClientConsultantCommandHandler';
-import {AgencyClientRepository} from '../../../src/aggregates/AgencyClient/AgencyClientRepository';
 import {AgencyClientCommandBus} from '../../../src/aggregates/AgencyClient/AgencyClientCommandBus';
-import {AgencyClientCommandEnum} from '../../../src/aggregates/AgencyClient/types';
-import {RemoveAgencyClientConsultantCommandHandler} from '../../../src/aggregates/AgencyClient/command-handlers/RemoveAgencyClientConsultantCommandHandler';
+import {stubConstructor} from 'ts-sinon';
+import {assert} from 'chai';
+import {EventRepository} from '../../../src/EventRepository';
+import {
+  AddAgencyClientConsultantCommandHandler,
+  RemoveAgencyClientConsultantCommandHandler,
+  LinkAgencyClientCommandHandler,
+  UnlinkAgencyClientCommandHandler,
+  SyncAgencyClientCommandHandler
+} from '../../../src/aggregates/AgencyClient/command-handlers';
 
-describe('AgencyClientCommandBus', () => {
-  let logger: LoggerContext;
-  let agencyClientCommandBus: AgencyClientCommandBus;
-  let agencyClientRepository: AgencyClientRepository;
+const expectedHandlers = [
+  AddAgencyClientConsultantCommandHandler,
+  RemoveAgencyClientConsultantCommandHandler,
+  LinkAgencyClientCommandHandler,
+  UnlinkAgencyClientCommandHandler,
+  SyncAgencyClientCommandHandler
+];
 
-  beforeEach(() => {
-    logger = TestUtilsLogger.getLogger(sinon.spy());
-    agencyClientCommandBus = new AgencyClientCommandBus();
-    agencyClientRepository = stubConstructor(AgencyClientRepository);
-  });
+describe('AgencyClientCommandBus class', () => {
+  describe('getCommandHandlers()', () => {
+    /**
+     * This test case exists to prevent a regression by deleting a handler
+     * We also assert that each is uniquely registered
+     */
+    it('test all command handlers are uniquely registered', () => {
+      const eventRepository = stubConstructor(EventRepository);
+      const handlers = AgencyClientCommandBus.getCommandHandlers(eventRepository);
+      let instanceOfCount = 0;
 
-  describe('addHandler()', () => {
-    it('should return class instance', () => {
-      const instance = agencyClientCommandBus.addHandler(
-        new AddAgencyClientConsultantCommandHandler(agencyClientRepository)
+      assert.isTrue(
+        handlers.length === expectedHandlers.length,
+        'Assert we have at least the same number of handlers still registered in the class'
       );
-
-      assert.deepEqual(instance, agencyClientCommandBus, 'Expected class instance not returned');
-    });
-  });
-
-  describe('execute()', () => {
-    const agencyId = '6141d9cb9fb4b44d53469145';
-    const clientId = '6141d9cb9fb4b44d53469151';
-    const command = {
-      type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
-      data: {
-        _id: 'some id',
-        consultant_role_id: '6141d9cb9fb4b44d5346914d',
-        consultant_id: '6141d9cb9fb4b44d5346914e'
+      for (const item of expectedHandlers) {
+        for (const handler of handlers) {
+          if (handler instanceof item) {
+            instanceOfCount++;
+          }
+        }
       }
-    };
-
-    it('should throw an error when there is no handler for the command', async () => {
-      await agencyClientCommandBus
-        .execute(agencyId, clientId, command)
-        .should.be.rejectedWith(Error, `Command type:${command.type} is not supported`);
-    });
-
-    it('should use the correct handler', async () => {
-      const handler = new AddAgencyClientConsultantCommandHandler(agencyClientRepository);
-      const executeStub = sinon.stub(handler, 'execute');
-
-      agencyClientCommandBus
-        .addHandler(new RemoveAgencyClientConsultantCommandHandler(agencyClientRepository))
-        .addHandler(handler);
-      executeStub.resolves();
-
-      await agencyClientCommandBus.execute(agencyId, clientId, command);
-      executeStub.should.have.been.calledOnceWith(agencyId, clientId, command.data);
+      assert.isTrue(instanceOfCount === handlers.length, 'Expected the handlers to be unique');
     });
   });
 });

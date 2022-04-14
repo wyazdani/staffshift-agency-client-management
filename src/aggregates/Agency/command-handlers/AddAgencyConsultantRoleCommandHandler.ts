@@ -4,7 +4,7 @@ import {
 } from 'EventTypes';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
-import {AddAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
+import {AddAgencyConsultantRoleCommandInterface} from '../types/CommandTypes';
 import {AgencyCommandEnum} from '../types';
 import {EventsEnum} from '../../../Events';
 
@@ -19,9 +19,9 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
   /**
    * Build and save events caused by disableAgencyConsultantRole command
    */
-  async execute(agencyId: string, commandData: AddAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyRepository.getAggregate(agencyId);
-    let eventId = aggregate.getLastEventId();
+  async execute(command: AddAgencyConsultantRoleCommandInterface): Promise<void> {
+    const aggregate = await this.agencyRepository.getAggregate(command.aggregateId);
+    let seqId = aggregate.getLastSequenceId();
     // We are looking to auto enable newly created consultant roles hence the two events
 
     await this.agencyRepository.save([
@@ -29,20 +29,20 @@ export class AddAgencyConsultantRoleCommandHandler implements AgencyCommandHandl
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData._id,
-          name: commandData.name,
-          description: commandData.description,
-          max_consultants: commandData.max_consultants
+          _id: command.data._id,
+          name: command.data.name,
+          description: command.data.description,
+          max_consultants: command.data.max_consultants
         } as AgencyConsultantRoleAddedEventStoreDataInterface,
-        sequence_id: ++eventId
+        sequence_id: ++seqId
       },
       {
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData._id
+          _id: command.data._id
         } as AgencyConsultantRoleEnabledEventStoreDataInterface,
-        sequence_id: ++eventId
+        sequence_id: ++seqId
       }
     ]);
   }

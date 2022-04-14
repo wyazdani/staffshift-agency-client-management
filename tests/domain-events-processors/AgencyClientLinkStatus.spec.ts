@@ -2,27 +2,29 @@ import sinon, {StubbedInstance, stubConstructor} from 'ts-sinon';
 import {AgencyClientLinkStatus} from '../../src/domain-events-processors/AgencyClientLinkStatus';
 import {LoggerContext} from 'a24-logzio-winston';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';
-import {AgencyClientCommandBus} from '../../src/aggregates/AgencyClient/AgencyClientCommandBus';
 import {FacadeClientHelper} from '../../src/helpers/FacadeClientHelper';
+import {CommandBus} from '../../src/aggregates/CommandBus';
+import {UnlinkAgencyClientCommandInterface} from '../../src/aggregates/AgencyClient/types/CommandTypes';
+import {AgencyClientCommandEnum} from '../../src/aggregates/AgencyClient/types';
 
 describe('AgencyClientLinkStatus', () => {
   let logger: LoggerContext;
-  let agencyClientCommandBus: StubbedInstance<AgencyClientCommandBus>;
+  let commandBus: StubbedInstance<CommandBus>;
   let facadeClientHelper: StubbedInstance<FacadeClientHelper>;
   let agencyClientLinkStatus: AgencyClientLinkStatus;
 
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
-    agencyClientCommandBus = stubConstructor(AgencyClientCommandBus);
+    commandBus = stubConstructor(CommandBus);
     facadeClientHelper = stubConstructor(FacadeClientHelper);
-    agencyClientLinkStatus = new AgencyClientLinkStatus(logger, agencyClientCommandBus, facadeClientHelper);
+    agencyClientLinkStatus = new AgencyClientLinkStatus(logger, commandBus, facadeClientHelper);
   });
 
   describe('apply()', () => {
     const agencyId = '6156fec03e1063fb47ffd642';
     const clientId = '6156fedd3e1063fb47ffd647';
 
-    it('should call command bus with correct command', async () => {
+    it('test event agency_organisation_link_deleted', async () => {
       const message = {
         event: {
           name: 'agency_organisation_link_deleted',
@@ -37,19 +39,23 @@ describe('AgencyClientLinkStatus', () => {
         application_jwt: 'token'
       };
       const expectedCommand = {
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         type: 'unlinkAgencyClient',
         data: {
           client_type: 'organisation'
         }
       };
 
-      agencyClientCommandBus.execute.resolves();
+      commandBus.execute.resolves();
       await agencyClientLinkStatus.apply(message);
 
-      agencyClientCommandBus.execute.should.have.been.calledOnceWith(agencyId, clientId, expectedCommand);
+      commandBus.execute.should.have.been.calledOnceWith(expectedCommand);
     });
 
-    it('should call command bus with correct command', async () => {
+    it('test event agency_organisation_site_link_deleted', async () => {
       const message = {
         event: {
           name: 'agency_organisation_site_link_deleted',
@@ -66,6 +72,10 @@ describe('AgencyClientLinkStatus', () => {
       };
 
       const expectedCommand = {
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         type: 'unlinkAgencyClient',
         data: {
           organisation_id: '12345',
@@ -73,13 +83,13 @@ describe('AgencyClientLinkStatus', () => {
         }
       };
 
-      agencyClientCommandBus.execute.resolves();
+      commandBus.execute.resolves();
       await agencyClientLinkStatus.apply(message);
 
-      agencyClientCommandBus.execute.should.have.been.calledOnceWith(agencyId, clientId, expectedCommand);
+      commandBus.execute.should.have.been.calledOnceWith(expectedCommand);
     });
 
-    it('should call command bus with correct command', async () => {
+    it('test event agency_organisation_site_ward_link_deleted', async () => {
       const message = {
         event: {
           name: 'agency_organisation_site_ward_link_deleted',
@@ -97,6 +107,10 @@ describe('AgencyClientLinkStatus', () => {
       };
 
       const expectedCommand = {
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         type: 'unlinkAgencyClient',
         data: {
           organisation_id: '12345',
@@ -105,13 +119,13 @@ describe('AgencyClientLinkStatus', () => {
         }
       };
 
-      agencyClientCommandBus.execute.resolves();
+      commandBus.execute.resolves();
       await agencyClientLinkStatus.apply(message);
 
-      agencyClientCommandBus.execute.should.have.been.calledOnceWith(agencyId, clientId, expectedCommand);
+      commandBus.execute.should.have.been.calledOnceWith(expectedCommand);
     });
 
-    it('should call command bus with correct command', async () => {
+    it('test event agency_organisation_link_status_changed', async () => {
       const message = {
         event: {
           name: 'agency_organisation_link_status_changed',
@@ -127,6 +141,10 @@ describe('AgencyClientLinkStatus', () => {
       };
 
       const expectedCommand = {
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         type: 'unlinkAgencyClient',
         data: {
           client_type: 'organisation'
@@ -144,13 +162,13 @@ describe('AgencyClientLinkStatus', () => {
           agency_linked: false
         }
       ]);
-      agencyClientCommandBus.execute.resolves();
+      commandBus.execute.resolves();
       await agencyClientLinkStatus.apply(message);
 
-      agencyClientCommandBus.execute.should.have.been.calledOnceWith(agencyId, clientId, expectedCommand);
+      commandBus.execute.should.have.been.calledOnceWith(expectedCommand);
     });
 
-    it('should call command bus with correct command', async () => {
+    it('test event agency_organisation_link_created', async () => {
       const message = {
         event: {
           name: 'agency_organisation_link_created',
@@ -166,6 +184,10 @@ describe('AgencyClientLinkStatus', () => {
       };
 
       const expectedCommand = {
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         type: 'linkAgencyClient',
         data: {
           client_type: 'organisation'
@@ -183,13 +205,13 @@ describe('AgencyClientLinkStatus', () => {
           agency_linked: true
         }
       ]);
-      agencyClientCommandBus.execute.resolves();
+      commandBus.execute.resolves();
       await agencyClientLinkStatus.apply(message);
 
-      agencyClientCommandBus.execute.should.have.been.calledOnceWith(agencyId, clientId, expectedCommand);
+      commandBus.execute.should.have.been.calledOnceWith(expectedCommand);
     });
 
-    it('should call command bus with correct command', async () => {
+    it('test event agency_organisation_site_link_status_changed', async () => {
       const message = {
         event: {
           name: 'agency_organisation_site_link_status_changed',
@@ -205,6 +227,10 @@ describe('AgencyClientLinkStatus', () => {
         application_jwt: 'token'
       };
       const expectedCommand = {
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         type: 'linkAgencyClient',
         data: {
           organisation_id: '12345',
@@ -223,13 +249,13 @@ describe('AgencyClientLinkStatus', () => {
           agency_linked: true
         }
       ]);
-      agencyClientCommandBus.execute.resolves();
+      commandBus.execute.resolves();
       await agencyClientLinkStatus.apply(message);
 
-      agencyClientCommandBus.execute.should.have.been.calledOnceWith(agencyId, clientId, expectedCommand);
+      commandBus.execute.should.have.been.calledOnceWith(expectedCommand);
     });
 
-    it('should call command bus with correct command', async () => {
+    it('test event agency_organisation_site_ward_link_status_changed', async () => {
       const message = {
         event: {
           name: 'agency_organisation_site_ward_link_status_changed',
@@ -246,6 +272,10 @@ describe('AgencyClientLinkStatus', () => {
         application_jwt: 'token'
       };
       const expectedCommand = {
+        aggregateId: {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         type: 'linkAgencyClient',
         data: {
           organisation_id: '12345',
@@ -265,10 +295,10 @@ describe('AgencyClientLinkStatus', () => {
           agency_linked: true
         }
       ]);
-      agencyClientCommandBus.execute.resolves();
+      commandBus.execute.resolves();
       await agencyClientLinkStatus.apply(message);
 
-      agencyClientCommandBus.execute.should.have.been.calledOnceWith(agencyId, clientId, expectedCommand);
+      commandBus.execute.should.have.been.calledOnceWith(expectedCommand);
     });
   });
 });

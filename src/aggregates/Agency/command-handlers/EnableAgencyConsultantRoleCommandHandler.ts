@@ -2,7 +2,7 @@ import {AgencyConsultantRoleEnabledEventStoreDataInterface} from 'EventTypes';
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AgencyCommandEnum} from '../types';
-import {EnableAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
+import {EnableAgencyConsultantRoleCommandInterface} from '../types/CommandTypes';
 import {EventsEnum} from '../../../Events';
 
 /**
@@ -16,11 +16,11 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
   /**
    * Build and save event caused by enableAgencyConsultantRole command
    */
-  async execute(agencyId: string, commandData: EnableAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyRepository.getAggregate(agencyId);
-    const eventId = aggregate.getLastEventId();
+  async execute(command: EnableAgencyConsultantRoleCommandInterface): Promise<void> {
+    const aggregate = await this.agencyRepository.getAggregate(command.aggregateId);
+    const seqId = aggregate.getLastSequenceId();
 
-    if (!aggregate.canEnableConsultantRole(commandData._id)) {
+    if (!aggregate.canEnableConsultantRole(command.data._id)) {
       return;
     }
     await this.agencyRepository.save([
@@ -28,9 +28,9 @@ export class EnableAgencyConsultantRoleCommandHandler implements AgencyCommandHa
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: aggregate.getId(),
         data: {
-          _id: commandData._id
+          _id: command.data._id
         } as AgencyConsultantRoleEnabledEventStoreDataInterface,
-        sequence_id: eventId + 1
+        sequence_id: seqId + 1
       }
     ]);
   }

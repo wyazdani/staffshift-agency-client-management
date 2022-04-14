@@ -1,38 +1,36 @@
 import {AgencyClientAggregate} from './AgencyClientAggregate';
 import {AgencyRepository} from '../Agency/AgencyRepository';
-import {EventRepository, EventInterface} from '../../EventRepository';
-import {AgencyClientAggregateRecordInterface} from './types';
-import {EventStoreModelInterface} from '../../models/EventStore';
+import {EventRepository} from '../../EventRepository';
+import {AgencyClientAggregateIdInterface, AgencyClientAggregateRecordInterface} from './types';
 import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionHandler';
+import {AbstractRepository} from '../AbstractRepository';
 
 /**
  * Class responsible for interacting with agency client aggregate data source
  */
-export class AgencyClientRepository {
+export class AgencyClientRepository extends AbstractRepository {
   constructor(
-    private eventRepository: EventRepository,
+    protected eventRepository: EventRepository,
     private agencyClientWriteProjectionHandler: AgencyClientWriteProjectionHandler,
     private agencyRepository: AgencyRepository
-  ) {}
+  ) {
+    super(eventRepository);
+  }
 
   async getAggregate(
-    agencyId: string,
-    clientId: string,
+    aggregateId: AgencyClientAggregateIdInterface,
     sequenceId: number = undefined
   ): Promise<AgencyClientAggregate> {
     const projection: AgencyClientAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
       this.agencyClientWriteProjectionHandler,
-      {agency_id: agencyId, client_id: clientId},
+      {agency_id: aggregateId.agency_id, client_id: aggregateId.client_id},
       sequenceId
     );
 
-    return new AgencyClientAggregate({agency_id: agencyId, client_id: clientId}, projection, this.agencyRepository);
-  }
-
-  /**
-   * Persist agency client related events into event store
-   */
-  async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
-    return this.eventRepository.save(events);
+    return new AgencyClientAggregate(
+      {agency_id: aggregateId.agency_id, client_id: aggregateId.client_id},
+      projection,
+      this.agencyRepository
+    );
   }
 }

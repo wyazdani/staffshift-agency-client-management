@@ -11,7 +11,11 @@ import {EventStore} from '../../../models/EventStore';
 import {EventStoreErrorEncoder} from '../../EventStoreErrorEncoder';
 import {RetryService, RetryableError, NonRetryableError} from '../../RetryService';
 import {ProcessInterface} from '../../types/ProcessInterface';
-import {EventStoreHelper} from './EventStoreHelper';
+import {CommandBus} from '../../../aggregates/CommandBus';
+
+import {ConsultantJobAssignAggregateIdInterface} from '../../../aggregates/ConsultantJobAssign/types';
+import {ConsultantJobAssignRepository} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
+import {ConsultantJobAssignWriteProjectionHandler} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignWriteProjectionHandler';
 
 interface ConsultantAssignProcessOptsInterface {
   maxRetry: number;
@@ -31,7 +35,10 @@ export class ConsultantAssignProcess implements ProcessInterface {
     ConsultantJobAssignInitiatedEventStoreDataInterface,
     ConsultantJobAggregateIdInterface
   >;
-  private eventStoreHelper: EventStoreHelper;
+  private commandBus: CommandBus;
+  private consultantJobAssignCommandAggregateId: ConsultantJobAssignAggregateIdInterface;
+  private consultantJobCommandAggregateId: ConsultantJobAggregateIdInterface;
+  private consultantJobAssignRepository: ConsultantJobAssignRepository;
   constructor(private logger: LoggerContext, private opts: ConsultantAssignProcessOptsInterface) {}
 
   async execute(
@@ -51,20 +58,27 @@ export class ConsultantAssignProcess implements ProcessInterface {
       eventId
     );
 
-    this.eventStoreHelper = new EventStoreHelper(
-      initiateEvent.aggregate_id.agency_id,
-      initiateEvent.data._id,
-      eventRepository
+    this.commandBus = new CommandBus(eventRepository);
+    this.consultantJobAssignRepository = new ConsultantJobAssignRepository(
+      eventRepository,
+      new ConsultantJobAssignWriteProjectionHandler()
     );
-
-    const jobAssignAggregate = await this.eventStoreHelper.getConsultantJobAssignAggregate(
-      this.initiateEvent.aggregate_id.agency_id,
-      initiateEvent.data._id
+    this.consultantJobCommandAggregateId = {
+      name: 'consultant_job',
+      agency_id: this.initiateEvent.aggregate_id.agency_id
+    };
+    this.consultantJobAssignCommandAggregateId = {
+      name: 'consultant_job_assign',
+      agency_id: this.initiateEvent.aggregate_id.agency_id,
+      job_id: initiateEvent.data._id
+    };
+    const jobAssignAggregate = await this.consultantJobAssignRepository.getAggregate(
+      this.consultantJobAssignCommandAggregateId
     );
     const currentStatus = jobAssignAggregate.getCurrentStatus();
 
     if (currentStatus === ConsultantJobAssignAggregateStatusEnum.NEW) {
-      await this.eventStoreHelper.startProcess();
+      await this.commandBus.startConsultantJobAssign(this.consultantJobAssignCommandAggregateId);
     } else if (currentStatus === ConsultantJobAssignAggregateStatusEnum.COMPLETED) {
       this.logger.info('Consultant Assignment process already completed', {id: initiateEvent._id});
       return;
@@ -75,10 +89,10 @@ export class ConsultantAssignProcess implements ProcessInterface {
     for (const clientId of clientIds) {
       if (await this.assignClientWithRetry(clientId)) {
         this.logger.info(`Assigned client ${clientId} to consultant ${this.initiateEvent.data.consultant_id}`);
-        await this.eventStoreHelper.succeedItemProcess(clientId);
+        await this.commandBus.succeedItemConsultantJobAssign(this.consultantJobAssignCommandAggregateId, clientId);
       }
     }
-    await this.eventStoreHelper.completeProcess();
+    await this.commandBus.completeConsultantJobAssign(this.consultantJobAssignCommandAggregateId);
     this.logger.info('Consultant Assign background process finished', {eventId});
   }
 
@@ -89,10 +103,10 @@ export class ConsultantAssignProcess implements ProcessInterface {
       await retryService.exec(() => this.assignClient(clientId));
       return true;
     } catch (error) {
-      await this.eventStoreHelper.failItemProcess(
-        clientId,
-        EventStoreErrorEncoder.encodeArray(retryService.getErrors())
-      );
+      await this.commandBus.failItemConsultantJobAssign(this.consultantJobAssignCommandAggregateId, {
+        client_id: clientId,
+        errors: EventStoreErrorEncoder.encodeArray(retryService.getErrors())
+      });
       return false;
     }
   }
@@ -106,10 +120,13 @@ export class ConsultantAssignProcess implements ProcessInterface {
         clientId,
         consultantId: this.initiateEvent.data.consultant_id
       });
-      await this.eventStoreHelper.assignConsultantToClient(
+      await this.commandBus.addAgencyClientConsultant(
+        {
+          agency_id: this.initiateEvent.aggregate_id.agency_id,
+          client_id: clientId
+        },
         this.initiateEvent.data.consultant_role_id,
-        this.initiateEvent.data.consultant_id,
-        clientId
+        this.initiateEvent.data.consultant_id
       );
     } catch (error) {
       if (error instanceof SequenceIdMismatch) {
@@ -132,9 +149,6 @@ export class ConsultantAssignProcess implements ProcessInterface {
   }
 
   async complete(): Promise<void> {
-    await this.eventStoreHelper.completeConsultantJob(
-      this.initiateEvent.aggregate_id.agency_id,
-      this.initiateEvent.data._id
-    );
+    await this.commandBus.completeAssignConsultant(this.consultantJobCommandAggregateId, this.initiateEvent.data._id);
   }
 }

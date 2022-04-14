@@ -6,8 +6,13 @@ import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {QueryHelper} from 'a24-node-query-utils';
 import {PaginationHelper} from '../../src/helpers/PaginationHelper';
+import {CommandBus} from '../../src/aggregates/CommandBus';
+import {EventRepository} from '../../src/EventRepository';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('AgencyClients', () => {
+  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+
   afterEach(() => {
     sinon.restore();
   });
@@ -21,7 +26,8 @@ describe('AgencyClients', () => {
         client_id: {value: clientId}
       };
       const req = fakeRequest({
-        swaggerParams: params
+        swaggerParams: params,
+        commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
@@ -52,7 +58,8 @@ describe('AgencyClients', () => {
         client_id: {value: clientId}
       };
       const req = fakeRequest({
-        swaggerParams: params
+        swaggerParams: params,
+        commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
@@ -74,7 +81,8 @@ describe('AgencyClients', () => {
         client_id: {value: clientId}
       };
       const req = fakeRequest({
-        swaggerParams: params
+        swaggerParams: params,
+        commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
@@ -102,7 +110,7 @@ describe('AgencyClients', () => {
           value: 'site'
         }
       };
-      const req = fakeRequest({swaggerParams: params});
+      const req = fakeRequest({swaggerParams: params, commandBus});
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
@@ -157,7 +165,7 @@ describe('AgencyClients', () => {
           value: 'site'
         }
       };
-      const req = fakeRequest({swaggerParams: params});
+      const req = fakeRequest({swaggerParams: params, commandBus});
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
@@ -204,7 +212,7 @@ describe('AgencyClients', () => {
           value: 'site'
         }
       };
-      const req = fakeRequest({swaggerParams: params});
+      const req = fakeRequest({swaggerParams: params, commandBus});
       const res = fakeResponse();
       const next = sinon.spy();
       const limit = 1;

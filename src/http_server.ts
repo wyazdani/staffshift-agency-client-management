@@ -1,5 +1,6 @@
 import path from 'path';
 import {isEmpty, set} from 'lodash';
+import {CommandBus} from './aggregates/CommandBus';
 import {JWTSecurityHelper, JWTVerificationInterface} from './helpers/JWTSecurityHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {ServerResponse, createServer} from 'http';
@@ -150,8 +151,9 @@ export const startServer = new Promise<void>((resolve) => {
               client_id: response.decoded.client_id,
               context: response.decoded.context
             });
+            const commandBus = new CommandBus(eventRepository);
 
-            set(req, 'eventRepository', eventRepository);
+            set(req, 'commandBus', commandBus);
             next();
           }
         );

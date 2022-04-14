@@ -1,6 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {IncomingMessage} from 'http';
-import {EventRepository} from '../EventRepository';
+import {CommandBus} from '../aggregates/CommandBus';
 
 export interface SwaggerRequestInterface extends IncomingMessage {
   Logger: LoggerContext;
@@ -10,6 +10,6 @@ export interface SwaggerRequestInterface extends IncomingMessage {
       'x-public-operation'?: boolean;
     };
   };
-  eventRepository: EventRepository;
+  commandBus: CommandBus;
   basePathName: string;
 }

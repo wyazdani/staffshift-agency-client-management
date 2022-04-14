@@ -1,32 +1,33 @@
+import {AbstractRepository} from '../AbstractRepository';
 import {AgencyAggregate} from './AgencyAggregate';
-import {EventRepository, EventInterface} from '../../EventRepository';
-import {AgencyAggregateRecordInterface} from './types';
-import {EventStoreModelInterface} from '../../models/EventStore';
+import {EventRepository} from '../../EventRepository';
+import {AgencyAggregateIdInterface, AgencyAggregateRecordInterface} from './types';
 import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
 
 /**
  * Class responsible for interacting with agency aggregate data source
  */
-export class AgencyRepository {
-  constructor(private eventRepository: EventRepository, private writeProjectionHandler: AgencyWriteProjectionHandler) {}
+export class AgencyRepository extends AbstractRepository {
+  constructor(
+    protected eventRepository: EventRepository,
+    private writeProjectionHandler: AgencyWriteProjectionHandler
+  ) {
+    super(eventRepository);
+  }
 
   /**
    * Build and return agency aggregate
    */
-  async getAggregate(agencyId: string, sequenceId: number = undefined): Promise<AgencyAggregate> {
+  async getAggregate(
+    aggregateId: AgencyAggregateIdInterface,
+    sequenceId: number = undefined
+  ): Promise<AgencyAggregate> {
     const projection: AgencyAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
       this.writeProjectionHandler,
-      {agency_id: agencyId},
+      {agency_id: aggregateId.agency_id},
       sequenceId
     );
 
-    return new AgencyAggregate({agency_id: agencyId}, projection);
-  }
-
-  /**
-   * Persist agency related events into event store
-   */
-  async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
-    return this.eventRepository.save(events);
+    return new AgencyAggregate({agency_id: aggregateId.agency_id}, projection);
   }
 }

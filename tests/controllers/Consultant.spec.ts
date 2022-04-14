@@ -5,8 +5,13 @@ import {assignConsultant} from '../../src/controllers/ConsultantJob';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {ObjectID} from 'mongodb';
+import {CommandBus} from '../../src/aggregates/CommandBus';
+import {EventRepository} from '../../src/EventRepository';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('Consultant Controller', () => {
+  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+
   describe('assignConsultant()', () => {
     const agencyId = 'agency id';
     const clientId = 'some id';
@@ -31,7 +36,8 @@ describe('Consultant Controller', () => {
     it('success scenario', async () => {
       const req = fakeRequest({
         swaggerParams: params,
-        basePathName: '/v1/localhost/path'
+        basePathName: '/v1/localhost/path',
+        commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
@@ -39,57 +45,52 @@ describe('Consultant Controller', () => {
 
       sinon.stub(ObjectID.prototype, 'toString').returns(id);
 
-      const execute = sinon.stub(ConsultantJobCommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
       await assignConsultant(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
-      assert.deepEqual(
-        execute.getCall(0).args,
-        [
-          agencyId,
-          {
-            type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
-            data: {
-              _id: id,
-              ...payload
-            }
-          }
-        ],
-        'ConsultantCommandBus.execute called with incorrect arguments'
-      );
+      execute.should.have.been.calledOnceWith({
+        aggregateId: {
+          name: 'consultant_job',
+          agency_id: agencyId
+        },
+        type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
+        data: {
+          _id: id,
+          ...payload
+        }
+      });
     });
 
     it('failure scenario', async () => {
       const req = fakeRequest({
         swaggerParams: params,
-        basePathName: '/v1/localhost/path'
+        basePathName: '/v1/localhost/path',
+        commandBus
       });
       const res = fakeResponse();
       const next = sinon.spy();
 
       sinon.stub(ObjectID.prototype, 'toString').returns(id);
       const error = new Error('custom');
-      const execute = sinon.stub(ConsultantJobCommandBus.prototype, 'execute').rejects(error);
+      const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 
       await assignConsultant(req, res, next);
       assert.equal(next.callCount, 1, 'Expected next to be called once');
       assert.equal(next.getCall(0).args[0], error, 'Returned error does not match expected');
-      assert.deepEqual(
-        execute.getCall(0).args,
-        [
-          agencyId,
-          {
-            type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
-            data: {
-              _id: id,
-              ...payload
-            }
-          }
-        ],
-        'ConsultantCommandBus.execute called with incorrect arguments'
-      );
+      execute.should.have.been.calledOnceWith({
+        aggregateId: {
+          name: 'consultant_job',
+          agency_id: agencyId
+        },
+        type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
+        data: {
+          _id: id,
+          ...payload
+        }
+      });
     });
   });
 });

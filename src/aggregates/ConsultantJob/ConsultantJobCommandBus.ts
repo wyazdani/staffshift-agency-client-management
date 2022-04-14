@@ -1,30 +1,29 @@
+import {AssignConsultantCommandHandler, CompleteAssignConsultantCommandHandler} from './command-handlers';
+import {ConsultantJobRepository} from './ConsultantJobRepository';
+import {AgencyRepository} from '../Agency/AgencyRepository';
+import {EventRepository} from '../../EventRepository';
+import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
+import {ConsultantJobWriteProjectionHandler} from './ConsultantJobWriteProjectionHandler';
 import {ConsultantJobCommandHandlerInterface} from './types/ConsultantJobCommandHandlerInterface';
-import {ConsultantJobCommandInterface} from './types';
+
+const handlers = [AssignConsultantCommandHandler, CompleteAssignConsultantCommandHandler];
 
 /**
  * Responsible for routing all commands to their corresponding handlers
  */
 export class ConsultantJobCommandBus {
-  private commandHandlers: ConsultantJobCommandHandlerInterface[] = [];
+  static getCommandHandlers(eventRepository: EventRepository): ConsultantJobCommandHandlerInterface[] {
+    const items = [];
+    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
+    const consultantRepository = new ConsultantJobRepository(
+      eventRepository,
+      new ConsultantJobWriteProjectionHandler(),
+      agencyRepository
+    );
 
-  /**
-   * Add a command handler to the list of supported handlers
-   */
-  addHandler(commandHandler: ConsultantJobCommandHandlerInterface) {
-    this.commandHandlers.push(commandHandler);
-    return this;
-  }
-
-  /**
-   * Execute the command by finding it's corresponding handler
-   */
-  async execute(agencyId: string, command: ConsultantJobCommandInterface): Promise<void> {
-    const commandHandler = this.commandHandlers.find((handler) => handler.commandType === command.type);
-
-    if (!commandHandler) {
-      throw new Error(`Command type:${command.type} is not supported`);
+    for (const item of handlers) {
+      items.push(new item(consultantRepository));
     }
-
-    await commandHandler.execute(agencyId, command.data);
+    return items;
   }
 }

@@ -2,7 +2,7 @@ import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from 'EventTy
 import {AgencyRepository} from '../AgencyRepository';
 import {AgencyCommandHandlerInterface} from '../types/AgencyCommandHandlerInterface';
 import {AgencyCommandEnum} from '../types';
-import {UpdateAgencyConsultantRoleCommandDataInterface} from '../types/CommandDataTypes';
+import {UpdateAgencyConsultantRoleCommandInterface} from '../types/CommandTypes';
 import {EventsEnum} from '../../../Events';
 
 /**
@@ -16,18 +16,18 @@ export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHa
   /**
    * Build and save event caused by updateAgencyConsultantRole command
    */
-  async execute(agencyId: string, commandData: UpdateAgencyConsultantRoleCommandDataInterface): Promise<void> {
-    const aggregate = await this.agencyRepository.getAggregate(agencyId);
+  async execute(command: UpdateAgencyConsultantRoleCommandInterface): Promise<void> {
+    const aggregate = await this.agencyRepository.getAggregate(command.aggregateId);
 
-    aggregate.validateUpdateConsultantRole(commandData._id);
+    aggregate.validateUpdateConsultantRole(command.data._id);
 
-    const eventId = aggregate.getLastEventId();
+    const eventId = aggregate.getLastSequenceId();
 
     await this.agencyRepository.save([
       {
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
         aggregate_id: aggregate.getId(),
-        data: {...commandData} as AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
+        data: {...command.data} as AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
         sequence_id: eventId + 1
       }
     ]);

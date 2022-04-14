@@ -3,13 +3,19 @@ import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ConsultantJobAggregateIdInterface, ConsultantJobAggregateRecordInterface} from './types';
 import {AssignConsultantCommandDataInterface} from './types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
+import {AbstractAggregate} from '../AbstractAggregate';
 
-export class ConsultantJobAggregate {
+export class ConsultantJobAggregate extends AbstractAggregate<
+  ConsultantJobAggregateIdInterface,
+  ConsultantJobAggregateRecordInterface
+> {
   constructor(
-    private id: ConsultantJobAggregateIdInterface,
-    private aggregate: ConsultantJobAggregateRecordInterface,
+    protected id: ConsultantJobAggregateIdInterface,
+    protected aggregate: ConsultantJobAggregateRecordInterface,
     private agencyRepository: AgencyRepository
-  ) {}
+  ) {
+    super(id, aggregate);
+  }
 
   /**
    * checks:
@@ -18,7 +24,7 @@ export class ConsultantJobAggregate {
    * - we don't have another job running for the same consultant
    */
   async validateAssignConsultant(command: AssignConsultantCommandDataInterface): Promise<void> {
-    const agencyAggregate = await this.agencyRepository.getAggregate(this.id.agency_id);
+    const agencyAggregate = await this.agencyRepository.getAggregate({agency_id: this.id.agency_id});
     const consultantRole = agencyAggregate.getConsultantRole(command.consultant_role_id);
 
     if (!consultantRole) {
@@ -57,24 +63,5 @@ export class ConsultantJobAggregate {
 
   validateCompleteJob(processId: string): boolean {
     return !!find(this.aggregate.processes, {_id: processId, status: 'initiated'});
-  }
-
-  /**
-   * Return the aggregate ID
-   */
-  getId(): ConsultantJobAggregateIdInterface {
-    return this.id;
-  }
-
-  /**
-   * Return the previous aggregate ID
-   */
-  getLastEventId(): number {
-    return this.aggregate.last_sequence_id;
-  }
-
-  // Base class method for all aggregates
-  toJSON(): ConsultantJobAggregateRecordInterface {
-    return this.aggregate;
   }
 }

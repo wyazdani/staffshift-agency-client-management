@@ -1,6 +1,6 @@
-import {ConsultantJobCommandDataType} from './ConsultantJobCommandDataType';
+import {ConsultantJobCommandInterface} from '.';
 
 export interface ConsultantJobCommandHandlerInterface {
   commandType: string;
-  execute(agencyId: string, commandData: ConsultantJobCommandDataType): Promise<void>;
+  execute(command: ConsultantJobCommandInterface): Promise<void>;
 }

@@ -2,8 +2,8 @@ import {AgencyClientConsultantAssignedEventStoreDataInterface} from 'EventTypes'
 import {AgencyClientRepository} from '../AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from '../types/AgencyClientCommandHandlerInterface';
 import {AgencyClientCommandEnum} from '../types';
-import {AddAgencyClientConsultantCommandDataInterface} from '../types/CommandDataTypes';
 import {EventsEnum} from '../../../Events';
+import {AddAgencyClientConsultantCommandInterface} from '../types/CommandTypes';
 
 /**
  * Class responsible for handling addAgencyClientConsultant command
@@ -16,21 +16,17 @@ export class AddAgencyClientConsultantCommandHandler implements AgencyClientComm
   /**
    * Build and save event caused by addAgencyClientConsultant command
    */
-  async execute(
-    agencyId: string,
-    clientId: string,
-    commandData: AddAgencyClientConsultantCommandDataInterface
-  ): Promise<void> {
-    const aggregate = await this.agencyClientRepository.getAggregate(agencyId, clientId);
+  async execute(command: AddAgencyClientConsultantCommandInterface): Promise<void> {
+    const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
-    await aggregate.validateAddClientConsultant(commandData);
-    const eventId = aggregate.getLastEventId();
+    await aggregate.validateAddClientConsultant(command.data);
+    const eventId = aggregate.getLastSequenceId();
 
     await this.agencyClientRepository.save([
       {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: aggregate.getId(),
-        data: commandData as AgencyClientConsultantAssignedEventStoreDataInterface,
+        data: command.data as AgencyClientConsultantAssignedEventStoreDataInterface,
         sequence_id: eventId + 1
       }
     ]);

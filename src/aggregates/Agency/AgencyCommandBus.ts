@@ -1,30 +1,31 @@
+import {
+  AddAgencyConsultantRoleCommandHandler,
+  UpdateAgencyConsultantRoleCommandHandler,
+  EnableAgencyConsultantRoleCommandHandler,
+  DisableAgencyConsultantRoleCommandHandler
+} from './command-handlers';
+import {AgencyRepository} from './AgencyRepository';
+import {EventRepository} from '../../EventRepository';
+import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
 import {AgencyCommandHandlerInterface} from './types/AgencyCommandHandlerInterface';
-import {AgencyCommandInterface} from './types';
+const handlers = [
+  AddAgencyConsultantRoleCommandHandler,
+  UpdateAgencyConsultantRoleCommandHandler,
+  EnableAgencyConsultantRoleCommandHandler,
+  DisableAgencyConsultantRoleCommandHandler
+];
 
 /**
  * Responsible for routing all agency related commands to their corresponding handlers
  */
 export class AgencyCommandBus {
-  private commandHandlers: AgencyCommandHandlerInterface[] = [];
+  static getCommandHandlers(eventRepository: EventRepository): AgencyCommandHandlerInterface[] {
+    const agencyRepository = new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler());
+    const items = [];
 
-  /**
-   * Add a command handler to the list of supported handlers
-   */
-  addHandler(commandHandler: AgencyCommandHandlerInterface) {
-    this.commandHandlers.push(commandHandler);
-    return this;
-  }
-
-  /**
-   * Execute the command by finding it's corresponding handler
-   */
-  async execute(agencyId: string, command: AgencyCommandInterface): Promise<void> {
-    const commandHandler = this.commandHandlers.find((handler) => handler.commandType === command.type);
-
-    if (!commandHandler) {
-      throw new Error(`Command type:${command.type} is not supported`);
+    for (const item of handlers) {
+      items.push(new item(agencyRepository));
     }
-
-    await commandHandler.execute(agencyId, command.data);
+    return items;
   }
 }

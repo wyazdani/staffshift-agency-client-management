@@ -1,55 +1,44 @@
-import sinon from 'sinon';
-import {stubConstructor} from 'ts-sinon';
-import {LoggerContext} from 'a24-logzio-winston';
-import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
-import {assert} from 'chai';
-import {StartConsultantJobAssignCommandHandler} from '../../../src/aggregates/ConsultantJobAssign/command-handlers/StartConsultantJobAssignCommandHandler';
-import {ConsultantJobAssignRepository} from '../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
 import {ConsultantJobAssignCommandBus} from '../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignCommandBus';
-import {ConsultantJobAssignCommandEnum} from '../../../src/aggregates/ConsultantJobAssign/types';
+import {stubConstructor} from 'ts-sinon';
+import {assert} from 'chai';
+import {EventRepository} from '../../../src/EventRepository';
+import {
+  StartConsultantJobAssignCommandHandler,
+  SucceedItemConsultantJobAssignCommandHandler,
+  FailItemConsultantJobAssignCommandHandler,
+  CompleteConsultantJobAssignCommandHandler
+} from '../../../src/aggregates/ConsultantJobAssign/command-handlers';
 
-describe('ConsultantJobAssignCommandBus', () => {
-  let logger: LoggerContext;
-  let commandBus: ConsultantJobAssignCommandBus;
-  let repository: ConsultantJobAssignRepository;
+const expectedHandlers = [
+  StartConsultantJobAssignCommandHandler,
+  SucceedItemConsultantJobAssignCommandHandler,
+  FailItemConsultantJobAssignCommandHandler,
+  CompleteConsultantJobAssignCommandHandler
+];
 
-  beforeEach(() => {
-    logger = TestUtilsLogger.getLogger(sinon.spy());
-    commandBus = new ConsultantJobAssignCommandBus();
-    repository = stubConstructor(ConsultantJobAssignRepository);
-  });
+describe('ConsultantJobAssignCommandBus class', () => {
+  describe('getCommandHandlers()', () => {
+    /**
+     * This test case exists to prevent a regression by deleting a handler
+     * We also assert that each is uniquely registered
+     */
+    it('test all command handlers are uniquely registered', () => {
+      const eventRepository = stubConstructor(EventRepository);
+      const handlers = ConsultantJobAssignCommandBus.getCommandHandlers(eventRepository);
+      let instanceOfCount = 0;
 
-  describe('addHandler()', () => {
-    it('should return class instance', () => {
-      const instance = commandBus.addHandler(new StartConsultantJobAssignCommandHandler(repository));
-
-      assert.deepEqual(instance, commandBus, 'Expected class instance not returned');
-    });
-  });
-
-  describe('execute()', () => {
-    const jobId = 'job id';
-    const agencyId = '6141d9cb9fb4b44d53469145';
-    const command: any = {
-      type: ConsultantJobAssignCommandEnum.START,
-      data: {sample: 'ok'}
-    };
-
-    it('should throw an error when there is no handler for the command', async () => {
-      await commandBus
-        .execute(agencyId, jobId, command)
-        .should.be.rejectedWith(Error, `Command type:${command.type} is not supported`);
-    });
-
-    it('should use the correct handler', async () => {
-      const handler = new StartConsultantJobAssignCommandHandler(repository);
-      const executeStub = sinon.stub(handler, 'execute');
-
-      commandBus.addHandler(handler);
-      executeStub.resolves();
-
-      await commandBus.execute(agencyId, jobId, command);
-      executeStub.should.have.been.calledOnceWith(agencyId, jobId, command.data);
+      assert.isTrue(
+        handlers.length === expectedHandlers.length,
+        'Assert we have at least the same number of handlers still registered in the class'
+      );
+      for (const item of expectedHandlers) {
+        for (const handler of handlers) {
+          if (handler instanceof item) {
+            instanceOfCount++;
+          }
+        }
+      }
+      assert.isTrue(instanceOfCount === handlers.length, 'Expected the handlers to be unique');
     });
   });
 });

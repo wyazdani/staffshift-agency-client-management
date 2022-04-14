@@ -1,5 +1,5 @@
 import {AgencyCommandEnum} from '../../../src/aggregates/Agency/types';
-import {AgencyCommandBusFactory} from '../../../src/factories/AgencyCommandBusFactory';
+import {AddAgencyConsultantRoleCommandInterface} from '../../../src/aggregates/Agency/types/CommandTypes';
 import {AbstractScenario} from './AbstractScenario';
 
 /**
@@ -9,8 +9,11 @@ export class AgencyConsultantRoleScenario extends AbstractScenario {
   /**
    * Trigger addAgencyConsultantRole command
    */
-  async addAgencyConsultantRole(agencyId: string, roleId: string) {
-    await AgencyCommandBusFactory.getCommandBus(this.eventRepository).execute(agencyId, {
+  async addAgencyConsultantRole(agencyId: string, roleId: string): Promise<void> {
+    const command: AddAgencyConsultantRoleCommandInterface = {
+      aggregateId: {
+        agency_id: agencyId
+      },
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,
       data: {
         _id: roleId,
@@ -18,6 +21,8 @@ export class AgencyConsultantRoleScenario extends AbstractScenario {
         description: 'test random description',
         max_consultants: 10
       }
-    });
+    };
+
+    await this.commandBus.execute(command);
   }
 }
