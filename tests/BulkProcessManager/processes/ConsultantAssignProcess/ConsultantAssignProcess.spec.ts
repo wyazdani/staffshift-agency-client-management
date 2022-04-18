@@ -3,9 +3,9 @@ import {assert} from 'chai';
 import {describe} from 'mocha';
 import {SinonStub} from 'sinon';
 import sinon, {stubInterface} from 'ts-sinon';
-import {ConsultantJobAssignAggregate} from '../../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignAggregate';
-import {ConsultantJobAssignRepository} from '../../../../src/aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
-import {ConsultantJobAssignAggregateStatusEnum} from '../../../../src/aggregates/ConsultantJobAssign/types/ConsultantJobAssignAggregateStatusEnum';
+import {ConsultantJobProcessAggregate} from '../../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessAggregate';
+import {ConsultantJobProcessRepository} from '../../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
+import {ConsultantJobProcessAggregateStatusEnum} from '../../../../src/aggregates/ConsultantJobProcess/types/ConsultantJobProcessAggregateStatusEnum';
 import {EventStoreErrorEncoder} from '../../../../src/BulkProcessManager/EventStoreErrorEncoder';
 import {ConsultantAssignProcess} from '../../../../src/BulkProcessManager/processes/ConsultantAssignProcess/ConsultantAssignProcess';
 import {RetryService, RetryableError, NonRetryableError} from '../../../../src/BulkProcessManager/RetryService';
@@ -68,10 +68,10 @@ describe('ConsultantAssignProcess', () => {
 
   describe('execute()', () => {
     it('Test success scenario both for execute() and complete()', async () => {
-      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
-      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+      const aggregate = stubInterface<ConsultantJobProcessAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
-      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+      aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
 
       const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
       const addAgencyClientConsultant = sinon.stub(CommandBus.prototype, 'addAgencyClientConsultant').resolves();
@@ -107,10 +107,10 @@ describe('ConsultantAssignProcess', () => {
     });
 
     it('Test process already completed', async () => {
-      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
-      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+      const aggregate = stubInterface<ConsultantJobProcessAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
-      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.COMPLETED);
+      aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.COMPLETED);
 
       execRetryService.callsFake((func) => func());
       const process = new ConsultantAssignProcess(logger, opts);
@@ -122,10 +122,10 @@ describe('ConsultantAssignProcess', () => {
     });
 
     it('Test sequence id mismatch error', async () => {
-      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
-      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+      const aggregate = stubInterface<ConsultantJobProcessAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
-      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+      aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
 
       const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
       const addAgencyClientConsultant = sinon
@@ -161,10 +161,10 @@ describe('ConsultantAssignProcess', () => {
     });
 
     it('Test ValidationError', async () => {
-      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
-      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+      const aggregate = stubInterface<ConsultantJobProcessAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
-      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+      aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
 
       const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
       const addAgencyClientConsultant = sinon
@@ -202,10 +202,10 @@ describe('ConsultantAssignProcess', () => {
     });
 
     it('Test ResourceNotFound', async () => {
-      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
-      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+      const aggregate = stubInterface<ConsultantJobProcessAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
-      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+      aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
 
       const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
       const addAgencyClientConsultant = sinon
@@ -243,10 +243,10 @@ describe('ConsultantAssignProcess', () => {
     });
 
     it('Test unknown error', async () => {
-      const aggregate = stubInterface<ConsultantJobAssignAggregate>();
-      const getAggregate = sinon.stub(ConsultantJobAssignRepository.prototype, 'getAggregate').resolves(aggregate);
+      const aggregate = stubInterface<ConsultantJobProcessAggregate>();
+      const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
-      aggregate.getCurrentStatus.returns(ConsultantJobAssignAggregateStatusEnum.NEW);
+      aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
 
       const startConsultantJobAssign = sinon.stub(CommandBus.prototype, 'startConsultantJobAssign').resolves();
       const addAgencyClientConsultant = sinon

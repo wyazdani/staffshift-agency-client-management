@@ -9,8 +9,8 @@ export {AgencyConsultantRoleDisabledEventStoreDataInterface} from './AgencyConsu
 export {AgencyConsultantRoleEnabledEventStoreDataInterface} from './AgencyConsultantRoleEnabledEventInterface';
 export {ConsultantJobAssignInitiatedEventStoreDataInterface} from './ConsultantJobAssignInitiatedEventInterface';
 export {ConsultantJobAssignCompletedEventStoreDataInterface} from './ConsultantJobAssignCompletedEventInterface';
-export {ConsultantJobAssignProcessCompletedEventStoreDataInterface} from './ConsultantJobAssignProcessCompletedEventInterface';
-export {ConsultantJobAssignProcessItemFailedEventStoreDataInterface} from './ConsultantJobAssignProcessItemFailedEventInterface';
-export {ConsultantJobAssignProcessItemSucceededEventStoreDataInterface} from './ConsultantJobAssignProcessItemSucceededEventInterface';
-export {ConsultantJobAssignProcessStartedEventStoreDataInterface} from './ConsultantJobAssignProcessStartedEventInterface';
+export {ConsultantJobProcessCompletedEventStoreDataInterface} from './ConsultantJobProcessCompletedEventInterface';
+export {ConsultantJobProcessItemFailedEventStoreDataInterface} from './ConsultantJobProcessItemFailedEventInterface';
+export {ConsultantJobProcessItemSucceededEventStoreDataInterface} from './ConsultantJobProcessItemSucceededEventInterface';
+export {ConsultantJobProcessStartedEventStoreDataInterface} from './ConsultantJobProcessStartedEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

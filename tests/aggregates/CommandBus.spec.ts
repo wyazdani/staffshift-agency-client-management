@@ -4,7 +4,7 @@ import sinon, {stubInterface} from 'ts-sinon';
 import {AgencyClientCommandEnum} from '../../src/aggregates/AgencyClient/types';
 import {CommandBus} from '../../src/aggregates/CommandBus';
 import {ConsultantJobCommandEnum} from '../../src/aggregates/ConsultantJob/types';
-import {ConsultantJobAssignCommandEnum} from '../../src/aggregates/ConsultantJobAssign/types';
+import {ConsultantJobProcessCommandEnum} from '../../src/aggregates/ConsultantJobProcess/types';
 import {EventRepository} from '../../src/EventRepository';
 
 describe('CommandBus', () => {
@@ -28,20 +28,20 @@ describe('CommandBus', () => {
   it('startConsultantJobAssign()', async () => {
     const aggregateId: any = {id: 'ok'};
 
-    await commandBus.startConsultantJobAssign(aggregateId);
+    await commandBus.startConsultantJobProcess(aggregateId);
     execute.should.have.been.calledWith({
       aggregateId,
-      type: ConsultantJobAssignCommandEnum.START,
+      type: ConsultantJobProcessCommandEnum.START,
       data: {}
     });
   });
   it('succeedItemConsultantJobAssign()', async () => {
     const aggregateId: any = {id: 'ok'};
 
-    await commandBus.succeedItemConsultantJobAssign(aggregateId, 'A');
+    await commandBus.succeedItemConsultantJobProcess(aggregateId, 'A');
     execute.should.have.been.calledWith({
       aggregateId: aggregateId,
-      type: ConsultantJobAssignCommandEnum.SUCCEED_ITEM,
+      type: ConsultantJobProcessCommandEnum.SUCCEED_ITEM,
       data: {
         client_id: 'A'
       }
@@ -51,23 +51,23 @@ describe('CommandBus', () => {
   it('completeConsultantJobAssign()', async () => {
     const aggregateId: any = {id: 'ok'};
 
-    await commandBus.completeConsultantJobAssign(aggregateId);
+    await commandBus.completeConsultantJobProcess(aggregateId);
     execute.should.have.been.calledWith({
       aggregateId,
-      type: ConsultantJobAssignCommandEnum.COMPLETE,
+      type: ConsultantJobProcessCommandEnum.COMPLETE,
       data: {}
     });
   });
   it('succeedItemConsultantJobAssign()', async () => {
     const aggregateId: any = {id: 'ok'};
 
-    await commandBus.failItemConsultantJobAssign(aggregateId, {
+    await commandBus.failItemConsultantJobProcess(aggregateId, {
       client_id: 'A',
       errors: []
     });
     execute.should.have.been.calledWith({
       aggregateId: aggregateId,
-      type: ConsultantJobAssignCommandEnum.FAIL_ITEM,
+      type: ConsultantJobProcessCommandEnum.FAIL_ITEM,
       data: {
         client_id: 'A',
         errors: []
