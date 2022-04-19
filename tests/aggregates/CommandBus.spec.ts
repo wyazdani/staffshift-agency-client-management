@@ -25,7 +25,7 @@ describe('CommandBus', () => {
   afterEach(() => {
     sinon.restore();
   });
-  it('startConsultantJobAssign()', async () => {
+  it('startConsultantJobProcess()', async () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.startConsultantJobProcess(aggregateId);
@@ -35,7 +35,7 @@ describe('CommandBus', () => {
       data: {}
     });
   });
-  it('succeedItemConsultantJobAssign()', async () => {
+  it('succeedItemConsultantJobProcess()', async () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.succeedItemConsultantJobProcess(aggregateId, 'A');
@@ -48,7 +48,7 @@ describe('CommandBus', () => {
     });
   });
 
-  it('completeConsultantJobAssign()', async () => {
+  it('completeConsultantJobProcess()', async () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.completeConsultantJobProcess(aggregateId);
@@ -58,7 +58,7 @@ describe('CommandBus', () => {
       data: {}
     });
   });
-  it('succeedItemConsultantJobAssign()', async () => {
+  it('failItemConsultantJobProcess()', async () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.failItemConsultantJobProcess(aggregateId, {
