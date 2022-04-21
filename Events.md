@@ -515,7 +515,7 @@ Description: A short description of the event
 ```
 
  </td><td> Job assigning a consultant to multiple clients for an agency has completed </td></tr>
-<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_STARTED </td><td> ConsultantJobAssignProcessStarted </td><td> 
+<tr><td> CONSULTANT_JOB_PROCESS_STARTED </td><td> ConsultantJobProcessStarted </td><td> 
 
 ```json
 {
@@ -536,7 +536,7 @@ Description: A short description of the event
     },
     "name": {
       "type": "string",
-      "const": "consultant_job_assign"
+      "const": "consultant_job_process"
     },
     "job_id": {
       "type": "string"
@@ -553,8 +553,8 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Background process assigning a consultant to multiple clients for an agency is started </td></tr>
-<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED </td><td> ConsultantJobAssignProcessItemSucceeded </td><td> 
+ </td><td> Background process for consultant job is started </td></tr>
+<tr><td> CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED </td><td> ConsultantJobProcessItemSucceeded </td><td> 
 
 ```json
 {
@@ -582,7 +582,7 @@ Description: A short description of the event
     },
     "name": {
       "type": "string",
-      "const": "consultant_job_assign"
+      "const": "consultant_job_process"
     },
     "job_id": {
       "type": "string"
@@ -599,8 +599,8 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Background process assigning a consultant to multiple clients for an agency is succeeded for one client </td></tr>
-<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED </td><td> ConsultantJobAssignProcessItemFailed </td><td> 
+ </td><td> Background process for consultant job is succeeded for one client </td></tr>
+<tr><td> CONSULTANT_JOB_PROCESS_ITEM_FAILED </td><td> ConsultantJobProcessItemFailed </td><td> 
 
 ```json
 {
@@ -635,7 +635,7 @@ Description: A short description of the event
     },
     "name": {
       "type": "string",
-      "const": "consultant_job_assign"
+      "const": "consultant_job_process"
     },
     "job_id": {
       "type": "string"
@@ -652,8 +652,8 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Background process assigning a consultant to multiple clients for an agency is failed for one client </td></tr>
-<tr><td> CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED </td><td> ConsultantJobAssignProcessCompleted </td><td> 
+ </td><td> Background process for consultant job is failed for one client </td></tr>
+<tr><td> CONSULTANT_JOB_PROCESS_COMPLETED </td><td> ConsultantJobProcessCompleted </td><td> 
 
 ```json
 {
@@ -674,7 +674,7 @@ Description: A short description of the event
     },
     "name": {
       "type": "string",
-      "const": "consultant_job_assign"
+      "const": "consultant_job_process"
     },
     "job_id": {
       "type": "string"
@@ -691,5 +691,5 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Background process assigning a consultant to multiple clients for an agency is completed </td></tr>
+ </td><td> Background process for consultant job is completed </td></tr>
 </table><!--DATA_END-->
