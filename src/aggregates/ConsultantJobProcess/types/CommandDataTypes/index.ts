@@ -1,0 +1,4 @@
+export {StartConsultantJobProcessCommandDataInterface} from './StartConsultantJobProcessCommandDataInterface';
+export {SucceedItemConsultantJobProcessCommandDataInterface} from './SucceedItemConsultantJobProcessCommandDataInterface';
+export {FailItemConsultantJobProcessCommandDataInterface} from './FailItemConsultantJobProcessCommandDataInterface';
+export {CompleteConsultantJobProcessCommandDataInterface} from './CompleteConsultantJobProcessCommandDataInterface';

@@ -10,10 +10,10 @@ export enum EventsEnum {
   AGENCY_CLIENT_SYNCED = 'AgencyClientSynced',
   CONSULTANT_JOB_ASSIGN_INITIATED = 'ConsultantJobAssignInitiated',
   CONSULTANT_JOB_ASSIGN_COMPLETED = 'ConsultantJobAssignCompleted',
-  CONSULTANT_JOB_ASSIGN_PROCESS_STARTED = 'ConsultantJobAssignProcessStarted',
-  CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED = 'ConsultantJobAssignProcessItemSucceeded',
-  CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED = 'ConsultantJobAssignProcessItemFailed',
-  CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED = 'ConsultantJobAssignProcessCompleted'
+  CONSULTANT_JOB_PROCESS_STARTED = 'ConsultantJobProcessStarted',
+  CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED = 'ConsultantJobProcessItemSucceeded',
+  CONSULTANT_JOB_PROCESS_ITEM_FAILED = 'ConsultantJobProcessItemFailed',
+  CONSULTANT_JOB_PROCESS_COMPLETED = 'ConsultantJobProcessCompleted'
 }
 
 type EventsType = {
@@ -65,21 +65,20 @@ export const events: EventsType = {
     name: 'ConsultantJobAssignCompleted',
     description: 'Job assigning a consultant to multiple clients for an agency has completed'
   },
-  [EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_STARTED]: {
-    name: 'ConsultantJobAssignProcessStarted',
-    description: 'Background process assigning a consultant to multiple clients for an agency is started'
+  [EventsEnum.CONSULTANT_JOB_PROCESS_STARTED]: {
+    name: 'ConsultantJobProcessStarted',
+    description: 'Background process for consultant job is started'
   },
-  [EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_SUCCEEDED]: {
-    name: 'ConsultantJobAssignProcessItemSucceeded',
-    description:
-      'Background process assigning a consultant to multiple clients for an agency is succeeded for one client'
+  [EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED]: {
+    name: 'ConsultantJobProcessItemSucceeded',
+    description: 'Background process for consultant job is succeeded for one client'
   },
-  [EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_ITEM_FAILED]: {
-    name: 'ConsultantJobAssignProcessItemFailed',
-    description: 'Background process assigning a consultant to multiple clients for an agency is failed for one client'
+  [EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_FAILED]: {
+    name: 'ConsultantJobProcessItemFailed',
+    description: 'Background process for consultant job is failed for one client'
   },
-  [EventsEnum.CONSULTANT_JOB_ASSIGN_PROCESS_COMPLETED]: {
-    name: 'ConsultantJobAssignProcessCompleted',
-    description: 'Background process assigning a consultant to multiple clients for an agency is completed'
+  [EventsEnum.CONSULTANT_JOB_PROCESS_COMPLETED]: {
+    name: 'ConsultantJobProcessCompleted',
+    description: 'Background process for consultant job is completed'
   }
 };

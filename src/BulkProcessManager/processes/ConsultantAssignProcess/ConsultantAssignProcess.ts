@@ -4,7 +4,7 @@ import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventTypes';
 import {difference} from 'lodash';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';
-import {ConsultantJobAssignAggregateStatusEnum} from '../../../aggregates/ConsultantJobAssign/types/ConsultantJobAssignAggregateStatusEnum';
+import {ConsultantJobProcessAggregateStatusEnum} from '../../../aggregates/ConsultantJobProcess/types/ConsultantJobProcessAggregateStatusEnum';
 import {SequenceIdMismatch} from '../../../errors/SequenceIdMismatch';
 import {EventRepository} from '../../../EventRepository';
 import {EventStore} from '../../../models/EventStore';
@@ -13,9 +13,9 @@ import {RetryService, RetryableError, NonRetryableError} from '../../RetryServic
 import {ProcessInterface} from '../../types/ProcessInterface';
 import {CommandBus} from '../../../aggregates/CommandBus';
 
-import {ConsultantJobAssignAggregateIdInterface} from '../../../aggregates/ConsultantJobAssign/types';
-import {ConsultantJobAssignRepository} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignRepository';
-import {ConsultantJobAssignWriteProjectionHandler} from '../../../aggregates/ConsultantJobAssign/ConsultantJobAssignWriteProjectionHandler';
+import {ConsultantJobProcessAggregateIdInterface} from '../../../aggregates/ConsultantJobProcess/types';
+import {ConsultantJobProcessRepository} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
+import {ConsultantJobProcessWriteProjectionHandler} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessWriteProjectionHandler';
 
 interface ConsultantAssignProcessOptsInterface {
   maxRetry: number;
@@ -25,7 +25,7 @@ interface ConsultantAssignProcessOptsInterface {
 /**
  * It handles bulk consultant assign to client
  * It has a for loop to iterate through all clients. In each loop it
- * generates start/item_succeeded/item_failed/completed events on ConsultantJobAssign aggregate
+ * generates start/item_succeeded/item_failed/completed events on ConsultantJobProcess aggregate
  * also it assigns clients to consultant one by one
  * during each assignment business/internal errors might happen. we might do retry(based on error type),
  * otherwise mark it as failure and move on
@@ -36,9 +36,9 @@ export class ConsultantAssignProcess implements ProcessInterface {
     ConsultantJobAggregateIdInterface
   >;
   private commandBus: CommandBus;
-  private consultantJobAssignCommandAggregateId: ConsultantJobAssignAggregateIdInterface;
+  private consultantJobProcessCommandAggregateId: ConsultantJobProcessAggregateIdInterface;
   private consultantJobCommandAggregateId: ConsultantJobAggregateIdInterface;
-  private consultantJobAssignRepository: ConsultantJobAssignRepository;
+  private consultantJobProcessRepository: ConsultantJobProcessRepository;
   constructor(private logger: LoggerContext, private opts: ConsultantAssignProcessOptsInterface) {}
 
   async execute(
@@ -59,40 +59,40 @@ export class ConsultantAssignProcess implements ProcessInterface {
     );
 
     this.commandBus = new CommandBus(eventRepository);
-    this.consultantJobAssignRepository = new ConsultantJobAssignRepository(
+    this.consultantJobProcessRepository = new ConsultantJobProcessRepository(
       eventRepository,
-      new ConsultantJobAssignWriteProjectionHandler()
+      new ConsultantJobProcessWriteProjectionHandler()
     );
     this.consultantJobCommandAggregateId = {
       name: 'consultant_job',
       agency_id: this.initiateEvent.aggregate_id.agency_id
     };
-    this.consultantJobAssignCommandAggregateId = {
-      name: 'consultant_job_assign',
+    this.consultantJobProcessCommandAggregateId = {
+      name: 'consultant_job_process',
       agency_id: this.initiateEvent.aggregate_id.agency_id,
       job_id: initiateEvent.data._id
     };
-    const jobAssignAggregate = await this.consultantJobAssignRepository.getAggregate(
-      this.consultantJobAssignCommandAggregateId
+    const jobProcessAggregate = await this.consultantJobProcessRepository.getAggregate(
+      this.consultantJobProcessCommandAggregateId
     );
-    const currentStatus = jobAssignAggregate.getCurrentStatus();
+    const currentStatus = jobProcessAggregate.getCurrentStatus();
 
-    if (currentStatus === ConsultantJobAssignAggregateStatusEnum.NEW) {
-      await this.commandBus.startConsultantJobAssign(this.consultantJobAssignCommandAggregateId);
-    } else if (currentStatus === ConsultantJobAssignAggregateStatusEnum.COMPLETED) {
+    if (currentStatus === ConsultantJobProcessAggregateStatusEnum.NEW) {
+      await this.commandBus.startConsultantJobProcess(this.consultantJobProcessCommandAggregateId);
+    } else if (currentStatus === ConsultantJobProcessAggregateStatusEnum.COMPLETED) {
       this.logger.info('Consultant Assignment process already completed', {id: initiateEvent._id});
       return;
     }
-    const processedClientIds = jobAssignAggregate.getProgressedClientIds();
+    const processedClientIds = jobProcessAggregate.getProgressedClientIds();
     const clientIds = difference(initiateEvent.data.client_ids, processedClientIds);
 
     for (const clientId of clientIds) {
       if (await this.assignClientWithRetry(clientId)) {
         this.logger.info(`Assigned client ${clientId} to consultant ${this.initiateEvent.data.consultant_id}`);
-        await this.commandBus.succeedItemConsultantJobAssign(this.consultantJobAssignCommandAggregateId, clientId);
+        await this.commandBus.succeedItemConsultantJobProcess(this.consultantJobProcessCommandAggregateId, clientId);
       }
     }
-    await this.commandBus.completeConsultantJobAssign(this.consultantJobAssignCommandAggregateId);
+    await this.commandBus.completeConsultantJobProcess(this.consultantJobProcessCommandAggregateId);
     this.logger.info('Consultant Assign background process finished', {eventId});
   }
 
@@ -103,7 +103,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
       await retryService.exec(() => this.assignClient(clientId));
       return true;
     } catch (error) {
-      await this.commandBus.failItemConsultantJobAssign(this.consultantJobAssignCommandAggregateId, {
+      await this.commandBus.failItemConsultantJobProcess(this.consultantJobProcessCommandAggregateId, {
         client_id: clientId,
         errors: EventStoreErrorEncoder.encodeArray(retryService.getErrors())
       });

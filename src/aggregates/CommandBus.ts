@@ -7,15 +7,15 @@ import {AddAgencyClientConsultantCommandInterface} from './AgencyClient/types/Co
 import {ConsultantJobCommandBus} from './ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobAggregateIdInterface, ConsultantJobCommandEnum} from './ConsultantJob/types';
 import {CompleteAssignConsultantCommandInterface} from './ConsultantJob/types/CommandTypes';
-import {ConsultantJobAssignCommandBus} from './ConsultantJobAssign/ConsultantJobAssignCommandBus';
-import {ConsultantJobAssignCommandEnum, ConsultantJobAssignAggregateIdInterface} from './ConsultantJobAssign/types';
-import {FailItemConsultantJobAssignCommandDataInterface} from './ConsultantJobAssign/types/CommandDataTypes';
+import {ConsultantJobProcessCommandBus} from './ConsultantJobProcess/ConsultantJobProcessCommandBus';
+import {ConsultantJobProcessCommandEnum, ConsultantJobProcessAggregateIdInterface} from './ConsultantJobProcess/types';
+import {FailItemConsultantJobProcessCommandDataInterface} from './ConsultantJobProcess/types/CommandDataTypes';
 import {
-  StartConsultantJobAssignCommandInterface,
-  SucceedItemConsultantJobAssignCommandInterface,
-  CompleteConsultantJobAssignCommandInterface,
-  FailItemConsultantJobAssignCommandInterface
-} from './ConsultantJobAssign/types/CommandTypes';
+  StartConsultantJobProcessCommandInterface,
+  SucceedItemConsultantJobProcessCommandInterface,
+  CompleteConsultantJobProcessCommandInterface,
+  FailItemConsultantJobProcessCommandInterface
+} from './ConsultantJobProcess/types/CommandTypes';
 import {AggregateCommandInterface, AggregateCommandHandlerInterface} from './types';
 
 export class CommandBus {
@@ -25,7 +25,7 @@ export class CommandBus {
     this.registerAggregateCommandHandlers(AgencyCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(AgencyClientCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(ConsultantJobCommandBus.getCommandHandlers(eventRepository));
-    this.registerAggregateCommandHandlers(ConsultantJobAssignCommandBus.getCommandHandlers(eventRepository));
+    this.registerAggregateCommandHandlers(ConsultantJobProcessCommandBus.getCommandHandlers(eventRepository));
   }
 
   private registerAggregateCommandHandlers(handlers: AggregateCommandHandlerInterface[]): void {
@@ -51,23 +51,23 @@ export class CommandBus {
    * directly in you code.
    */
 
-  async startConsultantJobAssign(aggregateId: ConsultantJobAssignAggregateIdInterface): Promise<void> {
-    const command: StartConsultantJobAssignCommandInterface = {
+  async startConsultantJobProcess(aggregateId: ConsultantJobProcessAggregateIdInterface): Promise<void> {
+    const command: StartConsultantJobProcessCommandInterface = {
       aggregateId: aggregateId,
-      type: ConsultantJobAssignCommandEnum.START,
+      type: ConsultantJobProcessCommandEnum.START,
       data: {}
     };
 
     await this.execute(command);
   }
 
-  async succeedItemConsultantJobAssign(
-    aggregateId: ConsultantJobAssignAggregateIdInterface,
+  async succeedItemConsultantJobProcess(
+    aggregateId: ConsultantJobProcessAggregateIdInterface,
     clientId: string
   ): Promise<void> {
-    const command: SucceedItemConsultantJobAssignCommandInterface = {
+    const command: SucceedItemConsultantJobProcessCommandInterface = {
       aggregateId: aggregateId,
-      type: ConsultantJobAssignCommandEnum.SUCCEED_ITEM,
+      type: ConsultantJobProcessCommandEnum.SUCCEED_ITEM,
       data: {
         client_id: clientId
       }
@@ -76,23 +76,23 @@ export class CommandBus {
     await this.execute(command);
   }
 
-  async completeConsultantJobAssign(aggregateId: ConsultantJobAssignAggregateIdInterface): Promise<void> {
-    const command: CompleteConsultantJobAssignCommandInterface = {
+  async completeConsultantJobProcess(aggregateId: ConsultantJobProcessAggregateIdInterface): Promise<void> {
+    const command: CompleteConsultantJobProcessCommandInterface = {
       aggregateId,
-      type: ConsultantJobAssignCommandEnum.COMPLETE,
+      type: ConsultantJobProcessCommandEnum.COMPLETE,
       data: {}
     };
 
     await this.execute(command);
   }
 
-  async failItemConsultantJobAssign(
-    aggregateId: ConsultantJobAssignAggregateIdInterface,
-    data: FailItemConsultantJobAssignCommandDataInterface
+  async failItemConsultantJobProcess(
+    aggregateId: ConsultantJobProcessAggregateIdInterface,
+    data: FailItemConsultantJobProcessCommandDataInterface
   ): Promise<void> {
-    const command: FailItemConsultantJobAssignCommandInterface = {
+    const command: FailItemConsultantJobProcessCommandInterface = {
       aggregateId,
-      type: ConsultantJobAssignCommandEnum.FAIL_ITEM,
+      type: ConsultantJobProcessCommandEnum.FAIL_ITEM,
       data
     };
 
