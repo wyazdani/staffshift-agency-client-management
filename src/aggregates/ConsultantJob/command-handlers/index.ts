@@ -1,4 +1,3 @@
-import {AssignConsultantCommandHandler} from './AssignConsultantCommandHandler';
-import {CompleteAssignConsultantCommandHandler} from './CompleteAssignConsultantCommandHandler';
-
-export {AssignConsultantCommandHandler, CompleteAssignConsultantCommandHandler};
+export * from './AssignConsultantCommandHandler';
+export * from './CompleteAssignConsultantCommandHandler';
+export * from './UnassignConsultantCommandHandler';

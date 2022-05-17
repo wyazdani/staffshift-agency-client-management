@@ -1,7 +1,7 @@
 import {find, indexOf} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ConsultantJobAggregateIdInterface, ConsultantJobAggregateRecordInterface} from './types';
-import {AssignConsultantCommandDataInterface} from './types/CommandDataTypes';
+import {AssignConsultantCommandDataInterface, UnassignConsultantCommandDataInterface} from './types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 
@@ -45,23 +45,31 @@ export class ConsultantJobAggregate extends AbstractAggregate<
         }
       ]);
     }
+    this.validateNotRunningAnotherProcess(command.consultant_id);
+  }
+
+  validateCompleteJob(processId: string): boolean {
+    return !!find(this.aggregate.processes, {_id: processId, status: 'initiated'});
+  }
+
+  validateUnassignConsultant(command: UnassignConsultantCommandDataInterface): void {
+    this.validateNotRunningAnotherProcess(command.consultant_id);
+  }
+
+  private validateNotRunningAnotherProcess(consultantId: string) {
     const process = find(
       this.aggregate.processes,
-      (process) => process.status !== 'completed' && indexOf(process.consultants, command.consultant_id) >= 0
+      (process) => process.status !== 'completed' && indexOf(process.consultants, consultantId) >= 0
     );
 
     if (process) {
       throw new ValidationError('Not allowed consultant', [
         {
           code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
-          message: `There is another job still running for this consultant id ${command.consultant_id}`,
+          message: `There is another job still running for this consultant id ${consultantId}`,
           path: ['consultant_id']
         }
       ]);
     }
-  }
-
-  validateCompleteJob(processId: string): boolean {
-    return !!find(this.aggregate.processes, {_id: processId, status: 'initiated'});
   }
 }

@@ -4,10 +4,15 @@ import {assert} from 'chai';
 import {EventRepository} from '../../../src/EventRepository';
 import {
   AssignConsultantCommandHandler,
-  CompleteAssignConsultantCommandHandler
+  CompleteAssignConsultantCommandHandler,
+  UnassignConsultantCommandHandler
 } from '../../../src/aggregates/ConsultantJob/command-handlers';
 
-const expectedHandlers = [AssignConsultantCommandHandler, CompleteAssignConsultantCommandHandler];
+const expectedHandlers = [
+  AssignConsultantCommandHandler,
+  CompleteAssignConsultantCommandHandler,
+  UnassignConsultantCommandHandler
+];
 
 describe('ConsultantJobCommandBus class', () => {
   describe('getCommandHandlers()', () => {
