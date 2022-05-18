@@ -418,7 +418,7 @@ paths:
         - $ref: "#/parameters/unassign_consultant_payload"
       responses:
         202:
-          description: "Unassign a consultant to multiple clients"
+          description: "Unassign a consultant from multiple clients"
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
