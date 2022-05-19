@@ -692,4 +692,101 @@ Description: A short description of the event
 ```
 
  </td><td> Background process for consultant job is completed </td></tr>
+<tr><td> CONSULTANT_JOB_UNASSIGN_INITIATED </td><td> ConsultantJobUnassignInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "consultant_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
+      "type": "string"
+    },
+    "client_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "_id",
+    "consultant_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "consultant_job"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Initiate a job to unassign a consultant from multiple clients for an agency </td></tr>
+<tr><td> CONSULTANT_JOB_UNASSIGN_COMPLETED </td><td> ConsultantJobUnassignCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "consultant_job"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Job unassigning a consultant from multiple clients for an agency has completed </td></tr>
 </table><!--DATA_END-->

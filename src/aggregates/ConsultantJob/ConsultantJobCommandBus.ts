@@ -1,4 +1,8 @@
-import {AssignConsultantCommandHandler, CompleteAssignConsultantCommandHandler} from './command-handlers';
+import {
+  AssignConsultantCommandHandler,
+  CompleteAssignConsultantCommandHandler,
+  UnassignConsultantCommandHandler
+} from './command-handlers';
 import {ConsultantJobRepository} from './ConsultantJobRepository';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {EventRepository} from '../../EventRepository';
@@ -6,7 +10,11 @@ import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandl
 import {ConsultantJobWriteProjectionHandler} from './ConsultantJobWriteProjectionHandler';
 import {ConsultantJobCommandHandlerInterface} from './types/ConsultantJobCommandHandlerInterface';
 
-const handlers = [AssignConsultantCommandHandler, CompleteAssignConsultantCommandHandler];
+const handlers = [
+  AssignConsultantCommandHandler,
+  CompleteAssignConsultantCommandHandler,
+  UnassignConsultantCommandHandler
+];
 
 /**
  * Responsible for routing all commands to their corresponding handlers

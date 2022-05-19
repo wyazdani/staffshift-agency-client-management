@@ -1,8 +1,12 @@
+import {assert} from 'chai';
 import {stubInterface} from 'ts-sinon';
 import {AgencyAggregate} from '../../../src/aggregates/Agency/AgencyAggregate';
 import {AgencyRepository} from '../../../src/aggregates/Agency/AgencyRepository';
 import {ConsultantJobAggregate} from '../../../src/aggregates/ConsultantJob/ConsultantJobAggregate';
-import {AssignConsultantCommandDataInterface} from '../../../src/aggregates/ConsultantJob/types/CommandDataTypes';
+import {
+  AssignConsultantCommandDataInterface,
+  UnassignConsultantCommandDataInterface
+} from '../../../src/aggregates/ConsultantJob/types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
 import {ConsultantJobAggregateIdInterface} from '../../../src/aggregates/ConsultantJob/types';
 
@@ -233,6 +237,76 @@ describe('ConsultantJobAggregate', () => {
       const id = consultantJobAggregate.toJSON();
 
       id.should.equal(aggregate);
+    });
+  });
+
+  describe('validateUnassignConsultant', () => {
+    const consultantId = 'consultant id';
+    const consultantRoleId = 'consultant role id';
+    const command: UnassignConsultantCommandDataInterface = {
+      _id: 'id',
+      client_ids: ['client id'],
+      consultant_id: consultantId,
+      consultant_role_id: consultantRoleId
+    };
+
+    it('Test another consultant process active', () => {
+      const aggregate: any = {
+        last_sequence_id: 1,
+        processes: [
+          {
+            consultants: [consultantId],
+            status: 'initiated'
+          }
+        ]
+      };
+      const agencyRepository = stubInterface<AgencyRepository>();
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+
+      try {
+        consultantJobAggregate.validateUnassignConsultant(command);
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.should.deep.equal(
+          new ValidationError('Not allowed consultant', [
+            {
+              code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
+              message: `There is another job still running for this consultant id ${command.consultant_id}`,
+              path: ['consultant_id']
+            }
+          ])
+        );
+      }
+    });
+    it('Test success scenario when other processes are there', () => {
+      const aggregate: any = {
+        last_sequence_id: 1,
+        processes: [
+          {
+            consultants: ['some id'],
+            status: 'initiated'
+          }
+        ]
+      };
+      const agencyRepository = stubInterface<AgencyRepository>();
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+
+      consultantJobAggregate.validateUnassignConsultant(command);
+    });
+    it('Test success scenario when we have another process completed for this consultant', () => {
+      const aggregate: any = {
+        last_sequence_id: 1,
+        processes: [
+          {
+            consultants: [consultantId],
+            status: 'completed'
+          }
+        ]
+      };
+      const agencyRepository = stubInterface<AgencyRepository>();
+      const consultantJobAggregate = new ConsultantJobAggregate(aggregateId, aggregate, agencyRepository);
+
+      consultantJobAggregate.validateUnassignConsultant(command);
     });
   });
 });

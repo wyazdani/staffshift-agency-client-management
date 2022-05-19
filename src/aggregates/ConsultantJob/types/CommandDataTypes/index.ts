@@ -1,2 +1,3 @@
-export {AssignConsultantCommandDataInterface} from './AssignConsultantCommandDataInterface';
-export {CompleteAssignConsultantCommandDataInterface} from './CompleteAssignConsultantCommandDataInterface';
+export * from './AssignConsultantCommandDataInterface';
+export * from './UnassignConsultantCommandDataInterface';
+export * from './CompleteAssignConsultantCommandDataInterface';

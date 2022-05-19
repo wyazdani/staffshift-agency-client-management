@@ -404,6 +404,34 @@ paths:
       summary: "Assign a consultant to multiple clients"
       tags:
         - "Consultant Bulk"
+  /agency/{agency_id}/consultant-unassign:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+    post:
+      x-swagger-router-controller: "ConsultantJob"
+      operationId: "unassignConsultant"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/unassign_consultant_payload"
+      responses:
+        202:
+          description: "Unassign a consultant from multiple clients"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/unassign_consultant_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Unassign a consultant from multiple clients.
+      If consultant role is not specified we unassign without filtering on role.
+      If client_ids is not specified we unassign all clients for that consultant"
+      tags:
+        - "Consultant Bulk"
 parameters:
  # Query PARAMS
   query_client_type:
@@ -492,6 +520,13 @@ parameters:
     description: "The payload used to assign a consultant to multiple clients"
     schema:
       $ref: "#/definitions/assign_consultant_payload_def"
+  unassign_consultant_payload:
+    name: unassign_consultant_payload
+    in: body
+    required: true
+    description: "The payload used to unassign a consultant from multiple clients"
+    schema:
+      $ref: "#/definitions/unassign_consultant_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -723,6 +758,25 @@ definitions:
       - consultant_role_id
       - consultant_id
       - client_ids
+    properties:
+      consultant_role_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      consultant_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      client_ids:
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+    additionalProperties: false
+  unassign_consultant_payload_def:
+    type: object
+    required:
+      - consultant_id
     properties:
       consultant_role_id:
         type: string
@@ -997,6 +1051,50 @@ definitions:
                 - ARRAY_UNIQUE
                 - CONSULTANT_ROLE_NOT_FOUND
                 - CONSULTANT_ROLE_NOT_ENABLED
+                - ANOTHER_CONSULTANT_PROCESS_ACTIVE
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
+  unassign_consultant_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - OBJECT_MISSING_REQUIRED_PROPERTY
+                - ARRAY_LENGTH_SHORT
+                - ARRAY_UNIQUE
                 - ANOTHER_CONSULTANT_PROCESS_ACTIVE
             message:
               type: string

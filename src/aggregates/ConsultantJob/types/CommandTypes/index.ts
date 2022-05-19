@@ -1,4 +1,3 @@
-import {AssignConsultantCommandInterface} from './AssignConsultantCommandInterface';
-import {CompleteAssignConsultantCommandInterface} from './CompleteAssignConsultantCommandInterface';
-
-export {AssignConsultantCommandInterface, CompleteAssignConsultantCommandInterface};
+export * from './AssignConsultantCommandInterface';
+export * from './UnassignConsultantCommandInterface';
+export * from './CompleteAssignConsultantCommandInterface';

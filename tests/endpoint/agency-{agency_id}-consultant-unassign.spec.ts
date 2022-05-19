@@ -9,7 +9,7 @@ import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScen
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
 
-describe('/agency/{agency_id}/consultant-assign', () => {
+describe('/agency/{agency_id}/consultant-unassign', () => {
   const jwtToken = getJWT({
     sub: '5ff6e098fb83732f8e23dc92',
     name: 'John Doe',
@@ -31,9 +31,8 @@ describe('/agency/{agency_id}/consultant-assign', () => {
     await agencyConsultantRoleScenario.deleteAllEvents();
   });
   describe('post', () => {
-    it('should respond with 202 Assign consultant to multiple clients', async () => {
-      await agencyConsultantRoleScenario.addAgencyConsultantRole(agencyId, consultantRoleId);
-      const res = await api.post(`/agency/${agencyId}/consultant-assign`).set(headers).send({
+    it('should respond with 202 Unassign consultant to multiple clients', async () => {
+      const res = await api.post(`/agency/${agencyId}/consultant-unassign`).set(headers).send({
         consultant_id: consultantId,
         consultant_role_id: consultantRoleId,
         client_ids: clientIds
@@ -69,8 +68,6 @@ describe('/agency/{agency_id}/consultant-assign', () => {
                     'OBJECT_MISSING_REQUIRED_PROPERTY',
                     'ARRAY_LENGTH_SHORT',
                     'ARRAY_UNIQUE',
-                    'CONSULTANT_ROLE_NOT_FOUND',
-                    'CONSULTANT_ROLE_NOT_ENABLED',
                     'ANOTHER_CONSULTANT_PROCESS_ACTIVE'
                   ]
                 },
@@ -93,7 +90,7 @@ describe('/agency/{agency_id}/consultant-assign', () => {
         },
         additionalProperties: false
       };
-      const res = await api.post(`/agency/${agencyId}/consultant-assign`).set(headers).send({
+      const res = await api.post(`/agency/${agencyId}/consultant-unassign`).set(headers).send({
         consultant_id: consultantId,
         consultant_role_id: consultantRoleId,
         client_ids: []
@@ -121,7 +118,7 @@ describe('/agency/{agency_id}/consultant-assign', () => {
       const otherHeaders = _.cloneDeep(headers);
 
       otherHeaders['x-request-jwt'] = 'invalid';
-      const res = await api.post(`/agency/${agencyId}/consultant-assign`).set(otherHeaders).send({
+      const res = await api.post(`/agency/${agencyId}/consultant-unassign`).set(otherHeaders).send({
         consultant_id: consultantId,
         consultant_role_id: consultantRoleId,
         client_ids: clientIds
