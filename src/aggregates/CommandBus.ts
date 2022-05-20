@@ -3,7 +3,10 @@ import {EventRepository} from '../EventRepository';
 import {AgencyCommandBus} from './Agency/AgencyCommandBus';
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
 import {AgencyClientAggregateIdInterface, AgencyClientCommandEnum} from './AgencyClient/types';
-import {AddAgencyClientConsultantCommandInterface} from './AgencyClient/types/CommandTypes';
+import {
+  AddAgencyClientConsultantCommandInterface,
+  RemoveAgencyClientConsultantCommandInterface
+} from './AgencyClient/types/CommandTypes';
 import {ConsultantJobCommandBus} from './ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobAggregateIdInterface, ConsultantJobCommandEnum} from './ConsultantJob/types';
 import {CompleteAssignConsultantCommandInterface} from './ConsultantJob/types/CommandTypes';
@@ -122,6 +125,21 @@ export class CommandBus {
       aggregateId,
       type: ConsultantJobCommandEnum.COMPLETE_ASSIGN_CONSULTANT,
       data: {_id: id}
+    };
+
+    await this.execute(command);
+  }
+
+  async removeAgencyClientConsultant(
+    aggregateId: AgencyClientAggregateIdInterface,
+    assignmentId: string
+  ): Promise<void> {
+    const command: RemoveAgencyClientConsultantCommandInterface = {
+      aggregateId,
+      type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
+      data: {
+        _id: assignmentId
+      }
     };
 
     await this.execute(command);
