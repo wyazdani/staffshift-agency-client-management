@@ -16,7 +16,7 @@ describe('ConsultantJobProcessAggregate', () => {
       };
       const aggregate = new ConsultantJobProcessAggregate(aggregateId, aggregateRecord);
 
-      aggregate.getProgressedClientIds().should.deep.equal(['client a']);
+      aggregate.getProgressedItems().should.deep.equal(['client a']);
     });
     it('should return empty array if not set', () => {
       const aggregateRecord = {
@@ -24,7 +24,7 @@ describe('ConsultantJobProcessAggregate', () => {
       };
       const aggregate = new ConsultantJobProcessAggregate(aggregateId, aggregateRecord);
 
-      aggregate.getProgressedClientIds().should.deep.equal([]);
+      aggregate.getProgressedItems().should.deep.equal([]);
     });
   });
 

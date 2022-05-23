@@ -4,11 +4,14 @@ import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../models/BulkProcessManagerV1';
 
-export class ConsultantJobAssignCompletedEventHandler
-implements EventHandlerInterface<EventStorePubSubModelInterface<ConsultantJobAssignCompletedEventStoreDataInterface>> {
+export class ConsultantJobCompletedEventHandler
+implements
+    EventHandlerInterface<
+      EventStorePubSubModelInterface<Pick<ConsultantJobAssignCompletedEventStoreDataInterface, '_id'>>
+    > {
   constructor(private logger: LoggerContext) {}
   async handle(
-    event: EventStorePubSubModelInterface<ConsultantJobAssignCompletedEventStoreDataInterface>
+    event: EventStorePubSubModelInterface<Pick<ConsultantJobAssignCompletedEventStoreDataInterface, '_id'>>
   ): Promise<void> {
     await BulkProcessManagerV1.updateOne(
       {

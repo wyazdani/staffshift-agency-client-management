@@ -1,7 +1,7 @@
 import sinon from 'ts-sinon';
 import {EventsEnum} from '../../../src/Events';
-import {ConsultantJobAssignCompletedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobAssignCompletedEventHandler';
-import {ConsultantJobAssignInitiatedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobAssignInitiatedEventHandler';
+import {ConsultantJobCompletedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobCompletedEventHandler';
+import {ConsultantJobInitiatedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobInitiatedEventHandler';
 import {EventHandlerFactory} from '../../../src/projections/BulkProcessManagerV1/EventHandlerFactory';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
@@ -14,14 +14,14 @@ describe('EventHandlerFactory', () => {
       const logger = TestUtilsLogger.getLogger(sinon.spy());
       const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED, logger);
 
-      handler.should.instanceof(ConsultantJobAssignInitiatedEventHandler);
+      handler.should.instanceof(ConsultantJobInitiatedEventHandler);
     });
 
     it('Test CONSULTANT_JOB_ASSIGN_COMPLETED', () => {
       const logger = TestUtilsLogger.getLogger(sinon.spy());
       const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED, logger);
 
-      handler.should.instanceof(ConsultantJobAssignCompletedEventHandler);
+      handler.should.instanceof(ConsultantJobCompletedEventHandler);
     });
 
     it('Test error for unknown event', () => {

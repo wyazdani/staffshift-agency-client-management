@@ -81,7 +81,7 @@ describe('ConsultantAssignProcess', () => {
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
       const completeAssignConsultant = sinon.stub(CommandBus.prototype, 'completeAssignConsultant').resolves();
 
-      aggregate.getProgressedClientIds.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([clientIdB]);
 
       execRetryService.callsFake((func) => func());
       const process = new ConsultantAssignProcess(logger, opts);
@@ -135,7 +135,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedClientIds.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([clientIdB]);
 
       execRetryService.callsFake((func) => func());
       const process = new ConsultantAssignProcess(logger, opts);
@@ -173,7 +173,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedClientIds.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([clientIdB]);
 
       execRetryService.callsFake((func) => {
         assert.throws(() => func(), NonRetryableError);
@@ -214,7 +214,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedClientIds.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([clientIdB]);
 
       execRetryService.callsFake((func) => {
         assert.throws(() => func(), NonRetryableError);
@@ -255,7 +255,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedClientIds.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([clientIdB]);
 
       execRetryService.callsFake((func) => {
         assert.throws(() => func(), RetryableError);

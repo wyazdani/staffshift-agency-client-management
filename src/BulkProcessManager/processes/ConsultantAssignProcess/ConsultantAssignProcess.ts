@@ -83,13 +83,18 @@ export class ConsultantAssignProcess implements ProcessInterface {
       this.logger.info('Consultant Assignment process already completed', {id: initiateEvent._id});
       return;
     }
-    const processedClientIds = jobProcessAggregate.getProgressedClientIds();
-    const clientIds = difference(initiateEvent.data.client_ids, processedClientIds);
+    const progressedItems = jobProcessAggregate.getProgressedItems();
+    const clientIds = difference(
+      initiateEvent.data.client_ids,
+      progressedItems.map((item) => item.client_id)
+    );
 
     for (const clientId of clientIds) {
       if (await this.assignClientWithRetry(clientId)) {
         this.logger.info(`Assigned client ${clientId} to consultant ${this.initiateEvent.data.consultant_id}`);
-        await this.commandBus.succeedItemConsultantJobProcess(this.consultantJobProcessCommandAggregateId, clientId);
+        await this.commandBus.succeedItemConsultantJobProcess(this.consultantJobProcessCommandAggregateId, {
+          client_id: clientId
+        });
       }
     }
     await this.commandBus.completeConsultantJobProcess(this.consultantJobProcessCommandAggregateId);

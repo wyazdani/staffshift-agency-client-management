@@ -5,6 +5,8 @@ import {EventStoreEncodedErrorInterface} from 'EventStoreEncodedErrorInterface';
 
 export interface ConsultantJobProcessItemFailedEventStoreDataInterface extends BaseEventStoreDataInterface {
   client_id: string;
+  /* optional, It will be used in some bulk operations */
+  consultant_role_id?: string;
   errors: EventStoreEncodedErrorInterface[];
 }
 

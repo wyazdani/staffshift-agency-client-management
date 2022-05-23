@@ -9,10 +9,16 @@ import {
 } from './AgencyClient/types/CommandTypes';
 import {ConsultantJobCommandBus} from './ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobAggregateIdInterface, ConsultantJobCommandEnum} from './ConsultantJob/types';
-import {CompleteAssignConsultantCommandInterface} from './ConsultantJob/types/CommandTypes';
+import {
+  CompleteAssignConsultantCommandInterface,
+  CompleteUnassignConsultantCommandInterface
+} from './ConsultantJob/types/CommandTypes';
 import {ConsultantJobProcessCommandBus} from './ConsultantJobProcess/ConsultantJobProcessCommandBus';
 import {ConsultantJobProcessCommandEnum, ConsultantJobProcessAggregateIdInterface} from './ConsultantJobProcess/types';
-import {FailItemConsultantJobProcessCommandDataInterface} from './ConsultantJobProcess/types/CommandDataTypes';
+import {
+  FailItemConsultantJobProcessCommandDataInterface,
+  SucceedItemConsultantJobProcessCommandDataInterface
+} from './ConsultantJobProcess/types/CommandDataTypes';
 import {
   StartConsultantJobProcessCommandInterface,
   SucceedItemConsultantJobProcessCommandInterface,
@@ -66,14 +72,12 @@ export class CommandBus {
 
   async succeedItemConsultantJobProcess(
     aggregateId: ConsultantJobProcessAggregateIdInterface,
-    clientId: string
+    data: SucceedItemConsultantJobProcessCommandDataInterface
   ): Promise<void> {
     const command: SucceedItemConsultantJobProcessCommandInterface = {
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.SUCCEED_ITEM,
-      data: {
-        client_id: clientId
-      }
+      data
     };
 
     await this.execute(command);
@@ -140,6 +144,16 @@ export class CommandBus {
       data: {
         _id: assignmentId
       }
+    };
+
+    await this.execute(command);
+  }
+
+  async completeUnassignConsultant(aggregateId: ConsultantJobAggregateIdInterface, processId: string): Promise<void> {
+    const command: CompleteUnassignConsultantCommandInterface = {
+      aggregateId,
+      type: ConsultantJobCommandEnum.COMPLETE_UNASSIGN_CONSULTANT,
+      data: {_id: processId}
     };
 
     await this.execute(command);

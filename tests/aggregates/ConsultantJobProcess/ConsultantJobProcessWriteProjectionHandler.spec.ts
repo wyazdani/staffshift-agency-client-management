@@ -51,7 +51,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         event
       );
 
-      result.progressed_client_ids.should.deep.equal(['client id']);
+      result.progressed_items.should.deep.equal(['client id']);
       result.last_sequence_id.should.equal(2);
     });
     it('Test CONSULTANT_JOB_PROCESS_ITEM_FAILED', () => {
@@ -72,7 +72,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
 
       const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_FAILED, aggregate, event);
 
-      result.progressed_client_ids.should.deep.equal(['client id']);
+      result.progressed_items.should.deep.equal(['client id']);
       result.last_sequence_id.should.equal(2);
     });
     it('Test CONSULTANT_JOB_PROCESS_COMPLETED', () => {

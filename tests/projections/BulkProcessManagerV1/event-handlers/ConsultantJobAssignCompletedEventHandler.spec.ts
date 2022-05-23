@@ -1,6 +1,6 @@
 import sinon from 'ts-sinon';
 import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../../src/models/BulkProcessManagerV1';
-import {ConsultantJobAssignCompletedEventHandler} from '../../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobAssignCompletedEventHandler';
+import {ConsultantJobCompletedEventHandler} from '../../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobCompletedEventHandler';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 
 describe('ConsultantJobAssignCompletedEventHandler', () => {
@@ -15,7 +15,7 @@ describe('ConsultantJobAssignCompletedEventHandler', () => {
         }
       };
       const updateOne = sinon.stub(BulkProcessManagerV1, 'updateOne').resolves();
-      const handler = new ConsultantJobAssignCompletedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
+      const handler = new ConsultantJobCompletedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
       await handler.handle(event);
       updateOne.should.have.been.calledWith(
