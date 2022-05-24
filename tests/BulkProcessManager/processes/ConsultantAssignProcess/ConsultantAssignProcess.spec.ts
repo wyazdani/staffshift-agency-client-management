@@ -81,7 +81,7 @@ describe('ConsultantAssignProcess', () => {
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
       const completeAssignConsultant = sinon.stub(CommandBus.prototype, 'completeAssignConsultant').resolves();
 
-      aggregate.getProgressedItems.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([{client_id: clientIdB}]);
 
       execRetryService.callsFake((func) => func());
       const process = new ConsultantAssignProcess(logger, opts);
@@ -90,7 +90,7 @@ describe('ConsultantAssignProcess', () => {
 
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -99,7 +99,7 @@ describe('ConsultantAssignProcess', () => {
         initiateEvent.data.consultant_role_id,
         initiateEvent.data.consultant_id
       );
-      succeedItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, clientId);
+      succeedItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {client_id: clientId});
       completeConsultantJobProcess.should.have.been.calledOnceWith(aggregateId);
 
       await process.complete();
@@ -135,7 +135,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedItems.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([{client_id: clientIdB}]);
 
       execRetryService.callsFake((func) => func());
       const process = new ConsultantAssignProcess(logger, opts);
@@ -144,7 +144,7 @@ describe('ConsultantAssignProcess', () => {
 
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -173,7 +173,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedItems.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([{client_id: clientIdB}]);
 
       execRetryService.callsFake((func) => {
         assert.throws(() => func(), NonRetryableError);
@@ -185,7 +185,7 @@ describe('ConsultantAssignProcess', () => {
 
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -214,7 +214,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedItems.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([{client_id: clientIdB}]);
 
       execRetryService.callsFake((func) => {
         assert.throws(() => func(), NonRetryableError);
@@ -226,7 +226,7 @@ describe('ConsultantAssignProcess', () => {
 
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -255,7 +255,7 @@ describe('ConsultantAssignProcess', () => {
       const failItemConsultantJobProcess = sinon.stub(CommandBus.prototype, 'failItemConsultantJobProcess').resolves();
       const completeConsultantJobProcess = sinon.stub(CommandBus.prototype, 'completeConsultantJobProcess').resolves();
 
-      aggregate.getProgressedItems.returns([clientIdB]);
+      aggregate.getProgressedItems.returns([{client_id: clientIdB}]);
 
       execRetryService.callsFake((func) => {
         assert.throws(() => func(), RetryableError);
@@ -267,7 +267,7 @@ describe('ConsultantAssignProcess', () => {
 
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,

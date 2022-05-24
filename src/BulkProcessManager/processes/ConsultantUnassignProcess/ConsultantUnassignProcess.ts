@@ -1,20 +1,12 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
-import {
-  ConsultantJobAssignInitiatedEventStoreDataInterface,
-  ConsultantJobUnassignInitiatedEventStoreDataInterface
-} from 'EventTypes';
+import {ConsultantJobUnassignInitiatedEventStoreDataInterface} from 'EventTypes';
 import {differenceWith} from 'lodash';
-import {LeanDocument} from 'mongoose';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';
 import {ConsultantJobProcessAggregateStatusEnum} from '../../../aggregates/ConsultantJobProcess/types/ConsultantJobProcessAggregateStatusEnum';
 import {SequenceIdMismatch} from '../../../errors/SequenceIdMismatch';
 import {EventRepository} from '../../../EventRepository';
-import {
-  AgencyClientConsultantsProjectionV3,
-  AgencyClientConsultantV3DocumentType
-} from '../../../models/AgencyClientConsultantsProjectionV3';
 import {EventStore} from '../../../models/EventStore';
 import {EventStoreErrorEncoder} from '../../EventStoreErrorEncoder';
 import {RetryService, RetryableError, NonRetryableError} from '../../RetryService';
@@ -24,18 +16,17 @@ import {CommandBus} from '../../../aggregates/CommandBus';
 import {ConsultantJobProcessAggregateIdInterface} from '../../../aggregates/ConsultantJobProcess/types';
 import {ConsultantJobProcessRepository} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
 import {ConsultantJobProcessWriteProjectionHandler} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessWriteProjectionHandler';
+import {ClientAssignments, AssignmentItemType} from './ClientAssignments';
 
 interface ConsultantUnassignProcessOptsInterface {
   maxRetry: number;
   retryDelay: number;
 }
 
-type AssignmentItemType = Pick<AgencyClientConsultantV3DocumentType, '_id' | 'client_id' | 'consultant_role_id'>;
-
 /**
  * It handles bulk consultant unassign from multiple clients
  * We query on Projection records to find the assignment records
- * It has a for loop to iterate through all assignment. In each loop it
+ * It has a for loop to iterate through all assignments. In each loop it
  * generates start/item_succeeded/item_failed/completed events on ConsultantJobProcess aggregate
  * during each unassign business/internal errors might happen. we might do retry(based on error type),
  * otherwise mark it as failure and move on
@@ -67,6 +58,7 @@ export class ConsultantUnassignProcess implements ProcessInterface {
       initiateEvent.meta_data,
       eventId
     );
+    const clientAssignments = ClientAssignments.createInstance(this.initiateEvent);
 
     this.commandBus = new CommandBus(eventRepository);
     this.consultantJobProcessRepository = new ConsultantJobProcessRepository(
@@ -90,21 +82,21 @@ export class ConsultantUnassignProcess implements ProcessInterface {
     if (currentStatus === ConsultantJobProcessAggregateStatusEnum.NEW) {
       await this.commandBus.startConsultantJobProcess(
         this.consultantJobProcessCommandAggregateId,
-        await this.getEstimatedCount()
+        await clientAssignments.getEstimatedCount()
       );
     } else if (currentStatus === ConsultantJobProcessAggregateStatusEnum.COMPLETED) {
       this.logger.info('Consultant Unassign process already completed', {id: initiateEvent._id});
       return;
     }
     const progressedItems = jobProcessAggregate.getProgressedItems();
-    const assignments = await this.getClientAssignments();
-    const clientAssignments = differenceWith(
-      assignments,
+    const projectionAssignments = await clientAssignments.getClientAssignments();
+    const assignments = differenceWith(
+      projectionAssignments,
       progressedItems,
       (itemA, itemB) => itemA.client_id === itemB.client_id && itemA.consultant_role_id === itemB.consultant_role_id
     );
 
-    for (const assignment of clientAssignments) {
+    for (const assignment of assignments) {
       this.logger.debug(`Unassigning client ${assignment.client_id} with role id ${assignment.consultant_role_id}`);
       if (await this.unassignClientWithRetry(assignment)) {
         this.logger.info(
@@ -170,41 +162,6 @@ export class ConsultantUnassignProcess implements ProcessInterface {
         throw new RetryableError(error);
       }
     }
-  }
-
-  /**
-   * We query on projections to find the target
-   * we already have an index on consultant_id which makes this query fast enough
-   *
-   */
-  private async getClientAssignments(): Promise<LeanDocument<AssignmentItemType>[]> {
-    return await AgencyClientConsultantsProjectionV3.find(this.getProjectionQuery(), {
-      _id: 1,
-      client_id: 1,
-      consultant_id: 1,
-      consultant_role_id: 1
-    })
-      .lean()
-      .exec();
-  }
-
-  private async getEstimatedCount(): Promise<number> {
-    return await AgencyClientConsultantsProjectionV3.count(this.getProjectionQuery()).exec();
-  }
-
-  private getProjectionQuery(): unknown {
-    return {
-      consultant_id: this.initiateEvent.data.consultant_id,
-      agency_id: this.initiateEvent.aggregate_id.agency_id,
-      ...(this.initiateEvent.data.client_ids && {
-        client_id: {
-          $in: this.initiateEvent.data.client_ids
-        }
-      }),
-      ...(this.initiateEvent.data.consultant_role_id && {
-        consultant_role_id: this.initiateEvent.data.consultant_role_id
-      })
-    };
   }
 
   /**
