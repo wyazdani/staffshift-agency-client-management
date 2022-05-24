@@ -4,8 +4,8 @@ import {
   ConsultantJobAssignInitiatedEventStoreDataInterface,
   ConsultantJobUnassignInitiatedEventStoreDataInterface
 } from 'EventTypes';
-import {difference, assignWith, differenceBy, differenceWith} from 'lodash';
-import mongoose, {LeanDocument} from 'mongoose';
+import {differenceWith} from 'lodash';
+import {LeanDocument} from 'mongoose';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';
 import {ConsultantJobProcessAggregateStatusEnum} from '../../../aggregates/ConsultantJobProcess/types/ConsultantJobProcessAggregateStatusEnum';
@@ -147,7 +147,7 @@ export class ConsultantUnassignProcess implements ProcessInterface {
           agency_id: this.initiateEvent.aggregate_id.agency_id,
           client_id: assignment.client_id
         },
-        assignment._id
+        assignment._id.toString()
       );
     } catch (error) {
       if (error instanceof SequenceIdMismatch) {
