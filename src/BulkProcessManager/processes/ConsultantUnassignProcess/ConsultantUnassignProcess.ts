@@ -88,7 +88,10 @@ export class ConsultantUnassignProcess implements ProcessInterface {
     const currentStatus = jobProcessAggregate.getCurrentStatus();
 
     if (currentStatus === ConsultantJobProcessAggregateStatusEnum.NEW) {
-      await this.commandBus.startConsultantJobProcess(this.consultantJobProcessCommandAggregateId);
+      await this.commandBus.startConsultantJobProcess(
+        this.consultantJobProcessCommandAggregateId,
+        await this.getEstimatedCount()
+      );
     } else if (currentStatus === ConsultantJobProcessAggregateStatusEnum.COMPLETED) {
       this.logger.info('Consultant Unassign process already completed', {id: initiateEvent._id});
       return;
@@ -175,28 +178,33 @@ export class ConsultantUnassignProcess implements ProcessInterface {
    *
    */
   private async getClientAssignments(): Promise<LeanDocument<AssignmentItemType>[]> {
-    return await AgencyClientConsultantsProjectionV3.find(
-      {
-        consultant_id: this.initiateEvent.data.consultant_id,
-        agency_id: this.initiateEvent.aggregate_id.agency_id,
-        ...(this.initiateEvent.data.client_ids && {
-          client_id: {
-            $in: this.initiateEvent.data.client_ids
-          }
-        }),
-        ...(this.initiateEvent.data.consultant_role_id && {
-          consultant_role_id: this.initiateEvent.data.consultant_role_id
-        })
-      },
-      {
-        _id: 1,
-        client_id: 1,
-        consultant_id: 1,
-        consultant_role_id: 1
-      }
-    )
+    return await AgencyClientConsultantsProjectionV3.find(this.getProjectionQuery(), {
+      _id: 1,
+      client_id: 1,
+      consultant_id: 1,
+      consultant_role_id: 1
+    })
       .lean()
       .exec();
+  }
+
+  private async getEstimatedCount(): Promise<number> {
+    return await AgencyClientConsultantsProjectionV3.count(this.getProjectionQuery()).exec();
+  }
+
+  private getProjectionQuery(): unknown {
+    return {
+      consultant_id: this.initiateEvent.data.consultant_id,
+      agency_id: this.initiateEvent.aggregate_id.agency_id,
+      ...(this.initiateEvent.data.client_ids && {
+        client_id: {
+          $in: this.initiateEvent.data.client_ids
+        }
+      }),
+      ...(this.initiateEvent.data.consultant_role_id && {
+        consultant_role_id: this.initiateEvent.data.consultant_role_id
+      })
+    };
   }
 
   /**

@@ -60,11 +60,13 @@ export class CommandBus {
    * directly in you code.
    */
 
-  async startConsultantJobProcess(aggregateId: ConsultantJobProcessAggregateIdInterface): Promise<void> {
+  async startConsultantJobProcess(aggregateId: ConsultantJobProcessAggregateIdInterface, estimatedCount: number): Promise<void> {
     const command: StartConsultantJobProcessCommandInterface = {
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.START,
-      data: {}
+      data: {
+        estimated_count: estimatedCount
+      }
     };
 
     await this.execute(command);
