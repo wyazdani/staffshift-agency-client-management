@@ -45,13 +45,9 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         correlation_id: 1
       });
 
-      const result = projectionHandler.execute(
-        EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED,
-        aggregate,
-        event
-      );
+      const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED, aggregate, event);
 
-      result.progressed_items.should.deep.equal(['client id']);
+      result.progressed_items.should.deep.equal([{client_id: 'client id'}]);
       result.last_sequence_id.should.equal(2);
     });
     it('Test CONSULTANT_JOB_PROCESS_ITEM_FAILED', () => {
@@ -72,7 +68,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
 
       const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_FAILED, aggregate, event);
 
-      result.progressed_items.should.deep.equal(['client id']);
+      result.progressed_items.should.deep.equal([{client_id: 'client id'}]);
       result.last_sequence_id.should.equal(2);
     });
     it('Test CONSULTANT_JOB_PROCESS_COMPLETED', () => {

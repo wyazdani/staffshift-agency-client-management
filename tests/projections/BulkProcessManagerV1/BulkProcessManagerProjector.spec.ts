@@ -6,6 +6,13 @@ import {EventHandlerFactory} from '../../../src/projections/BulkProcessManagerV1
 import {EventHandlerInterface} from '../../../src/types/EventHandlerInterface';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
+const events = [
+  EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
+  EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED,
+  EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED,
+  EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED
+];
+
 describe('BulkProcessManagerProjector class', () => {
   afterEach(() => {
     sinon.restore();
@@ -21,39 +28,25 @@ describe('BulkProcessManagerProjector class', () => {
       } as any);
       getHandler.should.not.have.been.called;
     });
+    for (const eventType of events) {
+      it(`Test ${eventType}`, async () => {
+        const event: any = {
+          type: eventType
+        };
+        const handler = stubInterface<EventHandlerInterface<EventStorePubSubModelInterface>>();
 
-    it('Test CONSULTANT_JOB_ASSIGN_INITIATED', async () => {
-      const event: any = {
-        type: EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED
-      };
-      const handler = stubInterface<EventHandlerInterface<EventStorePubSubModelInterface>>();
+        handler.handle.resolves();
+        const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
+        const logger = TestUtilsLogger.getLogger(sinon.spy());
+        const projector = new BulkProcessManagerProjector();
 
-      handler.handle.resolves();
-      const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const projector = new BulkProcessManagerProjector();
+        await projector.project(logger, event);
+        getHandler.should.have.been.calledWith(event.type, logger);
+        handler.handle.should.have.been.calledWith(event);
+      });
+    }
 
-      await projector.project(logger, event);
-      getHandler.should.have.been.calledWith(event.type, logger);
-      handler.handle.should.have.been.calledWith(event);
-    });
-    it('Test CONSULTANT_JOB_ASSIGN_COMPLETED', async () => {
-      const event: any = {
-        type: EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED
-      };
-      const handler = stubInterface<EventHandlerInterface<EventStorePubSubModelInterface>>();
-
-      handler.handle.resolves();
-      const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const projector = new BulkProcessManagerProjector();
-
-      await projector.project(logger, event);
-      getHandler.should.have.been.calledWith(event.type, logger);
-      handler.handle.should.have.been.calledWith(event);
-    });
-
-    it('Test rejects the promis in case of error', async () => {
+    it('Test rejects the promise in case of error', async () => {
       const event: any = {
         type: EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED
       };

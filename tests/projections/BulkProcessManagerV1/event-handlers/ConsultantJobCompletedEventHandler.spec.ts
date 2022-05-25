@@ -3,7 +3,7 @@ import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../../sr
 import {ConsultantJobCompletedEventHandler} from '../../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobCompletedEventHandler';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 
-describe('ConsultantJobAssignCompletedEventHandler', () => {
+describe('ConsultantJobCompletedEventHandler', () => {
   afterEach(() => {
     sinon.restore();
   });

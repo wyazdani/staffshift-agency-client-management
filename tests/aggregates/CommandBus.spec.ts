@@ -28,22 +28,25 @@ describe('CommandBus', () => {
   it('startConsultantJobProcess()', async () => {
     const aggregateId: any = {id: 'ok'};
 
-    await commandBus.startConsultantJobProcess(aggregateId);
+    await commandBus.startConsultantJobProcess(aggregateId, 2);
     execute.should.have.been.calledWith({
       aggregateId,
       type: ConsultantJobProcessCommandEnum.START,
-      data: {}
+      data: {
+        estimated_count: 2
+      }
     });
   });
   it('succeedItemConsultantJobProcess()', async () => {
     const aggregateId: any = {id: 'ok'};
 
-    await commandBus.succeedItemConsultantJobProcess(aggregateId, 'A');
+    await commandBus.succeedItemConsultantJobProcess(aggregateId, {client_id: 'A', consultant_role_id: 'B'});
     execute.should.have.been.calledWith({
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.SUCCEED_ITEM,
       data: {
-        client_id: 'A'
+        client_id: 'A',
+        consultant_role_id: 'B'
       }
     });
   });
@@ -90,6 +93,18 @@ describe('CommandBus', () => {
       }
     });
   });
+  it('removeAgencyClientConsultant()', async () => {
+    const aggregateId: any = {id: 'ok'};
+
+    await commandBus.removeAgencyClientConsultant(aggregateId, 'MM');
+    execute.should.have.been.calledWith({
+      aggregateId,
+      type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
+      data: {
+        _id: 'MM'
+      }
+    });
+  });
   it('completeAssignConsultant()', async () => {
     const aggregateId: any = {id: 'ok'};
 
@@ -97,6 +112,17 @@ describe('CommandBus', () => {
     execute.should.have.been.calledWith({
       aggregateId,
       type: ConsultantJobCommandEnum.COMPLETE_ASSIGN_CONSULTANT,
+      data: {_id: 'A'}
+    });
+  });
+
+  it('completeUnassignConsultant()', async () => {
+    const aggregateId: any = {id: 'ok'};
+
+    await commandBus.completeUnassignConsultant(aggregateId, 'A');
+    execute.should.have.been.calledWith({
+      aggregateId,
+      type: ConsultantJobCommandEnum.COMPLETE_UNASSIGN_CONSULTANT,
       data: {_id: 'A'}
     });
   });

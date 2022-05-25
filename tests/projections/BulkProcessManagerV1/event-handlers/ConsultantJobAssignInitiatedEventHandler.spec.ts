@@ -4,7 +4,7 @@ import {ConsultantJobInitiatedEventHandler} from '../../../../src/projections/Bu
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
-describe('ConsultantJobAssignInitiatedEventHandler', () => {
+describe('ConsultantJobInitiatedEventHandler', () => {
   afterEach(() => {
     sinon.restore();
   });

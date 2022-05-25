@@ -5,13 +5,15 @@ import {EventRepository} from '../../../src/EventRepository';
 import {
   AssignConsultantCommandHandler,
   CompleteAssignConsultantCommandHandler,
-  UnassignConsultantCommandHandler
+  UnassignConsultantCommandHandler,
+  CompleteUnassignConsultantCommandHandler
 } from '../../../src/aggregates/ConsultantJob/command-handlers';
 
 const expectedHandlers = [
   AssignConsultantCommandHandler,
   CompleteAssignConsultantCommandHandler,
-  UnassignConsultantCommandHandler
+  UnassignConsultantCommandHandler,
+  CompleteUnassignConsultantCommandHandler
 ];
 
 describe('ConsultantJobCommandBus class', () => {

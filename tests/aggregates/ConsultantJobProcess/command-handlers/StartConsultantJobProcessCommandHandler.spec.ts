@@ -1,5 +1,5 @@
 import sinon, {stubInterface} from 'ts-sinon';
-import {StartConsultantJobProcessCommandHandler} from '../../../../src/aggregates/ConsultantJobProcess/command-handlers/StartConsultantJobProcessCommandHandler';
+import {StartConsultantJobProcessCommandHandler} from '../../../../src/aggregates/ConsultantJobProcess/command-handlers';
 import {ConsultantJobProcessAggregate} from '../../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessAggregate';
 import {ConsultantJobProcessRepository} from '../../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
 import {ConsultantJobProcessCommandEnum} from '../../../../src/aggregates/ConsultantJobProcess/types';
@@ -16,7 +16,9 @@ describe('StartConsultantJobProcessCommandHandler class', () => {
       job_id: jobId
     },
     type: ConsultantJobProcessCommandEnum.START,
-    data: {}
+    data: {
+      estimated_count: 2
+    }
   };
 
   describe('execute()', () => {
@@ -38,7 +40,9 @@ describe('StartConsultantJobProcessCommandHandler class', () => {
         {
           type: EventsEnum.CONSULTANT_JOB_PROCESS_STARTED,
           aggregate_id: aggregate.getId(),
-          data: {},
+          data: {
+            estimated_count: 2
+          },
           sequence_id: 3
         }
       ]);
