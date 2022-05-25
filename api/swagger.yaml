@@ -1198,6 +1198,7 @@ definitions:
                 - ARRAY_LENGTH_SHORT
                 - ARRAY_UNIQUE
                 - ANOTHER_CONSULTANT_PROCESS_ACTIVE
+                - SAME_CONSULTANT
             message:
               type: string
             path:

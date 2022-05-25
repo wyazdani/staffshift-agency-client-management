@@ -60,6 +60,15 @@ export class ConsultantJobAggregate extends AbstractAggregate<
     this.validateNotRunningAnotherProcess(command.consultant_id);
   }
   validateTransferConsultant(command: TransferConsultantCommandDataInterface): void {
+    if (command.from_consultant_id === command.to_consultant_id) {
+      throw new ValidationError('from consultant and to consultant should be different', [
+        {
+          code: 'SAME_CONSULTANT',
+          message: 'We can not transfer clients from a consultant to a same consultant',
+          path: ['from_consultant_id']
+        }
+      ]);
+    }
     this.validateNotRunningAnotherProcess(command.from_consultant_id);
     this.validateNotRunningAnotherProcess(command.to_consultant_id);
   }
