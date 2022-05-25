@@ -5,7 +5,8 @@ import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {ConsultantJobCommandEnum} from '../aggregates/ConsultantJob/types';
 import {
   AssignConsultantCommandInterface,
-  UnassignConsultantCommandInterface, TransferConsultantCommandInterface
+  UnassignConsultantCommandInterface,
+  TransferConsultantCommandInterface
 } from '../aggregates/ConsultantJob/types/CommandTypes';
 import {ValidationError} from 'a24-node-error-utils';
 
