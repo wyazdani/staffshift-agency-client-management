@@ -15,7 +15,9 @@ export enum EventsEnum {
   CONSULTANT_JOB_PROCESS_ITEM_FAILED = 'ConsultantJobProcessItemFailed',
   CONSULTANT_JOB_PROCESS_COMPLETED = 'ConsultantJobProcessCompleted',
   CONSULTANT_JOB_UNASSIGN_INITIATED = 'ConsultantJobUnassignInitiated',
-  CONSULTANT_JOB_UNASSIGN_COMPLETED = 'ConsultantJobUnassignCompleted'
+  CONSULTANT_JOB_UNASSIGN_COMPLETED = 'ConsultantJobUnassignCompleted',
+  CONSULTANT_JOB_TRANSFER_INITIATED = 'ConsultantJobTransferInitiated',
+  CONSULTANT_JOB_TRANSFER_COMPLETED = 'ConsultantJobTransferCompleted'
 }
 
 type EventsType = {
@@ -90,5 +92,13 @@ export const events: EventsType = {
   [EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED]: {
     name: 'ConsultantJobUnassignCompleted',
     description: 'Job unassigning a consultant from multiple clients for an agency has completed'
+  },
+  [EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED]: {
+    name: 'ConsultantJobTransferInitiated',
+    description: 'Initiate a job to transfer clients from a consultant to another consultant an agency'
+  },
+  [EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED]: {
+    name: 'ConsultantJobTransferCompleted',
+    description: 'Job transfer clients of a consultant to another consultant for an agency has completed'
   }
 };

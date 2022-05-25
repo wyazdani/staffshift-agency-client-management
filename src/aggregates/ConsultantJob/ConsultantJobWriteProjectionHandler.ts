@@ -2,7 +2,9 @@ import {
   ConsultantJobAssignInitiatedEventStoreDataInterface,
   ConsultantJobAssignCompletedEventStoreDataInterface,
   ConsultantJobUnassignCompletedEventStoreDataInterface,
-  ConsultantJobUnassignInitiatedEventStoreDataInterface
+  ConsultantJobUnassignInitiatedEventStoreDataInterface,
+  ConsultantJobTransferInitiatedEventStoreDataInterface,
+  ConsultantJobTransferCompletedEventStoreDataInterface
 } from 'EventTypes';
 import {find} from 'lodash';
 import {ConsultantJobAggregateRecordInterface} from './types';
@@ -57,6 +59,27 @@ implements WriteProjectionInterface<ConsultantJobAggregateRecordInterface> {
       }
       case EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED: {
         const data = event.data as ConsultantJobUnassignCompletedEventStoreDataInterface;
+        const process = find(aggregate.processes, {_id: data._id});
+
+        if (process) {
+          process.status = 'completed';
+        }
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED: {
+        const data = event.data as ConsultantJobTransferInitiatedEventStoreDataInterface;
+        const process: ConsultantJobAggregateRecordProcessInterface = {
+          _id: data._id,
+          consultants: [data.from_consultant_id, data.to_consultant_id],
+          status: 'initiated'
+        };
+
+        aggregate.processes ? aggregate.processes.push(process) : (aggregate.processes = [process]);
+
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED: {
+        const data = event.data as ConsultantJobTransferCompletedEventStoreDataInterface;
         const process = find(aggregate.processes, {_id: data._id});
 
         if (process) {

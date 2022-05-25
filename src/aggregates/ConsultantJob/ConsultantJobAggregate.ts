@@ -1,7 +1,11 @@
 import {find, indexOf} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ConsultantJobAggregateIdInterface, ConsultantJobAggregateRecordInterface} from './types';
-import {AssignConsultantCommandDataInterface, UnassignConsultantCommandDataInterface} from './types/CommandDataTypes';
+import {
+  AssignConsultantCommandDataInterface,
+  UnassignConsultantCommandDataInterface,
+  TransferConsultantCommandDataInterface
+} from './types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 
@@ -54,6 +58,10 @@ export class ConsultantJobAggregate extends AbstractAggregate<
 
   validateUnassignConsultant(command: UnassignConsultantCommandDataInterface): void {
     this.validateNotRunningAnotherProcess(command.consultant_id);
+  }
+  validateTransferConsultant(command: TransferConsultantCommandDataInterface): void {
+    this.validateNotRunningAnotherProcess(command.from_consultant_id);
+    this.validateNotRunningAnotherProcess(command.to_consultant_id);
   }
 
   private validateNotRunningAnotherProcess(consultantId: string) {

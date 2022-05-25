@@ -15,4 +15,6 @@ export {ConsultantJobProcessItemSucceededEventStoreDataInterface} from './Consul
 export {ConsultantJobProcessStartedEventStoreDataInterface} from './ConsultantJobProcessStartedEventInterface';
 export {ConsultantJobUnassignInitiatedEventStoreDataInterface} from './ConsultantJobUnassignInitiatedEventInterface';
 export {ConsultantJobUnassignCompletedEventStoreDataInterface} from './ConsultantJobUnassignCompletedEventInterface';
+export {ConsultantJobTransferInitiatedEventStoreDataInterface} from './ConsultantJobTransferInitiatedEventInterface';
+export {ConsultantJobTransferCompletedEventStoreDataInterface} from './ConsultantJobTransferCompletedEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';
