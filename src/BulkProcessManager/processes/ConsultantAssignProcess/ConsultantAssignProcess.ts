@@ -78,7 +78,10 @@ export class ConsultantAssignProcess implements ProcessInterface {
     const currentStatus = jobProcessAggregate.getCurrentStatus();
 
     if (currentStatus === ConsultantJobProcessAggregateStatusEnum.NEW) {
-      await this.commandBus.startConsultantJobProcess(this.consultantJobProcessCommandAggregateId, this.initiateEvent.data.client_ids.length);
+      await this.commandBus.startConsultantJobProcess(
+        this.consultantJobProcessCommandAggregateId,
+        this.initiateEvent.data.client_ids.length
+      );
     } else if (currentStatus === ConsultantJobProcessAggregateStatusEnum.COMPLETED) {
       this.logger.info('Consultant Assignment process already completed', {id: initiateEvent._id});
       return;

@@ -60,7 +60,10 @@ export class CommandBus {
    * directly in you code.
    */
 
-  async startConsultantJobProcess(aggregateId: ConsultantJobProcessAggregateIdInterface, estimatedCount: number): Promise<void> {
+  async startConsultantJobProcess(
+    aggregateId: ConsultantJobProcessAggregateIdInterface,
+    estimatedCount: number
+  ): Promise<void> {
     const command: StartConsultantJobProcessCommandInterface = {
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.START,
