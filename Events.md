@@ -860,7 +860,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Initiate a job to transfer clients from a consultant to another consultant an agency </td></tr>
+ </td><td> Initiate a job to transfer clients from a consultant to another consultant for an agency </td></tr>
 <tr><td> CONSULTANT_JOB_TRANSFER_COMPLETED </td><td> ConsultantJobTransferCompleted </td><td> 
 
 ```json
@@ -902,5 +902,5 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Job transfer clients of a consultant to another consultant for an agency has completed </td></tr>
+ </td><td> transfer clients of a consultant to another consultant for an agency has completed </td></tr>
 </table><!--DATA_END-->
