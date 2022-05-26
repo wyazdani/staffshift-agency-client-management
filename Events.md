@@ -520,8 +520,15 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
-  "additionalProperties": false,
-  "properties": {}
+  "properties": {
+    "estimated_count": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "estimated_count"
+  ],
+  "additionalProperties": false
 }
 ```
 
@@ -561,6 +568,9 @@ Description: A short description of the event
   "type": "object",
   "properties": {
     "client_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
       "type": "string"
     }
   },
@@ -607,6 +617,9 @@ Description: A short description of the event
   "type": "object",
   "properties": {
     "client_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
       "type": "string"
     },
     "errors": {
