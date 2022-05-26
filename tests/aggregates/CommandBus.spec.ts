@@ -29,7 +29,7 @@ describe('CommandBus', () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.startConsultantJobProcess(aggregateId, 2);
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId,
       type: ConsultantJobProcessCommandEnum.START,
       data: {
@@ -41,7 +41,7 @@ describe('CommandBus', () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.succeedItemConsultantJobProcess(aggregateId, {client_id: 'A', consultant_role_id: 'B'});
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.SUCCEED_ITEM,
       data: {
@@ -55,7 +55,7 @@ describe('CommandBus', () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.completeConsultantJobProcess(aggregateId);
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId,
       type: ConsultantJobProcessCommandEnum.COMPLETE,
       data: {}
@@ -68,7 +68,7 @@ describe('CommandBus', () => {
       client_id: 'A',
       errors: []
     });
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.FAIL_ITEM,
       data: {
@@ -83,7 +83,7 @@ describe('CommandBus', () => {
 
     sinon.stub(ObjectID.prototype, 'toString').returns('MM');
     await commandBus.addAgencyClientConsultant(aggregateId, 'A', 'B');
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId,
       type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
       data: {
@@ -97,7 +97,7 @@ describe('CommandBus', () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.removeAgencyClientConsultant(aggregateId, 'MM');
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId,
       type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
       data: {
@@ -109,7 +109,7 @@ describe('CommandBus', () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.completeAssignConsultant(aggregateId, 'A');
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId,
       type: ConsultantJobCommandEnum.COMPLETE_ASSIGN_CONSULTANT,
       data: {_id: 'A'}
@@ -120,7 +120,7 @@ describe('CommandBus', () => {
     const aggregateId: any = {id: 'ok'};
 
     await commandBus.completeUnassignConsultant(aggregateId, 'A');
-    execute.should.have.been.calledWith({
+    execute.should.have.been.calledOnceWith({
       aggregateId,
       type: ConsultantJobCommandEnum.COMPLETE_UNASSIGN_CONSULTANT,
       data: {_id: 'A'}

@@ -1,12 +1,12 @@
 import sinon from 'ts-sinon';
-import {ClientAssignments} from '../../../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ClientAssignments';
+import {ClientConsultantAssignments} from '../../../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ClientConsultantAssignments';
 import {AgencyClientConsultantsProjectionV3} from '../../../../src/models/AgencyClientConsultantsProjectionV3';
 
-describe('ClientAssignments class', () => {
+describe('ClientConsultantAssignments class', () => {
   afterEach(() => {
     sinon.restore();
   });
-  describe('getClientAssignments()', () => {
+  describe('getClientConsultantAssignments()', () => {
     it('Test when event contains client ids and consultant role id', async () => {
       const response = [{sample: 'ok'}];
       const exec = sinon.stub().resolves(response);
@@ -26,9 +26,9 @@ describe('ClientAssignments class', () => {
           consultant_role_id: 'C'
         }
       };
-      const clientAssignment = ClientAssignments.createInstance(event);
+      const clientAssignment = ClientConsultantAssignments.createInstance(event);
 
-      const assignments = await clientAssignment.getClientAssignments();
+      const assignments = await clientAssignment.getClientConsultantAssignments();
 
       assignments.should.deep.equal(response);
       find.should.have.been.calledWith(
@@ -68,9 +68,9 @@ describe('ClientAssignments class', () => {
           consultant_id: 'consultant id'
         }
       };
-      const clientAssignment = ClientAssignments.createInstance(event);
+      const clientAssignment = ClientConsultantAssignments.createInstance(event);
 
-      const assignments = await clientAssignment.getClientAssignments();
+      const assignments = await clientAssignment.getClientConsultantAssignments();
 
       assignments.should.deep.equal(response);
       find.should.have.been.calledWith(
@@ -107,7 +107,7 @@ describe('ClientAssignments class', () => {
           consultant_role_id: 'C'
         }
       };
-      const clientAssignment = ClientAssignments.createInstance(event);
+      const clientAssignment = ClientConsultantAssignments.createInstance(event);
 
       const response = await clientAssignment.getEstimatedCount();
 
