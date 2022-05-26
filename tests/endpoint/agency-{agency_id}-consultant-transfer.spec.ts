@@ -43,6 +43,15 @@ describe('/agency/{agency_id}/consultant-transfer', () => {
       res.statusCode.should.equal(202);
     });
 
+    it('should respond with 202 when optional parameters not passed', async () => {
+      const res = await api.post(`/agency/${agencyId}/consultant-transfer`).set(headers).send({
+        from_consultant_id: consultantId,
+        to_consultant_id: toConsultantId
+      });
+
+      res.statusCode.should.equal(202);
+    });
+
     it('should respond with 401 Failed to authenticate', async () => {
       const schema = {
         type: 'object',

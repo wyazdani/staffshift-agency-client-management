@@ -95,10 +95,10 @@ export const events: EventsType = {
   },
   [EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED]: {
     name: 'ConsultantJobTransferInitiated',
-    description: 'Initiate a job to transfer clients from a consultant to another consultant an agency'
+    description: 'Initiate a job to transfer clients from a consultant to another consultant for an agency'
   },
   [EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED]: {
     name: 'ConsultantJobTransferCompleted',
-    description: 'Job transfer clients of a consultant to another consultant for an agency has completed'
+    description: 'transfer clients of a consultant to another consultant for an agency has completed'
   }
 };

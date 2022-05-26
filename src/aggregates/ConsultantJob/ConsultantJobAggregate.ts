@@ -64,7 +64,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
       throw new ValidationError('from consultant and to consultant should be different', [
         {
           code: 'SAME_CONSULTANT',
-          message: 'We can not transfer clients from a consultant to a same consultant',
+          message: 'We can not transfer clients from a consultant to the same consultant',
           path: ['from_consultant_id']
         }
       ]);
