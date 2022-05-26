@@ -1,13 +1,6 @@
-import {AddAgencyClientConsultantCommandInterface} from './AddAgencyClientConsultantCommandInterface';
-import {LinkAgencyClientCommandInterface} from './LinkAgencyClientCommandInterface';
-import {RemoveAgencyClientConsultantCommandInterface} from './RemoveAgencyClientConsultantCommandInterface';
-import {SyncAgencyClientCommandInterface} from './SyncAgencyClientCommandInterface';
-import {UnlinkAgencyClientCommandInterface} from './UnlinkAgencyClientCommandInterface';
-
-export {
-  AddAgencyClientConsultantCommandInterface,
-  LinkAgencyClientCommandInterface,
-  RemoveAgencyClientConsultantCommandInterface,
-  SyncAgencyClientCommandInterface,
-  UnlinkAgencyClientCommandInterface
-};
+export * from './LinkAgencyClientCommandInterface';
+export * from './SyncAgencyClientCommandInterface';
+export * from './UnlinkAgencyClientCommandInterface';
+export * from './AddAgencyClientConsultantCommandInterface';
+export * from './RemoveAgencyClientConsultantCommandInterface';
+export * from './TransferAgencyClientConsultantCommandInterface';

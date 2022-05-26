@@ -3,15 +3,18 @@ import {EventRepository} from '../EventRepository';
 import {AgencyCommandBus} from './Agency/AgencyCommandBus';
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
 import {AgencyClientAggregateIdInterface, AgencyClientCommandEnum} from './AgencyClient/types';
+import {TransferAgencyClientConsultantCommandDataInterface} from './AgencyClient/types/CommandDataTypes';
 import {
   AddAgencyClientConsultantCommandInterface,
-  RemoveAgencyClientConsultantCommandInterface
+  RemoveAgencyClientConsultantCommandInterface,
+  TransferAgencyClientConsultantCommandInterface
 } from './AgencyClient/types/CommandTypes';
 import {ConsultantJobCommandBus} from './ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobAggregateIdInterface, ConsultantJobCommandEnum} from './ConsultantJob/types';
 import {
   CompleteAssignConsultantCommandInterface,
-  CompleteUnassignConsultantCommandInterface
+  CompleteUnassignConsultantCommandInterface,
+  CompleteTransferConsultantCommandInterface
 } from './ConsultantJob/types/CommandTypes';
 import {ConsultantJobProcessCommandBus} from './ConsultantJobProcess/ConsultantJobProcessCommandBus';
 import {ConsultantJobProcessCommandEnum, ConsultantJobProcessAggregateIdInterface} from './ConsultantJobProcess/types';
@@ -158,6 +161,29 @@ export class CommandBus {
     const command: CompleteUnassignConsultantCommandInterface = {
       aggregateId,
       type: ConsultantJobCommandEnum.COMPLETE_UNASSIGN_CONSULTANT,
+      data: {_id: processId}
+    };
+
+    await this.execute(command);
+  }
+
+  async transferAgencyClientConsultant(
+    aggregateId: AgencyClientAggregateIdInterface,
+    commandData: TransferAgencyClientConsultantCommandDataInterface
+  ): Promise<void> {
+    const command: TransferAgencyClientConsultantCommandInterface = {
+      aggregateId,
+      type: AgencyClientCommandEnum.TRANSFER_AGENCY_CLIENT_CONSULTANT,
+      data: commandData
+    };
+
+    await this.execute(command);
+  }
+
+  async completeTransferConsultant(aggregateId: ConsultantJobAggregateIdInterface, processId: string): Promise<void> {
+    const command: CompleteTransferConsultantCommandInterface = {
+      aggregateId,
+      type: ConsultantJobCommandEnum.COMPLETE_TRANSFER_CONSULTANT,
       data: {_id: processId}
     };
 
