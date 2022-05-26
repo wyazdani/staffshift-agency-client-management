@@ -6,15 +6,24 @@ import {
   AgencyClientConsultantV3DocumentType,
   AgencyClientConsultantsProjectionV3
 } from '../../../models/AgencyClientConsultantsProjectionV3';
+
+interface ProjectionQueryInterface {
+  consultant_id: string;
+  agency_id: string;
+  client_id?: {
+    $in: string[];
+  };
+  consultant_role_id: string;
+}
 export type AssignmentItemType = Pick<AgencyClientConsultantV3DocumentType, '_id' | 'client_id' | 'consultant_role_id'>;
-export class ClientAssignments {
+export class ClientConsultantAssignments {
   static createInstance(
     event: EventStorePubSubModelInterface<
       ConsultantJobUnassignInitiatedEventStoreDataInterface,
       ConsultantJobAggregateIdInterface
     >
-  ): ClientAssignments {
-    return new ClientAssignments(event);
+  ): ClientConsultantAssignments {
+    return new ClientConsultantAssignments(event);
   }
   constructor(
     private initiateEvent: EventStorePubSubModelInterface<
@@ -28,7 +37,7 @@ export class ClientAssignments {
    * we already have an index on consultant_id which makes this query fast enough
    *
    */
-  public async getClientAssignments(): Promise<LeanDocument<AssignmentItemType>[]> {
+  public async getClientConsultantAssignments(): Promise<LeanDocument<AssignmentItemType>[]> {
     return await AgencyClientConsultantsProjectionV3.find(this.getProjectionQuery(), {
       _id: 1,
       client_id: 1,
@@ -44,7 +53,7 @@ export class ClientAssignments {
     return await AgencyClientConsultantsProjectionV3.count(this.getProjectionQuery()).exec();
   }
 
-  private getProjectionQuery(): unknown {
+  private getProjectionQuery(): ProjectionQueryInterface {
     return {
       consultant_id: this.initiateEvent.data.consultant_id,
       agency_id: this.initiateEvent.aggregate_id.agency_id,

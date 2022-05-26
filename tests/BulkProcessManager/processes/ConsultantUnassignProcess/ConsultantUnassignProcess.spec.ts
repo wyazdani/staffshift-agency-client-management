@@ -8,7 +8,7 @@ import {ConsultantJobProcessAggregate} from '../../../../src/aggregates/Consulta
 import {ConsultantJobProcessRepository} from '../../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
 import {ConsultantJobProcessAggregateStatusEnum} from '../../../../src/aggregates/ConsultantJobProcess/types/ConsultantJobProcessAggregateStatusEnum';
 import {EventStoreErrorEncoder} from '../../../../src/BulkProcessManager/EventStoreErrorEncoder';
-import {ClientAssignments} from '../../../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ClientAssignments';
+import {ClientConsultantAssignments} from '../../../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ClientConsultantAssignments';
 import {ConsultantUnassignProcess} from '../../../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ConsultantUnassignProcess';
 import {RetryService, RetryableError, NonRetryableError} from '../../../../src/BulkProcessManager/RetryService';
 import {SequenceIdMismatch} from '../../../../src/errors/SequenceIdMismatch';
@@ -75,8 +75,8 @@ describe('ConsultantUnassignProcess', () => {
       const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
       aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
-      const clientAssignments = stubInterface<ClientAssignments>();
-      const createInstance = sinon.stub(ClientAssignments, 'createInstance').returns(clientAssignments);
+      const clientAssignments = stubInterface<ClientConsultantAssignments>();
+      const createInstance = sinon.stub(ClientConsultantAssignments, 'createInstance').returns(clientAssignments);
       const startConsultantJobProcess = sinon.stub(CommandBus.prototype, 'startConsultantJobProcess').resolves();
       const removeAgencyClientConsultant = sinon.stub(CommandBus.prototype, 'removeAgencyClientConsultant').resolves();
       const succeedItemConsultantJobProcess = sinon
@@ -91,7 +91,7 @@ describe('ConsultantUnassignProcess', () => {
       clientAssignments.getEstimatedCount.resolves(2);
       const assignmentId = new ObjectID();
 
-      clientAssignments.getClientAssignments.resolves([
+      clientAssignments.getClientConsultantAssignments.resolves([
         {
           _id: assignmentId,
           client_id: clientId,
@@ -108,8 +108,8 @@ describe('ConsultantUnassignProcess', () => {
       await process.execute(initiateEvent);
 
       execRetryService.should.have.been.calledOnce;
-      getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
+      getAggregate.should.have.been.calledOnceWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -124,10 +124,10 @@ describe('ConsultantUnassignProcess', () => {
       completeConsultantJobProcess.should.have.been.calledOnceWith(aggregateId);
 
       await process.complete();
-      completeUnassignConsultant.should.have.been.calledWith(jobAggregateId, initiateEvent.data._id);
-      clientAssignments.getClientAssignments.should.have.been.calledOnce;
+      completeUnassignConsultant.should.have.been.calledOnceWith(jobAggregateId, initiateEvent.data._id);
+      clientAssignments.getClientConsultantAssignments.should.have.been.calledOnce;
       clientAssignments.getEstimatedCount.should.have.been.calledOnce;
-      createInstance.should.have.been.calledWith(initiateEvent);
+      createInstance.should.have.been.calledOnceWith(initiateEvent);
     });
 
     it('Test when the process is already completed', async () => {
@@ -135,16 +135,16 @@ describe('ConsultantUnassignProcess', () => {
       const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
       aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.COMPLETED);
-      const clientAssignments = stubInterface<ClientAssignments>();
-      const createInstance = sinon.stub(ClientAssignments, 'createInstance').returns(clientAssignments);
+      const clientAssignments = stubInterface<ClientConsultantAssignments>();
+      const createInstance = sinon.stub(ClientConsultantAssignments, 'createInstance').returns(clientAssignments);
 
       const process = new ConsultantUnassignProcess(logger, opts);
 
       await process.execute(initiateEvent);
 
       execRetryService.should.not.have.been.called;
-      getAggregate.should.have.been.calledWith(aggregateId);
-      createInstance.should.have.been.calledWith(initiateEvent);
+      getAggregate.should.have.been.calledOnceWith(aggregateId);
+      createInstance.should.have.been.calledOnceWith(initiateEvent);
     });
 
     it('Test count SequenceIdMismatch as RetryableError', async () => {
@@ -152,8 +152,8 @@ describe('ConsultantUnassignProcess', () => {
       const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
       aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
-      const clientAssignments = stubInterface<ClientAssignments>();
-      const createInstance = sinon.stub(ClientAssignments, 'createInstance').returns(clientAssignments);
+      const clientAssignments = stubInterface<ClientConsultantAssignments>();
+      const createInstance = sinon.stub(ClientConsultantAssignments, 'createInstance').returns(clientAssignments);
       const startConsultantJobProcess = sinon.stub(CommandBus.prototype, 'startConsultantJobProcess').resolves();
       const removeAgencyClientConsultant = sinon
         .stub(CommandBus.prototype, 'removeAgencyClientConsultant')
@@ -175,7 +175,7 @@ describe('ConsultantUnassignProcess', () => {
       clientAssignments.getEstimatedCount.resolves(2);
       const assignmentId = new ObjectID();
 
-      clientAssignments.getClientAssignments.resolves([
+      clientAssignments.getClientConsultantAssignments.resolves([
         {
           _id: assignmentId,
           client_id: clientId,
@@ -192,8 +192,8 @@ describe('ConsultantUnassignProcess', () => {
       await process.execute(initiateEvent);
 
       execRetryService.should.have.been.calledOnce;
-      getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
+      getAggregate.should.have.been.calledOnceWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -201,14 +201,14 @@ describe('ConsultantUnassignProcess', () => {
         },
         assignmentId.toString()
       );
-      failItemConsultantJobProcess.should.have.been.calledWith(aggregateId, {
+      failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,
         errors: encodedError
       });
       completeConsultantJobProcess.should.have.been.calledOnceWith(aggregateId);
-      createInstance.should.have.been.calledWith(initiateEvent);
-      clientAssignments.getClientAssignments.should.have.been.calledOnce;
+      createInstance.should.have.been.calledOnceWith(initiateEvent);
+      clientAssignments.getClientConsultantAssignments.should.have.been.calledOnce;
       clientAssignments.getEstimatedCount.should.have.been.calledOnce;
     });
 
@@ -217,8 +217,8 @@ describe('ConsultantUnassignProcess', () => {
       const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
       aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
-      const clientAssignments = stubInterface<ClientAssignments>();
-      const createInstance = sinon.stub(ClientAssignments, 'createInstance').returns(clientAssignments);
+      const clientAssignments = stubInterface<ClientConsultantAssignments>();
+      const createInstance = sinon.stub(ClientConsultantAssignments, 'createInstance').returns(clientAssignments);
       const startConsultantJobProcess = sinon.stub(CommandBus.prototype, 'startConsultantJobProcess').resolves();
       const removeAgencyClientConsultant = sinon
         .stub(CommandBus.prototype, 'removeAgencyClientConsultant')
@@ -240,7 +240,7 @@ describe('ConsultantUnassignProcess', () => {
       clientAssignments.getEstimatedCount.resolves(2);
       const assignmentId = new ObjectID();
 
-      clientAssignments.getClientAssignments.resolves([
+      clientAssignments.getClientConsultantAssignments.resolves([
         {
           _id: assignmentId,
           client_id: clientId,
@@ -257,8 +257,8 @@ describe('ConsultantUnassignProcess', () => {
       await process.execute(initiateEvent);
 
       execRetryService.should.have.been.calledOnce;
-      getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
+      getAggregate.should.have.been.calledOnceWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -266,14 +266,14 @@ describe('ConsultantUnassignProcess', () => {
         },
         assignmentId.toString()
       );
-      failItemConsultantJobProcess.should.have.been.calledWith(aggregateId, {
+      failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,
         errors: encodedError
       });
       completeConsultantJobProcess.should.have.been.calledOnceWith(aggregateId);
-      createInstance.should.have.been.calledWith(initiateEvent);
-      clientAssignments.getClientAssignments.should.have.been.calledOnce;
+      createInstance.should.have.been.calledOnceWith(initiateEvent);
+      clientAssignments.getClientConsultantAssignments.should.have.been.calledOnce;
       clientAssignments.getEstimatedCount.should.have.been.calledOnce;
     });
 
@@ -282,8 +282,8 @@ describe('ConsultantUnassignProcess', () => {
       const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
       aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
-      const clientAssignments = stubInterface<ClientAssignments>();
-      const createInstance = sinon.stub(ClientAssignments, 'createInstance').returns(clientAssignments);
+      const clientAssignments = stubInterface<ClientConsultantAssignments>();
+      const createInstance = sinon.stub(ClientConsultantAssignments, 'createInstance').returns(clientAssignments);
       const startConsultantJobProcess = sinon.stub(CommandBus.prototype, 'startConsultantJobProcess').resolves();
       const removeAgencyClientConsultant = sinon
         .stub(CommandBus.prototype, 'removeAgencyClientConsultant')
@@ -305,7 +305,7 @@ describe('ConsultantUnassignProcess', () => {
       clientAssignments.getEstimatedCount.resolves(2);
       const assignmentId = new ObjectID();
 
-      clientAssignments.getClientAssignments.resolves([
+      clientAssignments.getClientConsultantAssignments.resolves([
         {
           _id: assignmentId,
           client_id: clientId,
@@ -322,8 +322,8 @@ describe('ConsultantUnassignProcess', () => {
       await process.execute(initiateEvent);
 
       execRetryService.should.have.been.calledOnce;
-      getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
+      getAggregate.should.have.been.calledOnceWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -331,14 +331,14 @@ describe('ConsultantUnassignProcess', () => {
         },
         assignmentId.toString()
       );
-      failItemConsultantJobProcess.should.have.been.calledWith(aggregateId, {
+      failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,
         errors: encodedError
       });
       completeConsultantJobProcess.should.have.been.calledOnceWith(aggregateId);
-      createInstance.should.have.been.calledWith(initiateEvent);
-      clientAssignments.getClientAssignments.should.have.been.calledOnce;
+      createInstance.should.have.been.calledOnceWith(initiateEvent);
+      clientAssignments.getClientConsultantAssignments.should.have.been.calledOnce;
       clientAssignments.getEstimatedCount.should.have.been.calledOnce;
     });
 
@@ -347,8 +347,8 @@ describe('ConsultantUnassignProcess', () => {
       const getAggregate = sinon.stub(ConsultantJobProcessRepository.prototype, 'getAggregate').resolves(aggregate);
 
       aggregate.getCurrentStatus.returns(ConsultantJobProcessAggregateStatusEnum.NEW);
-      const clientAssignments = stubInterface<ClientAssignments>();
-      const createInstance = sinon.stub(ClientAssignments, 'createInstance').returns(clientAssignments);
+      const clientAssignments = stubInterface<ClientConsultantAssignments>();
+      const createInstance = sinon.stub(ClientConsultantAssignments, 'createInstance').returns(clientAssignments);
       const startConsultantJobProcess = sinon.stub(CommandBus.prototype, 'startConsultantJobProcess').resolves();
       const removeAgencyClientConsultant = sinon
         .stub(CommandBus.prototype, 'removeAgencyClientConsultant')
@@ -370,7 +370,7 @@ describe('ConsultantUnassignProcess', () => {
       clientAssignments.getEstimatedCount.resolves(2);
       const assignmentId = new ObjectID();
 
-      clientAssignments.getClientAssignments.resolves([
+      clientAssignments.getClientConsultantAssignments.resolves([
         {
           _id: assignmentId,
           client_id: clientId,
@@ -387,8 +387,8 @@ describe('ConsultantUnassignProcess', () => {
       await process.execute(initiateEvent);
 
       execRetryService.should.have.been.calledOnce;
-      getAggregate.should.have.been.calledWith(aggregateId);
-      startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
+      getAggregate.should.have.been.calledOnceWith(aggregateId);
+      startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
         {
           agency_id: agencyId,
@@ -396,14 +396,14 @@ describe('ConsultantUnassignProcess', () => {
         },
         assignmentId.toString()
       );
-      failItemConsultantJobProcess.should.have.been.calledWith(aggregateId, {
+      failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,
         errors: encodedError
       });
       completeConsultantJobProcess.should.have.been.calledOnceWith(aggregateId);
-      createInstance.should.have.been.calledWith(initiateEvent);
-      clientAssignments.getClientAssignments.should.have.been.calledOnce;
+      createInstance.should.have.been.calledOnceWith(initiateEvent);
+      clientAssignments.getClientConsultantAssignments.should.have.been.calledOnce;
       clientAssignments.getEstimatedCount.should.have.been.calledOnce;
     });
   });

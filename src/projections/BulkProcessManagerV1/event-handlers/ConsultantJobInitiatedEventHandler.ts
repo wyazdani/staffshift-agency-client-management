@@ -1,20 +1,21 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {EventHandlerInterface} from 'EventHandlerInterface';
-import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventTypes';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../models/BulkProcessManagerV1';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
+/**
+ * Why using an internal interface?
+ *  because we're using the command handler for different events
+ */
+interface ConsultantJobInitiatedEventStoreDataInterface {
+  _id: string;
+}
 export class ConsultantJobInitiatedEventHandler
-implements
-    EventHandlerInterface<
-      EventStorePubSubModelInterface<Pick<ConsultantJobAssignInitiatedEventStoreDataInterface, '_id'>>
-    > {
+implements EventHandlerInterface<EventStorePubSubModelInterface<ConsultantJobInitiatedEventStoreDataInterface>> {
   constructor(private logger: LoggerContext) {}
 
-  async handle(
-    event: EventStorePubSubModelInterface<Pick<ConsultantJobAssignInitiatedEventStoreDataInterface, '_id'>>
-  ): Promise<void> {
+  async handle(event: EventStorePubSubModelInterface<ConsultantJobInitiatedEventStoreDataInterface>): Promise<void> {
     try {
       await BulkProcessManagerV1.create({
         _id: event.data._id,

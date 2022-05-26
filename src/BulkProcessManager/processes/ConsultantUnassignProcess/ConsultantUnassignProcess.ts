@@ -16,7 +16,7 @@ import {CommandBus} from '../../../aggregates/CommandBus';
 import {ConsultantJobProcessAggregateIdInterface} from '../../../aggregates/ConsultantJobProcess/types';
 import {ConsultantJobProcessRepository} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
 import {ConsultantJobProcessWriteProjectionHandler} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessWriteProjectionHandler';
-import {ClientAssignments, AssignmentItemType} from './ClientAssignments';
+import {ClientConsultantAssignments, AssignmentItemType} from './ClientConsultantAssignments';
 
 interface ConsultantUnassignProcessOptsInterface {
   maxRetry: number;
@@ -58,7 +58,7 @@ export class ConsultantUnassignProcess implements ProcessInterface {
       initiateEvent.meta_data,
       eventId
     );
-    const clientAssignments = ClientAssignments.createInstance(this.initiateEvent);
+    const clientAssignments = ClientConsultantAssignments.createInstance(this.initiateEvent);
 
     this.commandBus = new CommandBus(eventRepository);
     this.consultantJobProcessRepository = new ConsultantJobProcessRepository(
@@ -89,7 +89,7 @@ export class ConsultantUnassignProcess implements ProcessInterface {
       return;
     }
     const progressedItems = jobProcessAggregate.getProgressedItems();
-    const projectionAssignments = await clientAssignments.getClientAssignments();
+    const projectionAssignments = await clientAssignments.getClientConsultantAssignments();
     const assignments = differenceWith(
       projectionAssignments,
       progressedItems,
