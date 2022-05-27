@@ -25,6 +25,8 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
     await aggregate.validateTransferClientConsultant(command.data);
     let eventId = aggregate.getLastSequenceId();
 
+    //@TODO: if consultant is already assigned, we still need to unassign the previous one
+    //@TODO: we can catch the exception or result and then only save unassign event
     await this.agencyClientRepository.save([
       {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
