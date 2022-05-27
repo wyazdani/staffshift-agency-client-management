@@ -3,7 +3,8 @@ import {
   LinkAgencyClientCommandDataInterface,
   RemoveAgencyClientConsultantCommandDataInterface,
   SyncAgencyClientCommandDataInterface,
-  UnlinkAgencyClientCommandDataInterface, TransferAgencyClientConsultantCommandDataInterface
+  UnlinkAgencyClientCommandDataInterface,
+  TransferAgencyClientConsultantCommandDataInterface
 } from './CommandDataTypes';
 
 export type AgencyClientCommandDataType =
