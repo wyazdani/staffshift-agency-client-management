@@ -23,7 +23,7 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     await aggregate.validateTransferClientConsultant(command.data);
-    const eventId = aggregate.getLastSequenceId();
+    let eventId = aggregate.getLastSequenceId();
 
     await this.agencyClientRepository.save([
       {
@@ -32,7 +32,7 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
         data: {
           _id: command.data.from_id
         } as AgencyClientConsultantUnassignedEventStoreDataInterface,
-        sequence_id: eventId + 1
+        sequence_id: ++eventId
       },
       {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
@@ -40,9 +40,9 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
         data: {
           _id: command.data.to_id,
           consultant_id: command.data.to_consultant_id,
-          consultant_role_id: command.data.to_consultant_role_id,
+          consultant_role_id: command.data.to_consultant_role_id
         } as AgencyClientConsultantAssignedEventStoreDataInterface,
-        sequence_id: eventId + 1
+        sequence_id: ++eventId
       }
     ]);
   }

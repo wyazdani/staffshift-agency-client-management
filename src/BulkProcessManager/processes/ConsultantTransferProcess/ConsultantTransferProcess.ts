@@ -131,7 +131,8 @@ export class ConsultantTransferProcess implements ProcessInterface {
       this.logger.debug('Transferring client from consultant', {
         clientId: assignment.client_id,
         _id: assignment._id,
-        consultantRoleId: assignment.consultant_role_id
+        from_consultant_id: this.initiateEvent.data.from_consultant_id,
+        to_consultant_id: this.initiateEvent.data.to_consultant_id
       });
       await this.commandBus.transferAgencyClientConsultant(
         {
@@ -140,8 +141,8 @@ export class ConsultantTransferProcess implements ProcessInterface {
         },
         {
           from_id: assignment._id.toString(),
-          to_consultant_id: '', // @TODO
-          to_consultant_role_id: '', // @TODO
+          to_consultant_id: this.initiateEvent.data.to_consultant_id,
+          to_consultant_role_id: assignment.consultant_role_id,
           to_id: new ObjectID().toString()
         }
       );
