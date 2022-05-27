@@ -49,7 +49,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
         }
       ]);
     }
-    this.validateNotRunningAnotherProcess(command.consultant_id);
+    this.validateNotRunningAnotherProcess('consultant_id', command.consultant_id);
   }
 
   validateCompleteJob(processId: string): boolean {
@@ -57,7 +57,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
   }
 
   validateUnassignConsultant(command: UnassignConsultantCommandDataInterface): void {
-    this.validateNotRunningAnotherProcess(command.consultant_id);
+    this.validateNotRunningAnotherProcess('consultant_id', command.consultant_id);
   }
   validateTransferConsultant(command: TransferConsultantCommandDataInterface): void {
     if (command.from_consultant_id === command.to_consultant_id) {
@@ -69,11 +69,11 @@ export class ConsultantJobAggregate extends AbstractAggregate<
         }
       ]);
     }
-    this.validateNotRunningAnotherProcess(command.from_consultant_id);
-    this.validateNotRunningAnotherProcess(command.to_consultant_id);
+    this.validateNotRunningAnotherProcess('from_consultant_id', command.from_consultant_id);
+    this.validateNotRunningAnotherProcess('to_consultant_id', command.to_consultant_id);
   }
 
-  private validateNotRunningAnotherProcess(consultantId: string) {
+  private validateNotRunningAnotherProcess(fieldName: string, consultantId: string) {
     const process = find(
       this.aggregate.processes,
       (process) => process.status !== 'completed' && indexOf(process.consultants, consultantId) >= 0
@@ -84,7 +84,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
         {
           code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
           message: `There is another job still running for this consultant id ${consultantId}`,
-          path: ['consultant_id']
+          path: [fieldName]
         }
       ]);
     }
