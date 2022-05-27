@@ -343,7 +343,7 @@ describe('ConsultantJobAggregate', () => {
             {
               code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
               message: `There is another job still running for this consultant id ${command.from_consultant_id}`,
-              path: ['consultant_id']
+              path: ['from_consultant_id']
             }
           ])
         );
@@ -372,7 +372,7 @@ describe('ConsultantJobAggregate', () => {
             {
               code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
               message: `There is another job still running for this consultant id ${command.to_consultant_id}`,
-              path: ['consultant_id']
+              path: ['to_consultant_id']
             }
           ])
         );
