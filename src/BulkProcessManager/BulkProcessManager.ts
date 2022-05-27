@@ -156,7 +156,10 @@ export class BulkProcessManager {
   private async findAndCallProcess(initiateEvent: EventStorePubSubModelInterface) {
     const process = ProcessFactory.getProcess(this.logger, initiateEvent.type);
 
+    this.logger.info(`starting to process bulk operation ${initiateEvent._id}`);
     await process.execute(initiateEvent);
+    this.logger.info(`processing bulk operation ${initiateEvent._id} finished`);
     await process.complete();
+    this.logger.info(`complete event for bulk operation ${initiateEvent._id} produced`);
   }
 }

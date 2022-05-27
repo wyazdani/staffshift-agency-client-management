@@ -1,1 +1,3 @@
-export interface StartConsultantJobProcessCommandDataInterface {}
+export interface StartConsultantJobProcessCommandDataInterface {
+  estimated_count: number;
+}

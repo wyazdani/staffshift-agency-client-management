@@ -1,10 +1,10 @@
 import sinon from 'ts-sinon';
 import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../../src/models/BulkProcessManagerV1';
-import {ConsultantJobAssignInitiatedEventHandler} from '../../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobAssignInitiatedEventHandler';
+import {ConsultantJobInitiatedEventHandler} from '../../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobInitiatedEventHandler';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
-describe('ConsultantJobAssignInitiatedEventHandler', () => {
+describe('ConsultantJobInitiatedEventHandler', () => {
   afterEach(() => {
     sinon.restore();
   });
@@ -18,7 +18,7 @@ describe('ConsultantJobAssignInitiatedEventHandler', () => {
         }
       };
       const create = sinon.stub(BulkProcessManagerV1, 'create').resolves();
-      const handler = new ConsultantJobAssignInitiatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
+      const handler = new ConsultantJobInitiatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
       await handler.handle(event);
       create.should.have.been.calledWith({
@@ -40,7 +40,7 @@ describe('ConsultantJobAssignInitiatedEventHandler', () => {
       const create = sinon.stub(BulkProcessManagerV1, 'create').rejects({
         code: MONGO_ERROR_CODES.DUPLICATE_KEY
       });
-      const handler = new ConsultantJobAssignInitiatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
+      const handler = new ConsultantJobInitiatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
       await handler.handle(event);
       create.should.have.been.calledWith({
@@ -61,7 +61,7 @@ describe('ConsultantJobAssignInitiatedEventHandler', () => {
       };
       const error = new Error('oops');
       const create = sinon.stub(BulkProcessManagerV1, 'create').rejects(error);
-      const handler = new ConsultantJobAssignInitiatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
+      const handler = new ConsultantJobInitiatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
       await handler.handle(event).should.have.been.rejectedWith(error);
       create.should.have.been.calledWith({

@@ -8,15 +8,15 @@ describe('ConsultantJobProcessAggregate', () => {
     job_id: 'some-id'
   };
 
-  describe('getProgressedClientIds()', () => {
-    it('should return progressed client ids', () => {
+  describe('getProgressedItems()', () => {
+    it('should return progressed items', () => {
       const aggregateRecord = {
-        progressed_client_ids: ['client a'],
+        progressed_items: [{client_id: 'client a'}],
         last_sequence_id: 1
       };
       const aggregate = new ConsultantJobProcessAggregate(aggregateId, aggregateRecord);
 
-      aggregate.getProgressedClientIds().should.deep.equal(['client a']);
+      aggregate.getProgressedItems().should.deep.equal([{client_id: 'client a'}]);
     });
     it('should return empty array if not set', () => {
       const aggregateRecord = {
@@ -24,7 +24,7 @@ describe('ConsultantJobProcessAggregate', () => {
       };
       const aggregate = new ConsultantJobProcessAggregate(aggregateId, aggregateRecord);
 
-      aggregate.getProgressedClientIds().should.deep.equal([]);
+      aggregate.getProgressedItems().should.deep.equal([]);
     });
   });
 

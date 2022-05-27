@@ -1,7 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
-import {ConsultantJobAssignInitiatedEventStoreDataInterface} from 'EventTypes';
-import {difference} from 'lodash';
+import {ConsultantJobUnassignInitiatedEventStoreDataInterface} from 'EventTypes';
+import {differenceWith} from 'lodash';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';
 import {ConsultantJobProcessAggregateStatusEnum} from '../../../aggregates/ConsultantJobProcess/types/ConsultantJobProcessAggregateStatusEnum';
@@ -16,47 +16,49 @@ import {CommandBus} from '../../../aggregates/CommandBus';
 import {ConsultantJobProcessAggregateIdInterface} from '../../../aggregates/ConsultantJobProcess/types';
 import {ConsultantJobProcessRepository} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
 import {ConsultantJobProcessWriteProjectionHandler} from '../../../aggregates/ConsultantJobProcess/ConsultantJobProcessWriteProjectionHandler';
+import {ClientConsultantAssignments, AssignmentItemType} from './ClientConsultantAssignments';
 
-interface ConsultantAssignProcessOptsInterface {
+interface ConsultantUnassignProcessOptsInterface {
   maxRetry: number;
   retryDelay: number;
 }
 
 /**
- * It handles bulk consultant assign to client
- * It has a for loop to iterate through all clients. In each loop it
+ * It handles bulk consultant unassign from multiple clients
+ * We query on Projection records to find the assignment records
+ * It has a for loop to iterate through all assignments. In each loop it
  * generates start/item_succeeded/item_failed/completed events on ConsultantJobProcess aggregate
- * also it assigns clients to consultant one by one
- * during each assignment business/internal errors might happen. we might do retry(based on error type),
+ * during each unassign business/internal errors might happen. we might do retry(based on error type),
  * otherwise mark it as failure and move on
  */
-export class ConsultantAssignProcess implements ProcessInterface {
+export class ConsultantUnassignProcess implements ProcessInterface {
   private initiateEvent: EventStorePubSubModelInterface<
-    ConsultantJobAssignInitiatedEventStoreDataInterface,
+    ConsultantJobUnassignInitiatedEventStoreDataInterface,
     ConsultantJobAggregateIdInterface
   >;
   private commandBus: CommandBus;
   private consultantJobProcessCommandAggregateId: ConsultantJobProcessAggregateIdInterface;
   private consultantJobCommandAggregateId: ConsultantJobAggregateIdInterface;
   private consultantJobProcessRepository: ConsultantJobProcessRepository;
-  constructor(private logger: LoggerContext, private opts: ConsultantAssignProcessOptsInterface) {}
+  constructor(private logger: LoggerContext, private opts: ConsultantUnassignProcessOptsInterface) {}
 
   async execute(
     initiateEvent: EventStorePubSubModelInterface<
-      ConsultantJobAssignInitiatedEventStoreDataInterface,
+      ConsultantJobUnassignInitiatedEventStoreDataInterface,
       ConsultantJobAggregateIdInterface
     >
   ): Promise<void> {
     this.initiateEvent = initiateEvent;
     const eventId = initiateEvent._id;
 
-    this.logger.info('Consultant Assign background process started', {eventId});
+    this.logger.info('Consultant Unassign background process started', {eventId});
     const eventRepository = new EventRepository(
       EventStore,
       initiateEvent.correlation_id,
       initiateEvent.meta_data,
       eventId
     );
+    const clientAssignments = ClientConsultantAssignments.createInstance(this.initiateEvent);
 
     this.commandBus = new CommandBus(eventRepository);
     this.consultantJobProcessRepository = new ConsultantJobProcessRepository(
@@ -80,83 +82,92 @@ export class ConsultantAssignProcess implements ProcessInterface {
     if (currentStatus === ConsultantJobProcessAggregateStatusEnum.NEW) {
       await this.commandBus.startConsultantJobProcess(
         this.consultantJobProcessCommandAggregateId,
-        this.initiateEvent.data.client_ids.length
+        await clientAssignments.getEstimatedCount()
       );
     } else if (currentStatus === ConsultantJobProcessAggregateStatusEnum.COMPLETED) {
-      this.logger.info('Consultant Assignment process already completed', {id: initiateEvent._id});
+      this.logger.info('Consultant Unassign process already completed', {id: initiateEvent._id});
       return;
     }
     const progressedItems = jobProcessAggregate.getProgressedItems();
-    const clientIds = difference(
-      initiateEvent.data.client_ids,
-      progressedItems.map((item) => item.client_id)
+    const projectionAssignments = await clientAssignments.getClientConsultantAssignments();
+    const assignments = differenceWith(
+      projectionAssignments,
+      progressedItems,
+      (itemA, itemB) => itemA.client_id === itemB.client_id && itemA.consultant_role_id === itemB.consultant_role_id
     );
 
-    for (const clientId of clientIds) {
-      if (await this.assignClientWithRetry(clientId)) {
-        this.logger.info(`Assigned client ${clientId} to consultant ${this.initiateEvent.data.consultant_id}`);
+    for (const assignment of assignments) {
+      this.logger.debug(`Unassigning client ${assignment.client_id} with role id ${assignment.consultant_role_id}`);
+      if (await this.unassignClientWithRetry(assignment)) {
+        this.logger.info(
+          `Unassigned client ${assignment.client_id} from consultant ${this.initiateEvent.data.consultant_id} with role id ${assignment.consultant_role_id}`
+        );
         await this.commandBus.succeedItemConsultantJobProcess(this.consultantJobProcessCommandAggregateId, {
-          client_id: clientId
+          client_id: assignment.client_id,
+          consultant_role_id: assignment.consultant_role_id
         });
       }
     }
     await this.commandBus.completeConsultantJobProcess(this.consultantJobProcessCommandAggregateId);
-    this.logger.info('Consultant Assign background process finished', {eventId});
+    this.logger.info('Consultant Unassign background process finished', {eventId});
   }
 
-  private async assignClientWithRetry(clientId: string): Promise<boolean> {
+  /**
+   * unassigning client from consultant and deciding to do retry or not
+   */
+  private async unassignClientWithRetry(assignment: AssignmentItemType): Promise<boolean> {
     const retryService = new RetryService(this.opts.maxRetry, this.opts.retryDelay);
 
     try {
-      await retryService.exec(() => this.assignClient(clientId));
+      await retryService.exec(() => this.unassignClient(assignment));
       return true;
     } catch (error) {
       await this.commandBus.failItemConsultantJobProcess(this.consultantJobProcessCommandAggregateId, {
-        client_id: clientId,
+        client_id: assignment.client_id,
+        consultant_role_id: assignment.consultant_role_id,
         errors: EventStoreErrorEncoder.encodeArray(retryService.getErrors())
       });
       return false;
     }
   }
-
-  /**
-   * Assigning client to consultant and deciding to do retry or not
-   */
-  private async assignClient(clientId: string): Promise<void> {
+  private async unassignClient(assignment: AssignmentItemType): Promise<void> {
     try {
-      this.logger.debug('Assigning consultant to client', {
-        clientId,
-        consultantId: this.initiateEvent.data.consultant_id
+      this.logger.debug('Unassigning client from consultant', {
+        clientId: assignment.client_id,
+        _id: assignment._id,
+        consultantRoleId: assignment.consultant_role_id
       });
-      await this.commandBus.addAgencyClientConsultant(
+      await this.commandBus.removeAgencyClientConsultant(
         {
           agency_id: this.initiateEvent.aggregate_id.agency_id,
-          client_id: clientId
+          client_id: assignment.client_id
         },
-        this.initiateEvent.data.consultant_role_id,
-        this.initiateEvent.data.consultant_id
+        assignment._id.toString()
       );
     } catch (error) {
       if (error instanceof SequenceIdMismatch) {
         // You might need to reload the aggregate for retry
         this.logger.notice('Sequence id mismatch happened. we try to retry again', {
           initiateEvent: this.initiateEvent._id,
-          clientId: clientId,
+          clientId: assignment.client_id,
           error
         });
         throw new RetryableError(error);
       } else if (error instanceof ValidationError || error instanceof ResourceNotFoundError) {
         // non-retryable errors
-        this.logger.debug('Assigning consultant to client was not possible due to business validation', error);
+        this.logger.debug('Unassigning consultant from client was not possible due to business validation', error);
         throw new NonRetryableError(error);
       } else {
-        this.logger.error('Unknown error occurred during assigning consultant to client', error);
+        this.logger.error('Unknown error occurred during Unassigning consultant from client', error);
         throw new RetryableError(error);
       }
     }
   }
 
+  /**
+   * it will be called when process is finished
+   */
   async complete(): Promise<void> {
-    await this.commandBus.completeAssignConsultant(this.consultantJobCommandAggregateId, this.initiateEvent.data._id);
+    await this.commandBus.completeUnassignConsultant(this.consultantJobCommandAggregateId, this.initiateEvent.data._id);
   }
 }

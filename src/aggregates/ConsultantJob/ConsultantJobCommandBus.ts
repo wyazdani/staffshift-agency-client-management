@@ -1,7 +1,9 @@
 import {
   AssignConsultantCommandHandler,
   CompleteAssignConsultantCommandHandler,
-  UnassignConsultantCommandHandler
+  UnassignConsultantCommandHandler,
+  CompleteUnassignConsultantCommandHandler,
+  TransferConsultantCommandHandler
 } from './command-handlers';
 import {ConsultantJobRepository} from './ConsultantJobRepository';
 import {AgencyRepository} from '../Agency/AgencyRepository';
@@ -13,7 +15,9 @@ import {ConsultantJobCommandHandlerInterface} from './types/ConsultantJobCommand
 const handlers = [
   AssignConsultantCommandHandler,
   CompleteAssignConsultantCommandHandler,
-  UnassignConsultantCommandHandler
+  UnassignConsultantCommandHandler,
+  CompleteUnassignConsultantCommandHandler,
+  TransferConsultantCommandHandler
 ];
 
 /**

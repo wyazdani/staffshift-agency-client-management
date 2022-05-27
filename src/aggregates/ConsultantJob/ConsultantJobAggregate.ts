@@ -1,7 +1,11 @@
 import {find, indexOf} from 'lodash';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ConsultantJobAggregateIdInterface, ConsultantJobAggregateRecordInterface} from './types';
-import {AssignConsultantCommandDataInterface, UnassignConsultantCommandDataInterface} from './types/CommandDataTypes';
+import {
+  AssignConsultantCommandDataInterface,
+  UnassignConsultantCommandDataInterface,
+  TransferConsultantCommandDataInterface
+} from './types/CommandDataTypes';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 
@@ -45,7 +49,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
         }
       ]);
     }
-    this.validateNotRunningAnotherProcess(command.consultant_id);
+    this.validateNotRunningAnotherProcess('consultant_id', command.consultant_id);
   }
 
   validateCompleteJob(processId: string): boolean {
@@ -53,10 +57,23 @@ export class ConsultantJobAggregate extends AbstractAggregate<
   }
 
   validateUnassignConsultant(command: UnassignConsultantCommandDataInterface): void {
-    this.validateNotRunningAnotherProcess(command.consultant_id);
+    this.validateNotRunningAnotherProcess('consultant_id', command.consultant_id);
+  }
+  validateTransferConsultant(command: TransferConsultantCommandDataInterface): void {
+    if (command.from_consultant_id === command.to_consultant_id) {
+      throw new ValidationError('from consultant and to consultant should be different', [
+        {
+          code: 'SAME_CONSULTANT',
+          message: 'We can not transfer clients from a consultant to the same consultant',
+          path: ['from_consultant_id']
+        }
+      ]);
+    }
+    this.validateNotRunningAnotherProcess('from_consultant_id', command.from_consultant_id);
+    this.validateNotRunningAnotherProcess('to_consultant_id', command.to_consultant_id);
   }
 
-  private validateNotRunningAnotherProcess(consultantId: string) {
+  private validateNotRunningAnotherProcess(fieldName: string, consultantId: string) {
     const process = find(
       this.aggregate.processes,
       (process) => process.status !== 'completed' && indexOf(process.consultants, consultantId) >= 0
@@ -67,7 +84,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
         {
           code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
           message: `There is another job still running for this consultant id ${consultantId}`,
-          path: ['consultant_id']
+          path: [fieldName]
         }
       ]);
     }

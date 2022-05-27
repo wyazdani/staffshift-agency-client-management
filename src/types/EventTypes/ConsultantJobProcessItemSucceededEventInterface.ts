@@ -4,6 +4,8 @@ import {ConsultantJobProcessAggregateIdInterface} from '../../aggregates/Consult
 
 export interface ConsultantJobProcessItemSucceededEventStoreDataInterface extends BaseEventStoreDataInterface {
   client_id: string;
+  /* optional, It will be used in some bulk operations */
+  consultant_role_id?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

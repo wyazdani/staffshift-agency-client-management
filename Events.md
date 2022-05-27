@@ -520,8 +520,15 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
-  "additionalProperties": false,
-  "properties": {}
+  "properties": {
+    "estimated_count": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "estimated_count"
+  ],
+  "additionalProperties": false
 }
 ```
 
@@ -561,6 +568,9 @@ Description: A short description of the event
   "type": "object",
   "properties": {
     "client_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
       "type": "string"
     }
   },
@@ -607,6 +617,9 @@ Description: A short description of the event
   "type": "object",
   "properties": {
     "client_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
       "type": "string"
     },
     "errors": {
@@ -789,4 +802,105 @@ Description: A short description of the event
 ```
 
  </td><td> Job unassigning a consultant from multiple clients for an agency has completed </td></tr>
+<tr><td> CONSULTANT_JOB_TRANSFER_INITIATED </td><td> ConsultantJobTransferInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "from_consultant_id": {
+      "type": "string"
+    },
+    "to_consultant_id": {
+      "type": "string"
+    },
+    "consultant_role_id": {
+      "type": "string"
+    },
+    "client_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "_id",
+    "from_consultant_id",
+    "to_consultant_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "consultant_job"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Initiate a job to transfer clients from a consultant to another consultant for an agency </td></tr>
+<tr><td> CONSULTANT_JOB_TRANSFER_COMPLETED </td><td> ConsultantJobTransferCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "consultant_job"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> transfer clients of a consultant to another consultant for an agency has completed </td></tr>
 </table><!--DATA_END-->

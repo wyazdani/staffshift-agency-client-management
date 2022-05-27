@@ -2,7 +2,7 @@ import {EventsEnum} from '../../../Events';
 import {ConsultantJobProcessRepository} from '../ConsultantJobProcessRepository';
 import {ConsultantJobProcessCommandHandlerInterface} from '../types/ConsultantJobProcessCommandHandlerInterface';
 import {ConsultantJobProcessCommandEnum} from '../types';
-import {SucceedItemConsultantJobProcessCommandInterface} from '../types/CommandTypes/SucceedItemConsultantJobProcessCommandInterface';
+import {SucceedItemConsultantJobProcessCommandInterface} from '../types/CommandTypes';
 import {ConsultantJobProcessItemSucceededEventInterface} from 'EventTypes/ConsultantJobProcessItemSucceededEventInterface';
 
 export class SucceedItemConsultantJobProcessCommandHandler implements ConsultantJobProcessCommandHandlerInterface {

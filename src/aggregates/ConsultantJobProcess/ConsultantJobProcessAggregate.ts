@@ -1,5 +1,6 @@
 import {AbstractAggregate} from '../AbstractAggregate';
 import {ConsultantJobProcessAggregateIdInterface, ConsultantJobProcessAggregateRecordInterface} from './types';
+import {ProgressedItemInterface} from './types/ConsultantJobProcessAggregateRecordInterface';
 import {ConsultantJobProcessAggregateStatusEnum} from './types/ConsultantJobProcessAggregateStatusEnum';
 
 export class ConsultantJobProcessAggregate extends AbstractAggregate<
@@ -16,8 +17,8 @@ export class ConsultantJobProcessAggregate extends AbstractAggregate<
   /**
    * retrieves all client ids that we already processed despite their success
    */
-  getProgressedClientIds(): string[] {
-    return this.aggregate.progressed_client_ids || [];
+  getProgressedItems(): ProgressedItemInterface[] {
+    return this.aggregate.progressed_items || [];
   }
 
   getCurrentStatus(): ConsultantJobProcessAggregateStatusEnum {

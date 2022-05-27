@@ -19,8 +19,8 @@ implements WriteProjectionInterface<ConsultantJobProcessAggregateRecordInterface
     aggregate: ConsultantJobProcessAggregateRecordInterface,
     event: EventStoreModelInterface
   ): ConsultantJobProcessAggregateRecordInterface {
-    if (!has(aggregate, 'progressed_client_ids')) {
-      aggregate.progressed_client_ids = [];
+    if (!has(aggregate, 'progressed_items')) {
+      aggregate.progressed_items = [];
     }
     if (!has(aggregate, 'status')) {
       aggregate.status = ConsultantJobProcessAggregateStatusEnum.NEW;
@@ -30,14 +30,10 @@ implements WriteProjectionInterface<ConsultantJobProcessAggregateRecordInterface
         aggregate.status = ConsultantJobProcessAggregateStatusEnum.STARTED;
         return {...aggregate, last_sequence_id: event.sequence_id};
       case EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED:
-        aggregate.progressed_client_ids.push(
-          (event.data as ConsultantJobProcessItemSucceededEventStoreDataInterface).client_id
-        );
+        aggregate.progressed_items.push(event.data as ConsultantJobProcessItemSucceededEventStoreDataInterface);
         return {...aggregate, last_sequence_id: event.sequence_id};
       case EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_FAILED:
-        aggregate.progressed_client_ids.push(
-          (event.data as ConsultantJobProcessItemFailedEventStoreDataInterface).client_id
-        );
+        aggregate.progressed_items.push(event.data as ConsultantJobProcessItemFailedEventStoreDataInterface);
         return {...aggregate, last_sequence_id: event.sequence_id};
       case EventsEnum.CONSULTANT_JOB_PROCESS_COMPLETED:
         aggregate.status = ConsultantJobProcessAggregateStatusEnum.COMPLETED;

@@ -1,3 +1,12 @@
-import {StartConsultantJobProcessCommandDataInterface} from './CommandDataTypes';
+import {
+  StartConsultantJobProcessCommandDataInterface,
+  CompleteConsultantJobProcessCommandDataInterface,
+  FailItemConsultantJobProcessCommandDataInterface,
+  SucceedItemConsultantJobProcessCommandDataInterface
+} from './CommandDataTypes';
 
-export type ConsultantJobProcessCommandDataType = StartConsultantJobProcessCommandDataInterface;
+export type ConsultantJobProcessCommandDataType =
+  | StartConsultantJobProcessCommandDataInterface
+  | CompleteConsultantJobProcessCommandDataInterface
+  | FailItemConsultantJobProcessCommandDataInterface
+  | SucceedItemConsultantJobProcessCommandDataInterface;

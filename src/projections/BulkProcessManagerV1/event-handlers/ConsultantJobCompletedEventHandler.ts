@@ -4,8 +4,16 @@ import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {BulkProcessManagerV1, BulkProcessManagerStatusEnum} from '../../../models/BulkProcessManagerV1';
 
-export class ConsultantJobAssignCompletedEventHandler
-implements EventHandlerInterface<EventStorePubSubModelInterface<ConsultantJobAssignCompletedEventStoreDataInterface>> {
+/**
+ * Why using an internal interface?
+ *  because we're using the command handler for different events
+ */
+interface ConsultantJobCompletedEventStoreDataInterface {
+  _id: string;
+}
+
+export class ConsultantJobCompletedEventHandler
+implements EventHandlerInterface<EventStorePubSubModelInterface<ConsultantJobCompletedEventStoreDataInterface>> {
   constructor(private logger: LoggerContext) {}
   async handle(
     event: EventStorePubSubModelInterface<ConsultantJobAssignCompletedEventStoreDataInterface>

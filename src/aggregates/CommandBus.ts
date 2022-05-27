@@ -3,13 +3,22 @@ import {EventRepository} from '../EventRepository';
 import {AgencyCommandBus} from './Agency/AgencyCommandBus';
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
 import {AgencyClientAggregateIdInterface, AgencyClientCommandEnum} from './AgencyClient/types';
-import {AddAgencyClientConsultantCommandInterface} from './AgencyClient/types/CommandTypes';
+import {
+  AddAgencyClientConsultantCommandInterface,
+  RemoveAgencyClientConsultantCommandInterface
+} from './AgencyClient/types/CommandTypes';
 import {ConsultantJobCommandBus} from './ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobAggregateIdInterface, ConsultantJobCommandEnum} from './ConsultantJob/types';
-import {CompleteAssignConsultantCommandInterface} from './ConsultantJob/types/CommandTypes';
+import {
+  CompleteAssignConsultantCommandInterface,
+  CompleteUnassignConsultantCommandInterface
+} from './ConsultantJob/types/CommandTypes';
 import {ConsultantJobProcessCommandBus} from './ConsultantJobProcess/ConsultantJobProcessCommandBus';
 import {ConsultantJobProcessCommandEnum, ConsultantJobProcessAggregateIdInterface} from './ConsultantJobProcess/types';
-import {FailItemConsultantJobProcessCommandDataInterface} from './ConsultantJobProcess/types/CommandDataTypes';
+import {
+  FailItemConsultantJobProcessCommandDataInterface,
+  SucceedItemConsultantJobProcessCommandDataInterface
+} from './ConsultantJobProcess/types/CommandDataTypes';
 import {
   StartConsultantJobProcessCommandInterface,
   SucceedItemConsultantJobProcessCommandInterface,
@@ -51,11 +60,16 @@ export class CommandBus {
    * directly in you code.
    */
 
-  async startConsultantJobProcess(aggregateId: ConsultantJobProcessAggregateIdInterface): Promise<void> {
+  async startConsultantJobProcess(
+    aggregateId: ConsultantJobProcessAggregateIdInterface,
+    estimatedCount: number
+  ): Promise<void> {
     const command: StartConsultantJobProcessCommandInterface = {
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.START,
-      data: {}
+      data: {
+        estimated_count: estimatedCount
+      }
     };
 
     await this.execute(command);
@@ -63,14 +77,12 @@ export class CommandBus {
 
   async succeedItemConsultantJobProcess(
     aggregateId: ConsultantJobProcessAggregateIdInterface,
-    clientId: string
+    data: SucceedItemConsultantJobProcessCommandDataInterface
   ): Promise<void> {
     const command: SucceedItemConsultantJobProcessCommandInterface = {
       aggregateId: aggregateId,
       type: ConsultantJobProcessCommandEnum.SUCCEED_ITEM,
-      data: {
-        client_id: clientId
-      }
+      data
     };
 
     await this.execute(command);
@@ -122,6 +134,31 @@ export class CommandBus {
       aggregateId,
       type: ConsultantJobCommandEnum.COMPLETE_ASSIGN_CONSULTANT,
       data: {_id: id}
+    };
+
+    await this.execute(command);
+  }
+
+  async removeAgencyClientConsultant(
+    aggregateId: AgencyClientAggregateIdInterface,
+    assignmentId: string
+  ): Promise<void> {
+    const command: RemoveAgencyClientConsultantCommandInterface = {
+      aggregateId,
+      type: AgencyClientCommandEnum.REMOVE_AGENCY_CLIENT_CONSULTANT,
+      data: {
+        _id: assignmentId
+      }
+    };
+
+    await this.execute(command);
+  }
+
+  async completeUnassignConsultant(aggregateId: ConsultantJobAggregateIdInterface, processId: string): Promise<void> {
+    const command: CompleteUnassignConsultantCommandInterface = {
+      aggregateId,
+      type: ConsultantJobCommandEnum.COMPLETE_UNASSIGN_CONSULTANT,
+      data: {_id: processId}
     };
 
     await this.execute(command);
