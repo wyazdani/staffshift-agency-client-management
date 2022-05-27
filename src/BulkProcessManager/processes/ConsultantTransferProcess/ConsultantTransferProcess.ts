@@ -25,7 +25,12 @@ interface ConsultantTransferProcessOptsInterface {
 }
 
 /**
- * @TODO
+ * It handles bulk client transfer from one consultant to another
+ * We query on Projection records to find the assignment records
+ * It has a for loop to iterate through all assignments. In each loop it
+ * generates start/item_succeeded/item_failed/completed events on ConsultantJobProcess aggregate
+ * during each transfer business/internal errors might happen. we might do retry(based on error type),
+ * otherwise mark it as failure and move on
  */
 export class ConsultantTransferProcess implements ProcessInterface {
   private initiateEvent: EventStorePubSubModelInterface<

@@ -38,6 +38,20 @@ describe('EventHandlerFactory', () => {
       handler.should.instanceof(ConsultantJobCompletedEventHandler);
     });
 
+    it('Test CONSULTANT_JOB_TRANSFER_INITIATED', () => {
+      const logger = TestUtilsLogger.getLogger(sinon.spy());
+      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED, logger);
+
+      handler.should.instanceof(ConsultantJobInitiatedEventHandler);
+    });
+
+    it('Test CONSULTANT_JOB_TRANSFER_COMPLETED', () => {
+      const logger = TestUtilsLogger.getLogger(sinon.spy());
+      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED, logger);
+
+      handler.should.instanceof(ConsultantJobCompletedEventHandler);
+    });
+
     it('Test error for unknown event', () => {
       const logger = TestUtilsLogger.getLogger(sinon.spy());
 

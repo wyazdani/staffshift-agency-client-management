@@ -50,7 +50,7 @@ export class ClientConsultantAssignments {
   }
 
   public async getEstimatedCount(): Promise<number> {
-    return await AgencyClientConsultantsProjectionV3.count(this.getProjectionQuery()).exec();
+    return await AgencyClientConsultantsProjectionV3.countDocuments(this.getProjectionQuery()).exec();
   }
 
   private getProjectionQuery(): ProjectionQueryInterface {

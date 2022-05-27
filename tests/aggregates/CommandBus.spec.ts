@@ -126,4 +126,27 @@ describe('CommandBus', () => {
       data: {_id: 'A'}
     });
   });
+
+  it('completeTransferConsultant()', async () => {
+    const aggregateId: any = {id: 'ok'};
+
+    await commandBus.completeTransferConsultant(aggregateId, 'A');
+    execute.should.have.been.calledOnceWith({
+      aggregateId,
+      type: ConsultantJobCommandEnum.COMPLETE_TRANSFER_CONSULTANT,
+      data: {_id: 'A'}
+    });
+  });
+
+  it('transferAgencyClientConsultant()', async () => {
+    const aggregateId: any = {id: 'ok'};
+    const commandData: any = {ok: 'oops'};
+
+    await commandBus.transferAgencyClientConsultant(aggregateId, commandData);
+    execute.should.have.been.calledOnceWith({
+      aggregateId,
+      type: AgencyClientCommandEnum.TRANSFER_AGENCY_CLIENT_CONSULTANT,
+      data: commandData
+    });
+  });
 });

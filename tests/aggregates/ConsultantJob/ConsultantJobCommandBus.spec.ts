@@ -7,7 +7,8 @@ import {
   CompleteAssignConsultantCommandHandler,
   UnassignConsultantCommandHandler,
   CompleteUnassignConsultantCommandHandler,
-  TransferConsultantCommandHandler
+  TransferConsultantCommandHandler,
+  CompleteTransferConsultantCommandHandler
 } from '../../../src/aggregates/ConsultantJob/command-handlers';
 
 const expectedHandlers = [
@@ -15,7 +16,8 @@ const expectedHandlers = [
   CompleteAssignConsultantCommandHandler,
   UnassignConsultantCommandHandler,
   CompleteUnassignConsultantCommandHandler,
-  TransferConsultantCommandHandler
+  TransferConsultantCommandHandler,
+  CompleteTransferConsultantCommandHandler
 ];
 
 describe('ConsultantJobCommandBus class', () => {
