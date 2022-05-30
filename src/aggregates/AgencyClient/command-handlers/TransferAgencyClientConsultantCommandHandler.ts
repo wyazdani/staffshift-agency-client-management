@@ -18,6 +18,8 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
 
   /**
    * Build and save events caused by transferAgencyClientConsultant command
+   *
+   * If The command is transfer from A to B and consultant B is already assigned, we only unassign A
    */
   async execute(command: TransferAgencyClientConsultantCommandInterface): Promise<void> {
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
@@ -25,9 +27,7 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
     await aggregate.validateTransferClientConsultant(command.data);
     let eventId = aggregate.getLastSequenceId();
 
-    //@TODO: if consultant is already assigned, we still need to unassign the previous one
-    //@TODO: we can catch the exception or result and then only save unassign event
-    await this.agencyClientRepository.save([
+    const events = [
       {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
         aggregate_id: aggregate.getId(),
@@ -35,8 +35,11 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
           _id: command.data.from_id
         } as AgencyClientConsultantUnassignedEventStoreDataInterface,
         sequence_id: ++eventId
-      },
-      {
+      }
+    ];
+
+    if (!aggregate.isConsultantAlreadyAssigned(command.data.to_consultant_id, command.data.to_consultant_role_id)) {
+      events.push({
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: aggregate.getId(),
         data: {
@@ -45,7 +48,9 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
           consultant_role_id: command.data.to_consultant_role_id
         } as AgencyClientConsultantAssignedEventStoreDataInterface,
         sequence_id: ++eventId
-      }
-    ]);
+      });
+    }
+
+    await this.agencyClientRepository.save(events);
   }
 }

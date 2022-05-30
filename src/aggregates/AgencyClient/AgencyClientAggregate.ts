@@ -63,11 +63,16 @@ export class AgencyClientAggregate extends AbstractAggregate<
       false,
       false
     );
-    this.validateConsultantForConsultantAssignment(
-      'to_consultant_id',
-      command.to_consultant_id,
-      command.to_consultant_role_id
-    );
+  }
+
+  /**
+   * Checks if consultant with this id and role is already assigned to this client?
+   */
+  isConsultantAlreadyAssigned(consultantId: string, consultantRoleId: string): boolean {
+    return !!find(this.aggregate.consultants, {
+      consultant_role_id: consultantRoleId,
+      consultant_id: consultantId
+    });
   }
 
   /**

@@ -47,13 +47,14 @@ describe('TransferAgencyClientConsultantCommandHandler', () => {
       }
     ];
 
-    it('test that correct event is saved', async () => {
+    it('test success scenario where consultant is not already assigned', async () => {
       const agencyClientAggregateStub = stubConstructor(AgencyClientAggregate);
       const agencyClientRepositoryStub = stubConstructor(AgencyClientRepository);
       const handler = new TransferAgencyClientConsultantCommandHandler(agencyClientRepositoryStub);
 
       agencyClientRepositoryStub.getAggregate.resolves(agencyClientAggregateStub);
       agencyClientAggregateStub.validateTransferClientConsultant.resolves();
+      agencyClientAggregateStub.isConsultantAlreadyAssigned.returns(false);
       agencyClientAggregateStub.getLastSequenceId.returns(1);
       agencyClientAggregateStub.getId.returns(aggregateId);
       assert.equal(
@@ -64,6 +65,44 @@ describe('TransferAgencyClientConsultantCommandHandler', () => {
       await handler.execute(command);
 
       agencyClientRepositoryStub.save.should.have.been.calledOnceWith(expectedEvents);
+      agencyClientAggregateStub.isConsultantAlreadyAssigned.should.have.been.calledOnceWith(
+        commandData.to_consultant_id,
+        commandData.to_consultant_role_id
+      );
+    });
+
+    it('test success scenario where consultant is already assigned', async () => {
+      const expectedEvents = [
+        {
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
+          aggregate_id: aggregateId,
+          data: {
+            _id: commandData.from_id
+          },
+          sequence_id: 2
+        }
+      ];
+      const agencyClientAggregateStub = stubConstructor(AgencyClientAggregate);
+      const agencyClientRepositoryStub = stubConstructor(AgencyClientRepository);
+      const handler = new TransferAgencyClientConsultantCommandHandler(agencyClientRepositoryStub);
+
+      agencyClientRepositoryStub.getAggregate.resolves(agencyClientAggregateStub);
+      agencyClientAggregateStub.validateTransferClientConsultant.resolves();
+      agencyClientAggregateStub.isConsultantAlreadyAssigned.returns(true);
+      agencyClientAggregateStub.getLastSequenceId.returns(1);
+      agencyClientAggregateStub.getId.returns(aggregateId);
+      assert.equal(
+        handler.commandType,
+        AgencyClientCommandEnum.TRANSFER_AGENCY_CLIENT_CONSULTANT,
+        'Expected command type to match'
+      );
+      await handler.execute(command);
+
+      agencyClientRepositoryStub.save.should.have.been.calledOnceWith(expectedEvents);
+      agencyClientAggregateStub.isConsultantAlreadyAssigned.should.have.been.calledOnceWith(
+        commandData.to_consultant_id,
+        commandData.to_consultant_role_id
+      );
     });
 
     it('should throw an error when the save operation fails', async () => {
@@ -73,6 +112,7 @@ describe('TransferAgencyClientConsultantCommandHandler', () => {
 
       agencyClientRepositoryStub.getAggregate.resolves(agencyClientAggregateStub);
       agencyClientAggregateStub.validateTransferClientConsultant.resolves();
+      agencyClientAggregateStub.isConsultantAlreadyAssigned.returns(false);
       agencyClientAggregateStub.getLastSequenceId.returns(1);
       agencyClientAggregateStub.getId.returns(aggregateId);
       agencyClientRepositoryStub.save.rejects(new Error('blah error'));
@@ -84,6 +124,10 @@ describe('TransferAgencyClientConsultantCommandHandler', () => {
       await handler.execute(command).should.be.rejectedWith(Error, 'blah error');
 
       agencyClientRepositoryStub.save.should.have.been.calledOnceWith(expectedEvents);
+      agencyClientAggregateStub.isConsultantAlreadyAssigned.should.have.been.calledOnceWith(
+        commandData.to_consultant_id,
+        commandData.to_consultant_role_id
+      );
     });
 
     it('should throw an error when the call to retrieve the aggregate fails', async () => {
