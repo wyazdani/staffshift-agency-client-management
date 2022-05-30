@@ -1,4 +1,5 @@
 import {BaseEventStoreDataInterface} from 'EventTypes';
+import {EitherType} from 'Generics';
 import {reduce, map} from 'lodash';
 import {FilterQuery} from 'mongoose';
 import {SequenceIdMismatch} from './errors/SequenceIdMismatch';
@@ -39,7 +40,14 @@ export interface EventInterface {
   data: BaseEventStoreDataInterface;
   sequence_id: number;
 }
+export type EventSequenceType = {
+  sequence_id: number;
+};
+export type EventCreatedAtType = {
+  created_at: Date;
+};
 
+export type EventPointInTimeType = EitherType<EventSequenceType, EventCreatedAtType>;
 /**
  * EventRepository
  *   Should the EventStore be passed in here?
@@ -57,12 +65,16 @@ export class EventRepository {
   async leftFoldEvents<AggregateType extends BaseAggregateRecordInterface>(
     writeProjectionHandler: WriteProjectionInterface<AggregateType>,
     aggregateId: AggregateIdType,
-    sequenceId: number = undefined
+    pointInTime?: EventPointInTimeType
   ): Promise<BaseProjectionInterface> {
     const query: FilterQuery<EventStoreModelInterface> = {aggregate_id: aggregateId};
 
-    if (sequenceId) {
-      query['sequence_id'] = {$lte: sequenceId};
+    if (pointInTime && pointInTime.sequence_id) {
+      query['sequence_id'] = {$lte: pointInTime.sequence_id};
+    }
+
+    if (pointInTime && pointInTime.created_at) {
+      query['created_at'] = {$lte: pointInTime.created_at};
     }
     const events: EventStoreModelInterface[] = await this.store.find(query).sort({sequence_id: 1}).lean();
 
@@ -75,8 +87,10 @@ export class EventRepository {
 
   /**
    * Persist events into event store collection
+   * We use transaction feature in MongoDB to be sure it's going to be all or nothing
+   * If we're only going to save one event, we don't use transaction since it consumes more resources from mongo
    */
-  async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
+  async save(events: EventInterface[]): Promise<void> {
     const enrichedEvents: (EventInterface & BaseEventInterface)[] = map(events, (aggEvent) => ({
       ...aggEvent,
       correlation_id: this.correlation_id,
@@ -85,7 +99,22 @@ export class EventRepository {
     }));
 
     try {
-      return await this.store.insertMany(enrichedEvents);
+      if (enrichedEvents.length === 0) {
+        return;
+      } else if (enrichedEvents.length === 1) {
+        await this.store.create(enrichedEvents[0]);
+      } else {
+        const session = await this.store.startSession();
+
+        try {
+          await session.withTransaction(async () => {
+            await this.store.insertMany(enrichedEvents, {session});
+          });
+        } finally {
+          await session.endSession();
+          // It will be executed even if operation throws error
+        }
+      }
     } catch (error) {
       if (error.code === MONGO_ERROR_CODES.DUPLICATE_KEY) {
         /**

@@ -17,10 +17,10 @@ describe('AbstractRepository', () => {
         }
       }
       const repository = new Repository(eventRepository);
-      const result = await repository.save(events);
+
+      await repository.save(events);
 
       eventRepository.save.should.have.been.calledWith(events);
-      result.should.equal(response);
     });
   });
 });

@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import {ConsultantJobProcessRepository} from '../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessRepository';
-import {EventRepository} from '../../../src/EventRepository';
+import {EventRepository, EventPointInTimeType} from '../../../src/EventRepository';
 import {EventStore} from '../../../src/models/EventStore';
 import {ConsultantJobProcessWriteProjectionHandler} from '../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessWriteProjectionHandler';
 import {ConsultantJobProcessAggregateIdInterface} from '../../../src/aggregates/ConsultantJobProcess/types';
@@ -19,12 +19,13 @@ describe('ConsultantJobProcessRepository class', () => {
 
   describe('getAggregate()', () => {
     it('Test calling AgencyAggregate', async () => {
+      const pointInTime: EventPointInTimeType = {sequence_id: 100};
       const eventRepository = new EventRepository(EventStore, 'some-id');
       const writeProjectionHandler = new ConsultantJobProcessWriteProjectionHandler();
       const consultantRepository = new ConsultantJobProcessRepository(eventRepository, writeProjectionHandler);
       const projection: any = {oops: 'ok'};
       const leftFoldEvents = sinon.stub(eventRepository, 'leftFoldEvents').resolves(projection);
-      const aggregate = await consultantRepository.getAggregate(aggregateId);
+      const aggregate = await consultantRepository.getAggregate(aggregateId, pointInTime);
 
       leftFoldEvents.should.have.been.calledWith(
         writeProjectionHandler,
@@ -33,7 +34,7 @@ describe('ConsultantJobProcessRepository class', () => {
           agency_id: agencyId,
           job_id: jobId
         },
-        undefined
+        pointInTime
       );
       aggregate.getId().agency_id.should.equal(agencyId);
     });
@@ -46,7 +47,7 @@ describe('ConsultantJobProcessRepository class', () => {
         eventRepository,
         new ConsultantJobProcessWriteProjectionHandler()
       );
-      const save = sinon.stub(eventRepository, 'save').resolves([]);
+      const save = sinon.stub(eventRepository, 'save').resolves();
       const events: any = [
         {
           type: 'sample'

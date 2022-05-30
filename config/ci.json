@@ -13,7 +13,7 @@
   },
   "event_store": {
     "mongo": {
-      "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementCI",
+      "database_host": "mongodb://database:27017/staffshiftagencyclientmanagementCI",
       "options": {
         "serverSelectionTimeoutMS": 60000
       }

@@ -1,6 +1,6 @@
 import {AbstractRepository} from '../AbstractRepository';
 import {AgencyAggregate} from './AgencyAggregate';
-import {EventRepository} from '../../EventRepository';
+import {EventRepository, EventPointInTimeType} from '../../EventRepository';
 import {AgencyAggregateIdInterface, AgencyAggregateRecordInterface} from './types';
 import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
 
@@ -20,12 +20,12 @@ export class AgencyRepository extends AbstractRepository {
    */
   async getAggregate(
     aggregateId: AgencyAggregateIdInterface,
-    sequenceId: number = undefined
+    pointInTime?: EventPointInTimeType
   ): Promise<AgencyAggregate> {
     const projection: AgencyAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
       this.writeProjectionHandler,
       {agency_id: aggregateId.agency_id},
-      sequenceId
+      pointInTime
     );
 
     return new AgencyAggregate({agency_id: aggregateId.agency_id}, projection);

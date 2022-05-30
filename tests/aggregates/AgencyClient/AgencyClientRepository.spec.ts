@@ -1,29 +1,30 @@
 import sinon from 'sinon';
 import {stubInterface} from 'ts-sinon';
 import {AgencyRepository} from '../../../src/aggregates/Agency/AgencyRepository';
-import {ConsultantJobRepository} from '../../../src/aggregates/ConsultantJob/ConsultantJobRepository';
+import {AgencyClientRepository} from '../../../src/aggregates/AgencyClient/AgencyClientRepository';
 import {EventRepository, EventPointInTimeType} from '../../../src/EventRepository';
 import {EventStore} from '../../../src/models/EventStore';
-import {ConsultantJobWriteProjectionHandler} from '../../../src/aggregates/ConsultantJob/ConsultantJobWriteProjectionHandler';
-import {ConsultantJobAggregateIdInterface} from '../../../src/aggregates/ConsultantJob/types';
+import {AgencyClientWriteProjectionHandler} from '../../../src/aggregates/AgencyClient/AgencyClientWriteProjectionHandler';
+import {AgencyClientAggregateIdInterface} from '../../../src/aggregates/AgencyClient/types';
 
-describe('ConsultantJobRepository class', () => {
+describe('AgencyClientRepository class', () => {
   afterEach(() => {
     sinon.restore();
   });
   const agencyId = 'agency id';
-  const aggregateId: ConsultantJobAggregateIdInterface = {
-    name: 'consultant_job',
-    agency_id: agencyId
+  const clientId = 'client id';
+  const aggregateId: AgencyClientAggregateIdInterface = {
+    agency_id: agencyId,
+    client_id: clientId
   };
 
   describe('getAggregate()', () => {
     it('Test calling AgencyAggregate', async () => {
       const pointInTime: EventPointInTimeType = {sequence_id: 100};
       const eventRepository = new EventRepository(EventStore, 'some-id');
-      const writeProjectionHandler = new ConsultantJobWriteProjectionHandler();
+      const writeProjectionHandler = new AgencyClientWriteProjectionHandler();
       const agencyRepository = stubInterface<AgencyRepository>();
-      const consultantRepository = new ConsultantJobRepository(
+      const agencyClientRepository = new AgencyClientRepository(
         eventRepository,
         writeProjectionHandler,
         agencyRepository
@@ -35,13 +36,13 @@ describe('ConsultantJobRepository class', () => {
 
       const leftFoldEvents = sinon.stub(eventRepository, 'leftFoldEvents').resolves(projection);
 
-      const aggregate = await consultantRepository.getAggregate(aggregateId, pointInTime);
+      const aggregate = await agencyClientRepository.getAggregate(aggregateId, pointInTime);
 
       leftFoldEvents.should.have.been.calledWith(
         writeProjectionHandler,
         {
-          name: 'consultant_job',
-          agency_id: agencyId
+          agency_id: agencyId,
+          client_id: clientId
         },
         pointInTime
       );
@@ -53,9 +54,9 @@ describe('ConsultantJobRepository class', () => {
     it('Test call eventRepository', async () => {
       const eventRepository = new EventRepository(EventStore, 'some-id');
       const agencyRepository = stubInterface<AgencyRepository>();
-      const consultantRepository = new ConsultantJobRepository(
+      const agencyClientRepository = new AgencyClientRepository(
         eventRepository,
-        new ConsultantJobWriteProjectionHandler(),
+        new AgencyClientWriteProjectionHandler(),
         agencyRepository
       );
       const save = sinon.stub(eventRepository, 'save').resolves();
@@ -65,7 +66,7 @@ describe('ConsultantJobRepository class', () => {
         }
       ];
 
-      await consultantRepository.save(events);
+      await agencyClientRepository.save(events);
       save.should.have.been.calledWith(events);
     });
   });
