@@ -24,3 +24,5 @@ services:
     image: database
     ports:
     - "27017:27017"
+    extra_hosts:
+    - "database:127.0.0.1"
