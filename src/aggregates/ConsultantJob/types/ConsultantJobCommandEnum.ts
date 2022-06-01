@@ -3,5 +3,6 @@ export enum ConsultantJobCommandEnum {
   COMPLETE_ASSIGN_CONSULTANT = 'completeAssignConsultant',
   UNASSIGN_CONSULTANT = 'unassignConsultant',
   COMPLETE_UNASSIGN_CONSULTANT = 'completeUnassignConsultant',
-  TRANSFER_CONSULTANT = 'transferConsultant'
+  TRANSFER_CONSULTANT = 'transferConsultant',
+  COMPLETE_TRANSFER_CONSULTANT = 'completeTransferConsultant'
 }

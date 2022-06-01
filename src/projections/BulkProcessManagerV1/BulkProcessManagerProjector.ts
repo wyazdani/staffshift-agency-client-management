@@ -7,7 +7,9 @@ const events = [
   EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
   EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED,
   EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED,
-  EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED
+  EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED,
+  EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED,
+  EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED
 ];
 
 export default class BulkProcessManagerProjector implements EventStoreProjectorInterface {

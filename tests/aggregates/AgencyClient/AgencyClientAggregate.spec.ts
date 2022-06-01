@@ -1,11 +1,12 @@
 import {assert} from 'chai';
 import {AgencyClientAggregate} from '../../../src/aggregates/AgencyClient/AgencyClientAggregate';
-import {stubConstructor} from 'ts-sinon';
+import {stubConstructor, stubInterface} from 'ts-sinon';
 import {AgencyRepository} from '../../../src/aggregates/Agency/AgencyRepository';
 import {AgencyAggregate} from '../../../src/aggregates/Agency/AgencyAggregate';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {AgencyConsultantRoleEnum} from '../../../src/aggregates/Agency/types';
 import {AgencyClientConsultantInterface} from '../../../src/aggregates/AgencyClient/types';
+import {TransferAgencyClientConsultantCommandDataInterface} from '../../../src/aggregates/AgencyClient/types/CommandDataTypes';
 
 describe('AgencyClientAggregate', () => {
   describe('validateAddClientConsultant()', () => {
@@ -283,6 +284,164 @@ describe('AgencyClientAggregate', () => {
       const results = agencyClientAggregate.getConsultants();
 
       assert.deepEqual(results, [consultant], 'Incorrect list of consultants returned');
+    });
+  });
+
+  describe('validateTransferClientConsultant', () => {
+    const agencyId = '333';
+    const aggregateId = {
+      agency_id: agencyId,
+      client_id: '12'
+    };
+
+    const consultant = {
+      _id: 'from id',
+      consultant_role_id: 'consultant role id',
+      consultant_id: '3030',
+      client_type: 'site',
+      site_id: '12345'
+    };
+    const commandData: TransferAgencyClientConsultantCommandDataInterface = {
+      from_id: 'from id',
+      to_id: 'to id',
+      to_consultant_id: 'consultant id',
+      to_consultant_role_id: 'consultant role id'
+    };
+
+    it('should return resource not found when agency client not found', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        client_type: 'site'
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      await agencyClientAggregate
+        .validateTransferClientConsultant(commandData)
+        .should.be.rejectedWith(ResourceNotFoundError, 'Agency client not found');
+    });
+
+    it('should return resource not found when client consultant not found', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site'
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      await agencyClientAggregate
+        .validateTransferClientConsultant(commandData)
+        .should.be.rejectedWith(ResourceNotFoundError, 'Consultant that was supposed to be removed does not exist');
+    });
+    it('should return ValidationError when consultant role not found', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site',
+        consultants: [consultant]
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+      const agencyAggregate = stubInterface<AgencyAggregate>();
+
+      agencyRepositoryStub.getAggregate.resolves(agencyAggregate);
+      agencyAggregate.getConsultantRole.returns(null);
+
+      try {
+        await agencyClientAggregate.validateTransferClientConsultant(commandData);
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.should.deep.equal(
+          new ValidationError('Consultant role not found', [
+            {
+              code: 'CONSULTANT_ROLE_NOT_FOUND',
+              message: `Consultant role ${commandData.to_consultant_role_id} does not not exist`,
+              path: ['to_consultant_role_id']
+            }
+          ])
+        );
+      }
+      agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith({agency_id: agencyId});
+      agencyAggregate.getConsultantRole.should.have.been.calledWith(commandData.to_consultant_role_id);
+    });
+
+    it('should success scenario', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site',
+        consultants: [
+          {
+            _id: 'from id',
+            consultant_role_id: 'some id',
+            consultant_id: 'another id',
+            client_type: 'site',
+            site_id: '12345'
+          }
+        ]
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+      const agencyAggregate = stubInterface<AgencyAggregate>();
+
+      agencyRepositoryStub.getAggregate.resolves(agencyAggregate);
+      agencyAggregate.getConsultantRole.returns({} as any);
+
+      await agencyClientAggregate.validateTransferClientConsultant(commandData);
+      agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith({agency_id: agencyId});
+      agencyAggregate.getConsultantRole.should.have.been.calledWith(commandData.to_consultant_role_id);
+    });
+  });
+
+  describe('isConsultantAlreadyAssigned()', () => {
+    const consultantRoleId = 'consultant role id';
+    const consultantId = 'consultant id';
+    const agencyId = '333';
+    const aggregateId = {
+      agency_id: agencyId,
+      client_id: '12'
+    };
+
+    it('should return true when client is already assign to consultant with that role', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site',
+        consultants: [
+          {
+            _id: 'from id',
+            consultant_role_id: consultantRoleId,
+            consultant_id: consultantId,
+            client_type: 'site',
+            site_id: '12345'
+          }
+        ]
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      agencyClientAggregate.isConsultantAlreadyAssigned(consultantId, consultantRoleId).should.be.true;
+    });
+    it('should return false when client is not already assign to consultant with that role', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site',
+        consultants: [
+          {
+            _id: 'from id',
+            consultant_role_id: consultantRoleId,
+            consultant_id: consultantId,
+            client_type: 'site',
+            site_id: '12345'
+          }
+        ]
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      agencyClientAggregate.isConsultantAlreadyAssigned(consultantId, 'some other role').should.be.false;
     });
   });
 

@@ -1,4 +1,4 @@
-import {ConsultantJobUnassignInitiatedEventStoreDataInterface} from 'EventTypes';
+import {ConsultantJobTransferInitiatedEventStoreDataInterface} from 'EventTypes';
 import {LeanDocument} from 'mongoose';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';
@@ -19,7 +19,7 @@ export type AssignmentItemType = Pick<AgencyClientConsultantV3DocumentType, '_id
 export class ClientConsultantAssignments {
   static createInstance(
     event: EventStorePubSubModelInterface<
-      ConsultantJobUnassignInitiatedEventStoreDataInterface,
+      ConsultantJobTransferInitiatedEventStoreDataInterface,
       ConsultantJobAggregateIdInterface
     >
   ): ClientConsultantAssignments {
@@ -27,7 +27,7 @@ export class ClientConsultantAssignments {
   }
   constructor(
     private initiateEvent: EventStorePubSubModelInterface<
-      ConsultantJobUnassignInitiatedEventStoreDataInterface,
+      ConsultantJobTransferInitiatedEventStoreDataInterface,
       ConsultantJobAggregateIdInterface
     >
   ) {}
@@ -55,7 +55,7 @@ export class ClientConsultantAssignments {
 
   private getProjectionQuery(): ProjectionQueryInterface {
     return {
-      consultant_id: this.initiateEvent.data.consultant_id,
+      consultant_id: this.initiateEvent.data.from_consultant_id,
       agency_id: this.initiateEvent.aggregate_id.agency_id,
       ...(this.initiateEvent.data.client_ids && {
         client_id: {

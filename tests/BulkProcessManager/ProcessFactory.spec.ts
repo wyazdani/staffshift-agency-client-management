@@ -1,5 +1,6 @@
 import sinon from 'sinon';
 import {ConsultantAssignProcess} from '../../src/BulkProcessManager/processes/ConsultantAssignProcess/ConsultantAssignProcess';
+import {ConsultantTransferProcess} from '../../src/BulkProcessManager/processes/ConsultantTransferProcess/ConsultantTransferProcess';
 import {ConsultantUnassignProcess} from '../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ConsultantUnassignProcess';
 import {ProcessFactory} from '../../src/BulkProcessManager/ProcessFactory';
 import {EventsEnum} from '../../src/Events';
@@ -25,6 +26,14 @@ describe('ProcessFactory', () => {
       );
 
       process.should.be.instanceof(ConsultantUnassignProcess);
+    });
+    it('Test CONSULTANT_JOB_TRANSFER_INITIATED', () => {
+      const process = ProcessFactory.getProcess(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED
+      );
+
+      process.should.be.instanceof(ConsultantTransferProcess);
     });
     it('Test not found', () => {
       (() => {

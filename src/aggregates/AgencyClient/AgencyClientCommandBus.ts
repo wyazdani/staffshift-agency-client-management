@@ -3,12 +3,13 @@ import {
   RemoveAgencyClientConsultantCommandHandler,
   LinkAgencyClientCommandHandler,
   UnlinkAgencyClientCommandHandler,
-  SyncAgencyClientCommandHandler
+  SyncAgencyClientCommandHandler,
+  TransferAgencyClientConsultantCommandHandler
 } from './command-handlers';
 import {AgencyClientWriteProjectionHandler} from './AgencyClientWriteProjectionHandler';
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../Agency/AgencyWriteProjectionHandler';
-import {EventRepository} from '../../../src/EventRepository';
+import {EventRepository} from '../../EventRepository';
 import {AgencyClientRepository} from './AgencyClientRepository';
 import {AgencyClientCommandHandlerInterface} from './types/AgencyClientCommandHandlerInterface';
 
@@ -17,7 +18,8 @@ const handlers = [
   RemoveAgencyClientConsultantCommandHandler,
   LinkAgencyClientCommandHandler,
   UnlinkAgencyClientCommandHandler,
-  SyncAgencyClientCommandHandler
+  SyncAgencyClientCommandHandler,
+  TransferAgencyClientConsultantCommandHandler
 ];
 
 /**

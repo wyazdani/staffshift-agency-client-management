@@ -3,5 +3,6 @@ export enum AgencyClientCommandEnum {
   UNLINK_AGENCY_CLIENT = 'unlinkAgencyClient',
   SYNC_AGENCY_CLIENT = 'syncAgencyClient',
   ADD_AGENCY_CLIENT_CONSULTANT = 'addAgencyClientConsultant',
-  REMOVE_AGENCY_CLIENT_CONSULTANT = 'removeAgencyClientConsultant'
+  REMOVE_AGENCY_CLIENT_CONSULTANT = 'removeAgencyClientConsultant',
+  TRANSFER_AGENCY_CLIENT_CONSULTANT = 'transferAgencyClientConsultant'
 }

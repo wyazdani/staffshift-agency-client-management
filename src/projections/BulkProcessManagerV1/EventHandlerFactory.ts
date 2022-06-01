@@ -10,9 +10,11 @@ export class EventHandlerFactory {
     switch (eventType) {
       case EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED:
       case EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED:
+      case EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED:
         return new ConsultantJobInitiatedEventHandler(logger);
       case EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED:
       case EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED:
+      case EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED:
         return new ConsultantJobCompletedEventHandler(logger);
       default:
         logger.error('No configured handler found for this event', {eventType});

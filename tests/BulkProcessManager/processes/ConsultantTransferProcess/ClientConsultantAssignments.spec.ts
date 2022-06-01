@@ -1,5 +1,5 @@
 import sinon from 'ts-sinon';
-import {ClientConsultantAssignments} from '../../../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ClientConsultantAssignments';
+import {ClientConsultantAssignments} from '../../../../src/BulkProcessManager/processes/ConsultantTransferProcess/ClientConsultantAssignments';
 import {AgencyClientConsultantsProjectionV3} from '../../../../src/models/AgencyClientConsultantsProjectionV3';
 
 describe('ClientConsultantAssignments class', () => {
@@ -21,7 +21,7 @@ describe('ClientConsultantAssignments class', () => {
           agency_id: 'agency id'
         },
         data: {
-          consultant_id: 'consultant id',
+          from_consultant_id: 'consultant id',
           client_ids: ['A', 'B'],
           consultant_role_id: 'C'
         }
@@ -65,7 +65,7 @@ describe('ClientConsultantAssignments class', () => {
           agency_id: 'agency id'
         },
         data: {
-          consultant_id: 'consultant id'
+          from_consultant_id: 'consultant id'
         }
       };
       const clientAssignment = ClientConsultantAssignments.createInstance(event);
@@ -102,7 +102,7 @@ describe('ClientConsultantAssignments class', () => {
           agency_id: 'agency id'
         },
         data: {
-          consultant_id: 'consultant id',
+          from_consultant_id: 'consultant id',
           client_ids: ['A', 'B'],
           consultant_role_id: 'C'
         }

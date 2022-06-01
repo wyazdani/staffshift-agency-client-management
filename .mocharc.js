@@ -1,4 +1,5 @@
-{
+'use strict';
+module.exports = {
   "extension": ["ts"],
   "spec": "tests/**/*.spec.ts",
   "reporter": "spec",

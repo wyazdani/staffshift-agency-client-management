@@ -7,7 +7,8 @@ import {
   RemoveAgencyClientConsultantCommandHandler,
   LinkAgencyClientCommandHandler,
   UnlinkAgencyClientCommandHandler,
-  SyncAgencyClientCommandHandler
+  SyncAgencyClientCommandHandler,
+  TransferAgencyClientConsultantCommandHandler
 } from '../../../src/aggregates/AgencyClient/command-handlers';
 
 const expectedHandlers = [
@@ -15,7 +16,8 @@ const expectedHandlers = [
   RemoveAgencyClientConsultantCommandHandler,
   LinkAgencyClientCommandHandler,
   UnlinkAgencyClientCommandHandler,
-  SyncAgencyClientCommandHandler
+  SyncAgencyClientCommandHandler,
+  TransferAgencyClientConsultantCommandHandler
 ];
 
 describe('AgencyClientCommandBus class', () => {

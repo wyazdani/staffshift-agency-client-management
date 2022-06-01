@@ -3,3 +3,4 @@ export * from './UnassignConsultantCommandDataInterface';
 export * from './CompleteAssignConsultantCommandDataInterface';
 export * from './CompleteUnassignConsultantCommandDataInterface';
 export * from './TransferConsultantCommandDataInterface';
+export * from './CompleteTransferConsultantCommandDataInterface';
