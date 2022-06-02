@@ -1,5 +1,4 @@
 import {EventRepository, EventInterface} from '../EventRepository';
-import {EventStoreModelInterface} from '../models/EventStore';
 
 export abstract class AbstractRepository {
   protected constructor(protected eventRepository: EventRepository) {}
@@ -7,7 +6,7 @@ export abstract class AbstractRepository {
   /**
    * Persist agency related events into event store
    */
-  async save(events: EventInterface[]): Promise<EventStoreModelInterface[]> {
+  async save(events: EventInterface[]): Promise<void> {
     return this.eventRepository.save(events);
   }
 }

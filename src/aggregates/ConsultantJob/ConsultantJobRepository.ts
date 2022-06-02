@@ -1,6 +1,6 @@
 import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ConsultantJobAggregate} from './ConsultantJobAggregate';
-import {EventRepository} from '../../EventRepository';
+import {EventRepository, EventPointInTimeType} from '../../EventRepository';
 import {ConsultantJobAggregateIdInterface, ConsultantJobAggregateRecordInterface} from './types';
 import {ConsultantJobWriteProjectionHandler} from './ConsultantJobWriteProjectionHandler';
 import {AbstractRepository} from '../AbstractRepository';
@@ -19,12 +19,12 @@ export class ConsultantJobRepository extends AbstractRepository {
 
   async getAggregate(
     aggregateId: ConsultantJobAggregateIdInterface,
-    sequenceId: number = undefined
+    pointInTime?: EventPointInTimeType
   ): Promise<ConsultantJobAggregate> {
     const projection: ConsultantJobAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
       this.projectionHandler,
       {name: aggregateId.name, agency_id: aggregateId.agency_id},
-      sequenceId
+      pointInTime
     );
 
     return new ConsultantJobAggregate(
