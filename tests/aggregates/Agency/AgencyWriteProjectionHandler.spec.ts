@@ -26,12 +26,14 @@ describe('AgencyWriteProjectionHandler', () => {
           name: 'name1'
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED, aggregate, event);

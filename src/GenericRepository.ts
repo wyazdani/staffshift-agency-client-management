@@ -1,10 +1,10 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {FilterQuery, LeanDocument, Model} from 'mongoose';
+import {FilterQuery, LeanDocument, Model, SortOrder, HydratedDocument} from 'mongoose';
 import {RuntimeError} from 'a24-node-error-utils';
 import {forIn, forEach} from 'lodash';
 
 type SortByType = {
-  [key: string]: string;
+  [key: string]: SortOrder;
 };
 
 /**
@@ -31,13 +31,13 @@ export class GenericRepository<SchemaType> {
     limit: number,
     skip: number,
     sortBy: SortByType
-  ): Promise<{count: number; data: LeanDocument<SchemaType>[]}> {
+  ): Promise<{count: number; data: LeanDocument<HydratedDocument<SchemaType>>[]}> {
     try {
       const [count, data] = await Promise.all([this.getCount(query), this.getListing(query, skip, limit, sortBy)]);
 
       return {
         count,
-        data: data as LeanDocument<SchemaType>[]
+        data: data as LeanDocument<HydratedDocument<SchemaType>>[]
       };
     } catch (error) {
       this.logger.error('The GET list call for tags failed', error);
@@ -106,7 +106,7 @@ export class GenericRepository<SchemaType> {
     const excludes: string[] = [];
 
     forIn(this.store.schema.obj, (config, field) => {
-      if (config.http_hidden) {
+      if (config.valueOf()) {
         excludes.push(field);
       }
     });

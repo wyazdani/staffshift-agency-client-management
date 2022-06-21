@@ -54,7 +54,7 @@
     "js-yaml": "3.13.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^5.13.5",
+    "mongoose": "^6.4.0",
     "mongration": "^1.0.1",
     "ss-eventstore": "git+ssh://git@github.com/A24Group/ss-eventstore.git#semver:1.11.0",
     "staffshift-node-enums": "git+ssh://git@github.com/A24Group/staffshift-node-enums.git#v1.2.0",
@@ -109,9 +109,9 @@
     "swagger-parser": "10.0.3",
     "swagger-test-templates": "1.6.0",
     "ts-json-schema-generator": "^1.0.0",
-    "ts-node": "10.2.1",
+    "ts-node": "10.8.1",
     "ts-sinon": "^2.0.2",
-    "typescript": "4.4.2",
+    "typescript": "4.7.4",
     "z-schema": "4.2.4"
   }
 }

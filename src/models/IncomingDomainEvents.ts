@@ -12,6 +12,9 @@ export type IncomingDomainEventDocumentType = Document & {
   sequence_id: number;
   created_at: Date;
   updated_at: Date;
+  event:Record<string, unknown>;
+  event_data:Record<string, unknown>;
+  application_jwt:string;
 };
 
 const incomingDomainEventsSchema = new Schema<IncomingDomainEventDocumentType>(

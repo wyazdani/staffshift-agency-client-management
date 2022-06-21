@@ -8,6 +8,7 @@ export type AgencyClientConsultantV3DocumentType = Document & {
   consultant_id: string;
   created_at: Date;
   updated_at: Date;
+  consultant_name:string;
 };
 
 const agencyClientConsultantsSchema = new Schema<AgencyClientConsultantV3DocumentType>(
