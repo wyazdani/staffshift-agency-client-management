@@ -8,8 +8,8 @@ const {TraceExporter} = require('@google-cloud/opentelemetry-cloud-trace-exporte
 const {registerInstrumentations} = require('@opentelemetry/instrumentation');
 const {HttpInstrumentation} = require('@opentelemetry/instrumentation-http');
 const {MongoDBInstrumentation} = require('@opentelemetry/instrumentation-mongodb');
-const {NodeTracerProvider} = require('@opentelemetry/node');
-const {BatchSpanProcessor} = require('@opentelemetry/tracing');
+const {NodeTracerProvider} = require('@opentelemetry/sdk-trace-node');
+const {BatchSpanProcessor} = require('@opentelemetry/sdk-trace-base');
 
 function setSpanName(span, request) {
   if (request.swagger && request.swagger.apiPath) {

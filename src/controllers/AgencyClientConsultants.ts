@@ -122,14 +122,15 @@ export const listAgencyClientConsultants = async (
         }
       );
 
-      return res.end();
+      res.end();
+      return;
     }
 
     logger.info('The GET list call of agency client consultants has been completed successfully with result', {
       statusCode
     });
 
-    return res.end(JSON.stringify(data));
+    res.end(JSON.stringify(data));
   } catch (error) {
     return next(error);
   }
