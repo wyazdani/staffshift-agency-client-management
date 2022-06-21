@@ -6,7 +6,7 @@ import {get} from 'lodash';
 
 export class AgencyClientConsultantsProjectionScenarios {
   static async createRecord(document: {
-    [key in string]: string ;
+    [key in string]: string | boolean | Date;
   }): Promise<AgencyClientConsultantV3DocumentType> {
     return await AgencyClientConsultantsProjectionV3.create({
       agency_id: get(document, 'agency_id', '6141d5be5863dc2202000001'),
