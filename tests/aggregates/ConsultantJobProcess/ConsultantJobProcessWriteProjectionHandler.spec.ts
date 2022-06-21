@@ -18,7 +18,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: {},
         data: eventData,
-        sequence_id: 1,
+        sequence_id: 2,
         meta_data: {
           user_id: 'fake_user'
         },
@@ -42,7 +42,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: {},
         data: eventData,
-        sequence_id: 1,
+        sequence_id: 2,
         meta_data: {
           user_id: 'fake_user'
         },
@@ -65,7 +65,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: {},
         data: eventData,
-        sequence_id: 1,
+        sequence_id: 2,
         meta_data: {
           user_id: 'fake_user'
         },
@@ -86,7 +86,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: {},
         data: eventData,
-        sequence_id: 1,
+        sequence_id: 2,
         meta_data: {
           user_id: 'fake_user'
         },
