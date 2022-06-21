@@ -1,7 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {FilterQuery, LeanDocument, Model, SortOrder, HydratedDocument} from 'mongoose';
 import {RuntimeError} from 'a24-node-error-utils';
-import {forIn, forEach} from 'lodash';
+import {forIn, forEach, get} from 'lodash';
 
 type SortByType = {
   [key: string]: SortOrder;
@@ -106,7 +106,9 @@ export class GenericRepository<SchemaType> {
     const excludes: string[] = [];
 
     forIn(this.store.schema.obj, (config, field) => {
-      if (config.valueOf()) {
+      const httpHidden = get(config, 'http_hidden');
+
+      if (httpHidden) {
         excludes.push(field);
       }
     });
