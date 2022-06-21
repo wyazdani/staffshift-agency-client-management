@@ -37,7 +37,7 @@ export const getAgencyClient = async (
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
 
-    return res.end(JSON.stringify(agencyClient));
+    res.end(JSON.stringify(agencyClient));
   } catch (error) {
     return next(error);
   }
@@ -75,12 +75,13 @@ export const listAgencyClients = async (
     if (isEmpty(data)) {
       logger.info('Resource listing completed, no records found.', {statusCode});
 
-      return res.end();
+      res.end();
+      return;
     }
 
     logger.info('Resource listing completed', {statusCode});
 
-    return res.end(JSON.stringify(data));
+    res.end(JSON.stringify(data));
   } catch (error) {
     return next(error);
   }
