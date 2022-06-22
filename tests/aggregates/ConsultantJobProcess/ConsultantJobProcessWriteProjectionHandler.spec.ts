@@ -15,7 +15,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
       };
       const eventData = {};
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_STARTED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
@@ -39,7 +39,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         client_id: 'client id'
       };
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
@@ -62,7 +62,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         client_id: 'client id'
       };
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_FAILED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
@@ -83,7 +83,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
       };
       const eventData = {};
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_COMPLETED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
@@ -106,7 +106,7 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         _id: 'oops'
       };
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 1,

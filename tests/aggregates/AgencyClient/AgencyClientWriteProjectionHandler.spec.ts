@@ -24,7 +24,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
           client_type: 'site'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CLIENT_LINKED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -47,7 +47,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
           last_sequence_id: 1
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CLIENT_UNLINKED,
           aggregate_id: {},
           data: {},
           sequence_id: 1,
@@ -74,7 +74,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
           linked_at: new Date()
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CLIENT_SYNCED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -182,7 +182,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
           _id: 'id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -211,7 +211,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
           _id: 'id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -232,7 +232,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         last_sequence_id: 0
       };
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: {},
         data: {},
         sequence_id: 1,

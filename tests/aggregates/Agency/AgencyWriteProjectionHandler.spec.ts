@@ -26,7 +26,14 @@ describe('AgencyWriteProjectionHandler', () => {
           name: 'name1'
         };
         const event = new EventStore({
-          data: eventData
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+          aggregate_id: {},
+          data: eventData,
+          sequence_id: 1,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED, aggregate, event);
@@ -54,7 +61,14 @@ describe('AgencyWriteProjectionHandler', () => {
           name: 'name3'
         };
         const event = new EventStore({
-          data: eventData
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
+          aggregate_id: {},
+          data: eventData,
+          sequence_id: 1,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED, aggregate, event);
@@ -81,7 +95,7 @@ describe('AgencyWriteProjectionHandler', () => {
           name: 'name3'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -122,7 +136,7 @@ describe('AgencyWriteProjectionHandler', () => {
           _id: 'oops'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -162,7 +176,7 @@ describe('AgencyWriteProjectionHandler', () => {
           _id: 'oopsxx'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -203,7 +217,7 @@ describe('AgencyWriteProjectionHandler', () => {
           _id: 'oops'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -243,7 +257,7 @@ describe('AgencyWriteProjectionHandler', () => {
           _id: 'oopsx'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -268,7 +282,7 @@ describe('AgencyWriteProjectionHandler', () => {
         _id: 'oops'
       };
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 1,

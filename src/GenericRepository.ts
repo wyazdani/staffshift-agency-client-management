@@ -106,7 +106,6 @@ export class GenericRepository<SchemaType> {
     const excludes: string[] = [];
 
     forIn(this.store.schema.obj, (config, field) => {
-
       if (get(config, 'http_hidden')) {
         excludes.push(field);
       }

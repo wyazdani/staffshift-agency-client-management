@@ -28,7 +28,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           consultant_role_id: 'consultant_role_id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -63,7 +63,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           consultant_role_id: 'consultant_role_id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -101,7 +101,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           _id: 'sample'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -133,7 +133,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           _id: 'sample'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -164,7 +164,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           consultant_role_id: 'consultant_role_id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -199,7 +199,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           consultant_role_id: 'consultant_role_id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -237,7 +237,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           _id: 'sample'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -269,7 +269,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           _id: 'sample'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -301,7 +301,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           consultant_role_id: 'consultant_role_id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -337,7 +337,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           consultant_role_id: 'consultant_role_id'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -375,7 +375,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           _id: 'sample'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -407,7 +407,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
           _id: 'sample'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+          type: EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
@@ -433,7 +433,7 @@ describe('ConsultantJobWriteProjectionHandler', () => {
         _id: 'oops'
       };
       const event = new EventStore({
-        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
+        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 1,
