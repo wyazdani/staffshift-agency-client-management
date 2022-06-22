@@ -2,11 +2,11 @@ import {BaseEventStoreDataInterface} from 'EventTypes';
 import {Document, Schema, model} from 'mongoose';
 import {EventsEnum} from '../Events';
 
-interface ContextInterface {
+interface EventStoreContextInterface {
   type: string;
   id: string;
 }
-const contextSchema = new Schema<ContextInterface>(
+const contextSchema = new Schema<EventStoreContextInterface>(
   {
     type: {
       type: String,
