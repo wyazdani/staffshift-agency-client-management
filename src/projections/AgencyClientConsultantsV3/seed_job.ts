@@ -3,16 +3,15 @@ import config from 'config';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import mongoose from 'mongoose';
 import {SeedingJob} from 'ss-eventstore';
+import {cloneDeep} from 'lodash';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext('event-store-seed');
 
 // Mongoose configuration for projections
 mongoose.Promise = global.Promise;
-mongoose.connect(
-  config.get<MongoConfigurationInterface>('mongo').database_host,
-  config.get<MongoConfigurationInterface>('mongo').options
-);
+const mongoConfig = cloneDeep(config.get<MongoConfigurationInterface>('mongo'));
+mongoose.connect(mongoConfig.database_host, mongoConfig.options);
 mongoose.connection.on('error', (error: Error) => {
   const loggerContext = Logger.getContext('startup');
 

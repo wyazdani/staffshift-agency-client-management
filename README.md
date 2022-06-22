@@ -46,7 +46,7 @@ This project has a couple of moving parts. This is a typescript project, config 
 
 ### Database
 * `npm run migrate`
-
+ 
 Before starting any of the applications entry points you will need to run the database migrations.
 
 ### API
