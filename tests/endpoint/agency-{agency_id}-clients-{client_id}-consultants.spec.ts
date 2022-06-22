@@ -230,7 +230,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
 
       res.statusCode.should.equal(200);
       validator.validate(res.body, schema);
-      console.log(res.body)
       assert.equal(res.body[0].agency_id, agencyId);
       assert.equal(res.body[0].client_id, clientId);
     });
