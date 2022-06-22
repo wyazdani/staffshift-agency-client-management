@@ -101,7 +101,7 @@ describe('EventRepository', () => {
 
       session.withTransaction.callsFake((func) => {
         func(session);
-        return Promise.resolve();
+        return Promise.resolve({});
       });
       session.endSession.resolves();
       const startSession = sinon.stub(EventStore, 'startSession').resolves(session as any);

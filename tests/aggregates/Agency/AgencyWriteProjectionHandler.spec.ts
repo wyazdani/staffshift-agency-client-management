@@ -26,14 +26,7 @@ describe('AgencyWriteProjectionHandler', () => {
           name: 'name1'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
-          aggregate_id: {},
-          data: eventData,
-          sequence_id: 1,
-          meta_data: {
-            user_id: 'fake_user'
-          },
-          correlation_id: 'fake_id'
+          data: eventData
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED, aggregate, event);
@@ -61,14 +54,7 @@ describe('AgencyWriteProjectionHandler', () => {
           name: 'name3'
         };
         const event = new EventStore({
-          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
-          aggregate_id: {},
-          data: eventData,
-          sequence_id: 1,
-          meta_data: {
-            user_id: 'fake_user'
-          },
-          correlation_id: 'fake_id'
+          data: eventData
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED, aggregate, event);

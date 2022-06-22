@@ -45,8 +45,6 @@
     "database_host": "mongodb://localhost:27017/staffshiftagencyclientmanagementDev",
     "options": {
       "maxPoolSize": 10,
-      "useNewUrlParser": true,
-      "useUnifiedTopology": true,
       "readPreference": "secondaryPreferred"
     }
   },
