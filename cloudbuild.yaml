@@ -7,7 +7,7 @@ steps:
   # Build mongo
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: [ '-c', 'docker build -t database --file Dockerfile.mongo --cache-from gcr.io/$PROJECT_ID/database:latest . && docker tag database eu.gcr.io/$PROJECT_ID/database:latest && docker push eu.gcr.io/$PROJECT_ID/database:latest' ]
+    args: [ '-c', 'docker build -t database --file Dockerfile.mongo --cache-from gcr.io/$PROJECT_ID/database:5.0.5 . && docker tag database eu.gcr.io/$PROJECT_ID/database:5.0.5 && docker push eu.gcr.io/$PROJECT_ID/database:5.0.5' ]
     waitFor: ["-"]
 
   # Build mountebank
@@ -21,6 +21,20 @@ steps:
     entrypoint: 'bash'
     args: [ '-c', 'docker build --build-arg PRIVATE_SSH_KEY="$$PASSWORD" -t staffshift-agency-client-management .' ]
     secretEnv: ['PASSWORD']
+    waitFor: ["-"]
+
+  # Run the app and dependencies in the background using docker-compose.
+  # We have compose exit with the same code as staffshift-agency-client-management
+  - name: 'docker/compose:1.23.2'
+    args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
+    env:
+      - 'PROJECT_ID=$PROJECT_ID'
+      - 'NODE_ENV=ci'
+
+  # Build mongo legacy
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [ '-c', 'docker build -t database --file Dockerfile.mongo_legacy --cache-from gcr.io/$PROJECT_ID/database:4.4.1 . && docker tag database eu.gcr.io/$PROJECT_ID/database:4.4.1 && docker push eu.gcr.io/$PROJECT_ID/database:4.4.1' ]
     waitFor: ["-"]
 
   # Run the app and dependencies in the background using docker-compose.
