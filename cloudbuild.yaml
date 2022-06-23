@@ -40,7 +40,7 @@ steps:
   # Run the app and dependencies in the background using docker-compose.
   # We have compose exit with the same code as staffshift-agency-client-management
   - name: 'docker/compose:1.23.2'
-    args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
+    args: ['up', '--force-recreate', '--renew-anon-volumes', '--exit-code-from', 'staffshift-agency-client-management']
     env:
       - 'PROJECT_ID=$PROJECT_ID'
       - 'NODE_ENV=ci'
