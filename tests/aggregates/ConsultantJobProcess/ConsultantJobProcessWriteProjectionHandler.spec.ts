@@ -15,12 +15,14 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
       };
       const eventData = {};
       const event = new EventStore({
-        type: 'sample',
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_STARTED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
-        meta_data: {},
-        correlation_id: 1
+        meta_data: {
+          user_id: 'fake_user'
+        },
+        correlation_id: 'fake_id'
       });
 
       const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_PROCESS_STARTED, aggregate, event);
@@ -37,12 +39,14 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         client_id: 'client id'
       };
       const event = new EventStore({
-        type: 'sample',
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
-        meta_data: {},
-        correlation_id: 1
+        meta_data: {
+          user_id: 'fake_user'
+        },
+        correlation_id: 'fake_id'
       });
 
       const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_SUCCEEDED, aggregate, event);
@@ -58,12 +62,14 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         client_id: 'client id'
       };
       const event = new EventStore({
-        type: 'sample',
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_FAILED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
-        meta_data: {},
-        correlation_id: 1
+        meta_data: {
+          user_id: 'fake_user'
+        },
+        correlation_id: 'fake_id'
       });
 
       const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_PROCESS_ITEM_FAILED, aggregate, event);
@@ -77,12 +83,14 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
       };
       const eventData = {};
       const event = new EventStore({
-        type: 'sample',
+        type: EventsEnum.CONSULTANT_JOB_PROCESS_COMPLETED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 2,
-        meta_data: {},
-        correlation_id: 1
+        meta_data: {
+          user_id: 'fake_user'
+        },
+        correlation_id: 'fake_id'
       });
 
       const result = projectionHandler.execute(EventsEnum.CONSULTANT_JOB_PROCESS_COMPLETED, aggregate, event);
@@ -98,12 +106,14 @@ describe('ConsultantJobProcessWriteProjectionHandler', () => {
         _id: 'oops'
       };
       const event = new EventStore({
-        type: 'sample',
+        type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
         aggregate_id: {},
         data: eventData,
         sequence_id: 1,
-        meta_data: {},
-        correlation_id: 1
+        meta_data: {
+          user_id: 'fake_user'
+        },
+        correlation_id: 'fake_id'
       });
 
       assert.throw(

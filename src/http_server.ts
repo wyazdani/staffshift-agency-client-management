@@ -1,5 +1,5 @@
 import path from 'path';
-import {isEmpty, set} from 'lodash';
+import {cloneDeep, isEmpty, set} from 'lodash';
 import {CommandBus} from './aggregates/CommandBus';
 import {JWTSecurityHelper, JWTVerificationInterface} from './helpers/JWTSecurityHelper';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
@@ -44,7 +44,7 @@ const errorHandlerConfig = {
 
 A24ErrorUtils.configure(errorHandlerConfig);
 
-const mongoConfig = config.get<MongoConfigurationInterface>('mongo');
+const mongoConfig = cloneDeep(config.get<MongoConfigurationInterface>('mongo'));
 
 mongoose.connection.on('error', (error: Error) => {
   const loggerContext = Logger.getContext('MongoConnection');
@@ -52,7 +52,6 @@ mongoose.connection.on('error', (error: Error) => {
   loggerContext.crit('MongoDB connection error', error);
   process.exit(1);
 });
-
 export const startServer = new Promise<void>((resolve) => {
   mongoose.connect(mongoConfig.database_host, mongoConfig.options, (error) => {
     if (error) {
@@ -89,13 +88,10 @@ export const startServer = new Promise<void>((resolve) => {
         req.Logger = loggerContext;
         next();
       });
-
       // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
       app.use(middleware.swaggerMetadata());
-
       // Validate Swagger requests
       app.use(middleware.swaggerValidator());
-
       // eslint-disable-next-line  @typescript-eslint/no-explicit-any
       const securityMetaData: {[key in string]: any} = {};
 
@@ -120,10 +116,8 @@ export const startServer = new Promise<void>((resolve) => {
           // operation not supported, lets return.swagger will handle with 405.
           return next();
         }
-
         next();
       });
-
       // Modifying the middleware swagger security, to cater for jwt verification
       securityMetaData.jwt = (
         req: SwaggerRequestInterface,
@@ -161,14 +155,11 @@ export const startServer = new Promise<void>((resolve) => {
       app.use(middleware.swaggerSecurity(securityMetaData));
       // Route validated requests to appropriate controller
       app.use(middleware.swaggerRouter(options));
-
       // Serve the Swagger documents and Swagger UI
       app.use(middleware.swaggerUi());
-
       app.use((err: Error, req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error | null) => void) => {
         ErrorHandler.onError(err, req, res, next);
       });
-
       // Start the server
       const server = createServer(app);
 
@@ -180,7 +171,6 @@ export const startServer = new Promise<void>((resolve) => {
         console.info('Swagger-ui is available on http://localhost:%d/docs', serverPort);
         resolve();
       });
-
       const httpTerminator = createHttpTerminator({
         server,
         gracefulTerminationTimeout: config.get('graceful_shutdown.http.server_close_timeout')
@@ -202,7 +192,6 @@ export const startServer = new Promise<void>((resolve) => {
           for (const key in used) {
             memoryLog += ` ${key}: ${Math.round((used[key as keyof NodeJS.MemoryUsage] / 1024 / 1024) * 100) / 100}MB`;
           }
-
           // eslint-disable-next-line no-console
           console.info(memoryLog);
           process.exit(0);

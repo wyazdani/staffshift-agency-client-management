@@ -1,5 +1,6 @@
 import config from 'config';
 import Logger from 'a24-logzio-winston';
+import {cloneDeep} from 'lodash';
 import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurationInterface';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import mongoose from 'mongoose';
@@ -8,13 +9,11 @@ import {setTimeout} from 'timers/promises';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext('event-store-projection');
+const mongoConfig = cloneDeep(config.get<MongoConfigurationInterface>('mongo'));
 
 // Mongoose configuration for projections
 mongoose.Promise = global.Promise;
-mongoose.connect(
-  config.get<MongoConfigurationInterface>('mongo').database_host,
-  config.get<MongoConfigurationInterface>('mongo').options
-);
+mongoose.connect(mongoConfig.database_host, mongoConfig.options);
 mongoose.connection.on('error', (error: Error) => {
   const loggerContext = Logger.getContext('startup');
 
