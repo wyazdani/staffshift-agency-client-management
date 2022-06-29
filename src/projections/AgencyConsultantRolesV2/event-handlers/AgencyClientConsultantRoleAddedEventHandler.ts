@@ -11,22 +11,21 @@ import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
-import {AgencyConsultantRolesProjectionV2} from 'src/models/AgencyConsultantRolesProjectionV2';
-
+import {AgencyConsultantRolesProjectionV2} from '../../../models/AgencyConsultantRolesProjectionV2';
 /**
  * Responsible for handling AgencyClientConsultantAssigned event
  */
 export class AgencyClientConsultantRoleAddedEventHandler
 implements EventHandlerInterface<EventStoreModelInterface<EventStorePubSubModelInterface>> {
-  constructor(private logger: LoggerContext) {}
+  constructor(private logger: LoggerContext, private event: EventStorePubSubModelInterface) {}
 
   /**
    * Adds a new record to the projection collection
    */
-  async handle(event: EventStoreModelInterface<EventStorePubSubModelInterface>): Promise<void> {
-    const eventData = event.data as unknown as AgencyConsultantRoleAddedEventStoreDataInterface;
+  async handle(): Promise<void> {
+    const eventData = this.event.data as unknown as AgencyConsultantRoleAddedEventStoreDataInterface;
     const record = {
-      agency_id: event.aggregate_id.agency_id,
+      agency_id: this.event.aggregate_id.agency_id,
       name: eventData.name,
       description: eventData.description,
       max_consultants: eventData.max_consultants,
