@@ -24,12 +24,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           client_type: 'site'
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_LINKED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_LINKED, aggregate, event);
@@ -45,12 +47,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           last_sequence_id: 1
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_UNLINKED,
           aggregate_id: {},
           data: {},
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_UNLINKED, aggregate, event);
@@ -70,12 +74,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           linked_at: new Date()
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_SYNCED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_SYNCED, aggregate, event);
@@ -96,12 +102,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           consultant_role_id: 'consultant role id'
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, aggregate, event);
@@ -131,12 +139,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           consultant_role_id: 'consultant role id'
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED, aggregate, event);
@@ -172,12 +182,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           _id: 'id'
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED, aggregate, event);
@@ -199,12 +211,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           _id: 'id'
         };
         const event = new EventStore({
-          type: 'sample',
+          type: EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED,
           aggregate_id: {},
           data: eventData,
           sequence_id: 1,
-          meta_data: {},
-          correlation_id: 1
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_CONSULTANT_UNASSIGNED, aggregate, event);
@@ -218,12 +232,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
         last_sequence_id: 0
       };
       const event = new EventStore({
-        type: 'sample',
+        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
         aggregate_id: {},
         data: {},
         sequence_id: 1,
-        meta_data: {},
-        correlation_id: 1
+        meta_data: {
+          user_id: 'fake_user'
+        },
+        correlation_id: 'fake_id'
       });
 
       assert.throw(

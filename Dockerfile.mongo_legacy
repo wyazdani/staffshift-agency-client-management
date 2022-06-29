@@ -1,4 +1,4 @@
-FROM mongo:5.0.5
+FROM mongo:4.4.1
 
 RUN echo "rs.initiate({'_id':'rs0', members: [{'_id':1, 'host':'database:27017'}]});" > "/docker-entrypoint-initdb.d/init_replicaset.js"
 RUN touch /var/log/mongodb.log && chmod 766 /var/log/mongodb.log

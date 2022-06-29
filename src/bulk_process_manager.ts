@@ -1,5 +1,6 @@
 import config from 'config';
 import Logger from 'a24-logzio-winston';
+import {cloneDeep} from 'lodash';
 import {GracefulShutdownConfigurationInterface} from 'GracefulShutdownConfigurationInterface';
 import mongoose from 'mongoose';
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
@@ -12,7 +13,7 @@ const loggerContext = Logger.getContext('bulk-process-manager');
 
 mongoose.Promise = global.Promise;
 
-const mongoConfig = config.get<MongoConfigurationInterface>('mongo');
+const mongoConfig = cloneDeep(config.get<MongoConfigurationInterface>('mongo'));
 
 mongoose.connect(mongoConfig.database_host, mongoConfig.options);
 
