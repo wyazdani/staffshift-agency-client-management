@@ -1,7 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {
-  AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface
-} from 'EventTypes';
+import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from 'EventTypes';
 import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
