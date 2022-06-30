@@ -10,7 +10,7 @@ import {
 import {FilterQuery} from 'mongoose';
 
 /**
- * Responsible for handling AgencyClientConsultantAssigned event
+ * Responsible for handling AgencyClientConsultantRoleDetailsUpdated event
  */
 export class AgencyClientConsultantRoleDetailsUpdatedEventHandler
 implements EventHandlerInterface<EventStoreModelInterface<EventStorePubSubModelInterface>> {
