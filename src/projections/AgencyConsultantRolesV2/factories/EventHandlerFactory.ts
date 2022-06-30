@@ -9,11 +9,11 @@ import {
 } from 'EventTypes';
 import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventsEnum} from '../../../Events';
-import {AgencyClientConsultantRoleAddedEventHandler} from '../event-handlers/AgencyClientConsultantRoleAddedEventHandler';
+import {AgencyConsultantRoleAddedEventHandler} from '../event-handlers/AgencyConsultantRoleAddedEventHandler';
 import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
 import {FilterQuery} from 'mongoose';
 import {AgencyConsultantRolesProjectionV2DocumentType} from '../../../models/AgencyConsultantRolesProjectionV2';
-import {AgencyClientConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyClientConsultantRoleDetailsUpdatedEventHandler';
+import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 
 type SupportedEventsDataType =
   | AgencyConsultantRoleAddedEventStoreDataInterface
@@ -45,13 +45,13 @@ export class EventHandlerFactory {
 
     switch (eventType) {
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED:
-        return new AgencyClientConsultantRoleAddedEventHandler(logger, event);
+        return new AgencyConsultantRoleAddedEventHandler(logger, event);
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED:
-        return new AgencyClientConsultantRoleDetailsUpdatedEventHandler(logger, criteria, {status: 'enabled'});
+        return new AgencyConsultantRoleDetailsUpdatedEventHandler(logger, criteria, {status: 'enabled'});
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED:
-        return new AgencyClientConsultantRoleDetailsUpdatedEventHandler(logger, criteria, {status: 'disabled'});
+        return new AgencyConsultantRoleDetailsUpdatedEventHandler(logger, criteria, {status: 'disabled'});
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED:
-        return new AgencyClientConsultantRoleDetailsUpdatedEventHandler(
+        return new AgencyConsultantRoleDetailsUpdatedEventHandler(
           logger,
           criteria,
           event.data as AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface

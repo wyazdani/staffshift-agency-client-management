@@ -13,9 +13,9 @@ import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
 import {AgencyConsultantRolesProjectionV2} from '../../../models/AgencyConsultantRolesProjectionV2';
 /**
- * Responsible for handling AgencyClientConsultantRoleAdded event
+ * Responsible for handling AgencyConsultantRoleAdded event
  */
-export class AgencyClientConsultantRoleAddedEventHandler
+export class AgencyConsultantRoleAddedEventHandler
 implements EventHandlerInterface<EventStoreModelInterface<EventStorePubSubModelInterface>> {
   constructor(private logger: LoggerContext, private event: EventStorePubSubModelInterface) {}
 
