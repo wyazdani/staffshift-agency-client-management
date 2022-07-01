@@ -8,6 +8,8 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {EventsEnum} from '../../../../src/Events';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 import {AgencyConsultantRoleAddedEventHandler} from '../../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleAddedEventHandler';
+import {AgencyConsultantRoleEnabledEventHandler} from '../../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleEnabledEventHandler';
+import {AgencyConsultantRoleDisabledEventHandler} from '../../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleDisabledEventHandler';
 
 describe('EventHandlerFactory', () => {
   let testLogger: LoggerContext;
@@ -20,11 +22,16 @@ describe('EventHandlerFactory', () => {
   });
 
   describe('getHandler()', () => {
-    const event = {
+    const event: any = {
       _id: '62bd7a978f7eab2e466a0c18',
       type: 'event_type',
       aggregate_id: {agency_id: '62b44615c008c1df3154501c'},
-      data: {_id: '62bc58ad371fecc5c10a2614'},
+      data: {
+        _id: '62bc58ad371fecc5c10a2614',
+        name: 'test',
+        description: 'test',
+        max_consultants: 2
+      },
       sequence_id: 23,
       meta_data: {user_id: '1234567890'},
       correlation_id: '123',
@@ -47,7 +54,7 @@ describe('EventHandlerFactory', () => {
       event.type = eventType;
       const handler = EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger, event);
 
-      assert.isTrue(handler instanceof AgencyConsultantRoleDetailsUpdatedEventHandler);
+      assert.isTrue(handler instanceof AgencyConsultantRoleEnabledEventHandler);
     });
 
     it('should return correct handler for AgencyConsultantRoleDisabled event', () => {
@@ -56,7 +63,7 @@ describe('EventHandlerFactory', () => {
       event.type = eventType;
       const handler = EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger, event);
 
-      assert.isTrue(handler instanceof AgencyConsultantRoleDetailsUpdatedEventHandler);
+      assert.isTrue(handler instanceof AgencyConsultantRoleDisabledEventHandler);
     });
 
     it('should return correct handler for AgencyConsultantRoleDetailsUpdated event', () => {

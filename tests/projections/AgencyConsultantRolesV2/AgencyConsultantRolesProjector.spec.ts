@@ -131,8 +131,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         {_id: consultantRoleId, agency_id: agencyId},
         {
           $set: {status: 'enabled'}
-        },
-        {}
+        }
       );
     });
 
@@ -155,8 +154,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         {_id: consultantRoleId, agency_id: agencyId},
         {
           $set: {status: 'disabled'}
-        },
-        {}
+        }
       );
     });
 
@@ -182,8 +180,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         {_id: consultantRoleId, agency_id: agencyId},
         {
           $set: event.data
-        },
-        {}
+        }
       );
     });
 
@@ -210,8 +207,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         {_id: consultantRoleId, agency_id: agencyId},
         {
           $set: event.data
-        },
-        {}
+        }
       );
     });
   });

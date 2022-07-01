@@ -20,7 +20,10 @@ export class AgencyConsultantRoleDisabledEventHandler {
    */
   async handle(event: EventStoreModelInterface<EventStorePubSubModelInterface>): Promise<void> {
     const updateObject = {status: 'disabled'};
-    const query = {_id: event.data._id};
+    const query = {
+      _id: event.data._id,
+      agency_id: event.aggregate_id.agency_id
+    };
 
     try {
       await AgencyConsultantRolesProjectionV2.updateOne(query, {$set: updateObject});

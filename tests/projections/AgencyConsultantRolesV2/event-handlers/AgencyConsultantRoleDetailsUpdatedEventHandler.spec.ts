@@ -34,25 +34,36 @@ describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
       updated_at: updatedAt
     };
 
-    it.only('should update agency consultant role record', async () => {
+    const query = {
+      _id: event.data._id,
+      agency_id: agencyId
+    };
+    const payload = {
+      $set: {
+        _id: event.data._id,
+        name: event.data.name,
+        description: event.data.description,
+        max_consultants: event.data.max_consultants
+      }
+    };
+
+    it('should update agency consultant role record', async () => {
       const handler = new AgencyConsultantRoleDetailsUpdatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
       const updateOne = sinon.stub(AgencyConsultantRolesProjectionV2, 'updateOne');
 
       await handler.handle(event);
-      updateOne.should.have.been.calledWith(
-        {
-          _id: event.data._id
-        },
-        {
-          $set: {
-            _id: event.data._id,
-            name: 'test',
-            description: 'test',
-            max_consultants: 2
-          }
-        }
-      );
+      updateOne.should.have.been.calledOnceWith(query, payload);
+    });
+
+    it('should throw an error when the updateOne operation fails', async () => {
+      const handler = new AgencyConsultantRoleDetailsUpdatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
+
+      const updateOne = sinon.stub(AgencyConsultantRolesProjectionV2, 'updateOne');
+
+      updateOne.rejects(new Error('blah error'));
+      await handler.handle(event).should.be.rejectedWith(Error, 'blah error');
+      updateOne.should.have.been.calledOnceWith(query, payload);
     });
   });
 });

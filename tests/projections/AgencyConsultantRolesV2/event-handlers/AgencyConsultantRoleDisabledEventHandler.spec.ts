@@ -6,8 +6,10 @@ import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 import {AgencyConsultantRoleAddedEventHandler} from '../../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleAddedEventHandler';
 import {AgencyConsultantRolesProjectionV2} from '../../../../src/models/AgencyConsultantRolesProjectionV2';
+import {AgencyConsultantRoleEnabledEventHandler} from '../../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleEnabledEventHandler';
+import {AgencyConsultantRoleDisabledEventHandler} from '../../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleDisabledEventHandler';
 
-describe('AgencyConsultantRoleAddedEventHandler', () => {
+describe('AgencyConsultantRoleDisabledEventHandler', () => {
   afterEach(() => {
     sinon.restore();
   });
@@ -18,7 +20,7 @@ describe('AgencyConsultantRoleAddedEventHandler', () => {
     const updatedAt = '2022-06-30T10:27:35.464Z';
     const event: any = {
       _id: '62bd7a978f7eab2e466a0c18',
-      type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
+      type: 'event_type',
       aggregate_id: {agency_id: agencyId},
       data: {
         _id: '62bc58ad371fecc5c10a2614',
@@ -33,30 +35,33 @@ describe('AgencyConsultantRoleAddedEventHandler', () => {
       updated_at: updatedAt
     };
 
-    const payload = {
-      agency_id: event.aggregate_id.agency_id,
+    const query = {
       _id: event.data._id,
-      name: event.data.name,
-      description: event.data.description,
-      max_consultants: event.data.max_consultants
+      agency_id: agencyId
+    };
+    const payload = {
+      $set: {
+        status: 'disabled'
+      }
     };
 
-    it('should create agency consultant role record', async () => {
-      const handler = new AgencyConsultantRoleAddedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
+    it('should disable status agency consultant role record', async () => {
+      const handler = new AgencyConsultantRoleDisabledEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
-      const saveStub = sinon.stub(AgencyConsultantRolesProjectionV2, 'create');
+      const updateOne = sinon.stub(AgencyConsultantRolesProjectionV2, 'updateOne');
 
       await handler.handle(event);
-      saveStub.should.have.been.calledOnceWith(payload);
+      updateOne.should.have.been.calledOnceWith(query, payload);
     });
 
-    it('should throw an error when the create operation fails', async () => {
-      const handler = new AgencyConsultantRoleAddedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
-      const saveStub = sinon.stub(AgencyConsultantRolesProjectionV2, 'create');
+    it('should throw an error when the updateOne operation fails', async () => {
+      const handler = new AgencyConsultantRoleDisabledEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
-      saveStub.rejects(new Error('blah error'));
+      const updateOne = sinon.stub(AgencyConsultantRolesProjectionV2, 'updateOne');
+
+      updateOne.rejects(new Error('blah error'));
       await handler.handle(event).should.be.rejectedWith(Error, 'blah error');
-      saveStub.should.have.been.calledOnceWith(payload);
+      updateOne.should.have.been.calledOnceWith(query, payload);
     });
   });
 });
