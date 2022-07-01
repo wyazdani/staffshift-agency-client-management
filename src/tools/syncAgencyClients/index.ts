@@ -8,6 +8,7 @@ import {AgencyClientCommandEnum, AgencyClientCommandInterface} from '../../aggre
 import {MongoConfigurationInterface} from 'MongoConfigurationInterface';
 import {AgencyOrganisationLinkDataType} from 'a24-node-staffshift-facade-client';
 import {CommandBus} from '../../aggregates/CommandBus';
+import {cloneDeep} from 'lodash';
 
 Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
@@ -30,12 +31,11 @@ interface SyncCommandInterface {
  * @returns void
  */
 const run = async (page: number): Promise<void> => {
+  const mongoConfig = cloneDeep(config.get<MongoConfigurationInterface>('mongo'));
+
   try {
     loggerContext.info('Connecting to the database');
-    await connect(
-      config.get<MongoConfigurationInterface>('mongo').database_host,
-      config.get<MongoConfigurationInterface>('mongo').options
-    );
+    await connect(mongoConfig.database_host, mongoConfig.options);
     let completed = false;
 
     loggerContext.info('Starting the sync agency client process');
