@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from 'EventTypes';
+import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface, BaseEventStoreDataInterface} from 'EventTypes';
 import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
@@ -10,16 +10,17 @@ import {
 import {FilterQuery} from 'mongoose';
 
 /**
- * Responsible for handling AgencyConsultantRoleDetailsUpdated event
+ * Responsible for handling AgencyConsultantRoleEnabled event
  */
-export class AgencyConsultantRoleDetailsUpdatedEventHandler {
+export class AgencyConsultantRoleEnabledEventHandler
+implements EventHandlerInterface<EventStoreModelInterface<EventStorePubSubModelInterface>> {
   constructor(private logger: LoggerContext) {}
 
   /**
-   * Updates an existing record in the projection collection
+   * Updates status to enabled for an existing record in the projection collection
    */
   async handle(event: EventStoreModelInterface<EventStorePubSubModelInterface>): Promise<void> {
-    const updateObject = event.data;
+    const updateObject = {status: 'enabled'};
     const query = {_id: event.data._id};
 
     try {

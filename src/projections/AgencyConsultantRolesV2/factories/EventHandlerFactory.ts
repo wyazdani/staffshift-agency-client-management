@@ -14,6 +14,8 @@ import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
 import {FilterQuery} from 'mongoose';
 import {AgencyConsultantRolesProjectionV2DocumentType} from '../../../models/AgencyConsultantRolesProjectionV2';
 import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
+import {AgencyConsultantRoleEnabledEventHandler} from '../event-handlers/AgencyConsultantRoleEnabledEventHandler';
+import {AgencyConsultantRoleDisabledEventHandler} from '../event-handlers/AgencyConsultantRoleDisabledEventHandler';
 
 type SupportedEventsDataType =
   | AgencyConsultantRoleAddedEventStoreDataInterface
@@ -42,20 +44,15 @@ export class EventHandlerFactory {
     if (eventData._id) {
       criteria._id = eventData._id;
     }
-
     switch (eventType) {
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED:
-        return new AgencyConsultantRoleAddedEventHandler(logger, event);
+        return new AgencyConsultantRoleAddedEventHandler(logger);
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED:
-        return new AgencyConsultantRoleDetailsUpdatedEventHandler(logger, criteria, {status: 'enabled'});
+        return new AgencyConsultantRoleEnabledEventHandler(logger);
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED:
-        return new AgencyConsultantRoleDetailsUpdatedEventHandler(logger, criteria, {status: 'disabled'});
+        return new AgencyConsultantRoleDisabledEventHandler(logger);
       case EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED:
-        return new AgencyConsultantRoleDetailsUpdatedEventHandler(
-          logger,
-          criteria,
-          event.data as AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface
-        );
+        return new AgencyConsultantRoleDetailsUpdatedEventHandler(logger);
       default:
         logger.error('No configured handler found for this event', {eventType});
         throw new RuntimeError(`No configured handler found for this event: ${eventType}`);

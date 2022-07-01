@@ -16,7 +16,7 @@ describe('AgencyConsultantRoleAddedEventHandler', () => {
     const agencyId = '5b16b824e8a73a752c42d848';
     const createdAt = '2022-06-30T10:27:35.464Z';
     const updatedAt = '2022-06-30T10:27:35.464Z';
-    const event = {
+    const event: any = {
       _id: '62bd7a978f7eab2e466a0c18',
       type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
       aggregate_id: {agency_id: agencyId},
@@ -54,7 +54,7 @@ describe('AgencyConsultantRoleAddedEventHandler', () => {
         return Promise.resolve();
       });
 
-      await handler.handle();
+      await handler.handle(event);
     });
   });
 });

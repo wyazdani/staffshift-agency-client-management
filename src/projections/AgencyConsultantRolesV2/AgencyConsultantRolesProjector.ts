@@ -32,6 +32,7 @@ export default class AgencyConsultantRolesProjector implements EventStoreProject
       logger.debug('Incoming event ignored', {event: event.type});
       return;
     }
+
     const eventType: EventsEnum = event.type as EventsEnum;
     const eventHandler = EventHandlerFactory.getHandler(eventType, logger, event);
 

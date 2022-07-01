@@ -15,17 +15,16 @@ import {AgencyConsultantRolesProjectionV2} from '../../../models/AgencyConsultan
 /**
  * Responsible for handling AgencyConsultantRoleAdded event
  */
-export class AgencyConsultantRoleAddedEventHandler
-implements EventHandlerInterface<EventStoreModelInterface<EventStorePubSubModelInterface>> {
-  constructor(private logger: LoggerContext, private event: EventStorePubSubModelInterface) {}
+export class AgencyConsultantRoleAddedEventHandler {
+  constructor(private logger: LoggerContext) {}
 
   /**
    * Adds a new record to the projection collection
    */
-  async handle(): Promise<void> {
-    const eventData = this.event.data as unknown as AgencyConsultantRoleAddedEventStoreDataInterface;
+  async handle(event: EventStoreModelInterface<AgencyConsultantRoleAddedEventStoreDataInterface>): Promise<void> {
+    const eventData = event.data;
     const record = {
-      agency_id: this.event.aggregate_id.agency_id,
+      agency_id: event.aggregate_id.agency_id,
       name: eventData.name,
       description: eventData.description,
       max_consultants: eventData.max_consultants,

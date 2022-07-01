@@ -17,7 +17,7 @@ describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
     const agencyId = '5b16b824e8a73a752c42d848';
     const createdAt = '2022-06-30T10:27:35.464Z';
     const updatedAt = '2022-06-30T10:27:35.464Z';
-    const event = {
+    const event: any = {
       _id: '62bd7a978f7eab2e466a0c18',
       type: 'event_type',
       aggregate_id: {agency_id: agencyId},
@@ -35,26 +35,20 @@ describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
     };
 
     it.only('should update agency consultant role record', async () => {
-      const handler = new AgencyConsultantRoleDetailsUpdatedEventHandler(
-        TestUtilsLogger.getLogger(sinon.spy()),
-        {_id: event.data._id, agency_id: agencyId},
-        event.data
-      );
+      const handler = new AgencyConsultantRoleDetailsUpdatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
-      const saveStub = sinon.stub(AgencyConsultantRolesProjectionV2.prototype, 'updateOne');
+      const updateOne = sinon.stub(AgencyConsultantRolesProjectionV2.prototype, 'updateOne');
 
-      await handler.handle();
-      saveStub.should.have.been.calledWith(
+      await handler.handle(event);
+      updateOne.should.have.been.calledWith(
         {
-          _id: event.data._id,
-          agency_id: agencyId
+          _id: event.data._id
         },
         {
           $set: {
+            _id: event.data._id,
             name: 'test',
-            description: 'test'
-          },
-          $inc: {
+            description: 'test',
             max_consultants: 2
           }
         }
