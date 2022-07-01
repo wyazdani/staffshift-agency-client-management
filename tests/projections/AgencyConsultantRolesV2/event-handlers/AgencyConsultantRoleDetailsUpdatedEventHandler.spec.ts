@@ -37,7 +37,7 @@ describe('AgencyConsultantRoleDetailsUpdatedEventHandler', () => {
     it.only('should update agency consultant role record', async () => {
       const handler = new AgencyConsultantRoleDetailsUpdatedEventHandler(TestUtilsLogger.getLogger(sinon.spy()));
 
-      const updateOne = sinon.stub(AgencyConsultantRolesProjectionV2.prototype, 'updateOne');
+      const updateOne = sinon.stub(AgencyConsultantRolesProjectionV2, 'updateOne');
 
       await handler.handle(event);
       updateOne.should.have.been.calledWith(
