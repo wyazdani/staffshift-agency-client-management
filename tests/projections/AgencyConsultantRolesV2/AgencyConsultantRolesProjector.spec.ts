@@ -14,6 +14,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
   describe('project', () => {
     const agencyId = '60126eb559f35a4f3c34ff07';
     const consultantRoleId = '60126eb559f35a4f3c34ff06';
+
     afterEach(() => {
       sinon.restore();
     });
@@ -52,7 +53,6 @@ describe('AgencyConsultantRolesProjectorV2', () => {
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
       handlerStub.handle.should.have.been.calledOnceWith(event);
     });
-
 
     it('test AGENCY_CONSULTANT_ROLE_ADDED when save operation fails in unknown error', async () => {
       const event: any = {
