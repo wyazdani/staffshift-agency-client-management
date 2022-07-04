@@ -1,8 +1,13 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import sinon from 'sinon';
+import {stubConstructor} from 'ts-sinon';
 import {EventsEnum} from '../../../src/Events';
 import {AgencyClientsProjectionV2} from '../../../src/models/AgencyClientsProjectionV2';
 import AgencyClientsProjector from '../../../src/projections/AgencyClientsV2/AgencyClientsProjector';
+import {AgencyClientLinkedEventHandler} from '../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientLinkedEventHandler';
+import {AgencyClientSyncedEventHandler} from '../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientSyncedEventHandler';
+import {AgencyClientUnLinkedEventHandler} from '../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientUnLinkedEventHandler';
+import {EventHandlerFactory} from '../../../src/projections/AgencyClientsV2/factories/EventHandlerFactory';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
 describe('projections/AgencyClients/Projector', () => {
@@ -24,9 +29,12 @@ describe('projections/AgencyClients/Projector', () => {
       const event: any = {
         type: 'someRandomEvent'
       };
+      const handlerStub = stubConstructor(AgencyClientLinkedEventHandler);
 
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       await projector.project(logger, event);
-      findOneAndUpdate.should.not.have.been.called;
+      handlerStub.handle.should.not.have.been.called;
     });
     it('test that agency client record is updated correctly for AgencyClientLinked event', async () => {
       const event: any = {
@@ -41,20 +49,13 @@ describe('projections/AgencyClients/Projector', () => {
           client_type: 'site'
         }
       };
+      const handlerStub = stubConstructor(AgencyClientLinkedEventHandler);
 
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       await projector.project(logger, event);
-      const expectedFilter = {
-        agency_id: agencyId,
-        client_id: clientId,
-        organisation_id: orgId
-      };
-      const expectedUpdate = {
-        client_type: 'site',
-        linked: true
-      };
-      const expectedOpts = {upsert: true};
 
-      findOneAndUpdate.should.have.been.calledWith(expectedFilter, expectedUpdate, expectedOpts);
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
     it('test that agency client record is updated correctly for AgencyClientUnLinked event', async () => {
       const event: any = {
@@ -69,21 +70,13 @@ describe('projections/AgencyClients/Projector', () => {
           client_type: 'site'
         }
       };
+      const handlerStub = stubConstructor(AgencyClientUnLinkedEventHandler);
 
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       await projector.project(logger, event);
 
-      const expectedFilter = {
-        agency_id: agencyId,
-        client_id: clientId,
-        organisation_id: orgId
-      };
-      const expectedUpdate = {
-        client_type: 'site',
-        linked: false
-      };
-      const expectedOpts = {upsert: true};
-
-      findOneAndUpdate.should.have.been.calledWith(expectedFilter, expectedUpdate, expectedOpts);
+      handlerStub.handle.should.have.been.calledWith(event);
     });
 
     it('test that agency client record is updated correctly for AgencyClientSynced event', async () => {
@@ -99,21 +92,13 @@ describe('projections/AgencyClients/Projector', () => {
           client_type: 'site'
         }
       };
+      const handlerStub = stubConstructor(AgencyClientSyncedEventHandler);
 
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       await projector.project(logger, event);
 
-      const expectedFilter = {
-        agency_id: agencyId,
-        client_id: clientId,
-        organisation_id: orgId
-      };
-      const expectedUpdate = {
-        client_type: 'site',
-        linked: false
-      };
-      const expectedOpts = {upsert: true};
-
-      findOneAndUpdate.should.have.been.calledWith(expectedFilter, expectedUpdate, expectedOpts);
+      handlerStub.handle.should.have.been.calledWith(event);
     });
   });
 });

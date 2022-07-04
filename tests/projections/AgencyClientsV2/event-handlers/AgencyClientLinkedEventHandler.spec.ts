@@ -7,7 +7,7 @@ import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 import {AgencyClientLinkedEventHandler} from '../../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientLinkedEventHandler';
 import {AgencyClientsProjectionV2} from '../../../../src/models/AgencyClientsProjectionV2';
 
-describe('AgencyClientConsultantAssignedEventHandler', () => {
+describe('AgencyClientLinkedEventHandler', () => {
   afterEach(() => {
     sinon.restore();
   });
