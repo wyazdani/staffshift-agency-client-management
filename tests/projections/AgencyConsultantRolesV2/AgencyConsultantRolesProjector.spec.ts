@@ -1,8 +1,13 @@
-import sinon from 'ts-sinon';
+import sinon, {stubConstructor} from 'ts-sinon';
 import {EventsEnum} from '../../../src/Events';
 import {AgencyConsultantRolesProjectionV2} from '../../../src/models/AgencyConsultantRolesProjectionV2';
 import AgencyConsultantRolesProjector from '../../../src/projections/AgencyConsultantRolesV2/AgencyConsultantRolesProjector';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
+import {AgencyConsultantRoleAddedEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleAddedEventHandler';
+import {EventHandlerFactory} from '../../../src/projections/AgencyConsultantRolesV2/factories/EventHandlerFactory';
+import {AgencyConsultantRoleEnabledEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleEnabledEventHandler';
+import {AgencyConsultantRoleDisabledEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleDisabledEventHandler';
+import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
 describe('AgencyConsultantRolesProjectorV2', () => {
@@ -23,11 +28,13 @@ describe('AgencyConsultantRolesProjectorV2', () => {
       const event: any = {
         type: 'oops'
       };
+      const handlerStub = stubConstructor(AgencyConsultantRoleAddedEventHandler);
       const projector = new AgencyConsultantRolesProjector();
 
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      create.should.not.have.been.called;
-      updateOne.should.not.have.been.called;
+      handlerStub.handle.should.not.have.been.called;
     });
 
     it('Test AGENCY_CONSULTANT_ROLE_ADDED', async () => {
@@ -43,18 +50,14 @@ describe('AgencyConsultantRolesProjectorV2', () => {
           _id: consultantRoleId
         }
       };
+      const handlerStub = stubConstructor(AgencyConsultantRoleAddedEventHandler);
 
-      create.resolves();
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      create.should.have.been.calledWith({
-        agency_id: event.aggregate_id.agency_id,
-        name: event.data.name,
-        description: event.data.description,
-        max_consultants: event.data.max_consultants,
-        _id: event.data._id
-      });
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
     it('test AGENCY_CONSULTANT_ROLE_ADDED when save operation fails with duplicate key error ', async () => {
@@ -70,18 +73,14 @@ describe('AgencyConsultantRolesProjectorV2', () => {
           _id: consultantRoleId
         }
       };
+      const handlerStub = stubConstructor(AgencyConsultantRoleAddedEventHandler);
 
-      create.rejects({code: MONGO_ERROR_CODES.DUPLICATE_KEY});
+      handlerStub.handle.rejects({code: MONGO_ERROR_CODES.DUPLICATE_KEY});
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      create.should.have.been.calledWith({
-        agency_id: event.aggregate_id.agency_id,
-        name: event.data.name,
-        description: event.data.description,
-        max_consultants: event.data.max_consultants,
-        _id: event.data._id
-      });
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
     it('test AGENCY_CONSULTANT_ROLE_ADDED when save operation fails in unknown error', async () => {
@@ -98,18 +97,14 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         }
       };
       const error = new Error('sample');
+      const handlerStub = stubConstructor(AgencyConsultantRoleAddedEventHandler);
 
-      create.rejects(error);
+      handlerStub.handle.rejects(error);
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event).should.have.been.rejectedWith(error);
-      create.should.have.been.calledWith({
-        agency_id: event.aggregate_id.agency_id,
-        name: event.data.name,
-        description: event.data.description,
-        max_consultants: event.data.max_consultants,
-        _id: event.data._id
-      });
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
     it('Test AGENCY_CONSULTANT_ROLE_ENABLED', async () => {
@@ -122,17 +117,14 @@ describe('AgencyConsultantRolesProjectorV2', () => {
           _id: consultantRoleId
         }
       };
+      const handlerStub = stubConstructor(AgencyConsultantRoleEnabledEventHandler);
 
-      updateOne.resolves();
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      updateOne.should.have.been.calledOnceWith(
-        {_id: consultantRoleId, agency_id: agencyId},
-        {
-          $set: {status: 'enabled'}
-        }
-      );
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
     it('Test AGENCY_CONSULTANT_ROLE_DISABLED', async () => {
@@ -146,18 +138,15 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         }
       };
 
-      updateOne.resolves();
+      const handlerStub = stubConstructor(AgencyConsultantRoleDisabledEventHandler);
+
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      updateOne.should.have.been.calledOnceWith(
-        {_id: consultantRoleId, agency_id: agencyId},
-        {
-          $set: {status: 'disabled'}
-        }
-      );
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
-
     it('Test AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED', async () => {
       const event: any = {
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
@@ -172,18 +161,15 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         }
       };
 
-      updateOne.resolves();
+      const handlerStub = stubConstructor(AgencyConsultantRoleDetailsUpdatedEventHandler);
+
+      handlerStub.handle.resolves();
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      updateOne.should.have.been.calledOnceWith(
-        {_id: consultantRoleId, agency_id: agencyId},
-        {
-          $set: event.data
-        }
-      );
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
-
     it('Test AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED failure scenario', async () => {
       const event: any = {
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
@@ -198,17 +184,14 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         }
       };
       const error = new Error('sample error');
+      const handlerStub = stubConstructor(AgencyConsultantRoleDetailsUpdatedEventHandler);
 
-      updateOne.rejects(error);
+      handlerStub.handle.rejects(error);
+      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
       await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event).should.have.been.rejectedWith(error);
-      updateOne.should.have.been.calledOnceWith(
-        {_id: consultantRoleId, agency_id: agencyId},
-        {
-          $set: event.data
-        }
-      );
+      handlerStub.handle.should.have.been.calledOnceWith(event);
     });
   });
 });
