@@ -12,15 +12,8 @@ import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 
 describe('AgencyConsultantRolesProjectorV2', () => {
   describe('project', () => {
-    let create: any;
-    let updateOne: any;
     const agencyId = '60126eb559f35a4f3c34ff07';
     const consultantRoleId = '60126eb559f35a4f3c34ff06';
-
-    beforeEach(() => {
-      create = sinon.stub(AgencyConsultantRolesProjectionV2, 'create');
-      updateOne = sinon.stub(AgencyConsultantRolesProjectionV2, 'updateOne');
-    });
     afterEach(() => {
       sinon.restore();
     });
@@ -60,28 +53,6 @@ describe('AgencyConsultantRolesProjectorV2', () => {
       handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
-    it('test AGENCY_CONSULTANT_ROLE_ADDED when save operation fails with duplicate key error ', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
-        aggregate_id: {
-          agency_id: agencyId
-        },
-        data: {
-          name: 'some name',
-          description: 'describe me',
-          max_consultants: 1,
-          _id: consultantRoleId
-        }
-      };
-      const handlerStub = stubConstructor(AgencyConsultantRoleAddedEventHandler);
-
-      handlerStub.handle.rejects({code: MONGO_ERROR_CODES.DUPLICATE_KEY});
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      const projector = new AgencyConsultantRolesProjector();
-
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      handlerStub.handle.should.have.been.calledOnceWith(event);
-    });
 
     it('test AGENCY_CONSULTANT_ROLE_ADDED when save operation fails in unknown error', async () => {
       const event: any = {
