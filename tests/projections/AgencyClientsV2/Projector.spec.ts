@@ -12,12 +12,10 @@ import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
 describe('projections/AgencyClients/Projector', () => {
   let logger: LoggerContext;
-  let findOneAndUpdate: any;
   const projector = new AgencyClientsProjector();
 
   beforeEach(() => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
-    findOneAndUpdate = sinon.stub(AgencyClientsProjectionV2, 'findOneAndUpdate');
   });
   afterEach(() => sinon.restore());
   describe('project()', async () => {
