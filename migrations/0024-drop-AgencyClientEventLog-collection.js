@@ -18,6 +18,6 @@ module.exports = {
     });
   },
   down: (db, cb) => {
-    db.createCollection(collectionName, {collation: {locale: 'en_US', strength: 2}}, cb);
+   
   }
 };
