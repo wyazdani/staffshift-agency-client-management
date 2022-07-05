@@ -43,36 +43,40 @@ describe('EventHandlerFactory', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
 
-      assert.isTrue(handler instanceof AgencyConsultantRoleAddedEventHandler);
+      handler.should.be.instanceof(AgencyConsultantRoleAddedEventHandler);
+      assert.instanceOf(handler, AgencyConsultantRoleAddedEventHandler);
     });
 
     it('should return correct handler for AgencyConsultantRoleEnabled event', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
 
-      assert.isTrue(handler instanceof AgencyConsultantRoleEnabledEventHandler);
+      handler.should.be.instanceof(AgencyConsultantRoleEnabledEventHandler);
+      assert.instanceOf(handler, AgencyConsultantRoleEnabledEventHandler);
     });
 
     it('should return correct handler for AgencyConsultantRoleDisabled event', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
 
-      assert.isTrue(handler instanceof AgencyConsultantRoleDisabledEventHandler);
+      handler.should.be.instanceof(AgencyConsultantRoleDisabledEventHandler);
+      assert.instanceOf(handler, AgencyConsultantRoleDisabledEventHandler);
     });
 
     it('should return correct handler for AgencyConsultantRoleDetailsUpdated event', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
 
-      assert.isTrue(handler instanceof AgencyConsultantRoleDetailsUpdatedEventHandler);
+      handler.should.be.instanceof(AgencyConsultantRoleDetailsUpdatedEventHandler);
+      assert.instanceOf(handler, AgencyConsultantRoleDetailsUpdatedEventHandler);
     });
 
     it('should throw error if event is not supported', () => {
