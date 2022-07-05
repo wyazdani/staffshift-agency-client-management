@@ -42,7 +42,16 @@ describe('AgencyConsultantRolesProjectorV2', () => {
     for (const eventType of events) {
       it(`Test ${eventType}`, async () => {
         const event: any = {
-          type: eventType
+          type: eventType,
+          aggregate_id: {
+            agency_id: agencyId
+          },
+          data: {
+            name: 'some name',
+            description: 'describe me',
+            max_consultants: 1,
+            _id: consultantRoleId
+          }
         };
         const handler = stubInterface<EventHandlerInterface<EventStorePubSubModelInterface>>();
 
@@ -57,30 +66,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
       });
     }
 
-    it('Test AGENCY_CONSULTANT_ROLE_ADDED', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
-        aggregate_id: {
-          agency_id: agencyId
-        },
-        data: {
-          name: 'some name',
-          description: 'describe me',
-          max_consultants: 1,
-          _id: consultantRoleId
-        }
-      };
-      const handlerStub = stubConstructor(AgencyConsultantRoleAddedEventHandler);
-
-      handlerStub.handle.resolves();
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      const projector = new AgencyConsultantRolesProjector();
-
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      handlerStub.handle.should.have.been.calledOnceWith(event);
-    });
-
-    it('test AGENCY_CONSULTANT_ROLE_ADDED when save operation fails in unknown error', async () => {
+    it('test AGENCY_CONSULTANT_ROLE_ADDED fails in unknown error', async () => {
       const event: any = {
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED,
         aggregate_id: {
@@ -95,93 +81,6 @@ describe('AgencyConsultantRolesProjectorV2', () => {
       };
       const error = new Error('sample');
       const handlerStub = stubConstructor(AgencyConsultantRoleAddedEventHandler);
-
-      handlerStub.handle.rejects(error);
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      const projector = new AgencyConsultantRolesProjector();
-
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event).should.have.been.rejectedWith(error);
-      handlerStub.handle.should.have.been.calledOnceWith(event);
-    });
-
-    it('Test AGENCY_CONSULTANT_ROLE_ENABLED', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
-        aggregate_id: {
-          agency_id: agencyId
-        },
-        data: {
-          _id: consultantRoleId
-        }
-      };
-      const handlerStub = stubConstructor(AgencyConsultantRoleEnabledEventHandler);
-
-      handlerStub.handle.resolves();
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      const projector = new AgencyConsultantRolesProjector();
-
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      handlerStub.handle.should.have.been.calledOnceWith(event);
-    });
-
-    it('Test AGENCY_CONSULTANT_ROLE_DISABLED', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
-        aggregate_id: {
-          agency_id: agencyId
-        },
-        data: {
-          _id: consultantRoleId
-        }
-      };
-
-      const handlerStub = stubConstructor(AgencyConsultantRoleDisabledEventHandler);
-
-      handlerStub.handle.resolves();
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      const projector = new AgencyConsultantRolesProjector();
-
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      handlerStub.handle.should.have.been.calledOnceWith(event);
-    });
-    it('Test AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
-        aggregate_id: {
-          agency_id: agencyId
-        },
-        data: {
-          name: 'some name',
-          description: 'describe me',
-          max_consultants: 1,
-          _id: consultantRoleId
-        }
-      };
-
-      const handlerStub = stubConstructor(AgencyConsultantRoleDetailsUpdatedEventHandler);
-
-      handlerStub.handle.resolves();
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      const projector = new AgencyConsultantRolesProjector();
-
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
-      handlerStub.handle.should.have.been.calledOnceWith(event);
-    });
-    it('Test AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED failure scenario', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
-        aggregate_id: {
-          agency_id: agencyId
-        },
-        data: {
-          name: 'some name',
-          description: 'describe me',
-          max_consultants: 1,
-          _id: consultantRoleId
-        }
-      };
-      const error = new Error('sample error');
-      const handlerStub = stubConstructor(AgencyConsultantRoleDetailsUpdatedEventHandler);
 
       handlerStub.handle.rejects(error);
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
