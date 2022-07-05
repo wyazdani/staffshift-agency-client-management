@@ -17,7 +17,7 @@ module.exports = {
       db.collection(collectionName).drop(cb);
     });
   },
-  down: (db, cb) => {
+  down: () => {
    
   }
 };
