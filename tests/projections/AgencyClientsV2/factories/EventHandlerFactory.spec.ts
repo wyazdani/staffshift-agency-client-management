@@ -28,21 +28,24 @@ describe('EventHandlerFactory', () => {
       const eventType = EventsEnum.AGENCY_CLIENT_LINKED;
       const handler = EventHandlerFactory.getHandler(eventType, testLogger);
 
-      assert.isTrue(handler instanceof AgencyClientLinkedEventHandler);
+      handler.should.be.instanceof(AgencyClientLinkedEventHandler);
+      assert.instanceOf(handler, AgencyClientLinkedEventHandler);
     });
 
     it('should return correct handler for AgencyClientUnLinked event', () => {
       const eventType = EventsEnum.AGENCY_CLIENT_UNLINKED;
       const handler = EventHandlerFactory.getHandler(eventType, testLogger);
 
-      assert.isTrue(handler instanceof AgencyClientUnLinkedEventHandler);
+      handler.should.be.instanceof(AgencyClientUnLinkedEventHandler);
+      assert.instanceOf(handler, AgencyClientUnLinkedEventHandler);
     });
 
     it('should return correct handler for AgencyClientSynced event', () => {
       const eventType = EventsEnum.AGENCY_CLIENT_SYNCED;
       const handler = EventHandlerFactory.getHandler(eventType, testLogger);
 
-      assert.isTrue(handler instanceof AgencyClientSyncedEventHandler);
+      handler.should.be.instanceof(AgencyClientSyncedEventHandler);
+      assert.instanceOf(handler, AgencyClientSyncedEventHandler);
     });
 
     it('should throw error if event is not supported', () => {

@@ -3,16 +3,13 @@ import sinon from 'sinon';
 import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
 import {stubConstructor, stubInterface} from 'ts-sinon';
 import {EventsEnum} from '../../../src/Events';
-import {AgencyClientsProjectionV2} from '../../../src/models/AgencyClientsProjectionV2';
 import AgencyClientsProjector from '../../../src/projections/AgencyClientsV2/AgencyClientsProjector';
 import {AgencyClientLinkedEventHandler} from '../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientLinkedEventHandler';
-import {AgencyClientSyncedEventHandler} from '../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientSyncedEventHandler';
-import {AgencyClientUnLinkedEventHandler} from '../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientUnLinkedEventHandler';
 import {EventHandlerFactory} from '../../../src/projections/AgencyClientsV2/factories/EventHandlerFactory';
 import {EventHandlerInterface} from '../../../src/types/EventHandlerInterface';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
-describe('projections/AgencyClients/Projector', () => {
+describe('projections/AgencyClients/AgencyClientsProjector', () => {
   let logger: LoggerContext;
   const projector = new AgencyClientsProjector();
 
