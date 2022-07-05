@@ -26,9 +26,6 @@ describe('projections/AgencyClients/Projector', () => {
       EventsEnum.AGENCY_CLIENT_UNLINKED,
       EventsEnum.AGENCY_CLIENT_SYNCED
     ];
-    const agencyId = '60126eb559f35a4f3c34ff07';
-    const clientId = '60126eb559f35a4f3c34ff06';
-    const orgId = '61b8991abfb74a7157c6d88f';
 
     for (const eventType of events) {
       it(`Test ${eventType}`, async () => {
@@ -59,69 +56,22 @@ describe('projections/AgencyClients/Projector', () => {
       await projector.project(logger, event);
       handlerStub.handle.should.not.have.been.called;
     });
-    it('test that agency client record is updated correctly for AgencyClientLinked event', async () => {
+
+    it('Test rejects the promise in case of error', async () => {
       const event: any = {
-        type: EventsEnum.AGENCY_CLIENT_LINKED,
-        aggregate_id: {
-          agency_id: agencyId,
-          client_id: clientId
-        },
-        data: {
-          linked: true,
-          organisation_id: orgId,
-          client_type: 'site'
-        }
+        type: EventsEnum.AGENCY_CLIENT_LINKED
       };
-      const handlerStub = stubConstructor(AgencyClientLinkedEventHandler);
+      const handler = stubInterface<EventHandlerInterface<EventStorePubSubModelInterface>>();
+      const error = new Error('sample error');
 
-      handlerStub.handle.resolves();
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      await projector.project(logger, event);
+      handler.handle.rejects(error);
+      const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
+      const logger = TestUtilsLogger.getLogger(sinon.spy());
+      const projector = new AgencyClientsProjector();
 
-      handlerStub.handle.should.have.been.calledOnceWith(event);
-    });
-    it('test that agency client record is updated correctly for AgencyClientUnLinked event', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CLIENT_UNLINKED,
-        aggregate_id: {
-          agency_id: agencyId,
-          client_id: clientId
-        },
-        data: {
-          linked: false,
-          organisation_id: orgId,
-          client_type: 'site'
-        }
-      };
-      const handlerStub = stubConstructor(AgencyClientUnLinkedEventHandler);
-
-      handlerStub.handle.resolves();
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      await projector.project(logger, event);
-
-      handlerStub.handle.should.have.been.calledWith(event);
-    });
-
-    it('test that agency client record is updated correctly for AgencyClientSynced event', async () => {
-      const event: any = {
-        type: EventsEnum.AGENCY_CLIENT_SYNCED,
-        aggregate_id: {
-          agency_id: agencyId,
-          client_id: clientId
-        },
-        data: {
-          linked: false,
-          organisation_id: orgId,
-          client_type: 'site'
-        }
-      };
-      const handlerStub = stubConstructor(AgencyClientSyncedEventHandler);
-
-      handlerStub.handle.resolves();
-      sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      await projector.project(logger, event);
-
-      handlerStub.handle.should.have.been.calledWith(event);
+      await projector.project(logger, event).should.have.been.rejectedWith(error);
+      getHandler.should.have.been.calledWith(event.type, logger);
+      handler.handle.should.have.been.calledWith(event);
     });
   });
 });
