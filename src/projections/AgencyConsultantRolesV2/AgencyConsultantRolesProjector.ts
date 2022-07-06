@@ -21,7 +21,7 @@ export default class AgencyConsultantRolesProjector implements EventStoreProject
     }
 
     const eventType: EventsEnum = event.type as EventsEnum;
-    const eventHandler = EventHandlerFactory.getHandler(eventType, logger, event);
+    const eventHandler = EventHandlerFactory.getHandler(eventType, logger);
 
     await eventHandler.handle(event);
   }

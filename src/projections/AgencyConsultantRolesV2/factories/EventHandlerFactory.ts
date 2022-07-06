@@ -18,10 +18,9 @@ export class EventHandlerFactory {
    */
   static getHandler(
     eventType: EventsEnum,
-    logger: LoggerContext,
-    event: EventStorePubSubModelInterface
+    logger: LoggerContext
   ): EventHandlerInterface<BaseEventStoreDataInterface> {
-    logger.debug('Processing the incoming event', {event: event.type});
+    logger.debug('Processing the incoming event', {event: eventType});
 
     switch (eventType) {
       case EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED:

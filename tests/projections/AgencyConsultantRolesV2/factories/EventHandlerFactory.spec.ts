@@ -42,7 +42,7 @@ describe('EventHandlerFactory', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_ADDED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger);
 
       handler.should.be.instanceof(AgencyConsultantRoleAddedEventHandler);
       assert.instanceOf(handler, AgencyConsultantRoleAddedEventHandler);
@@ -52,7 +52,7 @@ describe('EventHandlerFactory', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger);
 
       handler.should.be.instanceof(AgencyConsultantRoleEnabledEventHandler);
       assert.instanceOf(handler, AgencyConsultantRoleEnabledEventHandler);
@@ -62,7 +62,7 @@ describe('EventHandlerFactory', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger);
 
       handler.should.be.instanceof(AgencyConsultantRoleDisabledEventHandler);
       assert.instanceOf(handler, AgencyConsultantRoleDisabledEventHandler);
@@ -72,7 +72,7 @@ describe('EventHandlerFactory', () => {
       const eventType = EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED;
 
       event.type = eventType;
-      const handler = EventHandlerFactory.getHandler(eventType, testLogger, event);
+      const handler = EventHandlerFactory.getHandler(eventType, testLogger);
 
       handler.should.be.instanceof(AgencyConsultantRoleDetailsUpdatedEventHandler);
       assert.instanceOf(handler, AgencyConsultantRoleDetailsUpdatedEventHandler);
@@ -82,7 +82,7 @@ describe('EventHandlerFactory', () => {
       const eventType = 'weird-event';
 
       event.type = eventType;
-      const test = () => EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger, event);
+      const test = () => EventHandlerFactory.getHandler(eventType as EventsEnum, testLogger);
 
       expect(test).to.throw(Error, `No configured handler found for this event: ${eventType}`);
     });
