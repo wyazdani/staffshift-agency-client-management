@@ -1,9 +1,6 @@
-import sinon, {stubConstructor} from 'ts-sinon';
-import {assert} from 'chai';
+import sinon from 'ts-sinon';
 import {EventsEnum} from '../../../../src/Events';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
-import {ResourceNotFoundError} from 'a24-node-error-utils';
-import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 import {AgencyClientLinkedEventHandler} from '../../../../src/projections/AgencyClientsV2/event-handlers/AgencyClientLinkedEventHandler';
 import {AgencyClientsProjectionV2} from '../../../../src/models/AgencyClientsProjectionV2';
 

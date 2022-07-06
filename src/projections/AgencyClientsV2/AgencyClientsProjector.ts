@@ -1,19 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {
-  AgencyClientLinkedEventStoreDataInterface,
-  AgencyClientSyncedEventStoreDataInterface,
-  AgencyClientUnlinkedEventStoreDataInterface
-} from 'EventTypes';
-import {FilterQuery} from 'mongoose';
 import {EventStorePubSubModelInterface, EventStoreProjectorInterface} from 'ss-eventstore';
 import {EventsEnum} from '../../Events';
-import {AgencyClientsProjectionV2DocumentType, AgencyClientsProjectionV2} from '../../models/AgencyClientsProjectionV2';
 import {EventHandlerFactory} from './factories/EventHandlerFactory';
-
-type SupportedEventsDataType =
-  | AgencyClientLinkedEventStoreDataInterface
-  | AgencyClientSyncedEventStoreDataInterface
-  | AgencyClientUnlinkedEventStoreDataInterface;
 
 const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_UNLINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
