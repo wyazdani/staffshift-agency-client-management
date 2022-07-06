@@ -1,16 +1,8 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
-import {FacadeClientHelper} from '../../../helpers/FacadeClientHelper';
-import {
-  AgencyClientConsultantAssignedEventStoreDataInterface,
-  AgencyConsultantRoleAddedEventStoreDataInterface
-} from 'EventTypes';
-import {EventHandlerInterface} from 'EventHandlerInterface';
+import {AgencyConsultantRoleAddedEventStoreDataInterface} from 'EventTypes';
 import {MongoError} from 'mongodb';
-import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
-import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
 import {AgencyConsultantRolesProjectionV2} from '../../../models/AgencyConsultantRolesProjectionV2';
 /**
  * Responsible for handling AgencyConsultantRoleAdded event

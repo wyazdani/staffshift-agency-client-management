@@ -1,13 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface, BaseEventStoreDataInterface} from 'EventTypes';
-import {EventHandlerInterface} from 'EventHandlerInterface';
+import {AgencyConsultantRoleDisabledEventStoreDataInterface} from 'EventTypes';
 import {EventStoreModelInterface} from '../../../models/EventStore';
-import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
-import {
-  AgencyConsultantRolesProjectionV2,
-  AgencyConsultantRolesProjectionV2DocumentType
-} from '../../../models/AgencyConsultantRolesProjectionV2';
-import {FilterQuery} from 'mongoose';
+import {AgencyConsultantRolesProjectionV2} from '../../../models/AgencyConsultantRolesProjectionV2';
 
 /**
  * Responsible for handling AgencyConsultantRoleDisabled event
@@ -18,7 +12,7 @@ export class AgencyConsultantRoleDisabledEventHandler {
   /**
    * Updates status to disabled for an existing record in the projection collection
    */
-  async handle(event: EventStoreModelInterface<EventStorePubSubModelInterface>): Promise<void> {
+  async handle(event: EventStoreModelInterface<AgencyConsultantRoleDisabledEventStoreDataInterface>): Promise<void> {
     const updateObject = {status: 'disabled'};
     const query = {
       _id: event.data._id,

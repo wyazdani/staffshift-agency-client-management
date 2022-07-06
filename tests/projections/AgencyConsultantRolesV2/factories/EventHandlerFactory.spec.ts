@@ -1,6 +1,5 @@
 import {EventHandlerFactory} from '../../../../src/projections/AgencyConsultantRolesV2/factories/EventHandlerFactory';
-import {EventRepository} from '../../../../src/EventRepository';
-import sinon, {stubConstructor} from 'ts-sinon';
+import sinon from 'ts-sinon';
 import {afterEach} from 'mocha';
 import {assert, expect} from 'chai';
 import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';

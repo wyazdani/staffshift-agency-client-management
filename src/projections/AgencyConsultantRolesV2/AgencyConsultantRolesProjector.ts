@@ -1,19 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {MongoError} from 'mongodb';
-import {FilterQuery} from 'mongoose';
 import {EventStoreProjectorInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
-import {
-  AgencyConsultantRoleAddedEventStoreDataInterface,
-  AgencyConsultantRoleDisabledEventStoreDataInterface,
-  AgencyConsultantRoleEnabledEventStoreDataInterface,
-  AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface
-} from 'EventTypes';
 import {EventsEnum} from '../../Events';
-import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
-import {
-  AgencyConsultantRolesProjectionV2DocumentType,
-  AgencyConsultantRolesProjectionV2
-} from '../../models/AgencyConsultantRolesProjectionV2';
 import {EventHandlerFactory} from './factories/EventHandlerFactory';
 
 const events = [

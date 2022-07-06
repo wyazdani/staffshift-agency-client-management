@@ -1,14 +1,9 @@
 import sinon, {stubConstructor, stubInterface} from 'ts-sinon';
 import {EventsEnum} from '../../../src/Events';
-import {AgencyConsultantRolesProjectionV2} from '../../../src/models/AgencyConsultantRolesProjectionV2';
 import AgencyConsultantRolesProjector from '../../../src/projections/AgencyConsultantRolesV2/AgencyConsultantRolesProjector';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 import {AgencyConsultantRoleAddedEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleAddedEventHandler';
 import {EventHandlerFactory} from '../../../src/projections/AgencyConsultantRolesV2/factories/EventHandlerFactory';
-import {AgencyConsultantRoleEnabledEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleEnabledEventHandler';
-import {AgencyConsultantRoleDisabledEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleDisabledEventHandler';
-import {AgencyConsultantRoleDetailsUpdatedEventHandler} from '../../../src/projections/AgencyConsultantRolesV2/event-handlers/AgencyConsultantRoleDetailsUpdatedEventHandler';
-import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
 import {EventHandlerInterface} from '../../../src/types/EventHandlerInterface';
 

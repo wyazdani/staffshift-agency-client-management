@@ -1,13 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface} from 'EventTypes';
-import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventStoreModelInterface} from '../../../models/EventStore';
-import {EventStorePubSubModelInterface} from 'ss-eventstore/dist/declarations';
-import {
-  AgencyConsultantRolesProjectionV2,
-  AgencyConsultantRolesProjectionV2DocumentType
-} from '../../../models/AgencyConsultantRolesProjectionV2';
-import {FilterQuery} from 'mongoose';
+import {AgencyConsultantRolesProjectionV2} from '../../../models/AgencyConsultantRolesProjectionV2';
 
 /**
  * Responsible for handling AgencyConsultantRoleDetailsUpdated event
@@ -18,7 +12,9 @@ export class AgencyConsultantRoleDetailsUpdatedEventHandler {
   /**
    * Updates an existing record in the projection collection
    */
-  async handle(event: EventStoreModelInterface<EventStorePubSubModelInterface>): Promise<void> {
+  async handle(
+    event: EventStoreModelInterface<AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface>
+  ): Promise<void> {
     const updateObject = event.data;
     const query = {
       _id: event.data._id,
