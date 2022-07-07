@@ -42,15 +42,13 @@ describe('ConsultantJobAggregate', () => {
         .validateAssignConsultant(command)
         .should.be.rejectedWith(ValidationError);
 
-      error.should.deep.equal(
-        new ValidationError('Not allowed consultant role', [
-          {
-            code: 'CONSULTANT_ROLE_NOT_FOUND',
-            message: `Consultant role ${command.consultant_role_id} does not not exist`,
-            path: ['consultant_role_id']
-          }
-        ])
-      );
+      error.errors.should.deep.equal([
+        {
+          code: 'CONSULTANT_ROLE_NOT_FOUND',
+          message: `Consultant role ${command.consultant_role_id} does not not exist`,
+          path: ['consultant_role_id']
+        }
+      ]);
     });
 
     it('Test consultant role not enabled', async () => {
@@ -69,15 +67,13 @@ describe('ConsultantJobAggregate', () => {
         .validateAssignConsultant(command)
         .should.be.rejectedWith(ValidationError);
 
-      error.should.deep.equal(
-        new ValidationError('Not allowed consultant role', [
-          {
-            code: 'CONSULTANT_ROLE_NOT_ENABLED',
-            message: `Consultant role ${command.consultant_role_id} is not enabled`,
-            path: ['consultant_role_id']
-          }
-        ])
-      );
+      error.errors.should.deep.equal([
+        {
+          code: 'CONSULTANT_ROLE_NOT_ENABLED',
+          message: `Consultant role ${command.consultant_role_id} is not enabled`,
+          path: ['consultant_role_id']
+        }
+      ]);
     });
 
     it('Test another consultant process active', async () => {
@@ -102,15 +98,13 @@ describe('ConsultantJobAggregate', () => {
         .validateAssignConsultant(command)
         .should.be.rejectedWith(ValidationError);
 
-      error.should.deep.equal(
-        new ValidationError('Not allowed consultant', [
-          {
-            code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
-            message: `There is another job still running for this consultant id ${command.consultant_id}`,
-            path: ['consultant_id']
-          }
-        ])
-      );
+      error.errors.should.deep.equal([
+        {
+          code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
+          message: `There is another job still running for this consultant id ${command.consultant_id}`,
+          path: ['consultant_id']
+        }
+      ]);
     });
 
     it('Test success when other processes are done', async () => {
@@ -268,15 +262,13 @@ describe('ConsultantJobAggregate', () => {
         consultantJobAggregate.validateUnassignConsultant(command);
         assert.fail('It should not happen');
       } catch (error) {
-        error.should.deep.equal(
-          new ValidationError('Not allowed consultant', [
-            {
-              code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
-              message: `There is another job still running for this consultant id ${command.consultant_id}`,
-              path: ['consultant_id']
-            }
-          ])
-        );
+        error.errors.should.deep.equal([
+          {
+            code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
+            message: `There is another job still running for this consultant id ${command.consultant_id}`,
+            path: ['consultant_id']
+          }
+        ]);
       }
     });
     it('Test success scenario when other processes are there', () => {
@@ -338,15 +330,13 @@ describe('ConsultantJobAggregate', () => {
         consultantJobAggregate.validateTransferConsultant(command);
         assert.fail('It should not happen');
       } catch (error) {
-        error.should.deep.equal(
-          new ValidationError('Not allowed consultant', [
-            {
-              code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
-              message: `There is another job still running for this consultant id ${command.from_consultant_id}`,
-              path: ['from_consultant_id']
-            }
-          ])
-        );
+        error.errors.should.deep.equal([
+          {
+            code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
+            message: `There is another job still running for this consultant id ${command.from_consultant_id}`,
+            path: ['from_consultant_id']
+          }
+        ]);
       }
     });
 
@@ -367,15 +357,13 @@ describe('ConsultantJobAggregate', () => {
         consultantJobAggregate.validateTransferConsultant(command);
         assert.fail('It should not happen');
       } catch (error) {
-        error.should.deep.equal(
-          new ValidationError('Not allowed consultant', [
-            {
-              code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
-              message: `There is another job still running for this consultant id ${command.to_consultant_id}`,
-              path: ['to_consultant_id']
-            }
-          ])
-        );
+        error.errors.should.deep.equal([
+          {
+            code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
+            message: `There is another job still running for this consultant id ${command.to_consultant_id}`,
+            path: ['to_consultant_id']
+          }
+        ]);
       }
     });
     it('Test success scenario when other processes are there', () => {
@@ -409,15 +397,13 @@ describe('ConsultantJobAggregate', () => {
         });
         assert.fail('It should not happen');
       } catch (error) {
-        error.should.deep.equal(
-          new ValidationError('from consultant and to consultant should be different', [
-            {
-              code: 'SAME_CONSULTANT',
-              message: 'We can not transfer clients from a consultant to the same consultant',
-              path: ['from_consultant_id']
-            }
-          ])
-        );
+        error.errors.should.deep.equal([
+          {
+            code: 'SAME_CONSULTANT',
+            message: 'We can not transfer clients from a consultant to the same consultant',
+            path: ['from_consultant_id']
+          }
+        ]);
       }
     });
     it('Test success scenario when we have another process completed for this consultant', () => {

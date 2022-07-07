@@ -44,15 +44,13 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Consultant role not found');
 
-      error.should.deep.equal(
-        new ValidationError('Consultant role not found', [
-          {
-            code: 'CONSULTANT_ROLE_NOT_FOUND',
-            message: `Consultant role ${consultant.consultant_role_id} does not not exist`,
-            path: ['consultant_role_id']
-          }
-        ])
-      );
+      error.errors.should.deep.equal([
+        {
+          code: 'CONSULTANT_ROLE_NOT_FOUND',
+          message: `Consultant role ${consultant.consultant_role_id} does not not exist`,
+          path: ['consultant_role_id']
+        }
+      ]);
     });
 
     it('should return validation error when max consultants have been exceeded', async () => {
@@ -81,15 +79,13 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Max consultants already assigned');
 
-      error.should.deep.equal(
-        new ValidationError('Max consultants already assigned', [
-          {
-            code: 'MAX_CONSULTANTS_ASSIGNED',
-            message: `Max consultants already assigned for consultant role id: ${consultant.consultant_role_id}`,
-            path: ['consultant_role_id']
-          }
-        ])
-      );
+      error.errors.should.deep.equal([
+        {
+          code: 'MAX_CONSULTANTS_ASSIGNED',
+          message: `Max consultants already assigned for consultant role id: ${consultant.consultant_role_id}`,
+          path: ['consultant_role_id']
+        }
+      ]);
       agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith(agencyAggregateId);
       AgencyAggregateStub.getConsultantRole.should.have.been.calledOnceWith(roleId);
     });
@@ -120,15 +116,13 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Consultant already assigned');
 
-      error.should.deep.equal(
-        new ValidationError('Consultant already assigned', [
-          {
-            code: 'CONSULTANT_ALREADY_ASSIGNED_ROLE',
-            message: `Consultant ${consultant.consultant_id} already assigned to role ${consultant.consultant_role_id}`,
-            path: ['consultant_id']
-          }
-        ])
-      );
+      error.errors.should.deep.equal([
+        {
+          code: 'CONSULTANT_ALREADY_ASSIGNED_ROLE',
+          message: `Consultant ${consultant.consultant_id} already assigned to role ${consultant.consultant_role_id}`,
+          path: ['consultant_id']
+        }
+      ]);
       agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith(agencyAggregateId);
       AgencyAggregateStub.getConsultantRole.should.have.been.calledOnceWith(roleId);
     });
@@ -159,15 +153,13 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Consultant role not enabled');
 
-      error.should.deep.equal(
-        new ValidationError('Consultant role not enabled', [
-          {
-            code: 'CONSULTANT_ROLE_NOT_ENABLED',
-            message: `Consultant role ${consultant.consultant_role_id} is not enabled`,
-            path: ['consultant_role_id']
-          }
-        ])
-      );
+      error.errors.should.deep.equal([
+        {
+          code: 'CONSULTANT_ROLE_NOT_ENABLED',
+          message: `Consultant role ${consultant.consultant_role_id} is not enabled`,
+          path: ['consultant_role_id']
+        }
+      ]);
       agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith(agencyAggregateId);
       AgencyAggregateStub.getConsultantRole.should.have.been.calledOnceWith(roleId);
     });
@@ -352,15 +344,13 @@ describe('AgencyClientAggregate', () => {
         await agencyClientAggregate.validateTransferClientConsultant(commandData);
         assert.fail('It should not happen');
       } catch (error) {
-        error.should.deep.equal(
-          new ValidationError('Consultant role not found', [
-            {
-              code: 'CONSULTANT_ROLE_NOT_FOUND',
-              message: `Consultant role ${commandData.to_consultant_role_id} does not not exist`,
-              path: ['to_consultant_role_id']
-            }
-          ])
-        );
+        error.errors.should.deep.equal([
+          {
+            code: 'CONSULTANT_ROLE_NOT_FOUND',
+            message: `Consultant role ${commandData.to_consultant_role_id} does not not exist`,
+            path: ['to_consultant_role_id']
+          }
+        ]);
       }
       agencyRepositoryStub.getAggregate.should.have.been.calledOnceWith({agency_id: agencyId});
       agencyAggregate.getConsultantRole.should.have.been.calledWith(commandData.to_consultant_role_id);
