@@ -26,7 +26,8 @@ describe('EventHandlerFactory', () => {
       const eventRepository = stubConstructor(EventRepository);
       const handler = EventHandlerFactory.getHandler(eventType, eventRepository, testLogger);
 
-      assert.isTrue(handler instanceof AgencyClientConsultantAssignedEventHandler);
+      handler.should.be.instanceof(AgencyClientConsultantAssignedEventHandler);
+      assert.instanceOf(handler, AgencyClientConsultantAssignedEventHandler);
     });
 
     it('should return correct handler for AgencyClientConsultantUnassigned event', () => {
@@ -34,7 +35,8 @@ describe('EventHandlerFactory', () => {
       const eventRepository = stubConstructor(EventRepository);
       const handler = EventHandlerFactory.getHandler(eventType, eventRepository, testLogger);
 
-      assert.isTrue(handler instanceof AgencyClientConsultantUnassignedEventHandler);
+      handler.should.be.instanceof(AgencyClientConsultantUnassignedEventHandler);
+      assert.instanceOf(handler, AgencyClientConsultantUnassignedEventHandler);
     });
 
     it('should return correct handler for AgencyConsultantRoleDetailsUpdated event', () => {
@@ -42,7 +44,8 @@ describe('EventHandlerFactory', () => {
       const eventRepository = stubConstructor(EventRepository);
       const handler = EventHandlerFactory.getHandler(eventType, eventRepository, testLogger);
 
-      assert.isTrue(handler instanceof AgencyConsultantRoleDetailsUpdatedEventHandler);
+      handler.should.be.instanceof(AgencyConsultantRoleDetailsUpdatedEventHandler);
+      assert.instanceOf(handler, AgencyConsultantRoleDetailsUpdatedEventHandler);
     });
 
     it('should throw error if event is not supported', () => {
