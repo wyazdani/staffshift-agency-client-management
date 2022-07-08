@@ -158,7 +158,7 @@ export const startServer = new Promise<void>((resolve) => {
       // Serve the Swagger documents and Swagger UI
       app.use(middleware.swaggerUi());
       app.use((err: Error, req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error | null) => void) => {
-        ErrorHandler.onError(err, req, res, next);
+        errorHandler.onError(err, req, res);
       });
       // Start the server
       const server = createServer(app);

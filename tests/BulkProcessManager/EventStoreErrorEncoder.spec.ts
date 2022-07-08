@@ -29,17 +29,13 @@ describe('EventStoreErrorEncoder', () => {
     });
     it('Test Validation Error', () => {
       const originalError = new Error('sample');
-      const validationError = new ValidationError(
-        'Error parsing aggregate id',
-        [
-          {
-            code: 'INVALID_AGGREGATE_ID',
-            message: 'Could not parse aggregate id',
-            path: ['aggregate_id']
-          }
-        ],
-        originalError
-      );
+      const validationError = new ValidationError('Error parsing aggregate id', originalError).setErrors([
+        {
+          code: 'INVALID_AGGREGATE_ID',
+          message: 'Could not parse aggregate id',
+          path: ['aggregate_id']
+        }
+      ]);
       const result = EventStoreErrorEncoder.encodeArray([validationError]);
 
       result.should.deep.equal([
