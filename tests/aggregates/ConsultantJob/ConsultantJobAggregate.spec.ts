@@ -43,7 +43,7 @@ describe('ConsultantJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Consultant role not found').setErrors([
+        new ValidationError('Not allowed consultant role').setErrors([
           {
             code: 'CONSULTANT_ROLE_NOT_FOUND',
             message: `Consultant role ${command.consultant_role_id} does not not exist`,
@@ -70,7 +70,7 @@ describe('ConsultantJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Consultant role not enabled').setErrors([
+        new ValidationError('Not allowed consultant role').setErrors([
           {
             code: 'CONSULTANT_ROLE_NOT_ENABLED',
             message: `Consultant role ${command.consultant_role_id} is not enabled`,
@@ -103,7 +103,7 @@ describe('ConsultantJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Another consultant process active').setErrors([
+        new ValidationError('Not allowed consultant').setErrors([
           {
             code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
             message: `There is another job still running for this consultant id ${command.consultant_id}`,
@@ -269,7 +269,7 @@ describe('ConsultantJobAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Another consultant process active').setErrors([
+          new ValidationError('Not allowed consultant').setErrors([
             {
               code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
               message: `There is another job still running for this consultant id ${command.consultant_id}`,
@@ -339,7 +339,7 @@ describe('ConsultantJobAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Another consultant process active').setErrors([
+          new ValidationError('Not allowed consultant').setErrors([
             {
               code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
               message: `There is another job still running for this consultant id ${command.from_consultant_id}`,
@@ -368,7 +368,7 @@ describe('ConsultantJobAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Another consultant process active').setErrors([
+          new ValidationError('Not allowed consultant').setErrors([
             {
               code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
               message: `There is another job still running for this consultant id ${command.to_consultant_id}`,
@@ -410,7 +410,7 @@ describe('ConsultantJobAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Same consultant').setErrors([
+          new ValidationError('from consultant and to consultant should be different').setErrors([
             {
               code: 'SAME_CONSULTANT',
               message: 'We can not transfer clients from a consultant to the same consultant',
