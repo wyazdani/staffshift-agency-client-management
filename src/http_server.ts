@@ -11,7 +11,7 @@ import swaggerTools, {Middleware20} from 'swagger-tools';
 import {load} from 'js-yaml';
 import fs from 'fs';
 import config from 'config';
-import {RuntimeError, ErrorHandler, ResourceNotFoundError} from 'a24-node-error-utils';
+import {RuntimeError, ErrorHandler} from 'a24-node-error-utils';
 import Logger, {SetupOptions} from 'a24-logzio-winston';
 import Url from 'url';
 import {createHttpTerminator} from 'http-terminator';
