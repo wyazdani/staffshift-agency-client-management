@@ -1,0 +1,32 @@
+import {WriteProjectionInterface} from 'WriteProjectionInterface';
+import {EventsEnum} from '../../Events';
+import {EventStoreModelInterface} from '../../models/EventStore';
+import {PaymentTermAggregateRecordInterface} from './types';
+
+/**
+ * Responsible for handling all events to build the current state of the aggregate
+ */
+export class PaymentTermWriteProjectionHandler
+implements WriteProjectionInterface<PaymentTermAggregateRecordInterface> {
+  execute(
+    type: EventsEnum,
+    aggregate: PaymentTermAggregateRecordInterface,
+    event: EventStoreModelInterface
+  ): PaymentTermAggregateRecordInterface {
+    switch (type) {
+      case EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED:
+      case EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_APPLIED: {
+        aggregate.inherited = false;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.AGENCY_CLIENT_EMPTY_PAYMENT_TERM_INHERITED:
+      case EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_INHERITED:
+      case EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_INHERITED: {
+        aggregate.inherited = true;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      default:
+        throw new Error(`Event type not supported: ${type}`);
+    }
+  }
+}

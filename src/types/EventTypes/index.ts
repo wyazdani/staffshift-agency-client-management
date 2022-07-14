@@ -17,4 +17,9 @@ export {ConsultantJobUnassignInitiatedEventStoreDataInterface} from './Consultan
 export {ConsultantJobUnassignCompletedEventStoreDataInterface} from './ConsultantJobUnassignCompletedEventInterface';
 export {ConsultantJobTransferInitiatedEventStoreDataInterface} from './ConsultantJobTransferInitiatedEventInterface';
 export {ConsultantJobTransferCompletedEventStoreDataInterface} from './ConsultantJobTransferCompletedEventInterface';
+export {AgencyClientCreditPaymentTermAppliedEventStoreDataInterface} from './AgencyClientCreditPaymentTermAppliedEventInterface';
+export {AgencyClientCreditPaymentTermInheritedEventStoreDataInterface} from './AgencyClientCreditPaymentTermInheritedEventInterface';
+export {AgencyClientPayInAdvancePaymentTermAppliedEventStoreDataInterface} from './AgencyClientPayInAdvancePaymentTermAppliedEventInterface';
+export {AgencyClientPayInAdvancePaymentTermInheritedEventStoreDataInterface} from './AgencyClientPayInAdvancePaymentTermInheritedEventInterface';
+export {AgencyClientEmptyPaymentTermInheritedEventStoreDataInterface} from './AgencyClientEmptyPaymentTermInheritedEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';
