@@ -1,0 +1,10 @@
+import {CompleteClientInheritanceProcessCommandDataInterface} from './CommandTypes/CompleteClientInheritanceProcessCommandInterface';
+import {FailItemClientInheritanceProcessCommandDataInterface} from './CommandTypes/FailItemClientInheritanceProcessCommandInterface';
+import {StartClientInheritanceProcessCommandDataInterface} from './CommandTypes/StartClientInheritanceProcessCommandInterface';
+import {SucceedItemClientInheritanceProcessCommandDataInterface} from './CommandTypes/SucceedItemClientInheritanceProcessCommandInterface';
+
+export type ClientInheritanceProcessCommandDataType =
+  | StartClientInheritanceProcessCommandDataInterface
+  | CompleteClientInheritanceProcessCommandDataInterface
+  | FailItemClientInheritanceProcessCommandDataInterface
+  | SucceedItemClientInheritanceProcessCommandDataInterface;
