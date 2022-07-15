@@ -32,7 +32,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
     const consultantRole = agencyAggregate.getConsultantRole(command.consultant_role_id);
 
     if (!consultantRole) {
-      throw new ValidationError('Not allowed consultant role', [
+      throw new ValidationError('Not allowed consultant role').setErrors([
         {
           code: 'CONSULTANT_ROLE_NOT_FOUND',
           message: `Consultant role ${command.consultant_role_id} does not not exist`,
@@ -41,7 +41,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
       ]);
     }
     if (consultantRole.status !== 'enabled') {
-      throw new ValidationError('Not allowed consultant role', [
+      throw new ValidationError('Not allowed consultant role').setErrors([
         {
           code: 'CONSULTANT_ROLE_NOT_ENABLED',
           message: `Consultant role ${command.consultant_role_id} is not enabled`,
@@ -61,7 +61,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
   }
   validateTransferConsultant(command: TransferConsultantCommandDataInterface): void {
     if (command.from_consultant_id === command.to_consultant_id) {
-      throw new ValidationError('from consultant and to consultant should be different', [
+      throw new ValidationError('from consultant and to consultant should be different').setErrors([
         {
           code: 'SAME_CONSULTANT',
           message: 'We can not transfer clients from a consultant to the same consultant',
@@ -80,7 +80,7 @@ export class ConsultantJobAggregate extends AbstractAggregate<
     );
 
     if (process) {
-      throw new ValidationError('Not allowed consultant', [
+      throw new ValidationError('Not allowed consultant').setErrors([
         {
           code: 'ANOTHER_CONSULTANT_PROCESS_ACTIVE',
           message: `There is another job still running for this consultant id ${consultantId}`,
