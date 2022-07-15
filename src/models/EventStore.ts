@@ -111,7 +111,8 @@ export const eventStoreSchema = new Schema(
       createdAt: 'created_at',
       updatedAt: false
     },
-    collection: 'EventStore'
+    collection: 'EventStore',
+    minimize: false// we want to store empty object on data property
   }
 );
 

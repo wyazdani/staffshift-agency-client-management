@@ -2,7 +2,7 @@ import {PaymentTermCommandEnum} from '../PaymentTermCommandEnum';
 import {PaymentTermCommandInterface} from '..';
 
 export interface ApplyInheritedPaymentTermCommandDataInterface {
-  term: string;
+  term: string | null;
   force: boolean;
 }
 
