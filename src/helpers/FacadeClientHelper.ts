@@ -76,7 +76,13 @@ export class FacadeClientHelper {
             if (response) {
               if (response.statusCode === 400) {
                 item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
-                const validationError = new ValidationError(item.message, item.errors);
+                const validationError = new ValidationError(item.message).setErrors([
+                  {
+                    code: item.code,
+                    message: item.message,
+                    path: item.errors
+                  }
+                ]);
 
                 return reject(validationError);
               }
@@ -132,7 +138,13 @@ export class FacadeClientHelper {
             if (response) {
               if (response.statusCode === 400) {
                 item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
-                const validationError = new ValidationError(item.message, item.errors);
+                const validationError = new ValidationError(item.message).setErrors([
+                  {
+                    code: item.code,
+                    message: item.message,
+                    path: item.errors
+                  }
+                ]);
 
                 return reject(validationError);
               }
@@ -195,7 +207,13 @@ export class FacadeClientHelper {
           if (response) {
             if (response.statusCode === 400) {
               item = client.deserialize(response, StaffshiftFacadeClient.GetValidationErrorModel);
-              const validationError = new ValidationError(item.message, item.errors);
+              const validationError = new ValidationError(item.message).setErrors([
+                {
+                  code: item.code,
+                  message: item.message,
+                  path: item.errors
+                }
+              ]);
 
               return reject(validationError);
             }
