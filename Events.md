@@ -903,4 +903,199 @@ Description: A short description of the event
 ```
 
  </td><td> transfer clients of a consultant to another consultant for an agency has completed </td></tr>
+<tr><td> AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED </td><td> AgencyClientCreditPaymentTermApplied </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "payment_term"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> credit payment term is applied to agency client </td></tr>
+<tr><td> AGENCY_CLIENT_CREDIT_PAYMENT_TERM_INHERITED </td><td> AgencyClientCreditPaymentTermInherited </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "payment_term"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> credit payment term for agency client is inherited from the parent </td></tr>
+<tr><td> AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_APPLIED </td><td> AgencyClientPayInAdvancePaymentTermApplied </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "payment_term"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> pay-in-advance payment term is applied to agency client </td></tr>
+<tr><td> AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_INHERITED </td><td> AgencyClientPayInAdvancePaymentTermInherited </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "payment_term"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> pay-in-advance payment term for agency client is inherited from the parent </td></tr>
+<tr><td> AGENCY_CLIENT_EMPTY_PAYMENT_TERM_INHERITED </td><td> AgencyClientEmptyPaymentTermInherited </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "payment_term"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> empty payment term for agency client is inherited from the parent since no payment term was set on the parent </td></tr>
 </table><!--DATA_END-->
