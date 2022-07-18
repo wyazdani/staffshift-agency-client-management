@@ -5,7 +5,8 @@ import {ClientInheritanceProcessCommandEnum} from '../types';
 import {SucceedItemClientInheritanceProcessCommandInterface} from '../types/CommandTypes';
 import {AgencyClientInheritanceProcessItemSucceededEventInterface} from 'EventTypes/AgencyClientInheritanceProcessItemSucceededEventInterface';
 
-export class SucceedItemClientInheritanceProcessCommandHandler implements ClientInheritanceProcessCommandHandlerInterface {
+export class SucceedItemClientInheritanceProcessCommandHandler
+implements ClientInheritanceProcessCommandHandlerInterface {
   public commandType = ClientInheritanceProcessCommandEnum.SUCCEED_ITEM_INHERITANCE_PROCESS;
 
   constructor(private repository: ClientInheritanceProcessRepository) {}

@@ -48,7 +48,11 @@ describe('ClientInheritanceProcessWriteProjectionHandler', () => {
         correlation_id: 'fake_id'
       });
 
-      const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_SUCCEEDED, aggregate, event);
+      const result = projectionHandler.execute(
+        EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_SUCCEEDED,
+        aggregate,
+        event
+      );
 
       result.progressed_items.should.deep.equal([{client_id: 'client id'}]);
       result.last_sequence_id.should.equal(2);
@@ -71,7 +75,11 @@ describe('ClientInheritanceProcessWriteProjectionHandler', () => {
         correlation_id: 'fake_id'
       });
 
-      const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_FAILED, aggregate, event);
+      const result = projectionHandler.execute(
+        EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_FAILED,
+        aggregate,
+        event
+      );
 
       result.progressed_items.should.deep.equal([{client_id: 'client id'}]);
       result.last_sequence_id.should.equal(2);
@@ -92,7 +100,11 @@ describe('ClientInheritanceProcessWriteProjectionHandler', () => {
         correlation_id: 'fake_id'
       });
 
-      const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED, aggregate, event);
+      const result = projectionHandler.execute(
+        EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED,
+        aggregate,
+        event
+      );
 
       result.status.should.equal(ClientInheritanceProcessAggregateStatusEnum.COMPLETED);
       result.last_sequence_id.should.equal(2);

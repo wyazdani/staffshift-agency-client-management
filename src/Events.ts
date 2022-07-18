@@ -146,5 +146,5 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED]: {
     name: 'AgencyClientInheritanceProcessCompleted',
     description: 'Background process for agency client inheritance is completed'
-  },
+  }
 };

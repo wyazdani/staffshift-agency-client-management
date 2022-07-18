@@ -3,7 +3,8 @@ import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {PaymentTermAggregateIdInterface} from '../../aggregates/PaymentTerm/types';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AgencyClientPayInAdvancePaymentTermAppliedEventStoreDataInterface extends BaseEventStoreDataInterface {}
+export interface AgencyClientPayInAdvancePaymentTermAppliedEventStoreDataInterface
+  extends BaseEventStoreDataInterface {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AgencyClientPayInAdvancePaymentTermAppliedEventInterface
