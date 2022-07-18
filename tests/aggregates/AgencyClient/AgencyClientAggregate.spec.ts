@@ -44,8 +44,8 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Consultant role not found');
 
-      error.should.deep.equal(
-        new ValidationError('Consultant role not found', [
+      error.assertEqual(
+        new ValidationError('Consultant role not found').setErrors([
           {
             code: 'CONSULTANT_ROLE_NOT_FOUND',
             message: `Consultant role ${consultant.consultant_role_id} does not not exist`,
@@ -81,8 +81,8 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Max consultants already assigned');
 
-      error.should.deep.equal(
-        new ValidationError('Max consultants already assigned', [
+      error.assertEqual(
+        new ValidationError('Max consultants already assigned').setErrors([
           {
             code: 'MAX_CONSULTANTS_ASSIGNED',
             message: `Max consultants already assigned for consultant role id: ${consultant.consultant_role_id}`,
@@ -120,8 +120,8 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Consultant already assigned');
 
-      error.should.deep.equal(
-        new ValidationError('Consultant already assigned', [
+      error.assertEqual(
+        new ValidationError('Consultant already assigned').setErrors([
           {
             code: 'CONSULTANT_ALREADY_ASSIGNED_ROLE',
             message: `Consultant ${consultant.consultant_id} already assigned to role ${consultant.consultant_role_id}`,
@@ -159,8 +159,8 @@ describe('AgencyClientAggregate', () => {
         .validateAddClientConsultant(consultant)
         .should.be.rejectedWith(ValidationError, 'Consultant role not enabled');
 
-      error.should.deep.equal(
-        new ValidationError('Consultant role not enabled', [
+      error.assertEqual(
+        new ValidationError('Consultant role not enabled').setErrors([
           {
             code: 'CONSULTANT_ROLE_NOT_ENABLED',
             message: `Consultant role ${consultant.consultant_role_id} is not enabled`,
@@ -352,8 +352,8 @@ describe('AgencyClientAggregate', () => {
         await agencyClientAggregate.validateTransferClientConsultant(commandData);
         assert.fail('It should not happen');
       } catch (error) {
-        error.should.deep.equal(
-          new ValidationError('Consultant role not found', [
+        error.assertEqual(
+          new ValidationError('Consultant role not found').setErrors([
             {
               code: 'CONSULTANT_ROLE_NOT_FOUND',
               message: `Consultant role ${commandData.to_consultant_role_id} does not not exist`,

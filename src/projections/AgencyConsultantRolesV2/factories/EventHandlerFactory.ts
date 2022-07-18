@@ -16,10 +16,7 @@ export class EventHandlerFactory {
   /**
    * Return event handler based on the event type
    */
-  static getHandler(
-    eventType: EventsEnum,
-    logger: LoggerContext
-  ): EventHandlerInterface<BaseEventStoreDataInterface> {
+  static getHandler(eventType: EventsEnum, logger: LoggerContext): EventHandlerInterface<BaseEventStoreDataInterface> {
     logger.debug('Processing the incoming event', {event: eventType});
 
     switch (eventType) {

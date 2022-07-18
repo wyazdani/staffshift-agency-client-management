@@ -83,7 +83,7 @@ export class GenericRepository<SchemaType> {
     try {
       return await this.store.find(query, this.getProjection()).skip(skip).limit(limit).sort(sortBy).lean().exec();
     } catch (dbError) {
-      throw new RuntimeError(`An error occurred while listing the records for ${this.store.modelName}`, {dbError});
+      throw new RuntimeError(`An error occurred while listing the records for ${this.store.modelName}`, dbError);
     }
   }
 

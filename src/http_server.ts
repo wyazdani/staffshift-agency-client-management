@@ -11,7 +11,7 @@ import swaggerTools, {Middleware20} from 'swagger-tools';
 import {load} from 'js-yaml';
 import fs from 'fs';
 import config from 'config';
-import A24ErrorUtils, {RuntimeError, ErrorHandler} from 'a24-node-error-utils';
+import {RuntimeError, ErrorHandler} from 'a24-node-error-utils';
 import Logger, {SetupOptions} from 'a24-logzio-winston';
 import Url from 'url';
 import {createHttpTerminator} from 'http-terminator';
@@ -42,7 +42,7 @@ const errorHandlerConfig = {
   client_errors: config.get('client_errors')
 };
 
-A24ErrorUtils.configure(errorHandlerConfig);
+const errorHandler = new ErrorHandler(errorHandlerConfig as unknown);
 
 const mongoConfig = cloneDeep(config.get<MongoConfigurationInterface>('mongo'));
 
@@ -158,7 +158,7 @@ export const startServer = new Promise<void>((resolve) => {
       // Serve the Swagger documents and Swagger UI
       app.use(middleware.swaggerUi());
       app.use((err: Error, req: SwaggerRequestInterface, res: ServerResponse, next: (error?: Error | null) => void) => {
-        ErrorHandler.onError(err, req, res, next);
+        errorHandler.onError(err, req, res);
       });
       // Start the server
       const server = createServer(app);
