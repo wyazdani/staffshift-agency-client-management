@@ -153,18 +153,18 @@ export const events: EventsType = {
   },
   [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED]: {
     name: 'AgencyClientApplyPaymentTermInitiated',
-    description: 'Agency Client Apply Payment Term Initiated to Agency Client'
+    description: 'Applying payment term is initiated for the agency client'
   },
   [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED]: {
     name: 'AgencyClientApplyPaymentTermInheritanceInitiated',
-    description: 'Agency Client Apply Payment Term Initiated from Agency Client Organisation'
+    description: 'Applying payment term inheritance is initiated for the agency client'
   },
   [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED]: {
     name: 'AgencyClientApplyPaymentTermCompleted',
-    description: 'Agency Client Apply Payment Term Completed to Agency Client'
+    description: 'Applying payment term is completed for the agency client'
   },
   [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED]: {
     name: 'AgencyClientApplyPaymentTermInheritanceCompleted',
-    description: 'Agency Client Apply Payment Term Completed from Agency Client Organisation'
+    description: 'Applying payment term completed is initiated for the agency client'
   }
 };
