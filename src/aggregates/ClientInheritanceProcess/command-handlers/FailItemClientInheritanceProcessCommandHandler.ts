@@ -6,7 +6,7 @@ import {AgencyClientInheritanceProcessItemFailedEventInterface} from 'EventTypes
 import {FailItemClientInheritanceProcessCommandInterface} from '../types/CommandTypes';
 
 export class FailItemClientInheritanceProcessCommandHandler implements ClientInheritanceProcessCommandHandlerInterface {
-  public commandType = ClientInheritanceProcessCommandEnum.FAIL_ITEM;
+  public commandType = ClientInheritanceProcessCommandEnum.FAIL_ITEM_INHERITANCE_PROCESS;
 
   constructor(private repository: ClientInheritanceProcessRepository) {}
 

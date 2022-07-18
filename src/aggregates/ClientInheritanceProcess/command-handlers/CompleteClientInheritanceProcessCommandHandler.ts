@@ -6,7 +6,7 @@ import {CompleteClientInheritanceProcessCommandInterface} from '../types/Command
 import {AgencyClientInheritanceProcessCompletedEventInterface} from 'EventTypes/AgencyClientInheritanceProcessCompletedEventInterface';
 
 export class CompleteClientInheritanceProcessCommandHandler implements ClientInheritanceProcessCommandHandlerInterface {
-  public commandType = ClientInheritanceProcessCommandEnum.COMPLETE;
+  public commandType = ClientInheritanceProcessCommandEnum.COMPLETE_INHERITANCE_PROCESS;
 
   constructor(private repository: ClientInheritanceProcessRepository) {}
 

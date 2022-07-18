@@ -6,6 +6,6 @@ export interface StartClientInheritanceProcessCommandDataInterface {
 }
 
 export interface StartClientInheritanceProcessCommandInterface extends ClientInheritanceProcessCommandInterface {
-  type: ClientInheritanceProcessCommandEnum.START;
+  type: ClientInheritanceProcessCommandEnum.START_INHERITANCE_PROCESS;
   data: StartClientInheritanceProcessCommandDataInterface;
 }

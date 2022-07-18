@@ -6,7 +6,7 @@ import {StartClientInheritanceProcessCommandInterface} from '../types/CommandTyp
 import {AgencyClientInheritanceProcessStartedEventInterface} from 'EventTypes/AgencyClientInheritanceProcessStartedEventInterface';
 
 export class StartClientInheritanceProcessCommandHandler implements ClientInheritanceProcessCommandHandlerInterface {
-  public commandType = ClientInheritanceProcessCommandEnum.START;
+  public commandType = ClientInheritanceProcessCommandEnum.START_INHERITANCE_PROCESS;
 
   constructor(private repository: ClientInheritanceProcessRepository) {}
 

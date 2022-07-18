@@ -6,6 +6,6 @@ export interface SucceedItemClientInheritanceProcessCommandDataInterface {
 }
 
 export interface SucceedItemClientInheritanceProcessCommandInterface extends ClientInheritanceProcessCommandInterface {
-  type: ClientInheritanceProcessCommandEnum.SUCCEED_ITEM;
+  type: ClientInheritanceProcessCommandEnum.SUCCEED_ITEM_INHERITANCE_PROCESS;
   data: SucceedItemClientInheritanceProcessCommandDataInterface;
 }

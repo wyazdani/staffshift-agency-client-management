@@ -8,6 +8,6 @@ export interface FailItemClientInheritanceProcessCommandDataInterface {
 }
 
 export interface FailItemClientInheritanceProcessCommandInterface extends ClientInheritanceProcessCommandInterface {
-  type: ClientInheritanceProcessCommandEnum.FAIL_ITEM;
+  type: ClientInheritanceProcessCommandEnum.FAIL_ITEM_INHERITANCE_PROCESS;
   data: FailItemClientInheritanceProcessCommandDataInterface;
 }
