@@ -1,8 +1,11 @@
 import {
   ApplyPaymentTermOrganisationJobCommandDataInterface,
-  CompleteApplyPaymentTermOrganisationJobCommandDataInterface
+  CompleteApplyPaymentTermInheritanceOrganisationJobCommandDataInterface,
+  CompleteApplyPaymentTermOrganisationJobCommandDataInterface,
+  InheritPaymentTermOrganisationJobCommandDataInterface
 } from './CommandTypes';
-
 export type OrganisationJobCommandDataType =
+  | CompleteApplyPaymentTermInheritanceOrganisationJobCommandDataInterface
+  | InheritPaymentTermOrganisationJobCommandDataInterface
   | ApplyPaymentTermOrganisationJobCommandDataInterface
   | CompleteApplyPaymentTermOrganisationJobCommandDataInterface;
