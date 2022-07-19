@@ -6,5 +6,5 @@ import {OrganisationJobCommandEnum} from './OrganisationJobCommandEnum';
 export interface OrganisationJobCommandInterface extends AggregateCommandInterface {
   aggregateId: OrganisationJobAggregateIdInterface;
   type: OrganisationJobCommandEnum;
-  data: OrganisationJobCommandDataType; // Work In Progress
+  data: OrganisationJobCommandDataType;
 }

@@ -1,8 +1,8 @@
 import {
-  ApplyPaymentTermOrganisationJobCommandHandler,
-  CompleteApplyPaymentTermInheritanceOrganisationJobCommandHandler,
-  CompleteApplyPaymentTermOrganisationJobCommandHandler,
-  InheritPaymentTermOrganisationJobCommandHandler
+  InitiateApplyPaymentTermCommandHandler,
+  CompleteInitiatePaymentTermCommandHandler,
+  CompleteApplyPaymentTermCommandHandler,
+  InitiateInheritPaymentTermCommandHandler
 } from './command-handlers';
 import {EventRepository} from '../../EventRepository';
 import {OrganisationJobCommandHandlerInterface} from './types/OrganisationJobCommandHandlerInterface';
@@ -10,10 +10,10 @@ import {OrganisationJobRepository} from './OrganisationJobRepository';
 import {OrganisationJobWriteProjectionHandler} from './OrganisationJobWriteProjectionHandler';
 
 const handlers = [
-  ApplyPaymentTermOrganisationJobCommandHandler,
-  CompleteApplyPaymentTermInheritanceOrganisationJobCommandHandler,
-  CompleteApplyPaymentTermOrganisationJobCommandHandler,
-  InheritPaymentTermOrganisationJobCommandHandler
+  InitiateApplyPaymentTermCommandHandler,
+  CompleteInitiatePaymentTermCommandHandler,
+  CompleteApplyPaymentTermCommandHandler,
+  InitiateInheritPaymentTermCommandHandler
 ];
 
 /**

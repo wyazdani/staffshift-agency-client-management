@@ -19,8 +19,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * checks:
    * - we don't have another job running for the same organisation
    */
-
-  private validateNotRunningAnotherProcess(fieldName: string, organisationId: string) {
+  private validateNotRunningAnotherProcess(organisationId: string) {
     const paymentTermProcess = find(this.aggregate.running_apply_payment_term, (process) => process.job_id.length > 0);
     const inheritTermProcess = find(
       this.aggregate.running_apply_payment_term_inheritance,
@@ -32,7 +31,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'ANOTHER_ORGANISATION_PROCESS_ACTIVE',
           message: `There is another job still running for this organisation id ${organisationId}`,
-          path: [fieldName]
+          path: ['organisation id']
         }
       ]);
     }

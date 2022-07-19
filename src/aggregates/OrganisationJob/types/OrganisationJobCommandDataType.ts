@@ -1,11 +1,11 @@
 import {
-  ApplyPaymentTermOrganisationJobCommandDataInterface,
-  CompleteApplyPaymentTermInheritanceOrganisationJobCommandDataInterface,
-  CompleteApplyPaymentTermOrganisationJobCommandDataInterface,
-  InheritPaymentTermOrganisationJobCommandDataInterface
+  CompleteApplyPaymentTermCommandDataInterface,
+  CompleteInheritPaymentTermCommandDataInterface,
+  InitiateApplyPaymentTermCommandDataInterface,
+  InitiateInheritPaymentTermCommandDataInterface
 } from './CommandTypes';
 export type OrganisationJobCommandDataType =
-  | CompleteApplyPaymentTermInheritanceOrganisationJobCommandDataInterface
-  | InheritPaymentTermOrganisationJobCommandDataInterface
-  | ApplyPaymentTermOrganisationJobCommandDataInterface
-  | CompleteApplyPaymentTermOrganisationJobCommandDataInterface;
+  | CompleteApplyPaymentTermCommandDataInterface
+  | InitiateApplyPaymentTermCommandDataInterface
+  | InitiateInheritPaymentTermCommandDataInterface
+  | CompleteInheritPaymentTermCommandDataInterface;
