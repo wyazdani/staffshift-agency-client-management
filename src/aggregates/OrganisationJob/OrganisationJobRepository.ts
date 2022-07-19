@@ -8,7 +8,7 @@ import {OrganisationJobAggregate} from './OrganisationJobAggregate';
 /**
  * Class responsible for interacting with aggregate data source
  */
-export class ConsultantJobRepository extends AbstractRepository {
+export class OrganisationJobRepository extends AbstractRepository {
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: OrganisationJobWriteProjectionHandler
@@ -22,7 +22,7 @@ export class ConsultantJobRepository extends AbstractRepository {
   ): Promise<OrganisationJobAggregate> {
     const projection: OrganisationJobAggregateRecordInterface = await this.eventRepository.leftFoldEvents(
       this.projectionHandler,
-      {name: aggregateId.name, agency_id: aggregateId.agency_id},
+      {name: aggregateId.name, agency_id: aggregateId.agency_id, organisation_id: aggregateId.organisation_id},
       pointInTime
     );
 
