@@ -1,29 +1,19 @@
-import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
-import {AgencyWriteProjectionHandler} from '../../../aggregates/Agency/AgencyWriteProjectionHandler';
-import {AgencyClientRepository} from '../../../aggregates/AgencyClient/AgencyClientRepository';
-import {AgencyClientWriteProjectionHandler} from '../../../aggregates/AgencyClient/AgencyClientWriteProjectionHandler';
-import {
-  ClientInheritanceProcessRepository
-} from '../../../aggregates/ClientInheritanceProcess/ClientInheritanceProcessRepository';
-import {
-  ClientInheritanceProcessWriteProjectionHandler
-} from '../../../aggregates/ClientInheritanceProcess/ClientInheritanceProcessWriteProjectionHandler';
-import {
-  ClientInheritanceProcessAggregateIdInterface,
-  ClientInheritanceProcessCommandEnum
-} from '../../../aggregates/ClientInheritanceProcess/types';
+import {EventStoreEncodedErrorInterface} from 'EventStoreEncodedErrorInterface';
+import {ClientInheritanceProcessCommandEnum} from '../../../aggregates/ClientInheritanceProcess/types';
 import {
   StartClientInheritanceProcessCommandInterface,
-  SucceedItemClientInheritanceProcessCommandInterface
+  SucceedItemClientInheritanceProcessCommandInterface,
+  CompleteClientInheritanceProcessCommandInterface,
+  FailItemClientInheritanceProcessCommandInterface
 } from '../../../aggregates/ClientInheritanceProcess/types/CommandTypes';
 import {CommandBus} from '../../../aggregates/CommandBus';
-import {PaymentTermAggregateIdInterface, PaymentTermCommandEnum} from '../../../aggregates/PaymentTerm/types';
-import {ApplyPaymentTermCommandInterface} from '../../../aggregates/PaymentTerm/types/CommandTypes';
-import {EventRepository} from '../../../EventRepository';
+import {PaymentTermCommandEnum} from '../../../aggregates/PaymentTerm/types';
+import {
+  ApplyPaymentTermCommandInterface,
+  ApplyInheritedPaymentTermCommandInterface
+} from '../../../aggregates/PaymentTerm/types/CommandTypes';
 
 export class CommandBusHelper {
-  private agencyClientRepository: AgencyClientRepository;
-  private processRepository: ClientInheritanceProcessRepository;
   constructor(private commandBus: CommandBus, private agencyId: string, private jobId: string) {}
   async startProcess(estimatedCount: number): Promise<void> {
     await this.commandBus.execute({
@@ -65,4 +55,45 @@ export class CommandBusHelper {
     } as SucceedItemClientInheritanceProcessCommandInterface);
   }
 
+  async failItem(clientId: string, errors: EventStoreEncodedErrorInterface[]): Promise<void> {
+    await this.commandBus.execute({
+      aggregateId: {
+        name: 'client_inheritance_process',
+        agency_id: this.agencyId,
+        job_id: this.jobId
+      },
+      type: ClientInheritanceProcessCommandEnum.FAIL_ITEM_INHERITANCE_PROCESS,
+      data: {
+        client_id: clientId,
+        errors
+      }
+    } as FailItemClientInheritanceProcessCommandInterface);
+  }
+
+  async applyInheritedPaymentTerm(clientId: string, term: string, force: boolean): Promise<void> {
+    await this.commandBus.execute({
+      aggregateId: {
+        name: 'payment_term',
+        agency_id: this.agencyId,
+        client_id: clientId
+      },
+      type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+      data: {
+        term,
+        force
+      }
+    } as ApplyInheritedPaymentTermCommandInterface);
+  }
+
+  async completeProcess(): Promise<void> {
+    await this.commandBus.execute({
+      aggregateId: {
+        name: 'client_inheritance_process',
+        agency_id: this.agencyId,
+        job_id: this.jobId
+      },
+      type: ClientInheritanceProcessCommandEnum.COMPLETE_INHERITANCE_PROCESS,
+      data: {}
+    } as CompleteClientInheritanceProcessCommandInterface);
+  }
 }

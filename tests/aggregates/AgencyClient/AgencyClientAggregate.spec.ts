@@ -525,4 +525,22 @@ describe('AgencyClientAggregate', () => {
       assert.deepEqual(aggregateObj, aggregate, 'Incorrect aggregate returned');
     });
   });
+
+  describe('getClientType()', () => {
+    it('should return the type', () => {
+      const aggregateId = {
+        agency_id: '45',
+        client_id: '12'
+      };
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site'
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      agencyClientAggregate.getClientType().should.equal('site');
+    });
+  });
 });
