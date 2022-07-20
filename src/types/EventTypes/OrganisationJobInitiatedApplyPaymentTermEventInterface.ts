@@ -5,12 +5,12 @@ import {ConsultantJobAggregateIdInterface} from '../../aggregates/ConsultantJob/
 export interface OrganisationJobInitiatedApplyPaymentTermDataInterface extends BaseEventStoreDataInterface {
   _id: string;
   term: string;
-  client_id:string;
+  client_id: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface OrganisationJobInitiatedApplyPaymentTermEventInterface
   extends EventStorePubSubModelInterface<
-  OrganisationJobInitiatedApplyPaymentTermDataInterface,
+    OrganisationJobInitiatedApplyPaymentTermDataInterface,
     ConsultantJobAggregateIdInterface
   > {}

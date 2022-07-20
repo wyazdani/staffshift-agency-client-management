@@ -3,7 +3,7 @@ import {OrganisationJobCommandInterface} from '../OrganisationJobCommandInterfac
 
 export interface InitiateInheritPaymentTermCommandDataInterface {
   _id: string;
-  client_id:string;
+  client_id: string;
 }
 
 export interface InitiateInheritPaymentTermCommandInterface extends OrganisationJobCommandInterface {

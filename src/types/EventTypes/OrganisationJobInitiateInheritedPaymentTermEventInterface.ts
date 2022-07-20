@@ -4,7 +4,7 @@ import {ConsultantJobAggregateIdInterface} from '../../aggregates/ConsultantJob/
 
 export interface OrganisationJobInitiateInheritedPaymentTermDataInterface extends BaseEventStoreDataInterface {
   _id: string;
-  client_id:string;
+  client_id: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

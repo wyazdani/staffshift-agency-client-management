@@ -9,6 +9,6 @@ export interface OrganisationJobCompleteAppliedPaymentTermDataInterface extends 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface OrganisationJobCompleteAppliedPaymentTermEventInterface
   extends EventStorePubSubModelInterface<
-  OrganisationJobCompleteAppliedPaymentTermDataInterface,
+    OrganisationJobCompleteAppliedPaymentTermDataInterface,
     ConsultantJobAggregateIdInterface
   > {}
