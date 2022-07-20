@@ -66,7 +66,7 @@ const agencyClients = new Schema<AgencyClientsProjectionV2DocumentType, AgencyCl
 
 agencyClients.static({
   // eslint-disable-next-line func-names
-  2: async function (
+  getAllLinkedSites: async function (
     agencyId: string,
     organisationId: string
   ): Promise<AgencyClientsProjectionV2DocumentType[]> {
