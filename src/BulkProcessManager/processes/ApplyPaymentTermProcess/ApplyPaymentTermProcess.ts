@@ -13,9 +13,9 @@ import {ClientInheritanceProcessAggregateIdInterface} from '../../../aggregates/
 import {ClientInheritanceProcessAggregateStatusEnum} from '../../../aggregates/ClientInheritanceProcess/types/ClientInheritanceProcessAggregateStatusEnum';
 import {CommandBus} from '../../../aggregates/CommandBus';
 import {EventRepository} from '../../../EventRepository';
+import {AgencyClientsProjectionV2} from '../../../models/AgencyClientsProjectionV2';
 import {EventStore} from '../../../models/EventStore';
 import {ProcessInterface} from '../../types/ProcessInterface';
-import {AgencyClientProjectionRepository} from './AgencyClientProjectionRepository';
 import {CommandBusHelper} from './CommandBusHelper';
 import {RetryableApplyPaymentTerm} from './RetryableApplyPaymentTerm';
 
@@ -127,7 +127,7 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
     const currentStatus = this.processAggregate.getCurrentStatus();
 
     if (currentStatus === ClientInheritanceProcessAggregateStatusEnum.NEW) {
-      const estimatedCount = await AgencyClientProjectionRepository.getEstimatedCount(
+      const estimatedCount = await AgencyClientsProjectionV2.getEstimatedCount(
         this.initiateEvent.aggregate_id.agency_id,
         this.initiateEvent.aggregate_id.organisation_id,
         agencyClient.getId().client_id,
@@ -161,7 +161,7 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
     const type = agencyClient.getClientType();
 
     if (type === 'organisation') {
-      const sites = await AgencyClientProjectionRepository.getAllLinkedSites(
+      const sites = await AgencyClientsProjectionV2.getAllLinkedSites(
         agencyClient.getId().agency_id,
         agencyClient.getId().client_id
       );
@@ -208,7 +208,7 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
    * apply inherited payment term on all wards under the site id
    */
   private async applyPaymentTermOnAllWards(siteId: string): Promise<void> {
-    const wards = await AgencyClientProjectionRepository.getAllLinkedWards(
+    const wards = await AgencyClientsProjectionV2.getAllLinkedWards(
       this.initiateEvent.aggregate_id.agency_id,
       this.initiateEvent.aggregate_id.organisation_id,
       siteId
