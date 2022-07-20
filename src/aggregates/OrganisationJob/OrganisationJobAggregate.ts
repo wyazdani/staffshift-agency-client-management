@@ -3,6 +3,12 @@ import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
+import {
+  CompleteApplyPaymentTermCommandDataInterface,
+  CompleteInheritPaymentTermCommandDataInterface,
+  InitiateApplyPaymentTermCommandDataInterface,
+  InitiateInheritPaymentTermCommandDataInterface
+} from './types/CommandTypes';
 
 export class OrganisationJobAggregate extends AbstractAggregate<
   OrganisationJobAggregateIdInterface,
@@ -15,6 +21,21 @@ export class OrganisationJobAggregate extends AbstractAggregate<
     super(id, aggregate);
   }
 
+  validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): void {
+    this.validateNotRunningAnotherProcess(command._id);
+  }
+
+  validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): void {
+    this.validateNotRunningAnotherProcess(command._id);
+  }
+
+  validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): void {
+    this.validateNotRunningAnotherProcess(command._id);
+  }
+
+  validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): void {
+    this.validateNotRunningAnotherProcess(command._id);
+  }
   /**
    * checks:
    * - we don't have another job running for the same organisation

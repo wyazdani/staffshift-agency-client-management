@@ -11,6 +11,8 @@ export class InitiateApplyPaymentTermCommandHandler implements OrganisationJobCo
   async execute(command: InitiateApplyPaymentTermCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
+    await aggregate.validateInitiateApplyPaymentTerm(command.data);
+
     const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED;
 
     let eventId = aggregate.getLastSequenceId();

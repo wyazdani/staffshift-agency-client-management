@@ -11,6 +11,8 @@ export class CompleteInitiatePaymentTermCommandHandler implements OrganisationJo
   async execute(command: CompleteInheritPaymentTermCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
+    await aggregate.validateCompleteInheritPaymentTerm(command.data);
+
     const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED;
 
     let eventId = aggregate.getLastSequenceId();
