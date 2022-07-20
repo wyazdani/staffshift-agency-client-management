@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {find, includes} from 'lodash';
+import {find} from 'lodash';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../../../aggregates/Agency/AgencyWriteProjectionHandler';
@@ -20,7 +20,7 @@ import {CommandBusHelper} from './CommandBusHelper';
 import {RetryableApplyPaymentTerm} from './RetryableApplyPaymentTerm';
 
 /**
- * @TODO: use the one waqar defined
+ * @TODO: use the one waqar defined when his pr is ready
  */
 interface AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface {
   term: string;
@@ -39,7 +39,8 @@ interface ApplyPaymentTermProcessOptsInterface {
 }
 
 /**
- * @TODO
+ * applies a pay term on a client and then applies inherited pay term on all it's children and it's grandchildren
+ * some children might not inherit from parent, then we don't apply inherited payment term on those
  */
 export class ApplyPaymentTermProcess implements ProcessInterface {
   private initiateEvent: EventStorePubSubModelInterface<
@@ -55,6 +56,59 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
   private processAggregate: ClientInheritanceProcessAggregate;
   constructor(private logger: LoggerContext, private opts: ApplyPaymentTermProcessOptsInterface) {}
 
+  private initDependencies() {
+    const eventRepository = new EventRepository(
+      EventStore,
+      this.initiateEvent.correlation_id,
+      this.initiateEvent.meta_data,
+      this.initiateEvent._id
+    );
+
+    this.commandBus = new CommandBus(eventRepository);
+    this.commandBusHelper = new CommandBusHelper(
+      this.commandBus,
+      this.initiateEvent.aggregate_id.agency_id,
+      this.initiateEvent.data._id
+    );
+    this.processRepository = new ClientInheritanceProcessRepository(
+      eventRepository,
+      new ClientInheritanceProcessWriteProjectionHandler()
+    );
+    this.processAggregateId = {
+      name: 'client_inheritance_process',
+      agency_id: this.initiateEvent.aggregate_id.agency_id,
+      job_id: this.initiateEvent.data._id
+    };
+    this.agencyClientRepository = new AgencyClientRepository(
+      eventRepository,
+      new AgencyClientWriteProjectionHandler(),
+      new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler())
+    );
+    this.retryableApplyPaymentTerm = new RetryableApplyPaymentTerm(
+      this.opts.maxRetry,
+      this.opts.retryDelay,
+      this.logger,
+      this.commandBusHelper
+    );
+  }
+
+  /**
+   * Steps:
+   * - We first check if the client is linked
+   * - apply pay term on the client
+   * - if client type is organisation
+   *   - find all sites under that organisation
+   *     - have a for loop on all sites
+   *       - apply inherited payment term on the site
+   *       - find all wards under that site
+   *         - for loop on all sites
+   *           - apply inherited payment term on ward
+   * - if client type is site
+   *   - find all wards under that site
+   *     - have a for loop on all wards
+   *       - apply inherited payment term on ward
+   * - if client type is ward, do nothing
+   */
   async execute(
     initiateEvent: EventStorePubSubModelInterface<
       AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface,
@@ -73,7 +127,7 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
     const currentStatus = this.processAggregate.getCurrentStatus();
 
     if (currentStatus === ClientInheritanceProcessAggregateStatusEnum.NEW) {
-      const estimatedCount = await AgencyClientProjectionRepository.getChildEstimatedCount(
+      const estimatedCount = await AgencyClientProjectionRepository.getEstimatedCount(
         this.initiateEvent.aggregate_id.agency_id,
         this.initiateEvent.aggregate_id.organisation_id,
         agencyClient.getId().client_id,
@@ -143,42 +197,6 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
     //@TODO Complete the job on org aggregate
   }
 
-  private initDependencies() {
-    const eventRepository = new EventRepository(
-      EventStore,
-      this.initiateEvent.correlation_id,
-      this.initiateEvent.meta_data,
-      this.initiateEvent._id
-    );
-
-    this.commandBus = new CommandBus(eventRepository);
-    this.commandBusHelper = new CommandBusHelper(
-      this.commandBus,
-      this.initiateEvent.aggregate_id.agency_id,
-      this.initiateEvent.data._id
-    );
-    this.processRepository = new ClientInheritanceProcessRepository(
-      eventRepository,
-      new ClientInheritanceProcessWriteProjectionHandler()
-    );
-    this.processAggregateId = {
-      name: 'client_inheritance_process',
-      agency_id: this.initiateEvent.aggregate_id.agency_id,
-      job_id: this.initiateEvent.data._id
-    };
-    this.agencyClientRepository = new AgencyClientRepository(
-      eventRepository,
-      new AgencyClientWriteProjectionHandler(),
-      new AgencyRepository(eventRepository, new AgencyWriteProjectionHandler())
-    );
-    this.retryableApplyPaymentTerm = new RetryableApplyPaymentTerm(
-      this.opts.maxRetry,
-      this.opts.retryDelay,
-      this.logger,
-      this.commandBusHelper
-    );
-  }
-
   private async getAgencyClient(clientId: string): Promise<AgencyClientAggregate> {
     return await this.agencyClientRepository.getAggregate({
       agency_id: this.initiateEvent.aggregate_id.agency_id,
@@ -186,6 +204,9 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
     });
   }
 
+  /**
+   * apply inherited payment term on all wards under the site id
+   */
   private async applyPaymentTermOnAllWards(siteId: string): Promise<void> {
     const wards = await AgencyClientProjectionRepository.getAllLinkedWards(
       this.initiateEvent.aggregate_id.agency_id,
@@ -215,6 +236,9 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
     }
   }
 
+  /**
+   * check if the client is already progressed inside the aggregate or no?
+   */
   private isProgressed(clientId: string): boolean {
     return !!find(this.processAggregate.getProgressedItems(), {client_id: clientId});
   }

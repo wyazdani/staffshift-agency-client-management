@@ -28,6 +28,7 @@ export class RetryableApplyPaymentTerm {
       return false;
     }
   }
+
   private async runApplyPaymentTermCommand(clientId: string, term: string): Promise<void> {
     try {
       this.logger.debug('Applying payment term on a client', {
@@ -51,6 +52,9 @@ export class RetryableApplyPaymentTerm {
     }
   }
 
+  /**
+   * apply inherited payment term on a client using retry policy
+   */
   async applyInheritedPaymentTerm(clientId: string, term: string, force: boolean): Promise<boolean> {
     const retryService = new RetryService(this.maxRetry, this.retryDelay);
 
@@ -63,6 +67,7 @@ export class RetryableApplyPaymentTerm {
       return false;
     }
   }
+
   private async runApplyInheritedPaymentTermCommand(clientId: string, term: string, force: boolean): Promise<void> {
     try {
       this.logger.debug('Applying inherited payment term on a client', {

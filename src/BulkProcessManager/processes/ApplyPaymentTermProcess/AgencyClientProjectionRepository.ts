@@ -31,14 +31,14 @@ export class AgencyClientProjectionRepository {
   }
 
   /**
-   * @TODO: complete jsdoc
-   *
+   * find estimated count using the projection.
+   * It counts all children and grandchildren of a node
    * it contains the node itself too
    *
    * also explain we estimate not counting inherited|not-inherited
    *
    */
-  static async getChildEstimatedCount(
+  static async getEstimatedCount(
     agencyId: string,
     organisationId: string,
     clientId: string,
