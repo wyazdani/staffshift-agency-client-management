@@ -4,6 +4,7 @@ import {OrganisationJobCommandInterface} from '../OrganisationJobCommandInterfac
 export interface InitiateApplyPaymentTermCommandDataInterface {
   _id: string;
   term: string;
+  client_id:string;
 }
 
 export interface InitiateApplyPaymentTermCommandInterface extends OrganisationJobCommandInterface {
