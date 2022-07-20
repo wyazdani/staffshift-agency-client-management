@@ -1,0 +1,11 @@
+import {StartClientInheritanceProcessCommandHandler} from './StartClientInheritanceProcessCommandHandler';
+import {SucceedItemClientInheritanceProcessCommandHandler} from './SucceedItemClientInheritanceProcessCommandHandler';
+import {FailItemClientInheritanceProcessCommandHandler} from './FailItemClientInheritanceProcessCommandHandler';
+import {CompleteClientInheritanceProcessCommandHandler} from './CompleteClientInheritanceProcessCommandHandler';
+
+export {
+  StartClientInheritanceProcessCommandHandler,
+  SucceedItemClientInheritanceProcessCommandHandler,
+  FailItemClientInheritanceProcessCommandHandler,
+  CompleteClientInheritanceProcessCommandHandler
+};

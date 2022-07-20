@@ -1098,4 +1098,188 @@ Description: A short description of the event
 ```
 
  </td><td> empty payment term for agency client is inherited from the parent since no payment term was set on the parent </td></tr>
+<tr><td> AGENCY_CLIENT_INHERITANCE_PROCESS_STARTED </td><td> AgencyClientInheritanceProcessStarted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "estimated_count": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "estimated_count"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "client_inheritance_process"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process for agency client inheritance is started </td></tr>
+<tr><td> AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_SUCCEEDED </td><td> AgencyClientInheritanceProcessItemSucceeded </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "client_inheritance_process"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process for agency client inheritance is succeeded for one client </td></tr>
+<tr><td> AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_FAILED </td><td> AgencyClientInheritanceProcessItemFailed </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/EventStoreEncodedErrorInterface"
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "errors"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "client_inheritance_process"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process for agency client inheritance is failed for one client </td></tr>
+<tr><td> AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED </td><td> AgencyClientInheritanceProcessCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "client_inheritance_process"
+    },
+    "job_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "job_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Background process for agency client inheritance is completed </td></tr>
 </table><!--DATA_END-->
