@@ -15,7 +15,7 @@ describe('AgencyClientsProjectionV2', () => {
       it('Test runs the query', async () => {
         const records: any = [{sample: 'ok'}];
         const exec = sinon.stub().resolves(records);
-        const find = sinon.stub(AgencyClientsProjectionV2, 'find').returns({exec});
+        const find = sinon.stub(AgencyClientsProjectionV2, 'find').returns({exec} as any);
         const response = await AgencyClientsProjectionV2.getAllLinkedSites(agencyId, organisationId);
 
         response.should.deep.equal(records);
@@ -33,7 +33,7 @@ describe('AgencyClientsProjectionV2', () => {
       it('Test runs the query', async () => {
         const records: any = [{sample: 'ok'}];
         const exec = sinon.stub().resolves(records);
-        const find = sinon.stub(AgencyClientsProjectionV2, 'find').returns({exec});
+        const find = sinon.stub(AgencyClientsProjectionV2, 'find').returns({exec} as any);
         const response = await AgencyClientsProjectionV2.getAllLinkedWards(agencyId, organisationId, siteId);
 
         response.should.deep.equal(records);
@@ -57,7 +57,7 @@ describe('AgencyClientsProjectionV2', () => {
 
       it('Test for site', async () => {
         const exec = sinon.stub().resolves(2);
-        const countDocuments = sinon.stub(AgencyClientsProjectionV2, 'countDocuments').returns({exec});
+        const countDocuments = sinon.stub(AgencyClientsProjectionV2, 'countDocuments').returns({exec} as any);
         const response = await AgencyClientsProjectionV2.getEstimatedCount(agencyId, organisationId, siteId, 'site');
 
         response.should.equal(2);
@@ -72,7 +72,7 @@ describe('AgencyClientsProjectionV2', () => {
 
       it('Test for organisation', async () => {
         const exec = sinon.stub().resolves(2);
-        const countDocuments = sinon.stub(AgencyClientsProjectionV2, 'countDocuments').returns({exec});
+        const countDocuments = sinon.stub(AgencyClientsProjectionV2, 'countDocuments').returns({exec} as any);
         const response = await AgencyClientsProjectionV2.getEstimatedCount(
           agencyId,
           organisationId,
