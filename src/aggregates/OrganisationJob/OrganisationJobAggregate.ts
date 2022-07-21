@@ -23,7 +23,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
 
   validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): void {
     if (
-      this.aggregate.running_apply_payment_term.includes({
+      this.aggregate.running_apply_payment_term?.includes({
         job_id: command._id
       })
     ) {
@@ -40,7 +40,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
 
   validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): void {
     if (
-      this.aggregate.running_apply_payment_term_inheritance.includes({
+      this.aggregate.running_apply_payment_term_inheritance?.includes({
         job_id: command._id
       })
     ) {
@@ -57,7 +57,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
 
   validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): void {
     if (
-      this.aggregate.running_apply_payment_term_inheritance.includes({
+      this.aggregate.running_apply_payment_term_inheritance?.includes({
         job_id: command._id
       })
     ) {
@@ -74,7 +74,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
 
   validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): void {
     if (
-      this.aggregate.running_apply_payment_term.includes({
+      this.aggregate.running_apply_payment_term?.includes({
         job_id: command._id
       })
     ) {

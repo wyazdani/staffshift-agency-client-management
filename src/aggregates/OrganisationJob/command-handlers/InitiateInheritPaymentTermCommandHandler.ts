@@ -6,14 +6,14 @@ import {OrganisationJobCommandEnum} from '../types';
 
 export class InitiateInheritPaymentTermCommandHandler implements OrganisationJobCommandHandlerInterface {
   constructor(private repository: OrganisationJobRepository) {}
-  commandType: OrganisationJobCommandEnum.APPLY_PAYMENT_TERM;
+  commandType = OrganisationJobCommandEnum.INHERIT_PAYMENT_TERM;
 
   async execute(command: InitiateApplyPaymentTermCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateInitiateInheritPaymentTerm(command.data);
 
-    const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED;
+    const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED;
 
     let eventId = aggregate.getLastSequenceId();
 
