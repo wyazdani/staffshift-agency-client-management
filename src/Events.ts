@@ -17,7 +17,16 @@ export enum EventsEnum {
   CONSULTANT_JOB_UNASSIGN_INITIATED = 'ConsultantJobUnassignInitiated',
   CONSULTANT_JOB_UNASSIGN_COMPLETED = 'ConsultantJobUnassignCompleted',
   CONSULTANT_JOB_TRANSFER_INITIATED = 'ConsultantJobTransferInitiated',
-  CONSULTANT_JOB_TRANSFER_COMPLETED = 'ConsultantJobTransferCompleted'
+  CONSULTANT_JOB_TRANSFER_COMPLETED = 'ConsultantJobTransferCompleted',
+  AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED = 'AgencyClientCreditPaymentTermApplied',
+  AGENCY_CLIENT_CREDIT_PAYMENT_TERM_INHERITED = 'AgencyClientCreditPaymentTermInherited',
+  AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_APPLIED = 'AgencyClientPayInAdvancePaymentTermApplied',
+  AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_INHERITED = 'AgencyClientPayInAdvancePaymentTermInherited',
+  AGENCY_CLIENT_EMPTY_PAYMENT_TERM_INHERITED = 'AgencyClientEmptyPaymentTermInherited',
+  AGENCY_CLIENT_INHERITANCE_PROCESS_STARTED = 'AgencyClientInheritanceProcessStarted',
+  AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_SUCCEEDED = 'AgencyClientInheritanceProcessItemSucceeded',
+  AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_FAILED = 'AgencyClientInheritanceProcessItemFailed',
+  AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED = 'AgencyClientInheritanceProcessCompleted'
 }
 
 type EventsType = {
@@ -100,5 +109,42 @@ export const events: EventsType = {
   [EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED]: {
     name: 'ConsultantJobTransferCompleted',
     description: 'transfer clients of a consultant to another consultant for an agency has completed'
+  },
+  [EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED]: {
+    name: 'AgencyClientCreditPaymentTermApplied',
+    description: 'credit payment term is applied to agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_INHERITED]: {
+    name: 'AgencyClientCreditPaymentTermInherited',
+    description: 'credit payment term for agency client is inherited from the parent'
+  },
+  [EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_APPLIED]: {
+    name: 'AgencyClientPayInAdvancePaymentTermApplied',
+    description: 'pay-in-advance payment term is applied to agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_INHERITED]: {
+    name: 'AgencyClientPayInAdvancePaymentTermInherited',
+    description: 'pay-in-advance payment term for agency client is inherited from the parent'
+  },
+  [EventsEnum.AGENCY_CLIENT_EMPTY_PAYMENT_TERM_INHERITED]: {
+    name: 'AgencyClientEmptyPaymentTermInherited',
+    description:
+      'empty payment term for agency client is inherited from the parent since no payment term was set on the parent'
+  },
+  [EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_STARTED]: {
+    name: 'AgencyClientInheritanceProcessStarted',
+    description: 'Background process for agency client inheritance is started'
+  },
+  [EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_SUCCEEDED]: {
+    name: 'AgencyClientInheritanceProcessItemSucceeded',
+    description: 'Background process for agency client inheritance is succeeded for one client'
+  },
+  [EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_FAILED]: {
+    name: 'AgencyClientInheritanceProcessItemFailed',
+    description: 'Background process for agency client inheritance is failed for one client'
+  },
+  [EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED]: {
+    name: 'AgencyClientInheritanceProcessCompleted',
+    description: 'Background process for agency client inheritance is completed'
   }
 };

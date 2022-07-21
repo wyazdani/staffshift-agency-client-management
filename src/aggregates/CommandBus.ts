@@ -9,6 +9,7 @@ import {
   RemoveAgencyClientConsultantCommandInterface,
   TransferAgencyClientConsultantCommandInterface
 } from './AgencyClient/types/CommandTypes';
+import {ClientInheritanceProcessCommandBus} from './ClientInheritanceProcess/ClientInheritanceProcessCommandBus';
 import {ConsultantJobCommandBus} from './ConsultantJob/ConsultantJobCommandBus';
 import {ConsultantJobAggregateIdInterface, ConsultantJobCommandEnum} from './ConsultantJob/types';
 import {
@@ -28,6 +29,7 @@ import {
   CompleteConsultantJobProcessCommandInterface,
   FailItemConsultantJobProcessCommandInterface
 } from './ConsultantJobProcess/types/CommandTypes';
+import {PaymentTermCommandBus} from './PaymentTerm/PaymentTermCommandBus';
 import {AggregateCommandInterface, AggregateCommandHandlerInterface} from './types';
 
 export class CommandBus {
@@ -38,6 +40,8 @@ export class CommandBus {
     this.registerAggregateCommandHandlers(AgencyClientCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(ConsultantJobCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(ConsultantJobProcessCommandBus.getCommandHandlers(eventRepository));
+    this.registerAggregateCommandHandlers(PaymentTermCommandBus.getCommandHandlers(eventRepository));
+    this.registerAggregateCommandHandlers(ClientInheritanceProcessCommandBus.getCommandHandlers(eventRepository));
   }
 
   private registerAggregateCommandHandlers(handlers: AggregateCommandHandlerInterface[]): void {
