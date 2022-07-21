@@ -21,68 +21,56 @@ export class OrganisationJobAggregate extends AbstractAggregate<
     super(id, aggregate);
   }
 
-  validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): void {
-    if (
-      this.aggregate.running_apply_payment_term?.includes({
-        job_id: command._id
-      })
-    ) {
+  async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
+    if (this.aggregate.running_apply_payment_term?.some((paymentTerm) => paymentTerm.job_id === command._id)) {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
           message: `Job ${command._id} is still running`,
-          path: ['organisation id']
+          path: ['job id']
         }
       ]);
     }
     this.validateNotRunningAnotherProcess(command._id);
   }
 
-  validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): void {
+  async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
     if (
-      this.aggregate.running_apply_payment_term_inheritance?.includes({
-        job_id: command._id
-      })
+      this.aggregate.running_apply_payment_term_inheritance?.some((paymentTerm) => paymentTerm.job_id === command._id)
     ) {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
           message: `Job ${command._id} is still running`,
-          path: ['organisation id']
+          path: ['job id']
         }
       ]);
     }
     this.validateNotRunningAnotherProcess(command._id);
   }
 
-  validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): void {
+  async validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): Promise<void> {
     if (
-      this.aggregate.running_apply_payment_term_inheritance?.includes({
-        job_id: command._id
-      })
+      this.aggregate.running_apply_payment_term_inheritance?.some((paymentTerm) => paymentTerm.job_id === command._id)
     ) {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
           message: `Job ${command._id} is still running`,
-          path: ['organisation id']
+          path: ['job id']
         }
       ]);
     }
     this.validateNotRunningAnotherProcess(command._id);
   }
 
-  validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): void {
-    if (
-      this.aggregate.running_apply_payment_term?.includes({
-        job_id: command._id
-      })
-    ) {
+  async validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): Promise<void> {
+    if (this.aggregate.running_apply_payment_term?.some((paymentTerm) => paymentTerm.job_id === command._id)) {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
           message: `Job ${command._id} is still running`,
-          path: ['organisation id']
+          path: ['job id']
         }
       ]);
     }
