@@ -476,7 +476,7 @@ paths:
         - $ref: "#/parameters/initiate_apply_payment_term_payload"
       responses:
         202:
-          description: "Initiate Apply payment term to organisation"
+          description: "Initiate Apply payment term to client"
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
@@ -485,7 +485,7 @@ paths:
           $ref: "#/responses/unauthorize_error_model"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Initiate Apply payment term to organisation"
+      summary: "Initiate Apply payment term to client"
       tags:
         - "Payment Term"
   /agency/{agency_id}/client/{client_id}/inherit-payment-term:
@@ -503,7 +503,7 @@ paths:
         - $ref: "#/parameters/empty_payload"
       responses:
         202:
-          description: "Initiate Inherit Apply payment term to organisation"
+          description: "Initiate Inherit Apply payment term to client"
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
@@ -512,7 +512,7 @@ paths:
           $ref: "#/responses/unauthorize_error_model"
         default:
           $ref: "#/responses/server_error_model"
-      summary: "Initiate Inherit Apply payment term to organisation"
+      summary: "Initiate Inherit Apply payment term to client"
       tags:
         - "Payment Term"
 parameters:
@@ -623,7 +623,7 @@ parameters:
     name: initiate_apply_payment_term_payload
     in: body
     required: true
-    description: "The payload used to initiate apply payment term to organisation"
+    description: "The payload used to initiate apply payment term to client"
     schema:
       $ref: "#/definitions/initiate_apply_payment_term_payload_def"
   x_request_id:
