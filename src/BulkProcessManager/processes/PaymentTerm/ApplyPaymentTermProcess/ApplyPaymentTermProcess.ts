@@ -17,7 +17,7 @@ import {AgencyClientsProjectionV2} from '../../../../models/AgencyClientsProject
 import {EventStore} from '../../../../models/EventStore';
 import {ProcessInterface} from '../../../types/ProcessInterface';
 import {CommandBusHelper} from '../CommandBusHelper';
-import {RetryableApplyPaymentTerm} from './RetryableApplyPaymentTerm';
+import {RetryableApplyPaymentTerm} from '../RetryableApplyPaymentTerm';
 
 /**
  * @TODO: use the one waqar defined when his pr is ready
@@ -125,13 +125,14 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
     const agencyClient = await this.getAgencyClient(this.initiateEvent.data.client_id);
 
     const currentStatus = this.processAggregate.getCurrentStatus();
+    const clientType = agencyClient.getClientType();
 
     if (currentStatus === ClientInheritanceProcessAggregateStatusEnum.NEW) {
       const estimatedCount = await AgencyClientsProjectionV2.getEstimatedCount(
         this.initiateEvent.aggregate_id.agency_id,
         this.initiateEvent.aggregate_id.organisation_id,
-        agencyClient.getId().client_id,
-        agencyClient.getClientType()
+        this.initiateEvent.data.client_id,
+        clientType
       );
 
       await this.commandBusHelper.startProcess(estimatedCount);
@@ -158,12 +159,10 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
       return;
     }
 
-    const type = agencyClient.getClientType();
-
-    if (type === 'organisation') {
+    if (clientType === 'organisation') {
       const sites = await AgencyClientsProjectionV2.getAllLinkedSites(
-        agencyClient.getId().agency_id,
-        agencyClient.getId().client_id
+        this.initiateEvent.aggregate_id.agency_id,
+        this.initiateEvent.data.client_id
       );
 
       for (const site of sites) {
@@ -184,8 +183,8 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
           );
         }
       }
-    } else if (type === 'site') {
-      await this.applyPaymentTermOnAllWards(agencyClient.getId().client_id);
+    } else if (clientType === 'site') {
+      await this.applyPaymentTermOnAllWards(this.initiateEvent.data.client_id);
     } else {
       this.logger.info('It was ward, so there are no children.');
     }

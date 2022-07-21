@@ -21,12 +21,12 @@ export class RetryableApplyPaymentTerm {
 
     try {
       await retryService.exec(() => this.runApplyPaymentTermCommand(clientId, term));
-      await this.commandBusHelper.succeedItem(clientId);
-      return true;
     } catch (error) {
       await this.commandBusHelper.failItem(clientId, EventStoreErrorEncoder.encodeArray(retryService.getErrors()));
       return false;
     }
+    await this.commandBusHelper.succeedItem(clientId);
+    return true;
   }
 
   private async runApplyPaymentTermCommand(clientId: string, term: string): Promise<void> {
@@ -60,12 +60,12 @@ export class RetryableApplyPaymentTerm {
 
     try {
       await retryService.exec(() => this.runApplyInheritedPaymentTermCommand(clientId, term, force));
-      await this.commandBusHelper.succeedItem(clientId);
-      return true;
     } catch (error) {
       await this.commandBusHelper.failItem(clientId, EventStoreErrorEncoder.encodeArray(retryService.getErrors()));
       return false;
     }
+    await this.commandBusHelper.succeedItem(clientId);
+    return true;
   }
 
   private async runApplyInheritedPaymentTermCommand(clientId: string, term: string, force: boolean): Promise<void> {
