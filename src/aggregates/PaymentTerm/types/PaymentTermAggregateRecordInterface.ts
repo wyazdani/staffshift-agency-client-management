@@ -7,4 +7,5 @@ export enum PAYMENT_TERM_ENUM {
 
 export interface PaymentTermAggregateRecordInterface extends BaseAggregateRecordInterface {
   inherited?: boolean;
+  payment_term?: PAYMENT_TERM_ENUM | null;
 }

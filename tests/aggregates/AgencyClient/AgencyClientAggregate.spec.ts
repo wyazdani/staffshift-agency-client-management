@@ -543,4 +543,39 @@ describe('AgencyClientAggregate', () => {
       agencyClientAggregate.getClientType().should.equal('site');
     });
   });
+
+  describe('getParentClientId()', () => {
+    it('should return parent client id', () => {
+      const aggregateId = {
+        agency_id: '45',
+        client_id: '12'
+      };
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site',
+        parent_id: 'parent id'
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      agencyClientAggregate.getParentClientId().should.equal('parent id');
+    });
+
+    it('should return null when node does not have parent', () => {
+      const aggregateId = {
+        agency_id: '45',
+        client_id: '12'
+      };
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site'
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      (agencyClientAggregate.getParentClientId() === null).should.be.true;
+    });
+  });
 });
