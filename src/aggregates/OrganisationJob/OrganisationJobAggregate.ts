@@ -22,7 +22,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.running_apply_payment_term?.some((paymentTerm) => paymentTerm.job_id === command._id)) {
+    if (this.aggregate.payment_terms[command._id] != 'completed') {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
@@ -35,9 +35,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (
-      this.aggregate.running_apply_payment_term_inheritance?.some((paymentTerm) => paymentTerm.job_id === command._id)
-    ) {
+    if (this.aggregate.payment_terms[command._id] != 'completed') {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
@@ -50,13 +48,11 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (
-      this.aggregate.running_apply_payment_term_inheritance?.some((paymentTerm) => paymentTerm.job_id === command._id)
-    ) {
-      throw new ValidationError('Job Not Completed').setErrors([
+    if (this.aggregate.payment_terms[command._id] != 'started') {
+      throw new ValidationError('Job Not Started').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
+          code: 'JOB_NOT_STARTED',
+          message: `Job ${command._id} not started yet`,
           path: ['job id']
         }
       ]);
@@ -65,11 +61,11 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.running_apply_payment_term?.some((paymentTerm) => paymentTerm.job_id === command._id)) {
-      throw new ValidationError('Job Not Completed').setErrors([
+    if (this.aggregate.payment_terms[command._id] != 'started') {
+      throw new ValidationError('Job Not Started').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
+          code: 'JOB_NOT_STARTED',
+          message: `Job ${command._id} not started yet`,
           path: ['job id']
         }
       ]);
