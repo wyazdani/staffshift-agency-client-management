@@ -26,4 +26,8 @@ export {AgencyClientInheritanceProcessCompletedEventStoreDataInterface} from './
 export {AgencyClientInheritanceProcessItemFailedEventStoreDataInterface} from './AgencyClientInheritanceProcessItemFailedEventInterface';
 export {AgencyClientInheritanceProcessItemSucceededEventStoreDataInterface} from './AgencyClientInheritanceProcessItemSucceededEventInterface';
 export {AgencyClientInheritanceProcessStartedEventStoreDataInterface} from './AgencyClientInheritanceProcessStartedEventInterface';
+export {AgencyClientApplyPaymentTermCompletedEventStoreDataInterface} from './AgencyClientApplyPaymentTermCompletedEventInterface';
+export {AgencyClientApplyPaymentTermInheritanceCompletedEventStoreDataInterface} from './AgencyClientApplyPaymentTermInheritanceCompletedEventInterface';
+export {AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface} from './AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface';
+export {AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface} from './AgencyClientApplyPaymentTermInitiatedEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';
