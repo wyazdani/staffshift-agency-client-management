@@ -2,13 +2,14 @@ import {BaseEventStoreDataInterface} from 'EventTypes';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {OrganisationJobAggregateIdInterface} from '../../aggregates/OrganisationJob/types';
 
-export interface AgencyClientApplyPaymentTermInheritanceCompletedDataInterface extends BaseEventStoreDataInterface {
+export interface AgencyClientApplyPaymentTermInheritanceCompletedEventStoreDataInterface
+  extends BaseEventStoreDataInterface {
   _id: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AgencyClientApplyPaymentTermInheritanceCompletedEventInterface
   extends EventStorePubSubModelInterface<
-    AgencyClientApplyPaymentTermInheritanceCompletedDataInterface,
+    AgencyClientApplyPaymentTermInheritanceCompletedEventStoreDataInterface,
     OrganisationJobAggregateIdInterface
   > {}

@@ -71,12 +71,12 @@ export const initiateInheritApplyPaymentTerm = async (
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        client_id: clientId,
         organisation_id: agencyClient.organisation_id
       },
       type: OrganisationJobCommandEnum.INHERIT_PAYMENT_TERM,
       data: {
         _id: id,
+        client_id: clientId,
         ...payload
       }
     };

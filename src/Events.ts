@@ -165,6 +165,6 @@ export const events: EventsType = {
   },
   [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED]: {
     name: 'AgencyClientApplyPaymentTermInheritanceCompleted',
-    description: 'Applying payment term completed is initiated for the agency client'
+    description: 'Applying payment term completed inheritance for the agency client'
   }
 };
