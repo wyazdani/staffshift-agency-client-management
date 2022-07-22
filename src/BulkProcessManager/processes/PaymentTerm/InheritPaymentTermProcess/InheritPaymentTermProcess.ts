@@ -1,4 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
+import {AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface} from 'EventTypes';
 import {find} from 'lodash';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {AgencyRepository} from '../../../../aggregates/Agency/AgencyRepository';
@@ -12,6 +13,14 @@ import {ClientInheritanceProcessWriteProjectionHandler} from '../../../../aggreg
 import {ClientInheritanceProcessAggregateIdInterface} from '../../../../aggregates/ClientInheritanceProcess/types';
 import {ClientInheritanceProcessAggregateStatusEnum} from '../../../../aggregates/ClientInheritanceProcess/types/ClientInheritanceProcessAggregateStatusEnum';
 import {CommandBus} from '../../../../aggregates/CommandBus';
+import {
+  OrganisationJobAggregateIdInterface,
+  OrganisationJobCommandEnum
+} from '../../../../aggregates/OrganisationJob/types';
+import {
+  CompleteApplyPaymentTermCommandInterface,
+  CompleteInheritPaymentTermCommandInterface
+} from '../../../../aggregates/OrganisationJob/types/CommandTypes';
 import {PaymentTermRepository} from '../../../../aggregates/PaymentTerm/PaymentTermRepository';
 import {PaymentTermWriteProjectionHandler} from '../../../../aggregates/PaymentTerm/PaymentTermWriteProjectionHandler';
 import {EventRepository} from '../../../../EventRepository';
@@ -20,19 +29,6 @@ import {EventStore} from '../../../../models/EventStore';
 import {ProcessInterface} from '../../../types/ProcessInterface';
 import {CommandBusHelper} from '../CommandBusHelper';
 import {RetryableApplyPaymentTerm} from '../RetryableApplyPaymentTerm';
-
-/**
- * @TODO: use the one waqar defined when his pr is ready
- */
-interface AgencyClientInheritPaymentTermInitiatedEventStoreDataInterface {
-  _id: string;
-  client_id: string;
-}
-interface OrgJobAggregateIdInterface {
-  name: string;
-  agency_id: string;
-  organisation_id: string;
-}
 
 interface ApplyPaymentTermProcessOptsInterface {
   maxRetry: number;
@@ -45,8 +41,8 @@ interface ApplyPaymentTermProcessOptsInterface {
  */
 export class InheritPaymentTermProcess implements ProcessInterface {
   private initiateEvent: EventStorePubSubModelInterface<
-    AgencyClientInheritPaymentTermInitiatedEventStoreDataInterface,
-    OrgJobAggregateIdInterface
+    AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface,
+    OrganisationJobAggregateIdInterface
   >;
   private commandBus: CommandBus;
   private commandBusHelper: CommandBusHelper;
@@ -109,8 +105,8 @@ export class InheritPaymentTermProcess implements ProcessInterface {
    */
   async execute(
     initiateEvent: EventStorePubSubModelInterface<
-      AgencyClientInheritPaymentTermInitiatedEventStoreDataInterface,
-      OrgJobAggregateIdInterface
+      AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface,
+      OrganisationJobAggregateIdInterface
     >
   ): Promise<void> {
     this.initiateEvent = initiateEvent;
@@ -179,8 +175,17 @@ export class InheritPaymentTermProcess implements ProcessInterface {
     });
   }
 
+  /**
+   * Completes the initiate process on organisation job aggregate
+   */
   async complete(): Promise<void> {
-    //@TODO Complete the job on org aggregate
+    const command: CompleteInheritPaymentTermCommandInterface = {
+      aggregateId: this.initiateEvent.aggregate_id,
+      type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM_INHERITANCE,
+      data: {_id: this.initiateEvent.data._id}
+    };
+
+    await this.commandBus.execute(command);
   }
 
   private async getAgencyClient(clientId: string): Promise<AgencyClientAggregate> {

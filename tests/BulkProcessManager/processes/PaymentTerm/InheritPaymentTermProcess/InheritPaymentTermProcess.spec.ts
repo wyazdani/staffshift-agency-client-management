@@ -13,7 +13,7 @@ import {RetryableApplyPaymentTerm} from '../../../../../src/BulkProcessManager/p
 import {AgencyClientsProjectionV2} from '../../../../../src/models/AgencyClientsProjectionV2';
 import {TestUtilsLogger} from '../../../../tools/TestUtilsLogger';
 
-describe.only('InheritPaymentTermProcess', () => {
+describe('InheritPaymentTermProcess', () => {
   afterEach(() => {
     sinon.restore();
   });

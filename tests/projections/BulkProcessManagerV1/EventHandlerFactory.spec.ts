@@ -1,7 +1,7 @@
 import sinon from 'ts-sinon';
 import {EventsEnum} from '../../../src/Events';
-import {ConsultantJobCompletedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobCompletedEventHandler';
-import {ConsultantJobInitiatedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/ConsultantJobInitiatedEventHandler';
+import {JobCompletedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/JobCompletedEventHandler';
+import {JobInitiatedEventHandler} from '../../../src/projections/BulkProcessManagerV1/event-handlers/JobInitiatedEventHandler';
 import {EventHandlerFactory} from '../../../src/projections/BulkProcessManagerV1/EventHandlerFactory';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
@@ -10,46 +10,42 @@ describe('EventHandlerFactory', () => {
     sinon.restore();
   });
   describe('getHandler', () => {
-    it('Test CONSULTANT_JOB_ASSIGN_INITIATED', () => {
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED, logger);
+    describe('JobInitiatedEventHandler', () => {
+      const initiateEvents = [
+        EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
+        EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED,
+        EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED,
+        EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED,
+        EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED
+      ];
 
-      handler.should.instanceof(ConsultantJobInitiatedEventHandler);
+      for (const event of initiateEvents) {
+        it(`Test ${event}`, () => {
+          const logger = TestUtilsLogger.getLogger(sinon.spy());
+          const handler = EventHandlerFactory.getHandler(event, logger);
+
+          handler.should.instanceof(JobInitiatedEventHandler);
+        });
+      }
     });
 
-    it('Test CONSULTANT_JOB_ASSIGN_COMPLETED', () => {
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED, logger);
+    describe('JobCompletedEventHandler', () => {
+      const completedEvents = [
+        EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED,
+        EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED,
+        EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED,
+        EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED,
+        EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED
+      ];
 
-      handler.should.instanceof(ConsultantJobCompletedEventHandler);
-    });
+      for (const event of completedEvents) {
+        it(`Test ${event}`, () => {
+          const logger = TestUtilsLogger.getLogger(sinon.spy());
+          const handler = EventHandlerFactory.getHandler(event, logger);
 
-    it('Test CONSULTANT_JOB_UNASSIGN_INITIATED', () => {
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED, logger);
-
-      handler.should.instanceof(ConsultantJobInitiatedEventHandler);
-    });
-
-    it('Test CONSULTANT_JOB_UNASSIGN_COMPLETED', () => {
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED, logger);
-
-      handler.should.instanceof(ConsultantJobCompletedEventHandler);
-    });
-
-    it('Test CONSULTANT_JOB_TRANSFER_INITIATED', () => {
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED, logger);
-
-      handler.should.instanceof(ConsultantJobInitiatedEventHandler);
-    });
-
-    it('Test CONSULTANT_JOB_TRANSFER_COMPLETED', () => {
-      const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const handler = EventHandlerFactory.getHandler(EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED, logger);
-
-      handler.should.instanceof(ConsultantJobCompletedEventHandler);
+          handler.should.instanceof(JobCompletedEventHandler);
+        });
+      }
     });
 
     it('Test error for unknown event', () => {
