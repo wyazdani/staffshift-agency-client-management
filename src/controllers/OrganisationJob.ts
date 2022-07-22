@@ -1,8 +1,8 @@
 import {ServerResponse} from 'http';
-import {get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {ObjectID} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
-import {ValidationError} from 'a24-node-error-utils';
+import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {
   InitiateApplyPaymentTermCommandInterface,
   InitiateInheritPaymentTermCommandInterface
@@ -25,6 +25,12 @@ export const initiateApplyPaymentTerm = async (
     const id = new ObjectID().toString();
     const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
     const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
+
+    if (isEmpty(agencyClient)) {
+      logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
+
+      return next(new ResourceNotFoundError('Agency Client resource not found'));
+    }
     const command: InitiateApplyPaymentTermCommandInterface = {
       aggregateId: {
         name: 'organisation_job',
@@ -67,16 +73,22 @@ export const initiateInheritApplyPaymentTerm = async (
     const id = new ObjectID().toString();
     const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
     const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
+
+    if (isEmpty(agencyClient)) {
+      logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
+
+      return next(new ResourceNotFoundError('Agency Client resource not found'));
+    }
     const command: InitiateInheritPaymentTermCommandInterface = {
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        client_id: clientId,
         organisation_id: agencyClient.organisation_id
       },
       type: OrganisationJobCommandEnum.INHERIT_PAYMENT_TERM,
       data: {
         _id: id,
+        client_id: clientId,
         ...payload
       }
     };
