@@ -8,6 +8,6 @@ export interface InitiateApplyPaymentTermCommandDataInterface {
 }
 
 export interface InitiateApplyPaymentTermCommandInterface extends OrganisationJobCommandInterface {
-  type: OrganisationJobCommandEnum.APPLY_PAYMENT_TERM;
+  type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM;
   data: InitiateApplyPaymentTermCommandDataInterface;
 }

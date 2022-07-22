@@ -6,6 +6,6 @@ export interface CompleteInheritPaymentTermCommandDataInterface {
 }
 
 export interface CompleteInheritPaymentTermCommandInterface extends OrganisationJobCommandInterface {
-  type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM_INHERITANCE;
+  type: OrganisationJobCommandEnum.COMPLETE_INHERIT_PAYMENT_TERM;
   data: CompleteInheritPaymentTermCommandDataInterface;
 }
