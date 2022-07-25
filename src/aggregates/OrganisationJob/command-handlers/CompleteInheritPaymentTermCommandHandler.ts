@@ -4,7 +4,7 @@ import {OrganisationJobRepository} from '../OrganisationJobRepository';
 import {OrganisationJobCommandHandlerInterface} from '../types/OrganisationJobCommandHandlerInterface';
 import {OrganisationJobCommandEnum} from '../types';
 
-export class CompleteInitiatePaymentTermCommandHandler implements OrganisationJobCommandHandlerInterface {
+export class CompleteInheritPaymentTermCommandHandler implements OrganisationJobCommandHandlerInterface {
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.COMPLETE_INHERIT_PAYMENT_TERM;
 

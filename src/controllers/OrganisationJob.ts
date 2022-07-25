@@ -84,11 +84,16 @@ export const initiateInheritApplyPaymentTerm = async (
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
     }
+    let organisationId = agencyClient.organisation_id;
+
+    if (agencyClient.client_type === 'organisation') {
+      organisationId = agencyClient.client_id;
+    }
     const command: InitiateInheritPaymentTermCommandInterface = {
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: agencyClient.organisation_id
+        organisation_id: organisationId
       },
       type: OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM,
       data: {

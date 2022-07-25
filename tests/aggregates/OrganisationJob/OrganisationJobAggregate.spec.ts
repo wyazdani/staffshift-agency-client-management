@@ -41,34 +41,6 @@ describe('OrganisationJobAggregate', () => {
       client_id: 'client_id'
     };
 
-    it('Test Job Not started error', async () => {
-      const aggregate = {
-        running_apply_payment_term: [
-          {
-            job_id: 'job id'
-          }
-        ],
-        payment_terms: {
-          'job id': ''
-        }
-      };
-      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
-
-      const error = await organisationJobAggregate
-        .validateInitiateApplyPaymentTerm(command)
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Job Not Started').setErrors([
-          {
-            code: 'JOB_NOT_STARTED',
-            message: `Job ${command._id} not started yet`,
-            path: ['job id']
-          }
-        ])
-      );
-    });
-
     it('Test another job process active error', async () => {
       const aggregate = {
         running_apply_payment_term: [
@@ -103,35 +75,6 @@ describe('OrganisationJobAggregate', () => {
       _id: 'job id',
       client_id: 'client_id'
     };
-
-    it('Test Job Not Started error', async () => {
-      const aggregate = {
-        running_apply_payment_term_inheritance: [
-          {
-            job_id: 'job id'
-          }
-        ],
-        payment_terms: {
-          'job id': ''
-        }
-      };
-
-      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
-
-      const error = await organisationJobAggregate
-        .validateInitiateInheritPaymentTerm(command)
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Job Not Started').setErrors([
-          {
-            code: 'JOB_NOT_STARTED',
-            message: `Job ${command._id} not started yet`,
-            path: ['job id']
-          }
-        ])
-      );
-    });
 
     it('Test another job process active error', async () => {
       const aggregate = {
@@ -195,34 +138,6 @@ describe('OrganisationJobAggregate', () => {
         ])
       );
     });
-
-    it('Test another job process active error', async () => {
-      const aggregate = {
-        running_apply_payment_term_inheritance: [
-          {
-            job_id: 'id'
-          }
-        ],
-        payment_terms: {
-          'job id': 'completed'
-        }
-      };
-      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
-
-      const error = await organisationJobAggregate
-        .validateCompleteInheritPaymentTerm(command)
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Not allowed job id').setErrors([
-          {
-            code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `There is another job still running for this job id ${command._id}`,
-            path: ['job id']
-          }
-        ])
-      );
-    });
   });
 
   describe('validateCompleteApplyPaymentTerm', () => {
@@ -253,34 +168,6 @@ describe('OrganisationJobAggregate', () => {
           {
             code: 'JOB_NOT_COMPLETED',
             message: `Job ${command._id} is still running`,
-            path: ['job id']
-          }
-        ])
-      );
-    });
-
-    it('Test another job process active error', async () => {
-      const aggregate = {
-        running_apply_payment_term: [
-          {
-            job_id: 'id'
-          }
-        ],
-        payment_terms: {
-          'job id': 'completed'
-        }
-      };
-      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
-
-      const error = await organisationJobAggregate
-        .validateCompleteApplyPaymentTerm(command)
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Not allowed job id').setErrors([
-          {
-            code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `There is another job still running for this job id ${command._id}`,
             path: ['job id']
           }
         ])

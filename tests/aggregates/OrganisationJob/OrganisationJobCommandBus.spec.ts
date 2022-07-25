@@ -6,14 +6,14 @@ import {
   InitiateApplyPaymentTermCommandHandler,
   InitiateInheritPaymentTermCommandHandler,
   CompleteApplyPaymentTermCommandHandler,
-  CompleteInitiatePaymentTermCommandHandler
+  CompleteInheritPaymentTermCommandHandler
 } from '../../../src/aggregates/OrganisationJob/command-handlers';
 
 const expectedHandlers = [
   InitiateApplyPaymentTermCommandHandler,
   InitiateInheritPaymentTermCommandHandler,
   CompleteApplyPaymentTermCommandHandler,
-  CompleteInitiatePaymentTermCommandHandler
+  CompleteInheritPaymentTermCommandHandler
 ];
 
 describe('OrganisationJobCommandBus class', () => {
