@@ -30,7 +30,6 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         }
       ]);
     }
-    this.validateNotRunningAnotherProcess(command._id);
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
@@ -43,7 +42,6 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         }
       ]);
     }
-    this.validateNotRunningAnotherProcess(command._id);
   }
 
   async validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): Promise<void> {

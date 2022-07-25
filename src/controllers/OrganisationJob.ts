@@ -45,6 +45,7 @@ export const initiateApplyPaymentTerm = async (
       type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
         _id: id,
+        client_id: clientId,
         ...payload
       }
     };

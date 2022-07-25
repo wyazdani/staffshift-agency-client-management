@@ -13,7 +13,7 @@ export class CompleteInitiatePaymentTermCommandHandler implements OrganisationJo
 
     await aggregate.validateCompleteInheritPaymentTerm(command.data);
 
-    const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED;
+    const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED;
 
     let eventId = aggregate.getLastSequenceId();
 
