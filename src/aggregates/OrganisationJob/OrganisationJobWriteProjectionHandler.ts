@@ -1,5 +1,6 @@
 import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
+import {remove, has} from 'lodash';
 import {EventStoreModelInterface} from '../../models/EventStore';
 import {OrganisationJobAggregateRecordInterface} from './types';
 import {
@@ -19,14 +20,22 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
     aggregate: OrganisationJobAggregateRecordInterface,
     event: EventStoreModelInterface
   ): OrganisationJobAggregateRecordInterface {
+    if (!has(aggregate, 'running_apply_payment_term')) {
+      aggregate.running_apply_payment_term = [];
+    }
+    if (!has(aggregate, 'running_apply_payment_term_inheritance')) {
+      aggregate.running_apply_payment_term_inheritance = [];
+    }
     switch (type) {
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED: {
         const eventData = event.data as InitiateApplyPaymentTermCommandDataInterface;
 
+        //const exists = aggregate.running_apply_payment_term.findIndex((x) => x.name == 'bob');
+
         aggregate.running_apply_payment_term.push({
           job_id: eventData._id
         });
-        aggregate.payment_terms[eventData._id] = 'started';
+        aggregate.payment_terms[eventData._id] = 'completed';
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED: {
@@ -35,25 +44,19 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         aggregate.running_apply_payment_term_inheritance.push({
           job_id: eventData._id
         });
-        aggregate.payment_terms[eventData._id] = 'started';
+        aggregate.payment_terms[eventData._id] = 'completed';
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED: {
         const eventData = event.data as CompleteApplyPaymentTermCommandDataInterface;
 
-        aggregate.running_apply_payment_term.push({
-          job_id: eventData._id
-        });
-        aggregate.payment_terms[eventData._id] = 'completed';
+        //remove(aggregate.running_apply_payment_term, {job_id:eventData._id});
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED: {
         const eventData = event.data as CompleteInheritPaymentTermCommandDataInterface;
 
-        aggregate.running_apply_payment_term_inheritance.push({
-          job_id: eventData._id
-        });
-        aggregate.payment_terms[eventData._id] = 'completed';
+        //remove(aggregate.running_apply_payment_term_inheritance,{job_id:eventData._id});
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       default:

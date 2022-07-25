@@ -25,7 +25,10 @@ describe('OrganisationJobAggregate', () => {
         {
           job_id: 'job id'
         }
-      ]
+      ],
+      payment_terms: {
+        'job id': 'completed'
+      }
     };
     const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -38,13 +41,16 @@ describe('OrganisationJobAggregate', () => {
       client_id: 'client_id'
     };
 
-    it('Test Job Not Completed error', async () => {
+    it('Test Job Not started error', async () => {
       const aggregate = {
         running_apply_payment_term: [
           {
             job_id: 'job id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': ''
+        }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -53,10 +59,10 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Not Completed').setErrors([
+        new ValidationError('Job Not Started').setErrors([
           {
-            code: 'JOB_NOT_COMPLETED',
-            message: `Job ${command._id} is still running`,
+            code: 'JOB_NOT_STARTED',
+            message: `Job ${command._id} not started yet`,
             path: ['job id']
           }
         ])
@@ -69,7 +75,10 @@ describe('OrganisationJobAggregate', () => {
           {
             job_id: 'id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': 'started'
+        }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -95,13 +104,16 @@ describe('OrganisationJobAggregate', () => {
       client_id: 'client_id'
     };
 
-    it('Test Job Not Completed error', async () => {
+    it('Test Job Not Started error', async () => {
       const aggregate = {
         running_apply_payment_term_inheritance: [
           {
             job_id: 'job id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': ''
+        }
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -111,10 +123,10 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Not Completed').setErrors([
+        new ValidationError('Job Not Started').setErrors([
           {
-            code: 'JOB_NOT_COMPLETED',
-            message: `Job ${command._id} is still running`,
+            code: 'JOB_NOT_STARTED',
+            message: `Job ${command._id} not started yet`,
             path: ['job id']
           }
         ])
@@ -127,7 +139,10 @@ describe('OrganisationJobAggregate', () => {
           {
             job_id: 'id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': 'started'
+        }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -158,7 +173,10 @@ describe('OrganisationJobAggregate', () => {
           {
             job_id: 'job id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': 'started'
+        }
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -184,7 +202,10 @@ describe('OrganisationJobAggregate', () => {
           {
             job_id: 'id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': 'completed'
+        }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -215,7 +236,10 @@ describe('OrganisationJobAggregate', () => {
           {
             job_id: 'job id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': 'started'
+        }
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -241,7 +265,10 @@ describe('OrganisationJobAggregate', () => {
           {
             job_id: 'id'
           }
-        ]
+        ],
+        payment_terms: {
+          'job id': 'completed'
+        }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 

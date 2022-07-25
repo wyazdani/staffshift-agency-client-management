@@ -1,5 +1,4 @@
 import {find, includes, indexOf, size} from 'lodash';
-import {AgencyRepository} from '../Agency/AgencyRepository';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
@@ -22,7 +21,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'completed') {
+    if (this.aggregate?.payment_terms[command._id] != 'completed') {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
@@ -35,7 +34,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'completed') {
+    if (this.aggregate?.payment_terms[command._id] != 'completed') {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
@@ -48,28 +47,10 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'started') {
-      throw new ValidationError('Job Not Started').setErrors([
-        {
-          code: 'JOB_NOT_STARTED',
-          message: `Job ${command._id} not started yet`,
-          path: ['job id']
-        }
-      ]);
-    }
     this.validateNotRunningAnotherProcess(command._id);
   }
 
   async validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'started') {
-      throw new ValidationError('Job Not Started').setErrors([
-        {
-          code: 'JOB_NOT_STARTED',
-          message: `Job ${command._id} not started yet`,
-          path: ['job id']
-        }
-      ]);
-    }
     this.validateNotRunningAnotherProcess(command._id);
   }
   /**

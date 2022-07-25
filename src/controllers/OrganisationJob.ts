@@ -35,8 +35,7 @@ export const initiateApplyPaymentTerm = async (
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        client_id: clientId,
-        organisation_id: agencyClient.organisation_id
+        organisation_id: '62bc58ad371fecc5c10a2614'
       },
       type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
