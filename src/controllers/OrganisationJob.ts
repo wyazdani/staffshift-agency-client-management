@@ -31,11 +31,16 @@ export const initiateApplyPaymentTerm = async (
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
     }
+    let organisationId = agencyClient.organisation_id;
+
+    if (agencyClient.client_type === 'organisation') {
+      organisationId = agencyClient.client_id;
+    }
     const command: InitiateApplyPaymentTermCommandInterface = {
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: '62bc58ad371fecc5c10a2614'
+        organisation_id: organisationId
       },
       type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
