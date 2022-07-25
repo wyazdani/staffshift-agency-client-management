@@ -6,7 +6,7 @@ import {OrganisationJobCommandEnum} from '../types';
 
 export class CompleteInitiatePaymentTermCommandHandler implements OrganisationJobCommandHandlerInterface {
   constructor(private repository: OrganisationJobRepository) {}
-  commandType = OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM_INHERITANCE;
+  commandType = OrganisationJobCommandEnum.COMPLETE_INHERIT_PAYMENT_TERM;
 
   async execute(command: CompleteInheritPaymentTermCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);

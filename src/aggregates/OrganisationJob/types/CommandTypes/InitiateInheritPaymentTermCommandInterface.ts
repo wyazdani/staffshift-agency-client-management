@@ -7,6 +7,6 @@ export interface InitiateInheritPaymentTermCommandDataInterface {
 }
 
 export interface InitiateInheritPaymentTermCommandInterface extends OrganisationJobCommandInterface {
-  type: OrganisationJobCommandEnum.INHERIT_PAYMENT_TERM;
+  type: OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM;
   data: InitiateInheritPaymentTermCommandDataInterface;
 }

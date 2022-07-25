@@ -38,7 +38,7 @@ export const initiateApplyPaymentTerm = async (
         client_id: clientId,
         organisation_id: agencyClient.organisation_id
       },
-      type: OrganisationJobCommandEnum.APPLY_PAYMENT_TERM,
+      type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
         _id: id,
         ...payload
@@ -85,7 +85,7 @@ export const initiateInheritApplyPaymentTerm = async (
         agency_id: agencyId,
         organisation_id: agencyClient.organisation_id
       },
-      type: OrganisationJobCommandEnum.INHERIT_PAYMENT_TERM,
+      type: OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM,
       data: {
         _id: id,
         client_id: clientId,
