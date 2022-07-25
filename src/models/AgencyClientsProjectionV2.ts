@@ -96,7 +96,7 @@ agencyClients.static({
    * It counts all children and grandchildren of a node
    * it contains the node itself too
    *
-   * also explain we estimate not counting inherited|not-inherited
+   * we +1 at the end since on the projection the actual node won't be counted
    *
    */
   // eslint-disable-next-line func-names
@@ -109,12 +109,14 @@ agencyClients.static({
     if (clientType === 'ward') {
       return 1;
     }
-    return await this.countDocuments({
-      agency_id: agencyId,
-      organisation_id: organisationId,
-      ...(clientType === 'site' && {site_id: clientId}),
-      linked: true
-    }).exec();
+    return (
+      (await this.countDocuments({
+        agency_id: agencyId,
+        organisation_id: organisationId,
+        ...(clientType === 'site' && {site_id: clientId}),
+        linked: true
+      }).exec()) + 1
+    );
   }
 });
 

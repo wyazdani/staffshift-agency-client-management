@@ -1,4 +1,5 @@
 import {PaymentTermWriteProjectionHandler} from '../../../src/aggregates/PaymentTerm/PaymentTermWriteProjectionHandler';
+import {PAYMENT_TERM_ENUM} from '../../../src/aggregates/PaymentTerm/types/PaymentTermAggregateRecordInterface';
 import {EventsEnum} from '../../../src/Events';
 import {EventStore} from '../../../src/models/EventStore';
 import {assert} from 'chai';
@@ -30,6 +31,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
         );
 
         result.inherited.should.be.false;
+        result.payment_term.should.equal(PAYMENT_TERM_ENUM.CREDIT);
       });
     });
 
@@ -56,6 +58,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
         );
 
         result.inherited.should.be.false;
+        result.payment_term.should.equal(PAYMENT_TERM_ENUM.PAY_IN_ADVANCE);
       });
     });
 
@@ -82,6 +85,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
         );
 
         result.inherited.should.be.true;
+        (result.payment_term === null).should.be.true;
       });
     });
 
@@ -108,6 +112,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
         );
 
         result.inherited.should.be.true;
+        result.payment_term.should.equal(PAYMENT_TERM_ENUM.CREDIT);
       });
     });
 
@@ -134,6 +139,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
         );
 
         result.inherited.should.be.true;
+        result.payment_term.should.equal(PAYMENT_TERM_ENUM.PAY_IN_ADVANCE);
       });
     });
 

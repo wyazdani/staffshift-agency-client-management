@@ -17,10 +17,7 @@ import {
   OrganisationJobAggregateIdInterface,
   OrganisationJobCommandEnum
 } from '../../../../aggregates/OrganisationJob/types';
-import {
-  CompleteApplyPaymentTermCommandInterface,
-  CompleteInheritPaymentTermCommandInterface
-} from '../../../../aggregates/OrganisationJob/types/CommandTypes';
+import {CompleteInheritPaymentTermCommandInterface} from '../../../../aggregates/OrganisationJob/types/CommandTypes';
 import {PaymentTermRepository} from '../../../../aggregates/PaymentTerm/PaymentTermRepository';
 import {PaymentTermWriteProjectionHandler} from '../../../../aggregates/PaymentTerm/PaymentTermWriteProjectionHandler';
 import {EventRepository} from '../../../../EventRepository';
@@ -181,7 +178,7 @@ export class InheritPaymentTermProcess implements ProcessInterface {
   async complete(): Promise<void> {
     const command: CompleteInheritPaymentTermCommandInterface = {
       aggregateId: this.initiateEvent.aggregate_id,
-      type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM_INHERITANCE,
+      type: OrganisationJobCommandEnum.COMPLETE_INHERIT_PAYMENT_TERM,
       data: {_id: this.initiateEvent.data._id}
     };
 
@@ -240,6 +237,8 @@ export class InheritPaymentTermProcess implements ProcessInterface {
 
   private async getParentPaymentTerm(agencyClientAggregate: AgencyClientAggregate): Promise<string | null> {
     const parentId = agencyClientAggregate.getParentClientId();
+
+    this.logger.debug(`Parent client for ${agencyClientAggregate.getId().client_id} is ${parentId}`);
 
     const parentPaymentTerm = await this.paymentTermRepository.getAggregate({
       name: 'payment_term',
