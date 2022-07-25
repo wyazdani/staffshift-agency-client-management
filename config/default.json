@@ -189,6 +189,13 @@
           "topicName": "ss.global.event.store.staffshift.agency.client.management",
           "skipSeed": true
         }]
+      }, {
+        "name": "Agency Client Payment Terms V1",
+        "bindings": [{
+          "id": "agency-client-payment-terms-v1",
+          "projector": "./projections/AgencyClientPaymentTermsProjectionV1/AgencyClientPaymentTermsProjector",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management"
+        }]
       }]
     }
   },
