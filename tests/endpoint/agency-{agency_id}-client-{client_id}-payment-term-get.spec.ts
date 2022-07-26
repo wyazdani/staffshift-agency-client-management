@@ -4,10 +4,10 @@
 import {assert} from 'chai';
 import {cloneDeep} from 'lodash';
 import ZSchema from 'z-schema';
-import {AgencyClientPaymentTermsProjection} from '../../src/models/AgencyClientPaymentTermsProjectionV1';
 import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
 import {TestUtilsZSchemaFormatter} from '../tools/TestUtilsZSchemaFormatter';
+import {AgencyClientPaymentTermsProjectionScenarios} from './scenarios/AgencyClientPaymentTermsProjectionScenarios';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
@@ -29,7 +29,7 @@ describe('agency-{agency_id}-client-{client_id}-payment-term-get', () => {
     };
 
     afterEach(async () => {
-      await AgencyClientPaymentTermsProjection.deleteMany({});
+      await AgencyClientPaymentTermsProjectionScenarios.removeAll();
     });
     it('should respond with 200 Retrieves a single Agency Client Payment Term', async () => {
       const schema = {
@@ -70,13 +70,11 @@ describe('agency-{agency_id}-client-{client_id}-payment-term-get', () => {
         additionalProperties: false
       };
 
-      await AgencyClientPaymentTermsProjection.create({
-        _id: '62dfd9618d69d33605000001',
+      await AgencyClientPaymentTermsProjectionScenarios.create({
         agency_id: agencyId,
-        client_id: clientId,
-        inherited: true,
-        payment_term: 'credit'
+        client_id: clientId
       });
+
       const res = await api.get(`/agency/${agencyId}/client/${clientId}/payment-term`).set(headers).send();
 
       assert.equal(res.statusCode, 200);
