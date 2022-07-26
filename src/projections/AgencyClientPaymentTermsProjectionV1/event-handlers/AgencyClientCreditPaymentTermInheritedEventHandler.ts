@@ -8,8 +8,7 @@ import {EventStoreModelInterface} from '../../../models/EventStore';
 
 export class AgencyClientCreditPaymentTermInheritedEventHandler
 implements
-    EventHandlerInterface<EventStoreModelInterface<AgencyClientCreditPaymentTermInheritedEventStoreDataInterface>>
-{
+    EventHandlerInterface<EventStoreModelInterface<AgencyClientCreditPaymentTermInheritedEventStoreDataInterface>> {
   async handle(
     event: EventStoreModelInterface<AgencyClientCreditPaymentTermInheritedEventStoreDataInterface>
   ): Promise<void> {

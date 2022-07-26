@@ -10,8 +10,7 @@ export class AgencyClientPayInAdvancePaymentTermInheritedEventHandler
 implements
     EventHandlerInterface<
       EventStoreModelInterface<AgencyClientPayInAdvancePaymentTermInheritedEventStoreDataInterface>
-    >
-{
+    > {
   async handle(
     event: EventStoreModelInterface<AgencyClientPayInAdvancePaymentTermInheritedEventStoreDataInterface>
   ): Promise<void> {
