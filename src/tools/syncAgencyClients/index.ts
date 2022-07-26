@@ -20,7 +20,6 @@ const itemsPerPage = 100;
 
 interface SyncCommandInterface {
   command: AgencyClientCommandInterface;
-  clientId: string;
 }
 
 /**
@@ -98,15 +97,14 @@ const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType)
             linked: agencyClientLink.agency_linked,
             linked_at: new Date(agencyClientLink.created_at)
           }
-        },
-        clientId: agencyClientLink.organisation_id
+        }
       };
     case 'site':
       return {
         command: {
           aggregateId: {
             agency_id: agencyClientLink.agency_id,
-            client_id: agencyClientLink.organisation_id
+            client_id: agencyClientLink.site_id
           },
           type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
           data: {
@@ -115,15 +113,14 @@ const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType)
             linked: agencyClientLink.agency_linked,
             linked_at: new Date(agencyClientLink.created_at)
           }
-        },
-        clientId: agencyClientLink.site_id
+        }
       };
     case 'ward':
       return {
         command: {
           aggregateId: {
             agency_id: agencyClientLink.agency_id,
-            client_id: agencyClientLink.organisation_id
+            client_id: agencyClientLink.ward_id
           },
           type: AgencyClientCommandEnum.SYNC_AGENCY_CLIENT,
           data: {
@@ -133,8 +130,7 @@ const getSyncCommandDetails = (agencyClientLink: AgencyOrganisationLinkDataType)
             linked: agencyClientLink.agency_linked,
             linked_at: new Date(agencyClientLink.created_at)
           }
-        },
-        clientId: agencyClientLink.ward_id
+        }
       };
     default:
       throw new Error(`Unexpected agency organisation type received: ${agencyClientLink.agency_org_type}`);
