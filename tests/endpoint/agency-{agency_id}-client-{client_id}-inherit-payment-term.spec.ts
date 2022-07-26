@@ -5,9 +5,11 @@ import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
 import _ from 'lodash';
 import {AgencyClientsProjectionScenarios} from './scenarios/AgencyClientsProjectionScenarios';
+import {OrganisationJobScenario} from './scenarios/OrganisationJobScenario';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
+const organisationJobScenario = new OrganisationJobScenario();
 
 describe('agency-{agency_id}-client-{client_id}-inherit-payment-term', () => {
   const jwtToken = getJWT({
@@ -24,6 +26,7 @@ describe('agency-{agency_id}-client-{client_id}-inherit-payment-term', () => {
 
   afterEach(async () => {
     await AgencyClientsProjectionScenarios.removeAll();
+    await organisationJobScenario.deleteAllEvents();
   });
 
   describe('initiateInheritPaymentTerm', () => {
