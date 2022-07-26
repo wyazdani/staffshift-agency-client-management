@@ -1,7 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {RuntimeError} from 'a24-node-error-utils';
 import {BaseEventStoreDataInterface} from 'EventTypes';
-import {EventRepository} from '../../EventRepository';
 import {EventHandlerInterface} from 'EventHandlerInterface';
 import {EventsEnum} from '../../Events';
 import {AgencyClientCreditPaymentTermAppliedEventHandler} from './event-handlers/AgencyClientCreditPaymentTermAppliedEventHandler';
@@ -17,11 +16,7 @@ export class EventHandlerFactory {
   /**
    * Return event handler based on the event type
    */
-  static getHandler(
-    eventType: EventsEnum,
-    eventRepository: EventRepository,
-    logger: LoggerContext
-  ): EventHandlerInterface<BaseEventStoreDataInterface> {
+  static getHandler(eventType: EventsEnum, logger: LoggerContext): EventHandlerInterface<BaseEventStoreDataInterface> {
     switch (eventType) {
       case EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED:
         return new AgencyClientCreditPaymentTermAppliedEventHandler();

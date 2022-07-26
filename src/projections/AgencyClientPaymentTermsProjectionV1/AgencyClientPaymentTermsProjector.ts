@@ -1,8 +1,6 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {EventStoreProjectorInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
-import {EventRepository} from '../../EventRepository';
 import {EventsEnum} from '../../Events';
-import {EventStore} from '../../models/EventStore';
 import {EventHandlerFactory} from './EventHandlerFactory';
 
 const events = [
@@ -21,10 +19,9 @@ export default class AgencyClientPaymentTermsProjector implements EventStoreProj
       logger.debug('Incoming event ignored', {eventType, event});
       return;
     }
-    const eventRepository = new EventRepository(EventStore, logger.requestId);
 
     logger.debug('Processing the incoming event', {event});
-    const eventHandler = EventHandlerFactory.getHandler(eventType, eventRepository, logger);
+    const eventHandler = EventHandlerFactory.getHandler(eventType, logger);
 
     await eventHandler.handle(event);
   }
