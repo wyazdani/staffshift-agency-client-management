@@ -45,7 +45,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.payment_terms.should.deep.equal({
-          id: 'completed'
+          id: 'started'
         });
       });
     });
@@ -80,7 +80,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.payment_terms.should.deep.equal({
-          id: 'completed'
+          id: 'started'
         });
       });
     });
@@ -114,7 +114,9 @@ describe('OrganisationJobWriteProjectionHandler', () => {
           event
         );
 
-        result.payment_terms.should.deep.equal({});
+        result.payment_terms.should.deep.equal({
+          id: 'completed'
+        });
       });
     });
 
@@ -147,7 +149,9 @@ describe('OrganisationJobWriteProjectionHandler', () => {
           event
         );
 
-        result.payment_terms.should.deep.equal({});
+        result.payment_terms.should.deep.equal({
+          id: 'completed'
+        });
       });
     });
 

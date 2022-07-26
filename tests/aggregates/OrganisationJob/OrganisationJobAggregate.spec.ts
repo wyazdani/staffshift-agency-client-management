@@ -39,7 +39,7 @@ describe('OrganisationJobAggregate', () => {
     it('Test another job process active error', async () => {
       const aggregate = {
         payment_terms: {
-          'job id': 'completed'
+          'job id': 'started'
         }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -69,7 +69,7 @@ describe('OrganisationJobAggregate', () => {
     it('Test another job process active error', async () => {
       const aggregate = {
         payment_terms: {
-          'job id': 'completed'
+          'job id': 'started'
         }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -115,10 +115,10 @@ describe('OrganisationJobAggregate', () => {
       );
     });
 
-    it('Test Job Not Completed error', async () => {
+    it('Test Job Completed error', async () => {
       const aggregate = {
         payment_terms: {
-          'job id': 'started'
+          'job id': 'completed'
         }
       };
 
@@ -129,10 +129,10 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Not Completed').setErrors([
+        new ValidationError('Job Completed').setErrors([
           {
-            code: 'JOB_NOT_COMPLETED',
-            message: `Job ${command._id} is still running`,
+            code: 'JOB_COMPLETED',
+            message: `Job ${command._id} has already been completed`,
             path: ['job id']
           }
         ])
@@ -165,10 +165,10 @@ describe('OrganisationJobAggregate', () => {
       );
     });
 
-    it('Test Job Not Completed error', async () => {
+    it('Test Job Completed error', async () => {
       const aggregate = {
         payment_terms: {
-          'job id': 'started'
+          'job id': 'completed'
         }
       };
 
@@ -179,10 +179,10 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Not Completed').setErrors([
+        new ValidationError('Job Completed').setErrors([
           {
-            code: 'JOB_NOT_COMPLETED',
-            message: `Job ${command._id} is still running`,
+            code: 'JOB_COMPLETED',
+            message: `Job ${command._id} has already been completed`,
             path: ['job id']
           }
         ])

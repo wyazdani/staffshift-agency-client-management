@@ -30,11 +30,12 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         }
       ]);
     }
-    if (this.aggregate?.payment_terms[command._id] !== 'completed') {
-      throw new ValidationError('Job Not Completed').setErrors([
+
+    if (this.aggregate?.payment_terms[command._id] === 'completed') {
+      throw new ValidationError('Job Completed').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
+          code: 'JOB_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
           path: ['job id']
         }
       ]);
@@ -52,11 +53,11 @@ export class OrganisationJobAggregate extends AbstractAggregate<
       ]);
     }
 
-    if (this.aggregate?.payment_terms[command._id] !== 'completed') {
-      throw new ValidationError('Job Not Completed').setErrors([
+    if (this.aggregate?.payment_terms[command._id] === 'completed') {
+      throw new ValidationError('Job Completed').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
+          code: 'JOB_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
           path: ['job id']
         }
       ]);
@@ -75,7 +76,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * - we don't have another job running for the same organisation
    */
   private validateNotRunningAnotherProcess(jobId: string) {
-    if (includes(this.aggregate.payment_terms, 'completed')) {
+    if (includes(this.aggregate.payment_terms, 'started')) {
       throw new ValidationError('Not allowed job id').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
