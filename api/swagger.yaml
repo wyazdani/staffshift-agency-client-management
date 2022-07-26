@@ -483,6 +483,8 @@ paths:
             $ref: "#/definitions/empty_payload_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Initiate Apply payment term to client"
@@ -510,6 +512,8 @@ paths:
             $ref: "#/definitions/empty_payload_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Initiate Inherit Apply payment term to client"
@@ -1064,7 +1068,7 @@ definitions:
               type: "string"
           additionalProperties: false
     additionalProperties: false
-  empty_payload_error_model:
+  empty_payload_error_model: 
     type: object
     required:
       - code
