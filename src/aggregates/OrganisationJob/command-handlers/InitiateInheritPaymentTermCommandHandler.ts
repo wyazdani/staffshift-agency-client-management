@@ -1,5 +1,5 @@
 import {EventsEnum} from '../../../Events';
-import {InitiateApplyPaymentTermCommandInterface} from '../types/CommandTypes';
+import {InitiateInheritPaymentTermCommandInterface} from '../types/CommandTypes';
 import {OrganisationJobRepository} from '../OrganisationJobRepository';
 import {OrganisationJobCommandHandlerInterface} from '../types/OrganisationJobCommandHandlerInterface';
 import {OrganisationJobCommandEnum} from '../types';
@@ -8,7 +8,7 @@ export class InitiateInheritPaymentTermCommandHandler implements OrganisationJob
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM;
 
-  async execute(command: InitiateApplyPaymentTermCommandInterface): Promise<void> {
+  async execute(command: InitiateInheritPaymentTermCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateInitiateInheritPaymentTerm(command.data);

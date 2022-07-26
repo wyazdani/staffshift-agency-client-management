@@ -23,7 +23,8 @@ describe('OrganisationJobAggregate', () => {
     const aggregate = {
       payment_term_jobs: {
         'job id': 'completed'
-      }
+      },
+      last_sequence_id: 1
     };
     const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -40,7 +41,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'started'
-        }
+        },
+        last_sequence_id: 1
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -70,7 +72,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'started'
-        }
+        },
+        last_sequence_id: 1
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -96,7 +99,9 @@ describe('OrganisationJobAggregate', () => {
     };
 
     it('Test Job Not Found error', async () => {
-      const aggregate = {};
+      const aggregate = {
+        last_sequence_id: 1
+      };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -119,7 +124,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'completed'
-        }
+        },
+        last_sequence_id: 1
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -146,7 +152,9 @@ describe('OrganisationJobAggregate', () => {
     };
 
     it('Test Job Not Found error', async () => {
-      const aggregate = {};
+      const aggregate = {
+        last_sequence_id: 1
+      };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -169,7 +177,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'completed'
-        }
+        },
+        last_sequence_id: 1
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
