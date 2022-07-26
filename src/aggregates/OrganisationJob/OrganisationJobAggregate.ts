@@ -26,7 +26,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'JOB_NOT_FOUND',
           message: `Job ${command._id} is not found`,
-          path: ['job id']
+          path: ['_id']
         }
       ]);
     }
@@ -36,7 +36,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'JOB_COMPLETED',
           message: `Job ${command._id} has already been completed`,
-          path: ['job id']
+          path: ['_id']
         }
       ]);
     }
@@ -48,7 +48,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'JOB_NOT_FOUND',
           message: `Job ${command._id} is not found`,
-          path: ['job id']
+          path: ['_id']
         }
       ]);
     }
@@ -58,7 +58,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'JOB_COMPLETED',
           message: `Job ${command._id} has already been completed`,
-          path: ['job id']
+          path: ['_id']
         }
       ]);
     }
@@ -81,7 +81,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
           message: `There is another job still running for this job id ${jobId}`,
-          path: ['job id']
+          path: ['job_id']
         }
       ]);
     }
