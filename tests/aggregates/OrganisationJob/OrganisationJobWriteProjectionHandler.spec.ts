@@ -47,11 +47,6 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         result.payment_terms.should.deep.equal({
           id: 'completed'
         });
-        result.running_apply_payment_term.should.deep.equal([
-          {
-            job_id: 'id'
-          }
-        ]);
       });
     });
 
@@ -87,11 +82,6 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         result.payment_terms.should.deep.equal({
           id: 'completed'
         });
-        result.running_apply_payment_term_inheritance.should.deep.equal([
-          {
-            job_id: 'id'
-          }
-        ]);
       });
     });
 
@@ -125,7 +115,6 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.payment_terms.should.deep.equal({});
-        result.running_apply_payment_term.should.deep.equal([]);
       });
     });
 
@@ -159,7 +148,6 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.payment_terms.should.deep.equal({});
-        result.running_apply_payment_term_inheritance.should.deep.equal([]);
       });
     });
 

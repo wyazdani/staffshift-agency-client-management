@@ -1,4 +1,4 @@
-import {find, includes, indexOf, size} from 'lodash';
+import {has, includes} from 'lodash';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
@@ -21,7 +21,16 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate?.payment_terms[command._id] != 'completed') {
+    if (!has(this.aggregate.payment_terms, command._id)) {
+      throw new ValidationError('Job Not Found').setErrors([
+        {
+          code: 'JOB_NOT_FOUND',
+          message: `Job ${command._id} is not found`,
+          path: ['job id']
+        }
+      ]);
+    }
+    if (this.aggregate?.payment_terms[command._id] !== 'completed') {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
@@ -33,7 +42,17 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate?.payment_terms[command._id] != 'completed') {
+    if (!has(this.aggregate.payment_terms, command._id)) {
+      throw new ValidationError('Job Not Found').setErrors([
+        {
+          code: 'JOB_NOT_FOUND',
+          message: `Job ${command._id} is not found`,
+          path: ['job id']
+        }
+      ]);
+    }
+
+    if (this.aggregate?.payment_terms[command._id] !== 'completed') {
       throw new ValidationError('Job Not Completed').setErrors([
         {
           code: 'JOB_NOT_COMPLETED',
@@ -56,10 +75,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * - we don't have another job running for the same organisation
    */
   private validateNotRunningAnotherProcess(jobId: string) {
-    if (
-      size(this.aggregate.running_apply_payment_term_inheritance) + size(this.aggregate.running_apply_payment_term) >
-      0
-    ) {
+    if (includes(this.aggregate.payment_terms, 'completed')) {
       throw new ValidationError('Not allowed job id').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',

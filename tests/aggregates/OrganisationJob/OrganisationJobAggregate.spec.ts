@@ -21,11 +21,6 @@ describe('OrganisationJobAggregate', () => {
 
   it('Test inheritance of AbstractAggregate', () => {
     const aggregate = {
-      running_apply_payment_term: [
-        {
-          job_id: 'job id'
-        }
-      ],
       payment_terms: {
         'job id': 'completed'
       }
@@ -43,13 +38,8 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test another job process active error', async () => {
       const aggregate = {
-        running_apply_payment_term: [
-          {
-            job_id: 'id'
-          }
-        ],
         payment_terms: {
-          'job id': 'started'
+          'job id': 'completed'
         }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -78,13 +68,8 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test another job process active error', async () => {
       const aggregate = {
-        running_apply_payment_term_inheritance: [
-          {
-            job_id: 'id'
-          }
-        ],
         payment_terms: {
-          'job id': 'started'
+          'job id': 'completed'
         }
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -110,13 +95,28 @@ describe('OrganisationJobAggregate', () => {
       _id: 'job id'
     };
 
+    it('Test Job Not Found error', async () => {
+      const aggregate = {};
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateCompleteInheritPaymentTerm(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Job Not Found').setErrors([
+          {
+            code: 'JOB_NOT_FOUND',
+            message: `Job ${command._id} is not found`,
+            path: ['job id']
+          }
+        ])
+      );
+    });
+
     it('Test Job Not Completed error', async () => {
       const aggregate = {
-        running_apply_payment_term_inheritance: [
-          {
-            job_id: 'job id'
-          }
-        ],
         payment_terms: {
           'job id': 'started'
         }
@@ -145,13 +145,28 @@ describe('OrganisationJobAggregate', () => {
       _id: 'job id'
     };
 
+    it('Test Job Not Found error', async () => {
+      const aggregate = {};
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateCompleteApplyPaymentTerm(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Job Not Found').setErrors([
+          {
+            code: 'JOB_NOT_FOUND',
+            message: `Job ${command._id} is not found`,
+            path: ['job id']
+          }
+        ])
+      );
+    });
+
     it('Test Job Not Completed error', async () => {
       const aggregate = {
-        running_apply_payment_term: [
-          {
-            job_id: 'job id'
-          }
-        ],
         payment_terms: {
           'job id': 'started'
         }
