@@ -113,9 +113,7 @@ const getOrganisationId = async (agencyId: string, clientId: string, logger: Log
   const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
   const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
-  if (isEmpty(agencyClient) && agencyClient.linked !== false) {
-    logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
-
+  if (isEmpty(agencyClient) || agencyClient.linked === false) {
     return null;
   }
   let organisationId = agencyClient.organisation_id;
