@@ -21,7 +21,7 @@ describe('OrganisationJobAggregate', () => {
 
   it('Test inheritance of AbstractAggregate', () => {
     const aggregate = {
-      payment_terms: {
+      payment_term_jobs: {
         'job id': 'completed'
       }
     };
@@ -38,7 +38,7 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test another job process active error', async () => {
       const aggregate = {
-        payment_terms: {
+        payment_term_jobs: {
           'job id': 'started'
         }
       };
@@ -68,7 +68,7 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test another job process active error', async () => {
       const aggregate = {
-        payment_terms: {
+        payment_term_jobs: {
           'job id': 'started'
         }
       };
@@ -117,7 +117,7 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test Job Completed error', async () => {
       const aggregate = {
-        payment_terms: {
+        payment_term_jobs: {
           'job id': 'completed'
         }
       };
@@ -167,7 +167,7 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test Job Completed error', async () => {
       const aggregate = {
-        payment_terms: {
+        payment_term_jobs: {
           'job id': 'completed'
         }
       };

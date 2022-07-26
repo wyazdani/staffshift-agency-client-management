@@ -5,5 +5,5 @@ export interface PaymentTermInterface {
 }
 
 export interface OrganisationJobAggregateRecordInterface extends BaseAggregateRecordInterface {
-  payment_terms?: PaymentTermInterface;
+  payment_term_jobs?: PaymentTermInterface;
 }

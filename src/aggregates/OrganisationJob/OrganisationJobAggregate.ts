@@ -21,7 +21,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (!has(this.aggregate.payment_terms, command._id)) {
+    if (!has(this.aggregate.payment_term_jobs, command._id)) {
       throw new ValidationError('Job Not Found').setErrors([
         {
           code: 'JOB_NOT_FOUND',
@@ -31,7 +31,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
       ]);
     }
 
-    if (this.aggregate?.payment_terms[command._id] === 'completed') {
+    if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
       throw new ValidationError('Job Completed').setErrors([
         {
           code: 'JOB_COMPLETED',
@@ -43,7 +43,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (!has(this.aggregate.payment_terms, command._id)) {
+    if (!has(this.aggregate.payment_term_jobs, command._id)) {
       throw new ValidationError('Job Not Found').setErrors([
         {
           code: 'JOB_NOT_FOUND',
@@ -53,7 +53,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
       ]);
     }
 
-    if (this.aggregate?.payment_terms[command._id] === 'completed') {
+    if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
       throw new ValidationError('Job Completed').setErrors([
         {
           code: 'JOB_COMPLETED',
@@ -76,7 +76,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * - we don't have another job running for the same organisation
    */
   private validateNotRunningAnotherProcess(jobId: string) {
-    if (includes(this.aggregate.payment_terms, 'started')) {
+    if (includes(this.aggregate.payment_term_jobs, 'started')) {
       throw new ValidationError('Not allowed job id').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
