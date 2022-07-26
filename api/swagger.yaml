@@ -488,6 +488,29 @@ paths:
       summary: "Initiate Apply payment term to client"
       tags:
         - "Payment Term"
+    get:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "getPaymentTerm"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Retrieves a payment term for the client in that agency. when payment_term is not set, it means the payment term is not set on it self or parent"
+          schema:
+            $ref: "#/definitions/get_payment_term_def"
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/get_payment_term_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Retrieves a payment term"
+      tags:
+        - "Payment Term"
   /agency/{agency_id}/client/{client_id}/inherit-payment-term:
     parameters:
       - $ref: "#/parameters/x_request_id"
@@ -923,6 +946,42 @@ definitions:
         type: string
         enum: ['credit','pay_in_advance']
     additionalProperties: false
+  get_payment_term_def:
+    type: object
+    required:
+      - _id
+      - agency_id
+      - client_id
+      - inherited
+      - updated_at
+      - created_at
+      - __v
+    properties:
+      _id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      agency_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      client_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      payment_term:
+        type: string
+        enum:
+          - credit
+          - pay_in_advance
+      inherited:
+        type: boolean
+      updated_at:
+        type: string
+        format: date-time
+      created_at:
+        type: string
+        format: date-time
+      __v:
+        type: integer
+    additionalProperties: false
  # GENERIC CROSS ROUTE RESPONSES
   unauthorize_error_model:
     type: "object"
@@ -1313,6 +1372,20 @@ definitions:
         type: string
     additionalProperties: false
   get_consultant_role_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PATTERN
+          - REQUIRED
+      message:
+        type: string
+    additionalProperties: false
+  get_payment_term_validation_error_model:
     type: object
     required:
       - code
