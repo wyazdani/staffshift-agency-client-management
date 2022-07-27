@@ -33,7 +33,7 @@ describe('OrganisationJob Controller', () => {
       }
     };
 
-    it('success scenario', async () => {
+    it('success scenario client type other than organisation', async () => {
       const req = fakeRequest({
         swaggerParams: params,
         basePathName: '/v1/localhost/path',
@@ -50,7 +50,7 @@ describe('OrganisationJob Controller', () => {
         client_id: clientId,
         organisation_id: organisationId,
         site_id: 'some site',
-        client_type: 1,
+        client_type: 'site',
         linked: true
       };
       const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
@@ -66,6 +66,49 @@ describe('OrganisationJob Controller', () => {
           name: 'organisation_job',
           agency_id: agencyId,
           organisation_id: organisationId
+        },
+        type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
+        data: {
+          _id: id,
+          client_id: clientId,
+          ...payload
+        }
+      });
+    });
+
+    it('success scenario client type organisation', async () => {
+      const req = fakeRequest({
+        swaggerParams: params,
+        basePathName: '/v1/localhost/path',
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+
+      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      const listResponse = {
+        _id: '3123123',
+        agency_id: agencyId,
+        client_id: clientId,
+        organisation_id: '',
+        site_id: 'some site',
+        client_type: 'organisation',
+        linked: true
+      };
+      const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+
+      await initiateApplyPaymentTerm(req, res, next);
+      assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.equal(end.callCount, 1, 'Expected end to be called once');
+      assert.equal(next.callCount, 0, 'Expected next to not be called');
+      agencyClient.should.have.been.calledOnceWith();
+      execute.should.have.been.calledOnceWith({
+        aggregateId: {
+          name: 'organisation_job',
+          agency_id: agencyId,
+          organisation_id: clientId
         },
         type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
         data: {

@@ -32,9 +32,9 @@ export class OrganisationJobAggregate extends AbstractAggregate<
     }
 
     if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
-      throw new ValidationError('Job Completed').setErrors([
+      throw new ValidationError('Job is already completed').setErrors([
         {
-          code: 'JOB_COMPLETED',
+          code: 'JOB_ALREADY_COMPLETED',
           message: `Job ${command._id} has already been completed`,
           path: ['_id']
         }
@@ -54,9 +54,9 @@ export class OrganisationJobAggregate extends AbstractAggregate<
     }
 
     if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
-      throw new ValidationError('Job Completed').setErrors([
+      throw new ValidationError('Job is already completed').setErrors([
         {
-          code: 'JOB_COMPLETED',
+          code: 'JOB_ALREADY_COMPLETED',
           message: `Job ${command._id} has already been completed`,
           path: ['_id']
         }
@@ -81,7 +81,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
           message: `There is another job still running for this job id ${jobId}`,
-          path: ['job_id']
+          path: ['_id']
         }
       ]);
     }

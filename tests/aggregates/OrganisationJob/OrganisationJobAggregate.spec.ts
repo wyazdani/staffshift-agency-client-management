@@ -55,10 +55,22 @@ describe('OrganisationJobAggregate', () => {
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
             message: `There is another job still running for this job id ${command._id}`,
-            path: ['job_id']
+            path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'completed'
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateInitiateApplyPaymentTerm(command);
     });
   });
 
@@ -86,10 +98,22 @@ describe('OrganisationJobAggregate', () => {
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
             message: `There is another job still running for this job id ${command._id}`,
-            path: ['job_id']
+            path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'completed'
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateInitiateInheritPaymentTerm(command);
     });
   });
 
@@ -120,7 +144,7 @@ describe('OrganisationJobAggregate', () => {
       );
     });
 
-    it('Test Job Completed error', async () => {
+    it('Test Job is already completed error', async () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'completed'
@@ -135,14 +159,27 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Completed').setErrors([
+        new ValidationError('Job is already completed').setErrors([
           {
-            code: 'JOB_COMPLETED',
+            code: 'JOB_ALREADY_COMPLETED',
             message: `Job ${command._id} has already been completed`,
             path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success sceanrio', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateCompleteInheritPaymentTerm(command);
     });
   });
 
@@ -173,7 +210,7 @@ describe('OrganisationJobAggregate', () => {
       );
     });
 
-    it('Test Job Completed error', async () => {
+    it('Test Job is already completed error', async () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'completed'
@@ -188,14 +225,27 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Completed').setErrors([
+        new ValidationError('Job is already completed').setErrors([
           {
-            code: 'JOB_COMPLETED',
+            code: 'JOB_ALREADY_COMPLETED',
             message: `Job ${command._id} has already been completed`,
             path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateCompleteApplyPaymentTerm(command);
     });
   });
 });
