@@ -117,10 +117,4 @@ const getOrganisationId = async (agencyId: string, clientId: string, logger: Log
     return null;
   }
   return (agencyClient.client_type === 'organisation') ? agencyClient.client_id : agencyClient.organisation_id;
-
-  if (agencyClient.client_type === 'organisation') {
-    organisationId = agencyClient.client_id;
-  }
-
-  return organisationId;
 };

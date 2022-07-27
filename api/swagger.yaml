@@ -479,7 +479,7 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/empty_payload_error_model"
+            $ref: "#/definitions/payment_term_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -508,7 +508,7 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/empty_payload_error_model"
+            $ref: "#/definitions/payment_term_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -1328,6 +1328,49 @@ definitions:
           - REQUIRED
       message:
         type: string
+    additionalProperties: false
+  payment_term_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ANOTHER_JOB_PROCESS_ACTIVE
+                - JOB_NOT_FOUND
+                - JOB_ALREADY_COMPLETED
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
     additionalProperties: false
 responses:
   unauthorize_error_model:
