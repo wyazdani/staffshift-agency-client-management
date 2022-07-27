@@ -13,13 +13,11 @@ export class InitiateInheritPaymentTermCommandHandler implements OrganisationJob
 
     await aggregate.validateInitiateInheritPaymentTerm(command.data);
 
-    const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED;
-
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
       {
-        type,
+        type: EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED,
         aggregate_id: aggregate.getId(),
         data: command.data,
         sequence_id: ++eventId

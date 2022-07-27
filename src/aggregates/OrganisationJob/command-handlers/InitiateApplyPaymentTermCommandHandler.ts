@@ -13,13 +13,11 @@ export class InitiateApplyPaymentTermCommandHandler implements OrganisationJobCo
 
     await aggregate.validateInitiateApplyPaymentTerm(command.data);
 
-    const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED;
-
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
       {
-        type,
+        type: EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED,
         aggregate_id: aggregate.getId(),
         data: command.data,
         sequence_id: ++eventId
