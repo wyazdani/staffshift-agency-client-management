@@ -75,12 +75,12 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * checks:
    * - we don't have another job running for the same organisation
    */
-  private validateNotRunningAnotherProcess(jobId: string) {
+  private validateNotRunningAnotherProcess(id: string) {
     if (includes(this.aggregate.payment_term_jobs, 'started')) {
-      throw new ValidationError('Not allowed job id').setErrors([
+      throw new ValidationError('Another job active').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-          message: `There is another job still running for this job id ${jobId}`,
+          message: `Cant create job id ${id}, as there is another job in progress`,
           path: ['_id']
         }
       ]);

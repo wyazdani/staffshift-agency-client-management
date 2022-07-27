@@ -51,10 +51,10 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Not allowed job id').setErrors([
+        new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `There is another job still running for this job id ${command._id}`,
+            message: `Cant create job id ${command._id}, as there is another job in progress`,
             path: ['_id']
           }
         ])
@@ -94,10 +94,10 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Not allowed job id').setErrors([
+        new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `There is another job still running for this job id ${command._id}`,
+            message: `Cant create job id ${command._id}, as there is another job in progress`,
             path: ['_id']
           }
         ])
