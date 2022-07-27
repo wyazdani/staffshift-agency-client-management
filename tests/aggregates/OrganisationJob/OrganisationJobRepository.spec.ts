@@ -47,22 +47,4 @@ describe('OrganisationJobRepository class', () => {
     });
   });
 
-  describe('save()', () => {
-    it('Test call eventRepository', async () => {
-      const eventRepository = new EventRepository(EventStore, 'some-id');
-      const organisationRepository = new OrganisationJobRepository(
-        eventRepository,
-        new OrganisationJobWriteProjectionHandler()
-      );
-      const save = sinon.stub(eventRepository, 'save').resolves();
-      const events: any = [
-        {
-          type: 'sample'
-        }
-      ];
-
-      await organisationRepository.save(events);
-      save.should.have.been.calledWith(events);
-    });
-  });
 });

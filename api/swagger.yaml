@@ -460,7 +460,6 @@ paths:
       If client_ids is not specified we transfer all clients for that consultant"
       tags:
         - "Consultant Bulk"
-
   /agency/{agency_id}/client/{client_id}/payment-term:
     parameters:
       - $ref: "#/parameters/x_request_id"
