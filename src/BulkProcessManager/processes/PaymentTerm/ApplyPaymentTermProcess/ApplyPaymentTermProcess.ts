@@ -1,6 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
+import {ValidationError} from 'a24-node-error-utils';
 import {AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface} from 'EventTypes';
-import {find} from 'lodash';
+import {find, get} from 'lodash';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {AgencyRepository} from '../../../../aggregates/Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../../../../aggregates/Agency/AgencyWriteProjectionHandler';
@@ -185,13 +186,21 @@ export class ApplyPaymentTermProcess implements ProcessInterface {
   }
 
   async complete(): Promise<void> {
-    const command: CompleteApplyPaymentTermCommandInterface = {
-      aggregateId: this.initiateEvent.aggregate_id,
-      type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM,
-      data: {_id: this.initiateEvent.data._id}
-    };
+    try {
+      const command: CompleteApplyPaymentTermCommandInterface = {
+        aggregateId: this.initiateEvent.aggregate_id,
+        type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM,
+        data: {_id: this.initiateEvent.data._id}
+      };
 
-    await this.commandBus.execute(command);
+      await this.commandBus.execute(command);
+    } catch (error) {
+      if (error instanceof ValidationError && get(error, 'errors[0].code') === 'JOB_ALREADY_COMPLETED') {
+        this.logger.info('the job on organisation job aggregate was already done');
+        return;
+      }
+      throw error;
+    }
   }
 
   private async getAgencyClient(clientId: string): Promise<AgencyClientAggregate> {
