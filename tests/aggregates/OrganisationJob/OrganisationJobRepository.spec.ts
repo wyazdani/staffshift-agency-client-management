@@ -46,5 +46,4 @@ describe('OrganisationJobRepository class', () => {
       aggregate.getId().organisation_id.should.equal(organisationId);
     });
   });
-
 });

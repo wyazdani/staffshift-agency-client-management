@@ -80,7 +80,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
       throw new ValidationError('Another job active').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-          message: `Cant create job id ${id}, as there is another job in progress`,
+          message: `Can't create job id ${id}, as there is another job in progress`,
           path: ['_id']
         }
       ]);

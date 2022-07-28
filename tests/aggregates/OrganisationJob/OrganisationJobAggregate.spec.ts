@@ -54,7 +54,7 @@ describe('OrganisationJobAggregate', () => {
         new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `Cant create job id ${command._id}, as there is another job in progress`,
+            message: `Can't create job id ${command._id}, as there is another job in progress`,
             path: ['_id']
           }
         ])
@@ -97,7 +97,7 @@ describe('OrganisationJobAggregate', () => {
         new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `Cant create job id ${command._id}, as there is another job in progress`,
+            message: `Can't create job id ${command._id}, as there is another job in progress`,
             path: ['_id']
           }
         ])
