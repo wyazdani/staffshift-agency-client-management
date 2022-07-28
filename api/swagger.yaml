@@ -1360,8 +1360,6 @@ definitions:
                 - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
-                - JOB_NOT_FOUND
-                - JOB_ALREADY_COMPLETED
             message:
               type: string
             path:
