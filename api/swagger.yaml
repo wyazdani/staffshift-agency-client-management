@@ -1342,6 +1342,7 @@ definitions:
           - MODEL_VALIDATION_FAILED
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
+          - ENUM_MISMATCH
       message:
         type: string
       errors:
@@ -1356,10 +1357,12 @@ definitions:
             code:
               type: string
               enum:
+                - REQUIRED
                 - INVALID_TYPE
                 - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
+                - ENUM_MISMATCH
             message:
               type: string
             path:
