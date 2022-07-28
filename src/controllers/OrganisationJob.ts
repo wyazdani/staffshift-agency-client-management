@@ -10,6 +10,7 @@ import {
 import {OrganisationJobCommandEnum} from '../aggregates/OrganisationJob/types';
 import {GenericRepository} from '../GenericRepository';
 import {AgencyClientsProjectionV2, AgencyClientsProjectionV2DocumentType} from '../models/AgencyClientsProjectionV2';
+import {LoggerContext} from 'a24-logzio-winston';
 
 export const initiateApplyPaymentTerm = async (
   req: SwaggerRequestInterface,
@@ -23,10 +24,10 @@ export const initiateApplyPaymentTerm = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
-    const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
-    const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
-    if (isEmpty(agencyClient)) {
+    const organisationId = await getOrganisationId(agencyId, clientId, logger);
+
+    if (isEmpty(organisationId)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
@@ -35,12 +36,12 @@ export const initiateApplyPaymentTerm = async (
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        client_id: clientId,
-        organisation_id: agencyClient.organisation_id
+        organisation_id: organisationId
       },
       type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
         _id: id,
+        client_id: clientId,
         ...payload
       }
     };
@@ -71,19 +72,20 @@ export const initiateInheritApplyPaymentTerm = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
-    const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
-    const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
-    if (isEmpty(agencyClient)) {
+    const organisationId = await getOrganisationId(agencyId, clientId, logger);
+
+    if (isEmpty(organisationId)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
     }
+
     const command: InitiateInheritPaymentTermCommandInterface = {
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: agencyClient.organisation_id
+        organisation_id: organisationId
       },
       type: OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM,
       data: {
@@ -105,4 +107,14 @@ export const initiateInheritApplyPaymentTerm = async (
     }
     next(err);
   }
+};
+
+const getOrganisationId = async (agencyId: string, clientId: string, logger: LoggerContext) => {
+  const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
+  const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
+
+  if (isEmpty(agencyClient) || agencyClient.linked === false) {
+    return null;
+  }
+  return agencyClient.client_type === 'organisation' ? agencyClient.client_id : agencyClient.organisation_id;
 };

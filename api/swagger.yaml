@@ -460,7 +460,6 @@ paths:
       If client_ids is not specified we transfer all clients for that consultant"
       tags:
         - "Consultant Bulk"
-
   /agency/{agency_id}/client/{client_id}/payment-term:
     parameters:
       - $ref: "#/parameters/x_request_id"
@@ -480,9 +479,11 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/empty_payload_error_model"
+            $ref: "#/definitions/payment_term_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Initiate Apply payment term to client"
@@ -507,9 +508,11 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/empty_payload_error_model"
+            $ref: "#/definitions/payment_term_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Initiate Inherit Apply payment term to client"
@@ -1064,7 +1067,7 @@ definitions:
               type: "string"
           additionalProperties: false
     additionalProperties: false
-  empty_payload_error_model:
+  empty_payload_error_model: 
     type: object
     required:
       - code
@@ -1325,6 +1328,50 @@ definitions:
           - REQUIRED
       message:
         type: string
+    additionalProperties: false
+  payment_term_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+          - ENUM_MISMATCH
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ANOTHER_JOB_PROCESS_ACTIVE
+                - ENUM_MISMATCH
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
     additionalProperties: false
 responses:
   unauthorize_error_model:

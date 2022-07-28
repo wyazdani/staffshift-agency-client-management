@@ -4,7 +4,7 @@ import {OrganisationJobRepository} from '../OrganisationJobRepository';
 import {OrganisationJobCommandHandlerInterface} from '../types/OrganisationJobCommandHandlerInterface';
 import {OrganisationJobCommandEnum} from '../types';
 
-export class CompleteInitiatePaymentTermCommandHandler implements OrganisationJobCommandHandlerInterface {
+export class CompleteInheritPaymentTermCommandHandler implements OrganisationJobCommandHandlerInterface {
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.COMPLETE_INHERIT_PAYMENT_TERM;
 
@@ -13,13 +13,11 @@ export class CompleteInitiatePaymentTermCommandHandler implements OrganisationJo
 
     await aggregate.validateCompleteInheritPaymentTerm(command.data);
 
-    const type = EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED;
-
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
       {
-        type,
+        type: EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED,
         aggregate_id: aggregate.getId(),
         data: command.data,
         sequence_id: ++eventId

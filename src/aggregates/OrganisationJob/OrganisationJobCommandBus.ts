@@ -1,6 +1,6 @@
 import {
   InitiateApplyPaymentTermCommandHandler,
-  CompleteInitiatePaymentTermCommandHandler,
+  CompleteInheritPaymentTermCommandHandler,
   CompleteApplyPaymentTermCommandHandler,
   InitiateInheritPaymentTermCommandHandler
 } from './command-handlers';
@@ -11,7 +11,7 @@ import {OrganisationJobWriteProjectionHandler} from './OrganisationJobWriteProje
 
 const handlers = [
   InitiateApplyPaymentTermCommandHandler,
-  CompleteInitiatePaymentTermCommandHandler,
+  CompleteInheritPaymentTermCommandHandler,
   CompleteApplyPaymentTermCommandHandler,
   InitiateInheritPaymentTermCommandHandler
 ];

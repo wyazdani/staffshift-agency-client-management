@@ -1,5 +1,4 @@
-import {find, includes, indexOf, size} from 'lodash';
-import {AgencyRepository} from '../Agency/AgencyRepository';
+import {has, includes} from 'lodash';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
@@ -22,70 +21,67 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'completed') {
-      throw new ValidationError('Job Not Completed').setErrors([
+    if (!has(this.aggregate.payment_term_jobs, command._id)) {
+      throw new ValidationError('Job Not Found').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
-          path: ['job id']
+          code: 'JOB_NOT_FOUND',
+          message: `Job ${command._id} is not found`,
+          path: ['_id']
         }
       ]);
     }
-    this.validateNotRunningAnotherProcess(command._id);
+
+    if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
+      throw new ValidationError('Job is already completed').setErrors([
+        {
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
+        }
+      ]);
+    }
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'completed') {
-      throw new ValidationError('Job Not Completed').setErrors([
+    if (!has(this.aggregate.payment_term_jobs, command._id)) {
+      throw new ValidationError('Job Not Found').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
-          path: ['job id']
+          code: 'JOB_NOT_FOUND',
+          message: `Job ${command._id} is not found`,
+          path: ['_id']
         }
       ]);
     }
-    this.validateNotRunningAnotherProcess(command._id);
+
+    if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
+      throw new ValidationError('Job is already completed').setErrors([
+        {
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
+        }
+      ]);
+    }
   }
 
   async validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'started') {
-      throw new ValidationError('Job Not Started').setErrors([
-        {
-          code: 'JOB_NOT_STARTED',
-          message: `Job ${command._id} not started yet`,
-          path: ['job id']
-        }
-      ]);
-    }
     this.validateNotRunningAnotherProcess(command._id);
   }
 
   async validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (this.aggregate.payment_terms[command._id] != 'started') {
-      throw new ValidationError('Job Not Started').setErrors([
-        {
-          code: 'JOB_NOT_STARTED',
-          message: `Job ${command._id} not started yet`,
-          path: ['job id']
-        }
-      ]);
-    }
     this.validateNotRunningAnotherProcess(command._id);
   }
   /**
    * checks:
    * - we don't have another job running for the same organisation
    */
-  private validateNotRunningAnotherProcess(jobId: string) {
-    if (
-      size(this.aggregate.running_apply_payment_term_inheritance) + size(this.aggregate.running_apply_payment_term) >
-      0
-    ) {
-      throw new ValidationError('Not allowed job id').setErrors([
+  private validateNotRunningAnotherProcess(id: string) {
+    if (includes(this.aggregate.payment_term_jobs, 'started')) {
+      throw new ValidationError('Another job active').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-          message: `There is another job still running for this job id ${jobId}`,
-          path: ['job id']
+          message: `Can't create job id ${id}, as there is another job in progress`,
+          path: ['_id']
         }
       ]);
     }
