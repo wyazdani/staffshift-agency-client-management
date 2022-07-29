@@ -3,9 +3,7 @@ import {ConsultantAssignProcess} from '../../src/BulkProcessManager/processes/Co
 import {ConsultantTransferProcess} from '../../src/BulkProcessManager/processes/ConsultantTransferProcess/ConsultantTransferProcess';
 import {ConsultantUnassignProcess} from '../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ConsultantUnassignProcess';
 import {ApplyPaymentTermProcess} from '../../src/BulkProcessManager/processes/PaymentTerm/ApplyPaymentTermProcess/ApplyPaymentTermProcess';
-import {
-  InheritPaymentTermProcess
-} from '../../src/BulkProcessManager/processes/PaymentTerm/InheritPaymentTermProcess/InheritPaymentTermProcess';
+import {InheritPaymentTermProcess} from '../../src/BulkProcessManager/processes/PaymentTerm/InheritPaymentTermProcess/InheritPaymentTermProcess';
 import {ProcessFactory} from '../../src/BulkProcessManager/ProcessFactory';
 import {EventsEnum} from '../../src/Events';
 import {TestUtilsLogger} from '../tools/TestUtilsLogger';

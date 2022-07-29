@@ -247,8 +247,6 @@ export class InheritPaymentTermProcess implements ProcessInterface {
   private async getParentPaymentTerm(agencyClientAggregate: AgencyClientAggregate): Promise<string | null> {
     const parentId = agencyClientAggregate.getParentClientId();
 
-    this.logger.debug(`Parent client for ${agencyClientAggregate.getId().client_id} is ${parentId}`);
-
     const parentPaymentTerm = await this.paymentTermRepository.getAggregate({
       name: 'payment_term',
       agency_id: this.initiateEvent.aggregate_id.agency_id,

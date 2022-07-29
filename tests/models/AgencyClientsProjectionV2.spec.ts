@@ -60,7 +60,7 @@ describe('AgencyClientsProjectionV2', () => {
         const countDocuments = sinon.stub(AgencyClientsProjectionV2, 'countDocuments').returns({exec} as any);
         const response = await AgencyClientsProjectionV2.getEstimatedCount(agencyId, organisationId, siteId, 'site');
 
-        response.should.equal(2);
+        response.should.equal(3);
         countDocuments.should.have.been.calledOnceWith({
           agency_id: agencyId,
           organisation_id: organisationId,
@@ -80,7 +80,7 @@ describe('AgencyClientsProjectionV2', () => {
           'organisation'
         );
 
-        response.should.equal(2);
+        response.should.equal(3);
         countDocuments.should.have.been.calledOnceWith({
           agency_id: agencyId,
           organisation_id: organisationId,

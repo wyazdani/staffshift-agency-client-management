@@ -1,9 +1,12 @@
+import {ValidationError} from 'a24-node-error-utils';
 import sinon, {stubInterface} from 'ts-sinon';
 import {AgencyClientAggregate} from '../../../../../src/aggregates/AgencyClient/AgencyClientAggregate';
 import {AgencyClientRepository} from '../../../../../src/aggregates/AgencyClient/AgencyClientRepository';
 import {ClientInheritanceProcessAggregate} from '../../../../../src/aggregates/ClientInheritanceProcess/ClientInheritanceProcessAggregate';
 import {ClientInheritanceProcessRepository} from '../../../../../src/aggregates/ClientInheritanceProcess/ClientInheritanceProcessRepository';
 import {ClientInheritanceProcessAggregateStatusEnum} from '../../../../../src/aggregates/ClientInheritanceProcess/types/ClientInheritanceProcessAggregateStatusEnum';
+import {CommandBus} from '../../../../../src/aggregates/CommandBus';
+import {OrganisationJobCommandEnum} from '../../../../../src/aggregates/OrganisationJob/types';
 import {ApplyPaymentTermProcess} from '../../../../../src/BulkProcessManager/processes/PaymentTerm/ApplyPaymentTermProcess/ApplyPaymentTermProcess';
 import {CommandBusHelper} from '../../../../../src/BulkProcessManager/processes/PaymentTerm/CommandBusHelper';
 import {RetryableApplyPaymentTerm} from '../../../../../src/BulkProcessManager/processes/PaymentTerm/RetryableApplyPaymentTerm';
@@ -14,14 +17,14 @@ describe('ApplyPaymentTermProcess', () => {
   afterEach(() => {
     sinon.restore();
   });
-  describe('execute()', () => {
-    const orgId = 'organisation id';
-    const jobId = 'job id';
-    const term = 'credit';
-    const agencyId = 'agency id';
-    const siteA = 'client site A';
-    const wardA = 'client ward A';
+  const orgId = 'organisation id';
+  const jobId = 'job id';
+  const term = 'credit';
+  const agencyId = 'agency id';
+  const siteA = 'client site A';
+  const wardA = 'client ward A';
 
+  describe('execute()', () => {
     it('Test success scenario for Organisation', async () => {
       const clientId = orgId;
 
@@ -462,6 +465,136 @@ describe('ApplyPaymentTermProcess', () => {
       getAllLinkedSites.should.have.been.calledOnceWith(agencyId, orgId);
       applyInheritedPaymentTerm.should.have.been.calledOnceWith(siteA, term, false);
       completeProcess.should.have.been.calledOnce;
+    });
+  });
+
+  describe('complete()', () => {
+    it('Test success scenario', async () => {
+      const initiateEvent = {
+        _id: 'some id',
+        aggregate_id: {
+          name: 'aggregate type name',
+          agency_id: agencyId,
+          organisation_id: orgId
+        },
+        data: {
+          _id: jobId,
+          client_id: orgId,
+          term
+        },
+        correlation_id: 'correlation id'
+      } as any;
+      const process = new ApplyPaymentTermProcess(TestUtilsLogger.getLogger(sinon.spy()), {
+        maxRetry: 1,
+        retryDelay: 100
+      });
+      const processAggregate = stubInterface<ClientInheritanceProcessAggregate>();
+
+      sinon.stub(ClientInheritanceProcessRepository.prototype, 'getAggregate').resolves(processAggregate);
+
+      processAggregate.getCurrentStatus.returns(ClientInheritanceProcessAggregateStatusEnum.COMPLETED);
+
+      const agencyClientAggregate = stubInterface<AgencyClientAggregate>();
+
+      sinon.stub(AgencyClientRepository.prototype, 'getAggregate').resolves(agencyClientAggregate);
+
+      await process.execute(initiateEvent);
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+
+      await process.complete();
+      execute.should.have.been.calledOnceWith({
+        aggregateId: initiateEvent.aggregate_id,
+        type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM,
+        data: {_id: initiateEvent.data._id}
+      });
+    });
+
+    it('Test when already completed error, resolve promise', async () => {
+      const initiateEvent = {
+        _id: 'some id',
+        aggregate_id: {
+          name: 'aggregate type name',
+          agency_id: agencyId,
+          organisation_id: orgId
+        },
+        data: {
+          _id: jobId,
+          client_id: orgId,
+          term
+        },
+        correlation_id: 'correlation id'
+      } as any;
+      const process = new ApplyPaymentTermProcess(TestUtilsLogger.getLogger(sinon.spy()), {
+        maxRetry: 1,
+        retryDelay: 100
+      });
+      const processAggregate = stubInterface<ClientInheritanceProcessAggregate>();
+
+      sinon.stub(ClientInheritanceProcessRepository.prototype, 'getAggregate').resolves(processAggregate);
+
+      processAggregate.getCurrentStatus.returns(ClientInheritanceProcessAggregateStatusEnum.COMPLETED);
+
+      const agencyClientAggregate = stubInterface<AgencyClientAggregate>();
+
+      sinon.stub(AgencyClientRepository.prototype, 'getAggregate').resolves(agencyClientAggregate);
+
+      await process.execute(initiateEvent);
+      const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(
+        new ValidationError('sample').setErrors([
+          {
+            code: 'JOB_ALREADY_COMPLETED',
+            message: 'ok'
+          }
+        ])
+      );
+
+      await process.complete();
+      execute.should.have.been.calledOnceWith({
+        aggregateId: initiateEvent.aggregate_id,
+        type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM,
+        data: {_id: initiateEvent.data._id}
+      });
+    });
+
+    it('Test when unknown error, reject promise', async () => {
+      const initiateEvent = {
+        _id: 'some id',
+        aggregate_id: {
+          name: 'aggregate type name',
+          agency_id: agencyId,
+          organisation_id: orgId
+        },
+        data: {
+          _id: jobId,
+          client_id: orgId,
+          term
+        },
+        correlation_id: 'correlation id'
+      } as any;
+      const process = new ApplyPaymentTermProcess(TestUtilsLogger.getLogger(sinon.spy()), {
+        maxRetry: 1,
+        retryDelay: 100
+      });
+      const processAggregate = stubInterface<ClientInheritanceProcessAggregate>();
+
+      sinon.stub(ClientInheritanceProcessRepository.prototype, 'getAggregate').resolves(processAggregate);
+
+      processAggregate.getCurrentStatus.returns(ClientInheritanceProcessAggregateStatusEnum.COMPLETED);
+
+      const agencyClientAggregate = stubInterface<AgencyClientAggregate>();
+
+      sinon.stub(AgencyClientRepository.prototype, 'getAggregate').resolves(agencyClientAggregate);
+
+      await process.execute(initiateEvent);
+      const error = new Error('oops');
+      const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
+
+      await process.complete().should.have.been.rejectedWith(error);
+      execute.should.have.been.calledOnceWith({
+        aggregateId: initiateEvent.aggregate_id,
+        type: OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM,
+        data: {_id: initiateEvent.data._id}
+      });
     });
   });
 });
