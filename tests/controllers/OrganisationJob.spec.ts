@@ -9,6 +9,7 @@ import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
 import {OrganisationJobCommandEnum} from '../../src/aggregates/OrganisationJob/types';
 import {GenericRepository} from '../../src/GenericRepository';
+import {ValidationError} from 'a24-node-error-utils';
 
 describe('OrganisationJob Controller', () => {
   const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
@@ -262,6 +263,37 @@ describe('OrganisationJob Controller', () => {
           client_id: clientId
         }
       });
+    });
+
+    it('failure scenario on organisation', async () => {
+      const req = fakeRequest({
+        swaggerParams: params,
+        basePathName: '/v1/localhost/path',
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+
+      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      const listResponse = {
+        _id: '3123123',
+        agency_id: agencyId,
+        client_id: clientId,
+        organisation_id: organisationId,
+        site_id: 'some site',
+        client_type: 'organisation',
+        linked: true
+      };
+      const error = new ValidationError('Cannot be inherited on organisation');
+      const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
+
+      sinon.stub(CommandBus.prototype, 'execute').rejects(error);
+
+      await initiateInheritApplyPaymentTerm(req, res, next);
+      assert.equal(end.callCount, 0, 'Expected end to be not called');
+      assert.equal(next.callCount, 1, 'Expected next to be called');
+      agencyClient.should.have.been.calledOnceWith();
     });
   });
 });

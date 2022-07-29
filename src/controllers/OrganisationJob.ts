@@ -25,9 +25,9 @@ export const initiateApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisationId = await getOrganisationId(agencyId, clientId, logger);
+    const organisation = await getOrganisationId(agencyId, clientId, logger);
 
-    if (isEmpty(organisationId)) {
+    if (isEmpty(organisation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
@@ -36,7 +36,7 @@ export const initiateApplyPaymentTerm = async (
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: organisationId
+        organisation_id: organisation.organisation_id
       },
       type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
@@ -73,19 +73,23 @@ export const initiateInheritApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisationId = await getOrganisationId(agencyId, clientId, logger);
+    const organisation = await getOrganisationId(agencyId, clientId, logger);
 
-    if (isEmpty(organisationId)) {
+    if (isEmpty(organisation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
+    }
+
+    if (organisation.inherit === false) {
+      return next(new ValidationError('Cannot be inherited on organisation'));
     }
 
     const command: InitiateInheritPaymentTermCommandInterface = {
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: organisationId
+        organisation_id: organisation.organisation_id
       },
       type: OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM,
       data: {
@@ -116,5 +120,7 @@ const getOrganisationId = async (agencyId: string, clientId: string, logger: Log
   if (isEmpty(agencyClient) || agencyClient.linked === false) {
     return null;
   }
-  return agencyClient.client_type === 'organisation' ? agencyClient.client_id : agencyClient.organisation_id;
+  return agencyClient.client_type === 'organisation'
+    ? {organisation_id: agencyClient.client_id, inherit: false}
+    : {organisation_id: agencyClient.organisation_id, inherit: true};
 };

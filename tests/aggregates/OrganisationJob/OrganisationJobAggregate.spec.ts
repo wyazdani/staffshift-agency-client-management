@@ -3,7 +3,7 @@ import {stubInterface} from 'ts-sinon';
 import {OrganisationJobRepository} from '../../../src/aggregates/OrganisationJob/OrganisationJobRepository';
 import {AbstractAggregate} from '../../../src/aggregates/AbstractAggregate';
 import {OrganisationJobAggregate} from '../../../src/aggregates/OrganisationJob/OrganisationJobAggregate';
-import {ValidationError} from 'a24-node-error-utils';
+import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {OrganisationJobAggregateIdInterface} from '../../../src/aggregates/OrganisationJob/types';
 import {
   CompleteApplyPaymentTermCommandDataInterface,
@@ -54,8 +54,7 @@ describe('OrganisationJobAggregate', () => {
         new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `Can't create job id ${command._id}, as there is another job in progress`,
-            path: ['_id']
+            message: `Can't create job id ${command._id}, as there is another job in progress`
           }
         ])
       );
@@ -97,8 +96,7 @@ describe('OrganisationJobAggregate', () => {
         new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `Can't create job id ${command._id}, as there is another job in progress`,
-            path: ['_id']
+            message: `Can't create job id ${command._id}, as there is another job in progress`
           }
         ])
       );
@@ -122,32 +120,25 @@ describe('OrganisationJobAggregate', () => {
       _id: 'job id'
     };
 
-    it('Test Job Not Found error', async () => {
+    it('Test Resource Not Found error', async () => {
       const aggregate = {
         last_sequence_id: 1
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
-      const error = await organisationJobAggregate
+      await organisationJobAggregate
         .validateCompleteInheritPaymentTerm(command)
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Job Not Found').setErrors([
-          {
-            code: 'JOB_NOT_FOUND',
-            message: `Job ${command._id} is not found`,
-            path: ['_id']
-          }
-        ])
-      );
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
     });
 
     it('Test Job is already completed error', async () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'completed'
+        },
+        payment_term_job_inherited: {
+          'job id': true
         },
         last_sequence_id: 1
       };
@@ -174,6 +165,9 @@ describe('OrganisationJobAggregate', () => {
         payment_term_jobs: {
           'job id': 'started'
         },
+        payment_term_job_inherited: {
+          'job id': true
+        },
         last_sequence_id: 1
       };
 
@@ -195,25 +189,18 @@ describe('OrganisationJobAggregate', () => {
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
-      const error = await organisationJobAggregate
+      await organisationJobAggregate
         .validateCompleteApplyPaymentTerm(command)
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Job Not Found').setErrors([
-          {
-            code: 'JOB_NOT_FOUND',
-            message: `Job ${command._id} is not found`,
-            path: ['_id']
-          }
-        ])
-      );
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
     });
 
     it('Test Job is already completed error', async () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'completed'
+        },
+        payment_term_job_inherited: {
+          'job id': false
         },
         last_sequence_id: 1
       };
@@ -239,6 +226,9 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         payment_term_jobs: {
           'job id': 'started'
+        },
+        payment_term_job_inherited: {
+          'job id': false
         },
         last_sequence_id: 1
       };
