@@ -21,43 +21,44 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (!has(this.aggregate.payment_terms, command._id)) {
+    if (!has(this.aggregate.payment_term_jobs, command._id)) {
       throw new ValidationError('Job Not Found').setErrors([
         {
           code: 'JOB_NOT_FOUND',
           message: `Job ${command._id} is not found`,
-          path: ['job id']
+          path: ['_id']
         }
       ]);
     }
-    if (this.aggregate?.payment_terms[command._id] !== 'completed') {
-      throw new ValidationError('Job Not Completed').setErrors([
+
+    if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
+      throw new ValidationError('Job is already completed').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
-          path: ['job id']
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
         }
       ]);
     }
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (!has(this.aggregate.payment_terms, command._id)) {
+    if (!has(this.aggregate.payment_term_jobs, command._id)) {
       throw new ValidationError('Job Not Found').setErrors([
         {
           code: 'JOB_NOT_FOUND',
           message: `Job ${command._id} is not found`,
-          path: ['job id']
+          path: ['_id']
         }
       ]);
     }
 
-    if (this.aggregate?.payment_terms[command._id] !== 'completed') {
-      throw new ValidationError('Job Not Completed').setErrors([
+    if (this.aggregate?.payment_term_jobs[command._id] === 'completed') {
+      throw new ValidationError('Job is already completed').setErrors([
         {
-          code: 'JOB_NOT_COMPLETED',
-          message: `Job ${command._id} is still running`,
-          path: ['job id']
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
         }
       ]);
     }
@@ -74,13 +75,13 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * checks:
    * - we don't have another job running for the same organisation
    */
-  private validateNotRunningAnotherProcess(jobId: string) {
-    if (includes(this.aggregate.payment_terms, 'completed')) {
-      throw new ValidationError('Not allowed job id').setErrors([
+  private validateNotRunningAnotherProcess(id: string) {
+    if (includes(this.aggregate.payment_term_jobs, 'started')) {
+      throw new ValidationError('Another job active').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-          message: `There is another job still running for this job id ${jobId}`,
-          path: ['job id']
+          message: `Can't create job id ${id}, as there is another job in progress`,
+          path: ['_id']
         }
       ]);
     }

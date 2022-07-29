@@ -11,7 +11,7 @@ import {MONGO_ERROR_CODES} from 'staffshift-node-enums';
 interface ConsultantJobInitiatedEventStoreDataInterface {
   _id: string;
 }
-export class ConsultantJobInitiatedEventHandler
+export class JobInitiatedEventHandler
 implements EventHandlerInterface<EventStorePubSubModelInterface<ConsultantJobInitiatedEventStoreDataInterface>> {
   constructor(private logger: LoggerContext) {}
 

@@ -21,9 +21,10 @@ describe('OrganisationJobAggregate', () => {
 
   it('Test inheritance of AbstractAggregate', () => {
     const aggregate = {
-      payment_terms: {
+      payment_term_jobs: {
         'job id': 'completed'
-      }
+      },
+      last_sequence_id: 1
     };
     const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -38,9 +39,10 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test another job process active error', async () => {
       const aggregate = {
-        payment_terms: {
-          'job id': 'completed'
-        }
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        last_sequence_id: 1
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -49,14 +51,26 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Not allowed job id').setErrors([
+        new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `There is another job still running for this job id ${command._id}`,
-            path: ['job id']
+            message: `Can't create job id ${command._id}, as there is another job in progress`,
+            path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'completed'
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateInitiateApplyPaymentTerm(command);
     });
   });
 
@@ -68,9 +82,10 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test another job process active error', async () => {
       const aggregate = {
-        payment_terms: {
-          'job id': 'completed'
-        }
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        last_sequence_id: 1
       };
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -79,14 +94,26 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Not allowed job id').setErrors([
+        new ValidationError('Another job active').setErrors([
           {
             code: 'ANOTHER_JOB_PROCESS_ACTIVE',
-            message: `There is another job still running for this job id ${command._id}`,
-            path: ['job id']
+            message: `Can't create job id ${command._id}, as there is another job in progress`,
+            path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'completed'
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateInitiateInheritPaymentTerm(command);
     });
   });
 
@@ -96,7 +123,9 @@ describe('OrganisationJobAggregate', () => {
     };
 
     it('Test Job Not Found error', async () => {
-      const aggregate = {};
+      const aggregate = {
+        last_sequence_id: 1
+      };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -109,17 +138,18 @@ describe('OrganisationJobAggregate', () => {
           {
             code: 'JOB_NOT_FOUND',
             message: `Job ${command._id} is not found`,
-            path: ['job id']
+            path: ['_id']
           }
         ])
       );
     });
 
-    it('Test Job Not Completed error', async () => {
+    it('Test Job is already completed error', async () => {
       const aggregate = {
-        payment_terms: {
-          'job id': 'started'
-        }
+        payment_term_jobs: {
+          'job id': 'completed'
+        },
+        last_sequence_id: 1
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -129,14 +159,27 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Not Completed').setErrors([
+        new ValidationError('Job is already completed').setErrors([
           {
-            code: 'JOB_NOT_COMPLETED',
-            message: `Job ${command._id} is still running`,
-            path: ['job id']
+            code: 'JOB_ALREADY_COMPLETED',
+            message: `Job ${command._id} has already been completed`,
+            path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success sceanrio', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateCompleteInheritPaymentTerm(command);
     });
   });
 
@@ -146,7 +189,9 @@ describe('OrganisationJobAggregate', () => {
     };
 
     it('Test Job Not Found error', async () => {
-      const aggregate = {};
+      const aggregate = {
+        last_sequence_id: 1
+      };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
@@ -159,17 +204,18 @@ describe('OrganisationJobAggregate', () => {
           {
             code: 'JOB_NOT_FOUND',
             message: `Job ${command._id} is not found`,
-            path: ['job id']
+            path: ['_id']
           }
         ])
       );
     });
 
-    it('Test Job Not Completed error', async () => {
+    it('Test Job is already completed error', async () => {
       const aggregate = {
-        payment_terms: {
-          'job id': 'started'
-        }
+        payment_term_jobs: {
+          'job id': 'completed'
+        },
+        last_sequence_id: 1
       };
 
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
@@ -179,14 +225,27 @@ describe('OrganisationJobAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Job Not Completed').setErrors([
+        new ValidationError('Job is already completed').setErrors([
           {
-            code: 'JOB_NOT_COMPLETED',
-            message: `Job ${command._id} is still running`,
-            path: ['job id']
+            code: 'JOB_ALREADY_COMPLETED',
+            message: `Job ${command._id} has already been completed`,
+            path: ['_id']
           }
         ])
       );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateCompleteApplyPaymentTerm(command);
     });
   });
 });
