@@ -22,7 +22,10 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyPaymentTerm(command: CompleteApplyPaymentTermCommandDataInterface): Promise<void> {
-    if (!has(this.aggregate.payment_term_jobs, command._id)) {
+    if (
+      !has(this.aggregate.payment_term_jobs, command._id) ||
+      !has(this.aggregate.payment_term_job_inherited, command._id)
+    ) {
       throw new ResourceNotFoundError(`Job ${command._id} is not found`);
     }
 
@@ -47,7 +50,10 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteInheritPaymentTerm(command: CompleteInheritPaymentTermCommandDataInterface): Promise<void> {
-    if (!has(this.aggregate.payment_term_jobs, command._id)) {
+    if (
+      !has(this.aggregate.payment_term_jobs, command._id) ||
+      !has(this.aggregate.payment_term_job_inherited, command._id)
+    ) {
       throw new ResourceNotFoundError(`Job ${command._id} is not found`);
     }
 

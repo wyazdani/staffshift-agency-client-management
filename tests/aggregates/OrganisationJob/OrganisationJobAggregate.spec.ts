@@ -160,6 +160,34 @@ describe('OrganisationJobAggregate', () => {
       );
     });
 
+    it('Test Job is not inherited error', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        payment_term_job_inherited: {
+          'job id': false
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateCompleteInheritPaymentTerm(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Job not inherited').setErrors([
+          {
+            code: 'JOB_NOT_INHERITED',
+            message: `Job ${command._id} has not been inherited`,
+            path: ['_id']
+          }
+        ])
+      );
+    });
+
     it('Test success sceanrio', async () => {
       const aggregate = {
         payment_term_jobs: {
@@ -216,6 +244,34 @@ describe('OrganisationJobAggregate', () => {
           {
             code: 'JOB_ALREADY_COMPLETED',
             message: `Job ${command._id} has already been completed`,
+            path: ['_id']
+          }
+        ])
+      );
+    });
+
+    it('Test Job is inherited error', async () => {
+      const aggregate = {
+        payment_term_jobs: {
+          'job id': 'started'
+        },
+        payment_term_job_inherited: {
+          'job id': true
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateCompleteApplyPaymentTerm(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Job is inherited').setErrors([
+          {
+            code: 'JOB_INHERITED',
+            message: `Job ${command._id} has been inherited`,
             path: ['_id']
           }
         ])
