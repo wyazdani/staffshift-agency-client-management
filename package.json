@@ -20,7 +20,8 @@
     "dev": "npm-run-all -l --parallel start start-event-store-publisher start-event-store-http-server start-event-store-projection start-bulk-process-manager start-domain-event-consumer",
     "seed-projection-agency-consultant-roles-v2": "node dist/projections/AgencyConsultantRolesV2/seed_job",
     "seed-projection-agency-clients-v2": "node dist/projections/AgencyClientsV2/seed_job",
-    "seed-projection-agency-client-consultants-v3": "node dist/projections/AgencyClientConsultantsV3/seed_job"
+    "seed-projection-agency-client-consultants-v3": "node dist/projections/AgencyClientConsultantsV3/seed_job",
+    "seed-projection-agency-client-payment-terms-v1": "node dist/projections/AgencyClientPaymentTermsProjectionV1/seed_job"
   },
   "pre-commit": [
     "lint"

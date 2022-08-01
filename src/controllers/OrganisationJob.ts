@@ -9,6 +9,10 @@ import {
 } from '../aggregates/OrganisationJob/types/CommandTypes';
 import {OrganisationJobCommandEnum} from '../aggregates/OrganisationJob/types';
 import {GenericRepository} from '../GenericRepository';
+import {
+  AgencyClientPaymentTermsProjectionV1DocumentType,
+  AgencyClientPaymentTermsProjection
+} from '../models/AgencyClientPaymentTermsProjectionV1';
 import {AgencyClientsProjectionV2, AgencyClientsProjectionV2DocumentType} from '../models/AgencyClientsProjectionV2';
 import {LoggerContext} from 'a24-logzio-winston';
 
@@ -117,4 +121,33 @@ const getOrganisationId = async (agencyId: string, clientId: string, logger: Log
     return null;
   }
   return agencyClient.client_type === 'organisation' ? agencyClient.client_id : agencyClient.organisation_id;
+};
+
+export const getPaymentTerm = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error?: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const repository = new GenericRepository<AgencyClientPaymentTermsProjectionV1DocumentType>(
+      req.Logger,
+      AgencyClientPaymentTermsProjection
+    );
+    const record = await repository.findOne({
+      agency_id: agencyId,
+      client_id: clientId
+    });
+
+    if (!record) {
+      return next(new ResourceNotFoundError('No payment term found for this client in that agency'));
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(record));
+  } catch (err) {
+    req.Logger.error('getPaymentTerm unknown error', err);
+    next(err);
+  }
 };
