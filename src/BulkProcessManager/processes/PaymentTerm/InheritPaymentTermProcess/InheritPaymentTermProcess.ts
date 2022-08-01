@@ -217,7 +217,7 @@ export class InheritPaymentTermProcess implements ProcessInterface {
           await this.retryableApplyPaymentTerm.applyInheritedPaymentTerm(
             ward.client_id,
             paymentTerm,
-            false // we set force to false, since if the ward is not inherited we want it to break
+            false // we set force to false, since if the ward is not inherited we don't want to apply payment term
           )
         ) {
           this.logger.debug('Applied payment-term on ward', {
