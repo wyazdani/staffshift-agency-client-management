@@ -33,4 +33,12 @@ export class PaymentTermAggregate extends AbstractAggregate<
   getPaymentTerm(): PAYMENT_TERM_ENUM | null {
     return this.aggregate.payment_term || null;
   }
+
+  /**
+   * get last event date in the aggregate
+   * null means the aggregate was empty
+   */
+  getLastEventDate(): Date | null {
+    return this.aggregate.last_event_date || null;
+  }
 }

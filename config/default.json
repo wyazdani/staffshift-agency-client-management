@@ -196,6 +196,14 @@
           "projector": "./projections/AgencyClientPaymentTermsProjectionV1/AgencyClientPaymentTermsProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
+      }, {
+        "name": "Payment Term Agency Client Link",
+        "bindings": [{
+          "id": "payment-term-agency-client-link",
+          "projector": "./event-store-listeners/PaymentTermAgencyClientLink/PaymentTermAgencyClientLinkListener",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management",
+          "skipSeed": true
+        }]
       }]
     }
   },

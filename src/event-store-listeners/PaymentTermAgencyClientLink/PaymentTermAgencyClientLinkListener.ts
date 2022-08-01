@@ -7,7 +7,7 @@ import {EventHandlerFactory} from './EventHandlerFactory';
 
 const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
-export class PaymentTermAgencyClientLinkedListener implements EventStoreProjectorInterface {
+export default class PaymentTermAgencyClientLinkListener implements EventStoreProjectorInterface {
   async project(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
     const eventType: EventsEnum = event.type as EventsEnum;
 

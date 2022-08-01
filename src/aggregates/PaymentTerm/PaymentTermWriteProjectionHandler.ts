@@ -44,6 +44,7 @@ implements WriteProjectionInterface<PaymentTermAggregateRecordInterface> {
       default:
         throw new Error(`Event type not supported: ${type}`);
     }
+    aggregate.last_event_date = event.created_at;
     return {...aggregate, last_sequence_id: event.sequence_id};
   }
 }
