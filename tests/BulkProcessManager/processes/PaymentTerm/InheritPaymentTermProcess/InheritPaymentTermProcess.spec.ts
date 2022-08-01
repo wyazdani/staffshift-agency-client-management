@@ -67,7 +67,7 @@ describe('InheritPaymentTermProcess', () => {
       agencyClientAggregate.isLinked.returns(true);
       agencyClientAggregate.getParentClientId.returns('parent id');
 
-      const getEstimatedCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedCount').resolves(2);
+      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
       const paymentTermAggregate = stubInterface<PaymentTermAggregate>();
       const getPaymentTermAggregate = sinon
@@ -102,7 +102,7 @@ describe('InheritPaymentTermProcess', () => {
         agency_id: agencyId,
         client_id: clientId
       });
-      getEstimatedCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'site');
+      getEstimatedDescendantCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'site');
       startProcess.should.have.been.calledOnceWith(2);
       applyInheritedPaymentTerm.getCall(0).calledWith(siteA, 'credit', true);
       getAllLinkedWards.should.have.been.calledOnceWith(agencyId, orgId, siteA);
