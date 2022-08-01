@@ -1282,4 +1282,200 @@ Description: A short description of the event
 ```
 
  </td><td> Background process for agency client inheritance is completed </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED </td><td> AgencyClientApplyPaymentTermInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "term": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "term",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying payment term is initiated for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED </td><td> AgencyClientApplyPaymentTermInheritanceInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying payment term inheritance is initiated for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED </td><td> AgencyClientApplyPaymentTermCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying payment term is completed for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED </td><td> AgencyClientApplyPaymentTermInheritanceCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying payment term completed inheritance for the agency client </td></tr>
 </table><!--DATA_END-->

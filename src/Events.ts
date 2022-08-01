@@ -26,7 +26,11 @@ export enum EventsEnum {
   AGENCY_CLIENT_INHERITANCE_PROCESS_STARTED = 'AgencyClientInheritanceProcessStarted',
   AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_SUCCEEDED = 'AgencyClientInheritanceProcessItemSucceeded',
   AGENCY_CLIENT_INHERITANCE_PROCESS_ITEM_FAILED = 'AgencyClientInheritanceProcessItemFailed',
-  AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED = 'AgencyClientInheritanceProcessCompleted'
+  AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED = 'AgencyClientInheritanceProcessCompleted',
+  AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED = 'AgencyClientApplyPaymentTermInitiated',
+  AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED = 'AgencyClientApplyPaymentTermInheritanceInitiated',
+  AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED = 'AgencyClientApplyPaymentTermCompleted',
+  AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED = 'AgencyClientApplyPaymentTermInheritanceCompleted'
 }
 
 type EventsType = {
@@ -146,5 +150,21 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_INHERITANCE_PROCESS_COMPLETED]: {
     name: 'AgencyClientInheritanceProcessCompleted',
     description: 'Background process for agency client inheritance is completed'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED]: {
+    name: 'AgencyClientApplyPaymentTermInitiated',
+    description: 'Applying payment term is initiated for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED]: {
+    name: 'AgencyClientApplyPaymentTermInheritanceInitiated',
+    description: 'Applying payment term inheritance is initiated for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED]: {
+    name: 'AgencyClientApplyPaymentTermCompleted',
+    description: 'Applying payment term is completed for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED]: {
+    name: 'AgencyClientApplyPaymentTermInheritanceCompleted',
+    description: 'Applying payment term completed inheritance for the agency client'
   }
 };

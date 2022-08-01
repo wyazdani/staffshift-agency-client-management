@@ -460,6 +460,64 @@ paths:
       If client_ids is not specified we transfer all clients for that consultant"
       tags:
         - "Consultant Bulk"
+  /agency/{agency_id}/client/{client_id}/payment-term:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    put:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "initiateApplyPaymentTerm"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/initiate_apply_payment_term_payload"
+      responses:
+        202:
+          description: "Initiate Apply payment term to client"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/payment_term_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Initiate Apply payment term to client"
+      tags:
+        - "Payment Term"
+  /agency/{agency_id}/client/{client_id}/inherit-payment-term:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "initiateInheritApplyPaymentTerm"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        202:
+          description: "Initiate Inherit Apply payment term to client"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/payment_term_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Initiate Inherit Apply payment term to client"
+      tags:
+        - "Payment Term"
 parameters:
  # Query PARAMS
   query_client_type:
@@ -564,6 +622,13 @@ parameters:
     description: "The payload used to transfer clients of a consultant to another consultant"
     schema:
       $ref: "#/definitions/transfer_consultant_payload_def"
+  initiate_apply_payment_term_payload:
+    name: initiate_apply_payment_term_payload
+    in: body
+    required: true
+    description: "The payload used to initiate apply payment term to client"
+    schema:
+      $ref: "#/definitions/initiate_apply_payment_term_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -852,6 +917,15 @@ definitions:
           type: string
           pattern: ^[0-9a-fA-F]{24}$
     additionalProperties: false
+  initiate_apply_payment_term_payload_def:
+    type: object
+    required:
+      - term
+    properties:
+      term:
+        type: string
+        enum: ['credit','pay_in_advance']
+    additionalProperties: false
  # GENERIC CROSS ROUTE RESPONSES
   unauthorize_error_model:
     type: "object"
@@ -993,7 +1067,7 @@ definitions:
               type: "string"
           additionalProperties: false
     additionalProperties: false
-  empty_payload_error_model:
+  empty_payload_error_model: 
     type: object
     required:
       - code
@@ -1254,6 +1328,50 @@ definitions:
           - REQUIRED
       message:
         type: string
+    additionalProperties: false
+  payment_term_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+          - ENUM_MISMATCH
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ANOTHER_JOB_PROCESS_ACTIVE
+                - ENUM_MISMATCH
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
     additionalProperties: false
 responses:
   unauthorize_error_model:
