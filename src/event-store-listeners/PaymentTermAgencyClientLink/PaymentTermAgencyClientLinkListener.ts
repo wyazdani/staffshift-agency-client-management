@@ -15,7 +15,15 @@ export default class PaymentTermAgencyClientLinkListener implements EventStorePr
       logger.debug('Incoming event ignored', {eventType, event});
       return;
     }
-    const eventRepository = new EventRepository(EventStore, logger.requestId);
+
+    const eventRepository = new EventRepository(
+      EventStore,
+      logger.requestId,
+      {
+        user_id: 'system'
+      },
+      event._id // causation id
+    );
 
     logger.debug('Processing the incoming event', {event});
 
