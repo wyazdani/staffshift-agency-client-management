@@ -1,6 +1,9 @@
 import {AgencyClientEmptyPaymentTermInheritedEventStoreDataInterface} from 'EventTypes';
 import {EventHandlerInterface} from 'EventHandlerInterface';
-import {AgencyClientPaymentTermsProjection} from '../../../models/AgencyClientPaymentTermsProjectionV1';
+import {
+  AgencyClientPaymentTermsProjection,
+  PAYMENT_TERM_PROJECTION_ENUM
+} from '../../../models/AgencyClientPaymentTermsProjectionV1';
 import {EventStoreModelInterface} from '../../../models/EventStore';
 
 export class AgencyClientEmptyPaymentTermInheritedEventHandler
@@ -16,10 +19,8 @@ implements
       },
       {
         $set: {
-          inherited: true
-        },
-        $unset: {
-          payment_term: ''
+          inherited: true,
+          payment_term: PAYMENT_TERM_PROJECTION_ENUM.NOT_SET
         }
       },
       {

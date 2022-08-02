@@ -496,7 +496,7 @@ paths:
         - jwt: []
       responses:
         200:
-          description: "Retrieves a payment term for the client in that agency. when payment_term is not set, it means the payment term is not set on it self or parent"
+          description: "Retrieves a payment term for the client in that agency."
           schema:
             $ref: "#/definitions/get_payment_term_def"
         400:
@@ -506,7 +506,9 @@ paths:
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
-          $ref: "#/responses/resource_not_found"
+          description: "Payment term is not set on the client or it's parent"
+          schema:
+            $ref: "#/definitions/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Retrieves a payment term"
@@ -956,6 +958,7 @@ definitions:
       - agency_id
       - client_id
       - inherited
+      - payment_term
       - updated_at
       - created_at
       - __v
@@ -974,6 +977,7 @@ definitions:
         enum:
           - credit
           - pay_in_advance
+          - not_set
       inherited:
         type: boolean
       updated_at:
