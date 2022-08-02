@@ -50,7 +50,12 @@ describe('AgencyClientsProjectionV2', () => {
 
     describe('getEstimatedDescendantCount()', () => {
       it('Test for ward', async () => {
-        const response = await AgencyClientsProjectionV2.getEstimatedDescendantCount(agencyId, organisationId, wardId, 'ward');
+        const response = await AgencyClientsProjectionV2.getEstimatedDescendantCount(
+          agencyId,
+          organisationId,
+          wardId,
+          'ward'
+        );
 
         response.should.equal(1);
       });
@@ -58,7 +63,12 @@ describe('AgencyClientsProjectionV2', () => {
       it('Test for site', async () => {
         const exec = sinon.stub().resolves(2);
         const countDocuments = sinon.stub(AgencyClientsProjectionV2, 'countDocuments').returns({exec} as any);
-        const response = await AgencyClientsProjectionV2.getEstimatedDescendantCount(agencyId, organisationId, siteId, 'site');
+        const response = await AgencyClientsProjectionV2.getEstimatedDescendantCount(
+          agencyId,
+          organisationId,
+          siteId,
+          'site'
+        );
 
         response.should.equal(3);
         countDocuments.should.have.been.calledOnceWith({

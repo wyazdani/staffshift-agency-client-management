@@ -16,10 +16,8 @@ implements
       },
       {
         $set: {
-          inherited: true
-        },
-        $unset: {
-          payment_term: ''
+          inherited: true,
+          payment_term: 'not_set'
         }
       },
       {
