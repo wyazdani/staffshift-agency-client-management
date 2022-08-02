@@ -16,12 +16,13 @@ describe('AgencyClientWriteProjectionHandler', () => {
     const projectionHandler = new AgencyClientWriteProjectionHandler();
 
     describe('AGENCY_CLIENT_LINKED Event', () => {
-      it('Test success', () => {
+      it('Test when the client type is site', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
           last_sequence_id: 1
         };
         const eventData: AgencyClientLinkedEventStoreDataInterface = {
-          client_type: 'site'
+          client_type: 'site',
+          organisation_id: 'org id'
         };
         const event = new EventStore({
           type: EventsEnum.AGENCY_CLIENT_LINKED,
@@ -38,6 +39,59 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         result.linked.should.be.true;
         result.client_type.should.equal('site');
+        result.parent_id.should.equal('org id');
+      });
+      it('Test when the client type is ward', () => {
+        const aggregate: AgencyClientAggregateRecordInterface = {
+          last_sequence_id: 1
+        };
+        const eventData: AgencyClientLinkedEventStoreDataInterface = {
+          client_type: 'ward',
+          organisation_id: 'org id',
+          site_id: 'site id'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_LINKED,
+          aggregate_id: {},
+          data: eventData,
+          sequence_id: 1,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_LINKED, aggregate, event);
+
+        result.linked.should.be.true;
+        result.client_type.should.equal('ward');
+        result.parent_id.should.equal('site id');
+      });
+      it('Test when the client type is organisation', () => {
+        const aggregate: AgencyClientAggregateRecordInterface = {
+          last_sequence_id: 1
+        };
+        const eventData: AgencyClientLinkedEventStoreDataInterface = {
+          client_type: 'organisation'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_LINKED,
+          aggregate_id: {
+            client_id: 'organisation_id'
+          },
+          data: eventData,
+          sequence_id: 1,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_LINKED, aggregate, event);
+
+        result.linked.should.be.true;
+        result.client_type.should.equal('organisation');
+        (result.parent_id === undefined).should.be.true;
       });
     });
 
@@ -64,12 +118,13 @@ describe('AgencyClientWriteProjectionHandler', () => {
     });
 
     describe('AGENCY_CLIENT_SYNCED Event', () => {
-      it('Test success', () => {
+      it('Test success when the type is site', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
           last_sequence_id: 1
         };
         const eventData: AgencyClientSyncedEventStoreDataInterface = {
           client_type: 'site',
+          organisation_id: 'org id',
           linked: false,
           linked_at: new Date()
         };
@@ -88,6 +143,63 @@ describe('AgencyClientWriteProjectionHandler', () => {
 
         result.linked.should.be.false;
         result.client_type.should.equal('site');
+        result.parent_id.should.equal('org id');
+      });
+
+      it('Test success when the type is ward', () => {
+        const aggregate: AgencyClientAggregateRecordInterface = {
+          last_sequence_id: 1
+        };
+        const eventData: AgencyClientSyncedEventStoreDataInterface = {
+          client_type: 'ward',
+          organisation_id: 'org id',
+          site_id: 'site id',
+          linked: false,
+          linked_at: new Date()
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_SYNCED,
+          aggregate_id: {},
+          data: eventData,
+          sequence_id: 1,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_SYNCED, aggregate, event);
+
+        result.linked.should.be.false;
+        result.client_type.should.equal('ward');
+        result.parent_id.should.equal('site id');
+      });
+
+      it('Test success when the type is org', () => {
+        const aggregate: AgencyClientAggregateRecordInterface = {
+          last_sequence_id: 1
+        };
+        const eventData: AgencyClientSyncedEventStoreDataInterface = {
+          client_type: 'organisation',
+          linked: false,
+          linked_at: new Date()
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_SYNCED,
+          aggregate_id: {},
+          data: eventData,
+          sequence_id: 1,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_SYNCED, aggregate, event);
+
+        result.linked.should.be.false;
+        result.client_type.should.equal('organisation');
+        (result.parent_id === undefined).should.be.true;
       });
     });
 

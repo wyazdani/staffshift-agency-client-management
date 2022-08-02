@@ -22,9 +22,15 @@ implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
   ): AgencyClientAggregateRecordInterface {
     switch (type) {
       case EventsEnum.AGENCY_CLIENT_LINKED: {
-        aggregate.linked = true;
-        aggregate.client_type = (event.data as AgencyClientLinkedEventStoreDataInterface).client_type;
+        const data = event.data as AgencyClientLinkedEventStoreDataInterface;
 
+        aggregate.linked = true;
+        aggregate.client_type = data.client_type;
+        if (aggregate.client_type === 'ward') {
+          aggregate.parent_id = data.site_id;
+        } else if (aggregate.client_type === 'site') {
+          aggregate.parent_id = data.organisation_id;
+        }
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_UNLINKED: {
@@ -37,6 +43,11 @@ implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
 
         aggregate.linked = eventData.linked;
         aggregate.client_type = eventData.client_type;
+        if (aggregate.client_type === 'ward') {
+          aggregate.parent_id = eventData.site_id;
+        } else if (aggregate.client_type === 'site') {
+          aggregate.parent_id = eventData.organisation_id;
+        }
 
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
