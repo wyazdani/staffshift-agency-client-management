@@ -1,5 +1,8 @@
 import sinon from 'ts-sinon';
-import {AgencyClientPaymentTermsProjection} from '../../../../src/models/AgencyClientPaymentTermsProjectionV1';
+import {
+  AgencyClientPaymentTermsProjection,
+  PAYMENT_TERM_PROJECTION_ENUM
+} from '../../../../src/models/AgencyClientPaymentTermsProjectionV1';
 import {AgencyClientEmptyPaymentTermInheritedEventHandler} from '../../../../src/projections/AgencyClientPaymentTermsProjectionV1/event-handlers/AgencyClientEmptyPaymentTermInheritedEventHandler';
 
 describe('AgencyClientEmptyPaymentTermInheritedEventHandler', () => {
@@ -29,7 +32,7 @@ describe('AgencyClientEmptyPaymentTermInheritedEventHandler', () => {
         {
           $set: {
             inherited: true,
-            payment_term: 'not_set'
+            payment_term: PAYMENT_TERM_PROJECTION_ENUM.NOT_SET
           }
         },
         {

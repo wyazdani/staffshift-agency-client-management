@@ -2,13 +2,14 @@ import {Document, Schema, model} from 'mongoose';
 
 export enum PAYMENT_TERM_PROJECTION_ENUM {
   CREDIT = 'credit',
-  PAY_IN_ADVANCE = 'pay_in_advance'
+  PAY_IN_ADVANCE = 'pay_in_advance',
+  NOT_SET = 'not_set'
 }
 
 export type AgencyClientPaymentTermsProjectionV1DocumentType = Document & {
   agency_id: string;
   client_id: string;
-  payment_term?: string;
+  payment_term: string;
   inherited: boolean;
   created_at: Date;
   updated_at: Date;
@@ -28,7 +29,7 @@ const agencyClients = new Schema<AgencyClientPaymentTermsProjectionV1DocumentTyp
     },
     payment_term: {
       type: String,
-      required: false,
+      required: true,
       description: 'Payment term',
       enum: PAYMENT_TERM_PROJECTION_ENUM
     },
