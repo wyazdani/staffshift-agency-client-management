@@ -16,28 +16,24 @@ implements WriteProjectionInterface<PaymentTermAggregateRecordInterface> {
   ): PaymentTermAggregateRecordInterface {
     switch (type) {
       case EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED:
+        aggregate.inherited = false;
+        aggregate.payment_term = PAYMENT_TERM_ENUM.CREDIT;
+        break;
       case EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_INHERITED:
+        aggregate.inherited = true;
         aggregate.payment_term = PAYMENT_TERM_ENUM.CREDIT;
         break;
       case EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_APPLIED:
+        aggregate.payment_term = PAYMENT_TERM_ENUM.PAY_IN_ADVANCE;
+        aggregate.inherited = false;
+        break;
       case EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_INHERITED: {
         aggregate.payment_term = PAYMENT_TERM_ENUM.PAY_IN_ADVANCE;
+        aggregate.inherited = true;
         break;
       }
       case EventsEnum.AGENCY_CLIENT_EMPTY_PAYMENT_TERM_INHERITED: {
         aggregate.payment_term = null;
-        break;
-      }
-    }
-    switch (type) {
-      case EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED:
-      case EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_APPLIED: {
-        aggregate.inherited = false;
-        break;
-      }
-      case EventsEnum.AGENCY_CLIENT_EMPTY_PAYMENT_TERM_INHERITED:
-      case EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_INHERITED:
-      case EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_INHERITED: {
         aggregate.inherited = true;
         break;
       }
