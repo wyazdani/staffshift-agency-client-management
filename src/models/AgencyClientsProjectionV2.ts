@@ -18,7 +18,7 @@ interface AgencyClientsProjectionV2ModelInterface extends Model<AgencyClientsPro
     organisationId: string,
     siteId: string
   ): Promise<AgencyClientsProjectionV2DocumentType[]>;
-  getEstimatedCount(agencyId: string, organisationId: string, clientId: string, clientType: string): Promise<number>;
+  getEstimatedDescendantCount(agencyId: string, organisationId: string, clientId: string, clientType: string): Promise<number>;
 }
 
 const agencyClients = new Schema<AgencyClientsProjectionV2DocumentType, AgencyClientsProjectionV2ModelInterface>(
@@ -100,7 +100,7 @@ agencyClients.static({
    *
    */
   // eslint-disable-next-line func-names
-  getEstimatedCount: async function (
+  getEstimatedDescendantCount: async function (
     agencyId: string,
     organisationId: string,
     clientId: string,

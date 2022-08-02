@@ -122,7 +122,7 @@ export class InheritPaymentTermProcess implements ProcessInterface {
     const clientType = agencyClient.getClientType();
 
     if (currentStatus === ClientInheritanceProcessAggregateStatusEnum.NEW) {
-      const estimatedCount = await AgencyClientsProjectionV2.getEstimatedCount(
+      const estimatedCount = await AgencyClientsProjectionV2.getEstimatedDescendantCount(
         this.initiateEvent.aggregate_id.agency_id,
         this.initiateEvent.aggregate_id.organisation_id,
         this.initiateEvent.data.client_id,
@@ -217,7 +217,7 @@ export class InheritPaymentTermProcess implements ProcessInterface {
           await this.retryableApplyPaymentTerm.applyInheritedPaymentTerm(
             ward.client_id,
             paymentTerm,
-            false // we set force to false, since if the ward is not inherited we want it to break
+            false // we set force to false, since if the ward is not inherited we don't want to apply payment term
           )
         ) {
           this.logger.debug('Applied payment-term on ward', {

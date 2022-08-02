@@ -67,7 +67,7 @@ describe('ApplyPaymentTermProcess', () => {
       agencyClientAggregate.getClientType.returns('organisation');
       agencyClientAggregate.isLinked.returns(true);
 
-      const getEstimatedCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedCount').resolves(2);
+      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
 
       const applyPaymentTerm = sinon.stub(RetryableApplyPaymentTerm.prototype, 'applyPaymentTerm').resolves(true);
@@ -108,7 +108,7 @@ describe('ApplyPaymentTermProcess', () => {
         agency_id: agencyId,
         client_id: clientId
       });
-      getEstimatedCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'organisation');
+      getEstimatedDescendantCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'organisation');
       startProcess.should.have.been.calledOnceWith(2);
       applyPaymentTerm.should.have.been.calledOnceWith(clientId, term);
       getAllLinkedSites.should.have.been.calledOnceWith(agencyId, orgId);
@@ -157,7 +157,7 @@ describe('ApplyPaymentTermProcess', () => {
       agencyClientAggregate.getClientType.returns('site');
       agencyClientAggregate.isLinked.returns(true);
 
-      const getEstimatedCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedCount').resolves(2);
+      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
 
       const applyPaymentTerm = sinon.stub(RetryableApplyPaymentTerm.prototype, 'applyPaymentTerm').resolves(true);
@@ -184,7 +184,7 @@ describe('ApplyPaymentTermProcess', () => {
         agency_id: agencyId,
         client_id: clientId
       });
-      getEstimatedCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'site');
+      getEstimatedDescendantCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'site');
       startProcess.should.have.been.calledOnceWith(2);
       applyPaymentTerm.should.have.been.calledOnceWith(clientId, term);
       applyInheritedPaymentTerm.should.have.been.calledOnceWith(wardA, term, false);
@@ -228,7 +228,7 @@ describe('ApplyPaymentTermProcess', () => {
       agencyClientAggregate.getClientType.returns('ward');
       agencyClientAggregate.isLinked.returns(true);
 
-      const getEstimatedCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedCount').resolves(2);
+      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
 
       const applyPaymentTerm = sinon.stub(RetryableApplyPaymentTerm.prototype, 'applyPaymentTerm').resolves(true);
@@ -245,7 +245,7 @@ describe('ApplyPaymentTermProcess', () => {
         agency_id: agencyId,
         client_id: clientId
       });
-      getEstimatedCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'ward');
+      getEstimatedDescendantCount.should.have.been.calledOnceWith(agencyId, orgId, clientId, 'ward');
       startProcess.should.have.been.calledOnceWith(2);
       applyPaymentTerm.should.have.been.calledOnceWith(clientId, term);
       completeProcess.should.have.been.calledOnce;
