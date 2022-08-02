@@ -11,6 +11,26 @@ import {PaymentTermCommandEnum} from '../../../aggregates/PaymentTerm/types';
 import {ApplyInheritedPaymentTermCommandInterface} from '../../../aggregates/PaymentTerm/types/CommandTypes';
 import {EventRepository} from '../../../EventRepository';
 
+/**
+ * receives the event for agency client linked or synced and then do the following:
+ * - if client type is organisation;
+ *   - ignore the message since we don't need to apply any payment term. user can set the payment term on screens
+ * - if client type is site
+ *   - load payment term aggregate for the organisation
+ *   - set the same payment term as the org
+ * - if client type is ward
+ *   - load payment term aggregate for site
+ *   - load agency client aggregate for site
+ *   - check if site is linked after payment term events(or site payment term aggregate is empty) (or site is not linked: it should not happen, if it happens something is going wrong in the system)?
+ *     - if yes, it means the value on the payment term is not valid anymore
+ *        (maybe the linked event is not received for the site yet to reflect the changes from organisation)
+ *        - we need to load org payment term and then apply it on the ward
+ *     - if no, we can set site's payment term on the ward
+ *
+ *
+ * Note: why we might get linked event of ward first and then site afterwards?
+ *  - because it's in different aggregates within AgencyClient aggregate type we might get them out of sequence
+ */
 export class PaymentTermAgencyClientLinkPropagator {
   constructor(private logger: LoggerContext, private eventRepository: EventRepository) {}
 
@@ -52,7 +72,7 @@ export class PaymentTermAgencyClientLinkPropagator {
         type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
         data: {
           term: parentPaymentTerm,
-          force: true
+          force: true // we force it since we want to inherit from parent event even it was not inherited before
         }
       } as ApplyInheritedPaymentTermCommandInterface);
     } else {

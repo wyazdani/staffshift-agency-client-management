@@ -14,7 +14,11 @@ export class EventHandlerFactory {
   /**
    * Return event handler based on the event type
    */
-  static getHandler(eventType: EventsEnum, logger: LoggerContext, eventRepository: EventRepository): EventHandlerInterface<BaseEventStoreDataInterface> {
+  static getHandler(
+    eventType: EventsEnum,
+    logger: LoggerContext,
+    eventRepository: EventRepository
+  ): EventHandlerInterface<BaseEventStoreDataInterface> {
     switch (eventType) {
       case EventsEnum.AGENCY_CLIENT_LINKED:
         return new AgencyClientLinkedEventHandler(logger, eventRepository);
