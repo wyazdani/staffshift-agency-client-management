@@ -31,12 +31,12 @@ implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
         } else if (aggregate.client_type === 'site') {
           aggregate.parent_id = data.organisation_id;
         }
-        aggregate.last_linked_date = event.created_at;
+        aggregate.linked_date = event.created_at;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_UNLINKED: {
         aggregate.linked = false;
-
+        aggregate.linked_date = null;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_SYNCED: {
@@ -49,7 +49,7 @@ implements WriteProjectionInterface<AgencyClientAggregateRecordInterface> {
         } else if (aggregate.client_type === 'site') {
           aggregate.parent_id = eventData.organisation_id;
         }
-        aggregate.last_linked_date = event.created_at;
+        aggregate.linked_date = event.created_at;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED: {

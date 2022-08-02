@@ -83,8 +83,9 @@ export class PaymentTermAgencyClientLinkPropagator {
        * - otherwise load from site aggregate
        */
       if (
-        siteAgencyClient.getLastLinkedDate() > sitePaymentTerm.getLastEventDate() ||
-        sitePaymentTerm.getLastEventDate() === null
+        siteAgencyClient.getLinkedDate() > sitePaymentTerm.getLastEventDate() ||
+        sitePaymentTerm.getLastEventDate() === null ||
+        siteAgencyClient.getLinkedDate() === null
       ) {
         // we now need to go to organisation payment term
         const orgPaymentTerm = await paymentTermRepository.getAggregate({

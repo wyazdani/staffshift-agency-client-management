@@ -6,5 +6,5 @@ export interface AgencyClientAggregateRecordInterface extends BaseAggregateRecor
   client_type?: string;
   consultants?: AgencyClientConsultantInterface[];
   parent_id?: string;
-  last_linked_date?: Date;
+  linked_date?: Date;
 }

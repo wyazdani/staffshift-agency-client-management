@@ -96,10 +96,10 @@ export class AgencyClientAggregate extends AbstractAggregate<
 
   /**
    * When was the last time this client was linked or synced?
-   * null means we don't have the linked event yet or the aggregate is empty
+   * null means the client is not linked, or the aggregate is empty
    */
-  getLastLinkedDate(): Date | null {
-    return this.aggregate.last_linked_date || null;
+  getLinkedDate(): Date | null {
+    return this.aggregate.linked_date || null;
   }
 
   /**
