@@ -7,7 +7,8 @@ export interface PaymentTermInterface {
 export enum PaymentTermEnum {
   STARTED = 'started',
   STARTED_INHERITED = 'started_inherited',
-  COMPLETED = 'completed'
+  COMPLETED = 'completed',
+  COMPLETED_INHERITED = 'completed_inherited'
 }
 
 export interface OrganisationJobAggregateRecordInterface extends BaseAggregateRecordInterface {

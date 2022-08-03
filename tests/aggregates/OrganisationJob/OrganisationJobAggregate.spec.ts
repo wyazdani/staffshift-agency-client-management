@@ -135,7 +135,7 @@ describe('OrganisationJobAggregate', () => {
     it('Test Job is already completed error', async () => {
       const aggregate = {
         payment_term_jobs: {
-          'job id': 'completed'
+          'job id': 'completed_inherited'
         },
         last_sequence_id: 1
       };

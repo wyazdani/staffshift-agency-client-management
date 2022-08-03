@@ -48,7 +48,7 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED: {
         const eventData = event.data as CompleteInheritPaymentTermCommandDataInterface;
 
-        aggregate.payment_term_jobs[eventData._id] = PaymentTermEnum.COMPLETED;
+        aggregate.payment_term_jobs[eventData._id] = PaymentTermEnum.COMPLETED_INHERITED;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       default:

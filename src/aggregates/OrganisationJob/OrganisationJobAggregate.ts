@@ -48,7 +48,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
       throw new ResourceNotFoundError(`Job ${command._id} is not found`);
     }
 
-    if (this.aggregate?.payment_term_jobs[command._id] === PaymentTermEnum.COMPLETED) {
+    if (this.aggregate?.payment_term_jobs[command._id] === PaymentTermEnum.COMPLETED_INHERITED) {
       throw new ValidationError('Job is already completed').setErrors([
         {
           code: 'JOB_ALREADY_COMPLETED',
