@@ -1,6 +1,7 @@
 import {ValidationError} from 'a24-node-error-utils';
 import {PaymentTermAggregateIdInterface, PaymentTermAggregateRecordInterface} from './types';
 import {AbstractAggregate} from '../AbstractAggregate';
+import {PAYMENT_TERM_ENUM} from './types/PaymentTermAggregateRecordInterface';
 
 export class PaymentTermAggregate extends AbstractAggregate<
   PaymentTermAggregateIdInterface,
@@ -23,5 +24,13 @@ export class PaymentTermAggregate extends AbstractAggregate<
         }
       ]);
     }
+  }
+
+  /**
+   * returns the current payment term set
+   * null means nothing is set
+   */
+  getPaymentTerm(): PAYMENT_TERM_ENUM | null {
+    return this.aggregate.payment_term || null;
   }
 }

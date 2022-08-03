@@ -82,6 +82,18 @@ export class AgencyClientAggregate extends AbstractAggregate<
     return this.aggregate.consultants;
   }
 
+  getClientType(): string {
+    return this.aggregate.client_type;
+  }
+
+  /**
+   * returns parent client id based on client type
+   * null means it was an organisation
+   */
+  getParentClientId(): string | null {
+    return this.aggregate.parent_id || null;
+  }
+
   /**
    * Doing validation to check if we can assign this consultant role to a client for a consultant
    */

@@ -12,7 +12,7 @@ interface ConsultantJobCompletedEventStoreDataInterface {
   _id: string;
 }
 
-export class ConsultantJobCompletedEventHandler
+export class JobCompletedEventHandler
 implements EventHandlerInterface<EventStorePubSubModelInterface<ConsultantJobCompletedEventStoreDataInterface>> {
   constructor(private logger: LoggerContext) {}
   async handle(
