@@ -8,7 +8,7 @@ import {
   InitiateApplyPaymentTermCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from './types/CommandTypes';
-import {PaymentTermEnum} from './types/OrganisationJobCommandEnum';
+import {PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
 
 export class OrganisationJobAggregate extends AbstractAggregate<
   OrganisationJobAggregateIdInterface,

@@ -4,7 +4,3 @@ export enum OrganisationJobCommandEnum {
   INITIATE_INHERIT_PAYMENT_TERM = 'initiate_inherit_payment_term',
   COMPLETE_INHERIT_PAYMENT_TERM = 'complete_inherit_payment_term'
 }
-export enum PaymentTermEnum {
-  STARTED = 'started',
-  COMPLETED = 'completed'
-}

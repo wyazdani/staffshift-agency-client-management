@@ -1,13 +1,15 @@
 import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
 
 export interface PaymentTermInterface {
-  [index: string]: string;
+  [index: string]: string | boolean;
 }
-export interface PaymentTermInheritedInterface {
-  [index: string]: boolean;
+
+export enum PaymentTermEnum {
+  STARTED = 'started',
+  COMPLETED = 'completed'
 }
 
 export interface OrganisationJobAggregateRecordInterface extends BaseAggregateRecordInterface {
   payment_term_jobs?: PaymentTermInterface;
-  payment_term_job_inherited?: PaymentTermInheritedInterface;
+  payment_term_job_inherited?: PaymentTermInterface;
 }

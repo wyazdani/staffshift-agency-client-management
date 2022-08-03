@@ -9,7 +9,7 @@ import {
   InitiateApplyPaymentTermCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from './types/CommandTypes';
-import {PaymentTermEnum} from './types/OrganisationJobCommandEnum';
+import {PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
 
 /**
  * Responsible for handling all events to build the current state of the aggregate
