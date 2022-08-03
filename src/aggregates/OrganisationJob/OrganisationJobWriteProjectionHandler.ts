@@ -24,23 +24,18 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
     if (!has(aggregate, 'payment_term_jobs')) {
       aggregate.payment_term_jobs = {};
     }
-    if (!has(aggregate, 'payment_term_job_inherited')) {
-      aggregate.payment_term_job_inherited = {};
-    }
     switch (type) {
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED: {
         const eventData = event.data as InitiateApplyPaymentTermCommandDataInterface;
 
         aggregate.payment_term_jobs[eventData._id] = PaymentTermEnum.STARTED;
-        aggregate.payment_term_job_inherited[eventData._id] = false;
 
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED: {
         const eventData = event.data as InitiateInheritPaymentTermCommandDataInterface;
 
-        aggregate.payment_term_jobs[eventData._id] = PaymentTermEnum.STARTED;
-        aggregate.payment_term_job_inherited[eventData._id] = true;
+        aggregate.payment_term_jobs[eventData._id] = PaymentTermEnum.STARTED_INHERITED;
 
         return {...aggregate, last_sequence_id: event.sequence_id};
       }

@@ -80,7 +80,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.payment_term_jobs.should.deep.equal({
-          id: 'started'
+          id: 'started_inherited'
         });
       });
     });
