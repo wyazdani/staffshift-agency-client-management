@@ -95,6 +95,14 @@ export class AgencyClientAggregate extends AbstractAggregate<
   }
 
   /**
+   * When was the last time this client was linked or synced?
+   * null means the client is not linked, or the aggregate is empty
+   */
+  getLinkedDate(): Date | null {
+    return this.aggregate.linked_date || null;
+  }
+
+  /**
    * Doing validation to check if we can assign this consultant role to a client for a consultant
    */
   private async validateConsultantRoleForConsultantAssignment(

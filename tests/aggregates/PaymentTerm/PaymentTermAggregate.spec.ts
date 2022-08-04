@@ -86,4 +86,26 @@ describe('PaymentTermAggregate', () => {
       paymentTermAggregate.getPaymentTerm().should.equal(PAYMENT_TERM_ENUM.CREDIT);
     });
   });
+
+  describe('getLastEventDate()', () => {
+    it('Test returns null on empty aggregate', async () => {
+      const aggregate = {
+        last_sequence_id: 0
+      };
+      const paymentTermAggregate = new PaymentTermAggregate(aggregateId, aggregate);
+
+      (paymentTermAggregate.getLastEventDate() === null).should.be.true;
+    });
+
+    it('Test returns last event date', async () => {
+      const date = new Date();
+      const aggregate: PaymentTermAggregateRecordInterface = {
+        last_sequence_id: 1,
+        last_event_date: date
+      };
+      const paymentTermAggregate = new PaymentTermAggregate(aggregateId, aggregate);
+
+      paymentTermAggregate.getLastEventDate().should.equal(date);
+    });
+  });
 });

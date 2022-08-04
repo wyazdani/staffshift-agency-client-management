@@ -14,6 +14,7 @@ import {assert} from 'chai';
 describe('AgencyClientWriteProjectionHandler', () => {
   describe('execute()', () => {
     const projectionHandler = new AgencyClientWriteProjectionHandler();
+    const date = new Date();
 
     describe('AGENCY_CLIENT_LINKED Event', () => {
       it('Test when the client type is site', () => {
@@ -32,7 +33,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_LINKED, aggregate, event);
@@ -40,6 +42,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         result.linked.should.be.true;
         result.client_type.should.equal('site');
         result.parent_id.should.equal('org id');
+        result.linked_date.should.equal(date);
       });
       it('Test when the client type is ward', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
@@ -58,7 +61,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_LINKED, aggregate, event);
@@ -66,6 +70,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         result.linked.should.be.true;
         result.client_type.should.equal('ward');
         result.parent_id.should.equal('site id');
+        result.linked_date.should.equal(date);
       });
       it('Test when the client type is organisation', () => {
         const aggregate: AgencyClientAggregateRecordInterface = {
@@ -84,7 +89,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_LINKED, aggregate, event);
@@ -92,6 +98,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         result.linked.should.be.true;
         result.client_type.should.equal('organisation');
         (result.parent_id === undefined).should.be.true;
+        result.linked_date.should.equal(date);
       });
     });
 
@@ -108,12 +115,14 @@ describe('AgencyClientWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_UNLINKED, aggregate, event);
 
         result.linked.should.be.false;
+        (result.linked_date === null).should.be.true;
       });
     });
 
@@ -136,7 +145,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_SYNCED, aggregate, event);
@@ -144,6 +154,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         result.linked.should.be.false;
         result.client_type.should.equal('site');
         result.parent_id.should.equal('org id');
+        result.linked_date.should.equal(date);
       });
 
       it('Test success when the type is ward', () => {
@@ -165,7 +176,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_SYNCED, aggregate, event);
@@ -173,6 +185,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         result.linked.should.be.false;
         result.client_type.should.equal('ward');
         result.parent_id.should.equal('site id');
+        result.linked_date.should.equal(date);
       });
 
       it('Test success when the type is org', () => {
@@ -192,7 +205,8 @@ describe('AgencyClientWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_SYNCED, aggregate, event);
@@ -200,6 +214,7 @@ describe('AgencyClientWriteProjectionHandler', () => {
         result.linked.should.be.false;
         result.client_type.should.equal('organisation');
         (result.parent_id === undefined).should.be.true;
+        result.linked_date.should.equal(date);
       });
     });
 

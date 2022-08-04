@@ -7,6 +7,7 @@ import {assert} from 'chai';
 describe('PaymentTermWriteProjectionHandler', () => {
   describe('execute()', () => {
     const projectionHandler = new PaymentTermWriteProjectionHandler();
+    const date = new Date();
 
     describe('AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED Event', () => {
       it('Test event', () => {
@@ -21,7 +22,8 @@ describe('PaymentTermWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(
@@ -32,6 +34,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
 
         result.inherited.should.be.false;
         result.payment_term.should.equal(PAYMENT_TERM_ENUM.CREDIT);
+        result.last_event_date.should.equal(date);
       });
     });
 
@@ -48,7 +51,8 @@ describe('PaymentTermWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(
@@ -59,6 +63,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
 
         result.inherited.should.be.false;
         result.payment_term.should.equal(PAYMENT_TERM_ENUM.PAY_IN_ADVANCE);
+        result.last_event_date.should.equal(date);
       });
     });
 
@@ -75,7 +80,8 @@ describe('PaymentTermWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(
@@ -86,6 +92,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
 
         result.inherited.should.be.true;
         (result.payment_term === null).should.be.true;
+        result.last_event_date.should.equal(date);
       });
     });
 
@@ -102,7 +109,8 @@ describe('PaymentTermWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(
@@ -113,6 +121,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
 
         result.inherited.should.be.true;
         result.payment_term.should.equal(PAYMENT_TERM_ENUM.CREDIT);
+        result.last_event_date.should.equal(date);
       });
     });
 
@@ -129,7 +138,8 @@ describe('PaymentTermWriteProjectionHandler', () => {
           meta_data: {
             user_id: 'fake_user'
           },
-          correlation_id: 'fake_id'
+          correlation_id: 'fake_id',
+          created_at: date
         });
 
         const result = projectionHandler.execute(
@@ -140,6 +150,7 @@ describe('PaymentTermWriteProjectionHandler', () => {
 
         result.inherited.should.be.true;
         result.payment_term.should.equal(PAYMENT_TERM_ENUM.PAY_IN_ADVANCE);
+        result.last_event_date.should.equal(date);
       });
     });
 

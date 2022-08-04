@@ -578,4 +578,40 @@ describe('AgencyClientAggregate', () => {
       (agencyClientAggregate.getParentClientId() === null).should.be.true;
     });
   });
+
+  describe('getLinkedDate()', () => {
+    it('should return linked date', () => {
+      const aggregateId = {
+        agency_id: '45',
+        client_id: '12'
+      };
+      const date = new Date();
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: true,
+        client_type: 'site',
+        linked_date: date
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      agencyClientAggregate.getLinkedDate().should.equal(date);
+    });
+
+    it('should return null when not linked', () => {
+      const aggregateId = {
+        agency_id: '45',
+        client_id: '12'
+      };
+      const aggregate = {
+        last_sequence_id: 1,
+        linked: false,
+        client_type: 'site'
+      };
+      const agencyRepositoryStub = stubConstructor(AgencyRepository);
+      const agencyClientAggregate = new AgencyClientAggregate(aggregateId, aggregate, agencyRepositoryStub);
+
+      (agencyClientAggregate.getLinkedDate() === null).should.be.true;
+    });
+  });
 });
