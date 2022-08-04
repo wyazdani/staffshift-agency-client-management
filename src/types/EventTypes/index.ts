@@ -30,4 +30,9 @@ export {AgencyClientApplyPaymentTermCompletedEventStoreDataInterface} from './Ag
 export {AgencyClientApplyPaymentTermInheritanceCompletedEventStoreDataInterface} from './AgencyClientApplyPaymentTermInheritanceCompletedEventInterface';
 export {AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface} from './AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface';
 export {AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface} from './AgencyClientApplyPaymentTermInitiatedEventInterface';
+export {AgencyClientFinancialHoldAppliedEventInterface} from './AgencyClientFinancialHoldAppliedEventInterface';
+export {AgencyClientFinancialHoldClearedEventInterface} from './AgencyClientFinancialHoldClearedEventInterface';
+export {AgencyClientFinancialHoldInheritedEventInterface} from './AgencyClientFinancialHoldInheritedEventInterface';
+export {AgencyClientClearFinancialHoldInheritedEventInterface} from './AgencyClientClearFinancialHoldInheritedEventInterface';
+export {AgencyClientEmptyFinancialHoldInheritedEventInterface} from './AgencyClientEmptyFinancialHoldInheritedEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

@@ -29,6 +29,7 @@ import {
   CompleteConsultantJobProcessCommandInterface,
   FailItemConsultantJobProcessCommandInterface
 } from './ConsultantJobProcess/types/CommandTypes';
+import {FinancialHoldCommandBus} from './FinancialHold/FinancialHoldCommandBus';
 import {OrganisationJobCommandBus} from './OrganisationJob/OrganisationJobCommandBus';
 import {PaymentTermCommandBus} from './PaymentTerm/PaymentTermCommandBus';
 import {AggregateCommandInterface, AggregateCommandHandlerInterface} from './types';
@@ -44,6 +45,7 @@ export class CommandBus {
     this.registerAggregateCommandHandlers(PaymentTermCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(ClientInheritanceProcessCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(OrganisationJobCommandBus.getCommandHandlers(eventRepository));
+    this.registerAggregateCommandHandlers(FinancialHoldCommandBus.getCommandHandlers(eventRepository));
   }
 
   private registerAggregateCommandHandlers(handlers: AggregateCommandHandlerInterface[]): void {

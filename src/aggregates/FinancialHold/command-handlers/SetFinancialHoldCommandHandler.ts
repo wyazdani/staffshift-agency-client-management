@@ -1,12 +1,17 @@
-import {AgencyClientCreditFinancialHoldAppliedEventInterface} from 'EventTypes/AgencyClientCreditFinancialHoldAppliedEventInterface';
-import {AgencyClientPayInAdvanceFinancialHoldAppliedEventInterface} from 'EventTypes/AgencyClientPayInAdvanceFinancialHoldAppliedEventInterface';
+import {
+  AgencyClientFinancialHoldAppliedEventInterface,
+  AgencyClientFinancialHoldClearedEventInterface
+} from 'EventTypes';
 import {EventsEnum} from '../../../Events';
 import {FinancialHoldRepository} from '../FinancialHoldRepository';
 import {FinancialHoldCommandEnum} from '../types';
 import {SetFinancialHoldCommandInterface} from '../types/CommandTypes';
-import {FINANCIAL_HOLD_ENUM} from '../types/FinancialHoldAggregateRecordInterface';
 import {FinancialHoldCommandHandlerInterface} from '../types/FinancialHoldCommandHandlerInterface';
 
+/**
+ * based on `financial_hold` property decides to insert applied financial hold or cleared financial hold events
+ * `note` is required and we will pick it from the command
+ */
 export class SetFinancialHoldCommandHandler implements FinancialHoldCommandHandlerInterface {
   public commandType = FinancialHoldCommandEnum.SET_FINANCIAL_HOLD;
 
@@ -18,14 +23,15 @@ export class SetFinancialHoldCommandHandler implements FinancialHoldCommandHandl
 
     await this.repository.save([
       {
-        type:
-          command.data.term === FINANCIAL_HOLD_ENUM.CREDIT
-            ? EventsEnum.AGENCY_CLIENT_CREDIT_FINANCIAL_HOLD_APPLIED
-            : EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_FINANCIAL_HOLD_APPLIED,
+        type: command.data.financial_hold
+          ? EventsEnum.AGENCY_CLIENT_FINANCIAL_HOLD_APPLIED
+          : EventsEnum.AGENCY_CLIENT_FINANCIAL_HOLD_CLEARED,
         aggregate_id: aggregate.getId(),
-        data: {},
+        data: {
+          note: command.data.note
+        },
         sequence_id: ++eventId
-      } as AgencyClientCreditFinancialHoldAppliedEventInterface | AgencyClientPayInAdvanceFinancialHoldAppliedEventInterface
+      } as AgencyClientFinancialHoldAppliedEventInterface | AgencyClientFinancialHoldClearedEventInterface
     ]);
   }
 }

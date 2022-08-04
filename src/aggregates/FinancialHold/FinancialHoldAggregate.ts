@@ -14,10 +14,10 @@ export class FinancialHoldAggregate extends AbstractAggregate<
   }
 
   /**
-   * Note: the inherited property might `undefined`(when aggregate doesn't have any events). it means it's inherited
+   * Note: the inherited property might be `undefined`(when aggregate doesn't have any events). it means it's inherited
    * that's why we don't do `if (!this.aggregate.inherited)`
    */
-  validateInherited() {
+  validateInherited(): void {
     if (this.aggregate.inherited === false) {
       throw new ValidationError('Operation not possible due to inheritance problem').setErrors([
         {
@@ -34,5 +34,13 @@ export class FinancialHoldAggregate extends AbstractAggregate<
    */
   getFinancialHold(): boolean | null {
     return this.aggregate.financial_hold || null;
+  }
+
+  /**
+   * get last event date in the aggregate
+   * null means the aggregate was empty
+   */
+  getLastEventDate(): Date | null {
+    return this.aggregate.last_event_date || null;
   }
 }

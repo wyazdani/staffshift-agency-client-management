@@ -4,7 +4,8 @@ import {FinancialHoldCommandInterface} from '..';
 export interface SetInheritedFinancialHoldCommandDataInterface {
   financial_hold: boolean | null;
   force: boolean;
-  note: string;
+  /* optional since when financial_hold is set to `null` in the command, we don't have any note */
+  note?: string;
 }
 
 export interface SetInheritedFinancialHoldCommandInterface extends FinancialHoldCommandInterface {
