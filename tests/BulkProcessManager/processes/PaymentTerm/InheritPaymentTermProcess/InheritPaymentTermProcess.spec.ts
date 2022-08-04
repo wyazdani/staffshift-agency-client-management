@@ -67,7 +67,9 @@ describe('InheritPaymentTermProcess', () => {
       agencyClientAggregate.isLinked.returns(true);
       agencyClientAggregate.getParentClientId.returns('parent id');
 
-      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
+      const getEstimatedDescendantCount = sinon
+        .stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount')
+        .resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
       const paymentTermAggregate = stubInterface<PaymentTermAggregate>();
       const getPaymentTermAggregate = sinon

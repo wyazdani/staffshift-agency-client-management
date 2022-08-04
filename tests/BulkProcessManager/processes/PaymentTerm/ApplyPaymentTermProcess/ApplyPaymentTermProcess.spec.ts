@@ -67,7 +67,9 @@ describe('ApplyPaymentTermProcess', () => {
       agencyClientAggregate.getClientType.returns('organisation');
       agencyClientAggregate.isLinked.returns(true);
 
-      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
+      const getEstimatedDescendantCount = sinon
+        .stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount')
+        .resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
 
       const applyPaymentTerm = sinon.stub(RetryableApplyPaymentTerm.prototype, 'applyPaymentTerm').resolves(true);
@@ -157,7 +159,9 @@ describe('ApplyPaymentTermProcess', () => {
       agencyClientAggregate.getClientType.returns('site');
       agencyClientAggregate.isLinked.returns(true);
 
-      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
+      const getEstimatedDescendantCount = sinon
+        .stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount')
+        .resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
 
       const applyPaymentTerm = sinon.stub(RetryableApplyPaymentTerm.prototype, 'applyPaymentTerm').resolves(true);
@@ -228,7 +232,9 @@ describe('ApplyPaymentTermProcess', () => {
       agencyClientAggregate.getClientType.returns('ward');
       agencyClientAggregate.isLinked.returns(true);
 
-      const getEstimatedDescendantCount = sinon.stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount').resolves(2);
+      const getEstimatedDescendantCount = sinon
+        .stub(AgencyClientsProjectionV2, 'getEstimatedDescendantCount')
+        .resolves(2);
       const startProcess = sinon.stub(CommandBusHelper.prototype, 'startProcess').resolves();
 
       const applyPaymentTerm = sinon.stub(RetryableApplyPaymentTerm.prototype, 'applyPaymentTerm').resolves(true);
