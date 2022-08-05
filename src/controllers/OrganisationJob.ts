@@ -25,7 +25,7 @@ export const initiateApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisation = await getOrganisationData(agencyId, clientId, logger);
+    const organisation = await getOrganisationInformation(agencyId, clientId, logger);
 
     if (isEmpty(organisation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
@@ -73,7 +73,7 @@ export const initiateInheritApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisation = await getOrganisationData(agencyId, clientId, logger);
+    const organisation = await getOrganisationInformation(agencyId, clientId, logger);
 
     if (isEmpty(organisation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
@@ -81,7 +81,7 @@ export const initiateInheritApplyPaymentTerm = async (
       return next(new ResourceNotFoundError('Agency Client resource not found'));
     }
 
-    if (organisation.inherit === false) {
+    if (organisation.client_type === 'organisation') {
       return next(new ValidationError('Cannot be inherited on organisation'));
     }
 
@@ -113,7 +113,7 @@ export const initiateInheritApplyPaymentTerm = async (
   }
 };
 
-const getOrganisationData = async (agencyId: string, clientId: string, logger: LoggerContext) => {
+const getOrganisationInformation = async (agencyId: string, clientId: string, logger: LoggerContext) => {
   const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
   const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
@@ -121,6 +121,6 @@ const getOrganisationData = async (agencyId: string, clientId: string, logger: L
     return null;
   }
   return agencyClient.client_type === 'organisation'
-    ? {organisation_id: agencyClient.client_id, inherit: false}
-    : {organisation_id: agencyClient.organisation_id, inherit: true};
+    ? {organisation_id: agencyClient.client_id, client_type: agencyClient.client_type}
+    : {organisation_id: agencyClient.organisation_id, client_type: agencyClient.client_type};
 };
