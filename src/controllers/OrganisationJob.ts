@@ -25,9 +25,9 @@ export const initiateApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisation = await getClientInformation(agencyId, clientId, logger);
+    const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
-    if (isEmpty(organisation)) {
+    if (isEmpty(clientInformation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
@@ -36,7 +36,7 @@ export const initiateApplyPaymentTerm = async (
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: organisation.organisation_id
+        organisation_id: clientInformation.organisation_id
       },
       type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
@@ -73,15 +73,15 @@ export const initiateInheritApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisation = await getClientInformation(agencyId, clientId, logger);
+    const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
-    if (isEmpty(organisation)) {
+    if (isEmpty(clientInformation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
     }
 
-    if (organisation.client_type === 'organisation') {
+    if (clientInformation.client_type === 'organisation') {
       return next(new ValidationError('Cannot be inherited on organisation'));
     }
 
@@ -89,7 +89,7 @@ export const initiateInheritApplyPaymentTerm = async (
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: organisation.organisation_id
+        organisation_id: clientInformation.organisation_id
       },
       type: OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM,
       data: {
