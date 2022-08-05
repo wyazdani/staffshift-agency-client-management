@@ -86,6 +86,27 @@ describe('FinancialHoldAggregate', () => {
     });
   });
 
+  describe('getNote()', () => {
+    it('Test returns null when it is not set', async () => {
+      const aggregate = {
+        last_sequence_id: 0
+      };
+      const financialHoldAggregate = new FinancialHoldAggregate(aggregateId, aggregate);
+
+      (financialHoldAggregate.getNote() === null).should.be.true;
+    });
+
+    it('Test returns note', async () => {
+      const aggregate: FinancialHoldAggregateRecordInterface = {
+        last_sequence_id: 1,
+        note: 'sample'
+      };
+      const financialHoldAggregate = new FinancialHoldAggregate(aggregateId, aggregate);
+
+      financialHoldAggregate.getNote().should.equal('sample');
+    });
+  });
+
   describe('getLastEventDate()', () => {
     it('Test returns null on empty aggregate', async () => {
       const aggregate = {
