@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import {
   initiateApplyPaymentTerm,
   initiateInheritApplyPaymentTerm,
-  getPaymentTerm
+  getPaymentTerm, getFinancialHold
 } from '../../src/controllers/OrganisationJob';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
@@ -342,6 +342,87 @@ describe('OrganisationJob Controller', () => {
       const findOne = sinon.stub(GenericRepository.prototype, 'findOne').rejects(error);
 
       await getPaymentTerm(req, res, next);
+      findOne.should.have.been.calledWith({
+        client_id: clientId,
+        agency_id: agencyId
+      });
+      assert.deepEqual(next.getCall(0).args[0], error);
+    });
+  });
+
+  describe('getFinancialHold()', function () {
+    it('should return record on success', async function () {
+      const agencyId = 'agency id';
+      const clientId = '61a63e6eb34a527a852d6874';
+      const params = {
+        agency_id: {value: agencyId},
+        client_id: {value: clientId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params,
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
+      const record: any = {
+        _id: clientId,
+        agency_id: agencyId,
+        client_id: clientId,
+        inherited: true
+      };
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves(record);
+
+      await getFinancialHold(req, res, next);
+      findOne.should.have.been.calledWith({
+        agency_id: agencyId,
+        client_id: clientId
+      });
+      setHeader.should.have.been.calledWith('Content-Type', 'application/json');
+      end.should.have.been.calledWith(JSON.stringify(record));
+    });
+
+    it('should ResourceNotFoundError', async function () {
+      const agencyId = 'agency id';
+      const clientId = '61a63e6eb34a527a852d6874';
+      const params = {
+        agency_id: {value: agencyId},
+        client_id: {value: clientId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params,
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves();
+
+      await getFinancialHold(req, res, next);
+      findOne.should.have.been.calledWith({
+        agency_id: agencyId,
+        client_id: clientId
+      });
+      next.getCall(0).args[0].should.be.instanceOf(ResourceNotFoundError);
+    });
+
+    it('should call next with an error when findOne operation fails', async function () {
+      const agencyId = 'agency id';
+      const clientId = '61a63e6eb34a527a852d6874';
+      const params = {
+        agency_id: {value: agencyId},
+        client_id: {value: clientId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params,
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const error = new Error('some error');
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').rejects(error);
+
+      await getFinancialHold(req, res, next);
       findOne.should.have.been.calledWith({
         client_id: clientId,
         agency_id: agencyId

@@ -543,6 +543,37 @@ paths:
       summary: "Initiate Inherit Apply payment term to client"
       tags:
         - "Payment Term"
+  /agency/{agency_id}/client/{client_id}/financial-hold:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    get:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "getFinancialHold"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Retrieves a financial hold for the client in that agency."
+          schema:
+            $ref: "#/definitions/get_financial_hold_def"
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/get_financial_hold_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          description: "Financial hold is not set on the client or it's parent"
+          schema:
+            $ref: "#/definitions/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Retrieves a financial hold"
+      tags:
+        - "Financial Hold"
 parameters:
  # Query PARAMS
   query_client_type:
@@ -980,6 +1011,46 @@ definitions:
           - not_set
       inherited:
         type: boolean
+      updated_at:
+        type: string
+        format: date-time
+      created_at:
+        type: string
+        format: date-time
+      __v:
+        type: integer
+    additionalProperties: false
+  get_financial_hold_def:
+    type: object
+    required:
+      - _id
+      - agency_id
+      - client_id
+      - inherited
+      - financial_hold
+      - updated_at
+      - created_at
+      - __v
+    properties:
+      _id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      agency_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      client_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      financial_hold:
+        type: string
+        enum:
+          - applied
+          - cleared
+          - not_set
+      inherited:
+        type: boolean
+      note:
+        type: string
       updated_at:
         type: string
         format: date-time
@@ -1449,6 +1520,20 @@ definitions:
             description:
               type: string
           additionalProperties: false
+    additionalProperties: false
+  get_financial_hold_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PATTERN
+          - REQUIRED
+      message:
+        type: string
     additionalProperties: false
 responses:
   unauthorize_error_model:
