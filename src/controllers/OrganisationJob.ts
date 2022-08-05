@@ -25,7 +25,7 @@ export const initiateApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisation = await getOrganisationInformation(agencyId, clientId, logger);
+    const organisation = await getClientInformation(agencyId, clientId, logger);
 
     if (isEmpty(organisation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
@@ -73,7 +73,7 @@ export const initiateInheritApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisation = await getOrganisationInformation(agencyId, clientId, logger);
+    const organisation = await getClientInformation(agencyId, clientId, logger);
 
     if (isEmpty(organisation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
@@ -113,7 +113,7 @@ export const initiateInheritApplyPaymentTerm = async (
   }
 };
 
-const getOrganisationInformation = async (agencyId: string, clientId: string, logger: LoggerContext) => {
+const getClientInformation = async (agencyId: string, clientId: string, logger: LoggerContext) => {
   const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
   const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
