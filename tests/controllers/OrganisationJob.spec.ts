@@ -1,4 +1,3 @@
-import {ResourceNotFoundError} from 'a24-node-error-utils';
 import sinon from 'sinon';
 import {
   initiateApplyPaymentTerm,
@@ -13,7 +12,7 @@ import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
 import {OrganisationJobCommandEnum} from '../../src/aggregates/OrganisationJob/types';
 import {GenericRepository} from '../../src/GenericRepository';
-import {ValidationError} from 'a24-node-error-utils';
+import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 
 describe('OrganisationJob Controller', () => {
   const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
