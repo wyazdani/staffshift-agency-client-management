@@ -37,6 +37,14 @@ export class FinancialHoldAggregate extends AbstractAggregate<
   }
 
   /**
+   * returns the note
+   * if it's not defined it will return null
+   */
+  getNote(): string | null {
+    return this.aggregate.note || null;
+  }
+
+  /**
    * get last event date in the aggregate
    * null means the aggregate was empty
    */
