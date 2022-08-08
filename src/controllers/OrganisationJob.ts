@@ -85,8 +85,8 @@ export const initiateInheritApplyPaymentTerm = async (
       return next(
         new ValidationError('Operation not possible due to inheritance problem').setErrors([
           {
-            code: 'UNABLE_TO_INHERIT',
-            message: 'Cannot be inherited on organisation'
+            code: 'INVALID_CLIENT_TYPE',
+            message: 'Cannot be inherited on organisation client type'
           }
         ])
       );
