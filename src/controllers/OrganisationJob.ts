@@ -82,7 +82,14 @@ export const initiateInheritApplyPaymentTerm = async (
     }
 
     if (clientInformation.client_type === 'organisation') {
-      return next(new ValidationError('Cannot be inherited on organisation'));
+      return next(
+        new ValidationError('Operation not possible due to inheritance problem').setErrors([
+          {
+            code: 'UNABLE_TO_INHERIT',
+            message: 'Cannot be inherited on organisation'
+          }
+        ])
+      );
     }
 
     const command: InitiateInheritPaymentTermCommandInterface = {

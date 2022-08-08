@@ -285,7 +285,12 @@ describe('OrganisationJob Controller', () => {
         client_type: 'organisation',
         linked: true
       };
-      const error = new ValidationError('Cannot be inherited on organisation');
+      const error = new ValidationError('Operation not possible due to inheritance problem').setErrors([
+        {
+          code: 'UNABLE_TO_INHERIT',
+          message: 'Cannot be inherited on organisation'
+        }
+      ]);
       const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
 
       sinon.stub(CommandBus.prototype, 'execute').rejects(error);
@@ -293,6 +298,14 @@ describe('OrganisationJob Controller', () => {
       await initiateInheritApplyPaymentTerm(req, res, next);
       assert.equal(end.callCount, 0, 'Expected end to be not called');
       assert.equal(next.callCount, 1, 'Expected next to be called');
+      error.assertEqual(
+        new ValidationError('Operation not possible due to inheritance problem').setErrors([
+          {
+            code: 'UNABLE_TO_INHERIT',
+            message: 'Cannot be inherited on organisation'
+          }
+        ])
+      );
       agencyClient.should.have.been.calledOnceWith();
     });
   });
