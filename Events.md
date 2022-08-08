@@ -1478,4 +1478,227 @@ Description: A short description of the event
 ```
 
  </td><td> Applying payment term completed inheritance for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_FINANCIAL_HOLD_APPLIED </td><td> AgencyClientFinancialHoldApplied </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "note"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "financial_hold"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> financial hold is applied to agency client </td></tr>
+<tr><td> AGENCY_CLIENT_FINANCIAL_HOLD_INHERITED </td><td> AgencyClientFinancialHoldInherited </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "note"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "financial_hold"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> financial hold for agency client is inherited from the parent </td></tr>
+<tr><td> AGENCY_CLIENT_FINANCIAL_HOLD_CLEARED </td><td> AgencyClientFinancialHoldCleared </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "note"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "financial_hold"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> financial hold for agency client is cleared </td></tr>
+<tr><td> AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INHERITED </td><td> AgencyClientClearFinancialHoldInherited </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "note"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "financial_hold"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> clear financial hold for agency client is inherited from the parent </td></tr>
+<tr><td> AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED </td><td> AgencyClientEmptyFinancialHoldInherited </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "financial_hold"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> empty financial hold for agency client is inherited from the parent since no financial hold was set on the parent </td></tr>
 </table><!--DATA_END-->
