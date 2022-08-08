@@ -80,7 +80,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.payment_term_jobs.should.deep.equal({
-          id: 'started'
+          id: 'started_inherited'
         });
       });
     });
@@ -120,7 +120,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
       });
     });
 
-    describe('COMPLETE_APPLY_PAYMENT_TERM Event', () => {
+    describe('COMPLETE_INHERIT_PAYMENT_TERM Event', () => {
       it('Test when success', () => {
         const aggregate: any = {
           last_sequence_id: 1
@@ -150,7 +150,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.payment_term_jobs.should.deep.equal({
-          id: 'completed'
+          id: 'completed_inherited'
         });
       });
     });
