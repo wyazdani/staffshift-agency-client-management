@@ -566,7 +566,7 @@ paths:
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
-          description: "Financial hold is not set on the client or it's parent"
+          description: "Financial hold is not set on the client"
           schema:
             $ref: "#/definitions/resource_not_found"
         default:
