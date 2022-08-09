@@ -159,7 +159,7 @@ describe('agency-{agency_id}-client-{client_id}-payment-term', () => {
     it('should respond with 200 Retrieves a single Agency Client Payment Term', async () => {
       const schema = {
         type: 'object',
-        required: ['_id', 'agency_id', 'client_id', 'inherited', 'updated_at', 'created_at', '__v'],
+        required: ['_id', 'agency_id', 'client_id', 'inherited', 'payment_term', 'updated_at', 'created_at', '__v'],
         properties: {
           _id: {
             type: 'string',
@@ -178,7 +178,7 @@ describe('agency-{agency_id}-client-{client_id}-payment-term', () => {
           },
           payment_term: {
             type: 'string',
-            enum: ['credit', 'pay_in_advance']
+            enum: ['credit', 'pay_in_advance', 'not_set']
           },
           updated_at: {
             type: 'string',

@@ -204,6 +204,13 @@
           "topicName": "ss.global.event.store.staffshift.agency.client.management",
           "skipSeed": true
         }]
+      }, {
+        "name": "Agency Client Financial Holds V1",
+        "bindings": [{
+          "id": "agency-client-financial-holds-v1",
+          "projector": "./projections/AgencyClientFinancialHoldsProjectionV1/AgencyClientFinancialHoldsProjector",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management"
+        }]
       }]
     }
   },

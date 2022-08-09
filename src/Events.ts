@@ -30,7 +30,12 @@ export enum EventsEnum {
   AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED = 'AgencyClientApplyPaymentTermInitiated',
   AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED = 'AgencyClientApplyPaymentTermInheritanceInitiated',
   AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED = 'AgencyClientApplyPaymentTermCompleted',
-  AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED = 'AgencyClientApplyPaymentTermInheritanceCompleted'
+  AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED = 'AgencyClientApplyPaymentTermInheritanceCompleted',
+  AGENCY_CLIENT_FINANCIAL_HOLD_APPLIED = 'AgencyClientFinancialHoldApplied',
+  AGENCY_CLIENT_FINANCIAL_HOLD_INHERITED = 'AgencyClientFinancialHoldInherited',
+  AGENCY_CLIENT_FINANCIAL_HOLD_CLEARED = 'AgencyClientFinancialHoldCleared',
+  AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INHERITED = 'AgencyClientClearFinancialHoldInherited',
+  AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED = 'AgencyClientEmptyFinancialHoldInherited'
 }
 
 type EventsType = {
@@ -166,5 +171,26 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED]: {
     name: 'AgencyClientApplyPaymentTermInheritanceCompleted',
     description: 'Applying payment term completed inheritance for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_FINANCIAL_HOLD_APPLIED]: {
+    name: 'AgencyClientFinancialHoldApplied',
+    description: 'financial hold is applied to agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_FINANCIAL_HOLD_INHERITED]: {
+    name: 'AgencyClientFinancialHoldCleared',
+    description: 'financial hold for agency client is inherited from the parent'
+  },
+  [EventsEnum.AGENCY_CLIENT_FINANCIAL_HOLD_CLEARED]: {
+    name: 'AgencyClientFinancialHoldCleared',
+    description: 'financial hold for agency client is cleared'
+  },
+  [EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INHERITED]: {
+    name: 'AgencyClientClearFinancialHoldInherited',
+    description: 'clear financial hold for agency client is inherited from the parent'
+  },
+  [EventsEnum.AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED]: {
+    name: 'AgencyClientEmptyFinancialHoldInherited',
+    description:
+      'empty financial hold for agency client is inherited from the parent since no financial hold was set on the parent'
   }
 };

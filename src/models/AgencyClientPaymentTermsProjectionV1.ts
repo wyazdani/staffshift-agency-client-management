@@ -9,7 +9,7 @@ export enum PAYMENT_TERM_PROJECTION_ENUM {
 export type AgencyClientPaymentTermsProjectionV1DocumentType = Document & {
   agency_id: string;
   client_id: string;
-  payment_term: string;
+  payment_term: PAYMENT_TERM_PROJECTION_ENUM;
   inherited: boolean;
   created_at: Date;
   updated_at: Date;
