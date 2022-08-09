@@ -1491,6 +1491,7 @@ definitions:
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
           - ENUM_MISMATCH
+          - INVALID_CLIENT_TYPE
       message:
         type: string
       errors:

@@ -33,9 +33,9 @@ export const initiateApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisationId = await getOrganisationId(agencyId, clientId, logger);
+    const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
-    if (isEmpty(organisationId)) {
+    if (isEmpty(clientInformation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
@@ -44,7 +44,7 @@ export const initiateApplyPaymentTerm = async (
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: organisationId
+        organisation_id: clientInformation.organisation_id
       },
       type: OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM,
       data: {
@@ -81,19 +81,30 @@ export const initiateInheritApplyPaymentTerm = async (
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const id = new ObjectID().toString();
 
-    const organisationId = await getOrganisationId(agencyId, clientId, logger);
+    const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
-    if (isEmpty(organisationId)) {
+    if (isEmpty(clientInformation)) {
       logger.info('Resource retrieval completed, no record found.', {statusCode: 404});
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
+    }
+
+    if (clientInformation.client_type === 'organisation') {
+      return next(
+        new ValidationError('Operation not possible due to inheritance problem').setErrors([
+          {
+            code: 'INVALID_CLIENT_TYPE',
+            message: 'Cannot be inherited on organisation client type'
+          }
+        ])
+      );
     }
 
     const command: InitiateInheritPaymentTermCommandInterface = {
       aggregateId: {
         name: 'organisation_job',
         agency_id: agencyId,
-        organisation_id: organisationId
+        organisation_id: clientInformation.organisation_id
       },
       type: OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM,
       data: {
@@ -117,14 +128,16 @@ export const initiateInheritApplyPaymentTerm = async (
   }
 };
 
-const getOrganisationId = async (agencyId: string, clientId: string, logger: LoggerContext) => {
+const getClientInformation = async (agencyId: string, clientId: string, logger: LoggerContext) => {
   const repository = new GenericRepository<AgencyClientsProjectionV2DocumentType>(logger, AgencyClientsProjectionV2);
   const agencyClient = await repository.findOne({client_id: clientId, agency_id: agencyId});
 
   if (isEmpty(agencyClient) || agencyClient.linked === false) {
     return null;
   }
-  return agencyClient.client_type === 'organisation' ? agencyClient.client_id : agencyClient.organisation_id;
+  return agencyClient.client_type === 'organisation'
+    ? {organisation_id: agencyClient.client_id, client_type: agencyClient.client_type}
+    : {organisation_id: agencyClient.organisation_id, client_type: agencyClient.client_type};
 };
 
 /**
