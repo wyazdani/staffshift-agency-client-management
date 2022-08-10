@@ -30,7 +30,14 @@ export enum EventsEnum {
   AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED = 'AgencyClientApplyPaymentTermInitiated',
   AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED = 'AgencyClientApplyPaymentTermInheritanceInitiated',
   AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED = 'AgencyClientApplyPaymentTermCompleted',
-  AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED = 'AgencyClientApplyPaymentTermInheritanceCompleted'
+  AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED = 'AgencyClientApplyPaymentTermInheritanceCompleted',
+
+  AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED = 'AgencyClientApplyFinancialHoldInitiated',
+  AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED = 'AgencyClientClearFinancialHoldInitiated',
+  AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED = 'AgencyClientApplyFinancialHoldInheritanceInitiated',
+  AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED = 'AgencyClientApplyFinancialHoldCompleted',
+  AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED = 'AgencyClientClearFinancialHoldCompleted',
+  AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED = 'AgencyClientApplyFinancialHoldInheritanceCompleted'
 }
 
 type EventsType = {
@@ -166,5 +173,29 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED]: {
     name: 'AgencyClientApplyPaymentTermInheritanceCompleted',
     description: 'Applying payment term completed inheritance for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED]: {
+    name: 'AgencyClientApplyFinancialHoldInitiated',
+    description: 'Applying financial hold is initiated for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED]: {
+    name: 'AgencyClientClearFinancialHoldInitiated',
+    description: 'Clear financial hold is initiated for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED]: {
+    name: 'AgencyClientApplyFinancialHoldInheritanceInitiated',
+    description: 'Applying financial hold inheritance is initiated for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED]: {
+    name: 'AgencyClientApplyFinancialHoldCompleted',
+    description: 'Applying financial hold is completed for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED]: {
+    name: 'AgencyClientClearFinancialHoldCompleted',
+    description: 'Clear financial hold is completed for the agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED]: {
+    name: 'AgencyClientApplyFinancialHoldInheritanceCompleted',
+    description: 'Applying financial hold inheritance is completed for the agency client'
   }
 };
