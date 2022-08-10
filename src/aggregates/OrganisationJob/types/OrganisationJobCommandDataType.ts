@@ -1,10 +1,22 @@
 import {
+  CompleteApplyFinancialHoldCommandDataInterface,
   CompleteApplyPaymentTermCommandDataInterface,
+  CompleteClearFinancialHoldCommandDataInterface,
+  CompleteInheritFinancialHoldCommandDataInterface,
   CompleteInheritPaymentTermCommandDataInterface,
+  InitiateApplyFinancialHoldCommandDataInterface,
   InitiateApplyPaymentTermCommandDataInterface,
+  InitiateClearFinancialHoldCommandDataInterface,
+  InitiateInheritFinancialHoldCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from './CommandTypes';
 export type OrganisationJobCommandDataType =
+  | CompleteInheritFinancialHoldCommandDataInterface
+  | CompleteClearFinancialHoldCommandDataInterface
+  | CompleteApplyFinancialHoldCommandDataInterface
+  | InitiateInheritFinancialHoldCommandDataInterface
+  | InitiateClearFinancialHoldCommandDataInterface
+  | InitiateApplyFinancialHoldCommandDataInterface
   | CompleteApplyPaymentTermCommandDataInterface
   | InitiateApplyPaymentTermCommandDataInterface
   | InitiateInheritPaymentTermCommandDataInterface
