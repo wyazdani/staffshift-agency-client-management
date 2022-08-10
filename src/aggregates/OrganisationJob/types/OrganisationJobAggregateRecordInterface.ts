@@ -14,8 +14,9 @@ export enum PaymentTermEnum {
 export enum FinancialHoldEnum {
   STARTED = 'started',
   COMPLETED = 'completed',
-  IHERITED = 'inherited',
-  NOT_INHERITED = 'not_inherited'
+  APPLY_INHERITED = 'apply_inherited',
+  APPLIED = 'applied',
+  CLEARED = 'cleared'
 }
 
 export interface OrganisationJobAggregateRecordInterface extends BaseAggregateRecordInterface {

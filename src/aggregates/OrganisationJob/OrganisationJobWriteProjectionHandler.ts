@@ -4,12 +4,16 @@ import {remove, has} from 'lodash';
 import {EventStoreModelInterface} from '../../models/EventStore';
 import {OrganisationJobAggregateRecordInterface} from './types';
 import {
+  CompleteApplyFinancialHoldCommandDataInterface,
   CompleteApplyPaymentTermCommandDataInterface,
+  CompleteClearFinancialHoldCommandDataInterface,
   CompleteInheritPaymentTermCommandDataInterface,
+  InitiateApplyFinancialHoldCommandDataInterface,
   InitiateApplyPaymentTermCommandDataInterface,
+  InitiateClearFinancialHoldCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from './types/CommandTypes';
-import {PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
+import {FinancialHoldEnum, PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
 
 /**
  * Responsible for handling all events to build the current state of the aggregate
@@ -23,6 +27,12 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
   ): OrganisationJobAggregateRecordInterface {
     if (!has(aggregate, 'payment_term_jobs')) {
       aggregate.payment_term_jobs = {};
+    }
+    if (!has(aggregate, 'financial_hold_jobs')) {
+      aggregate.financial_hold_jobs = {};
+    }
+    if (!has(aggregate, 'financial_hold_type')) {
+      aggregate.financial_hold_type = {};
     }
     switch (type) {
       case EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED: {
@@ -49,6 +59,45 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         const eventData = event.data as CompleteInheritPaymentTermCommandDataInterface;
 
         aggregate.payment_term_jobs[eventData._id] = PaymentTermEnum.COMPLETED_INHERITED;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED: {
+        const eventData = event.data as InitiateApplyFinancialHoldCommandDataInterface;
+
+        aggregate.financial_hold_jobs[eventData._id] = FinancialHoldEnum.STARTED;
+        aggregate.financial_hold_type[eventData._id] = FinancialHoldEnum.APPLIED;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED: {
+        const eventData = event.data as CompleteApplyFinancialHoldCommandDataInterface;
+
+        aggregate.financial_hold_jobs[eventData._id] = FinancialHoldEnum.COMPLETED;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED: {
+        const eventData = event.data as InitiateClearFinancialHoldCommandDataInterface;
+
+        aggregate.financial_hold_jobs[eventData._id] = FinancialHoldEnum.STARTED;
+        aggregate.financial_hold_type[eventData._id] = FinancialHoldEnum.CLEARED;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED: {
+        const eventData = event.data as CompleteClearFinancialHoldCommandDataInterface;
+
+        aggregate.financial_hold_jobs[eventData._id] = FinancialHoldEnum.COMPLETED;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED: {
+        const eventData = event.data as InitiateClearFinancialHoldCommandDataInterface;
+
+        aggregate.financial_hold_jobs[eventData._id] = FinancialHoldEnum.STARTED;
+        aggregate.financial_hold_type[eventData._id] = FinancialHoldEnum.APPLY_INHERITED;
+        return {...aggregate, last_sequence_id: event.sequence_id};
+      }
+      case EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED: {
+        const eventData = event.data as InitiateClearFinancialHoldCommandDataInterface;
+
+        aggregate.financial_hold_jobs[eventData._id] = FinancialHoldEnum.COMPLETED;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       default:
