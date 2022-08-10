@@ -1,5 +1,5 @@
 import {ServerResponse} from 'http';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {get, isEmpty} from 'lodash';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
@@ -35,7 +35,7 @@ export const addAgencyConsultantRole = async (
   try {
     const payload = get(req, 'swagger.params.agency_consultant_role_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const roleId = new ObjectID().toString();
+    const roleId = new ObjectId().toString();
     const command: AddAgencyConsultantRoleCommandInterface = {
       aggregateId: {agency_id: agencyId},
       type: AgencyCommandEnum.ADD_AGENCY_CONSULTANT_ROLE,

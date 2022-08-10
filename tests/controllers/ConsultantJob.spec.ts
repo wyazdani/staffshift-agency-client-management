@@ -3,7 +3,7 @@ import {ConsultantJobCommandEnum} from '../../src/aggregates/ConsultantJob/types
 import {assignConsultant, unassignConsultant, transferConsultant} from '../../src/controllers/ConsultantJob';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {CommandBus} from '../../src/aggregates/CommandBus';
 import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
@@ -42,7 +42,7 @@ describe('ConsultantJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
 
       const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
@@ -72,7 +72,7 @@ describe('ConsultantJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const error = new Error('custom');
       const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 
@@ -124,7 +124,7 @@ describe('ConsultantJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
 
       const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
@@ -154,7 +154,7 @@ describe('ConsultantJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const error = new Error('custom');
       const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 
@@ -207,7 +207,7 @@ describe('ConsultantJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
 
       const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
@@ -237,7 +237,7 @@ describe('ConsultantJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const error = new Error('custom');
       const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 

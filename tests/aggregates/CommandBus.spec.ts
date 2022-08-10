@@ -1,4 +1,4 @@
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {SinonStub} from 'sinon';
 import sinon, {stubInterface} from 'ts-sinon';
 import {AgencyClientCommandEnum} from '../../src/aggregates/AgencyClient/types';
@@ -81,7 +81,7 @@ describe('CommandBus', () => {
   it('addAgencyClientConsultant()', async () => {
     const aggregateId: any = {id: 'ok'};
 
-    sinon.stub(ObjectID.prototype, 'toString').returns('MM');
+    sinon.stub(ObjectId.prototype, 'toString').returns('MM');
     await commandBus.addAgencyClientConsultant(aggregateId, 'A', 'B');
     execute.should.have.been.calledOnceWith({
       aggregateId,

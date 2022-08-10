@@ -1,6 +1,6 @@
 import {ServerResponse} from 'http';
 import {get} from 'lodash';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {ConsultantJobCommandEnum} from '../aggregates/ConsultantJob/types';
 import {
@@ -18,7 +18,7 @@ export const assignConsultant = async (
   try {
     const payload = get(req, 'swagger.params.assign_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
     const command: AssignConsultantCommandInterface = {
       aggregateId: {name: 'consultant_job', agency_id: agencyId},
       type: ConsultantJobCommandEnum.ASSIGN_CONSULTANT,
@@ -50,7 +50,7 @@ export const unassignConsultant = async (
   try {
     const payload = get(req, 'swagger.params.unassign_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
     const command: UnassignConsultantCommandInterface = {
       aggregateId: {name: 'consultant_job', agency_id: agencyId},
       type: ConsultantJobCommandEnum.UNASSIGN_CONSULTANT,
@@ -82,7 +82,7 @@ export const transferConsultant = async (
   try {
     const payload = get(req, 'swagger.params.transfer_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
     const command: TransferConsultantCommandInterface = {
       aggregateId: {name: 'consultant_job', agency_id: agencyId},
       type: ConsultantJobCommandEnum.TRANSFER_CONSULTANT,

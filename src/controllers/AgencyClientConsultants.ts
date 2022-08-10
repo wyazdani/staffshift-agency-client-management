@@ -1,4 +1,4 @@
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {get, isEmpty} from 'lodash';
 import {ServerResponse} from 'http';
 import {AgencyClientCommandEnum} from '../aggregates/AgencyClient/types';
@@ -33,7 +33,7 @@ export const addAgencyClientConsultant = async (
     const payload = get(req, 'swagger.params.assign_client_consultant_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const agencyClientConsultantId = new ObjectID().toString();
+    const agencyClientConsultantId = new ObjectId().toString();
     const command: AddAgencyClientConsultantCommandInterface = {
       aggregateId: {agency_id: agencyId, client_id: clientId},
       type: AgencyClientCommandEnum.ADD_AGENCY_CLIENT_CONSULTANT,
