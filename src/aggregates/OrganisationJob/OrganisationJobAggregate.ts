@@ -3,12 +3,18 @@ import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
 import {
+  CompleteApplyFinancialHoldCommandDataInterface,
   CompleteApplyPaymentTermCommandDataInterface,
+  CompleteClearFinancialHoldCommandDataInterface,
+  CompleteInheritFinancialHoldCommandDataInterface,
   CompleteInheritPaymentTermCommandDataInterface,
+  InitiateApplyFinancialHoldCommandDataInterface,
   InitiateApplyPaymentTermCommandDataInterface,
+  InitiateClearFinancialHoldCommandDataInterface,
+  InitiateInheritFinancialHoldCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from './types/CommandTypes';
-import {PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
+import {FinancialHoldEnum, PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
 
 export class OrganisationJobAggregate extends AbstractAggregate<
   OrganisationJobAggregateIdInterface,
@@ -62,21 +68,106 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateInitiateInheritPaymentTerm(command: InitiateInheritPaymentTermCommandDataInterface): Promise<void> {
-    this.validateNotRunningAnotherProcess(command._id);
+    this.validatePaymentTermNotRunningAnotherProcess(command._id);
   }
 
   async validateInitiateApplyPaymentTerm(command: InitiateApplyPaymentTermCommandDataInterface): Promise<void> {
-    this.validateNotRunningAnotherProcess(command._id);
+    this.validatePaymentTermNotRunningAnotherProcess(command._id);
   }
+
+  async validateInitiateInheritFinancialHold(command: InitiateInheritFinancialHoldCommandDataInterface): Promise<void> {
+    this.validateFinancialHoldNotRunningAnotherProcess(command._id);
+  }
+
+  async validateInitiateClearFinancialHold(command: InitiateClearFinancialHoldCommandDataInterface): Promise<void> {
+    this.validateFinancialHoldNotRunningAnotherProcess(command._id);
+  }
+
+  async validateInitiateApplyFinancialHold(command: InitiateApplyFinancialHoldCommandDataInterface): Promise<void> {
+    this.validateFinancialHoldNotRunningAnotherProcess(command._id);
+  }
+
+  async validateCompleteApplyFinancialHold(command: CompleteApplyFinancialHoldCommandDataInterface): Promise<void> {
+    if (
+      !has(this.aggregate.financial_hold_jobs, command._id) ||
+      this.aggregate?.financial_hold_type[command._id] !== FinancialHoldEnum.APPLIED
+    ) {
+      throw new ResourceNotFoundError(`Job ${command._id} is not found`);
+    }
+
+    if (this.aggregate?.financial_hold_jobs[command._id] === FinancialHoldEnum.COMPLETED) {
+      throw new ValidationError('Job is already completed').setErrors([
+        {
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
+        }
+      ]);
+    }
+  }
+
+  async validateCompleteClearFinancialHold(command: CompleteClearFinancialHoldCommandDataInterface): Promise<void> {
+    if (
+      !has(this.aggregate.financial_hold_jobs, command._id) ||
+      this.aggregate?.financial_hold_type[command._id] !== FinancialHoldEnum.CLEARED
+    ) {
+      throw new ResourceNotFoundError(`Job ${command._id} is not found`);
+    }
+
+    if (this.aggregate?.financial_hold_jobs[command._id] === FinancialHoldEnum.COMPLETED) {
+      throw new ValidationError('Job is already completed').setErrors([
+        {
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
+        }
+      ]);
+    }
+  }
+
+  async validateCompleteInheritFinancialHold(command: CompleteInheritFinancialHoldCommandDataInterface): Promise<void> {
+    if (
+      !has(this.aggregate.financial_hold_jobs, command._id) ||
+      this.aggregate?.financial_hold_type[command._id] !== FinancialHoldEnum.APPLY_INHERITED
+    ) {
+      throw new ResourceNotFoundError(`Job ${command._id} is not found`);
+    }
+
+    if (this.aggregate?.financial_hold_jobs[command._id] === FinancialHoldEnum.COMPLETED) {
+      throw new ValidationError('Job is already completed').setErrors([
+        {
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
+        }
+      ]);
+    }
+  }
+
   /**
    * checks:
-   * - we don't have another job running for the same organisation
+   * - we don't have another job running for payment term
    */
-  private validateNotRunningAnotherProcess(id: string) {
+  private validatePaymentTermNotRunningAnotherProcess(id: string) {
     if (
       includes(this.aggregate.payment_term_jobs, PaymentTermEnum.STARTED) ||
       includes(this.aggregate.payment_term_jobs, PaymentTermEnum.STARTED_INHERITED)
     ) {
+      throw new ValidationError('Another job active').setErrors([
+        {
+          code: 'ANOTHER_JOB_PROCESS_ACTIVE',
+          message: `Can't create job id ${id}, as there is another job in progress`
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks:
+   * - we don't have another job running for financial hold
+   */
+  private validateFinancialHoldNotRunningAnotherProcess(id: string) {
+    if (includes(this.aggregate.financial_hold_jobs, FinancialHoldEnum.STARTED)) {
       throw new ValidationError('Another job active').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
