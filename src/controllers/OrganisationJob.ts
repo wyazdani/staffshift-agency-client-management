@@ -10,6 +10,10 @@ import {
 import {OrganisationJobCommandEnum} from '../aggregates/OrganisationJob/types';
 import {GenericRepository} from '../GenericRepository';
 import {
+  AgencyClientFinancialHoldsProjectionV1DocumentType,
+  AgencyClientFinancialHoldsProjection
+} from '../models/AgencyClientFinancialHoldsProjectionV1';
+import {
   AgencyClientPaymentTermsProjectionV1DocumentType,
   AgencyClientPaymentTermsProjection
 } from '../models/AgencyClientPaymentTermsProjectionV1';
@@ -136,6 +140,9 @@ const getClientInformation = async (agencyId: string, clientId: string, logger: 
     : {organisation_id: agencyClient.organisation_id, client_type: agencyClient.client_type};
 };
 
+/**
+ * returns payment term for the agency client from the read projection
+ */
 export const getPaymentTerm = async (
   req: SwaggerRequestInterface,
   res: ServerResponse,
@@ -161,6 +168,38 @@ export const getPaymentTerm = async (
     res.end(JSON.stringify(record));
   } catch (err) {
     req.Logger.error('getPaymentTerm unknown error', err);
+    next(err);
+  }
+};
+
+/**
+ * returns financial hold for the agency client from the read projection
+ */
+export const getFinancialHold = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error?: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const repository = new GenericRepository<AgencyClientFinancialHoldsProjectionV1DocumentType>(
+      req.Logger,
+      AgencyClientFinancialHoldsProjection
+    );
+    const record = await repository.findOne({
+      agency_id: agencyId,
+      client_id: clientId
+    });
+
+    if (!record) {
+      return next(new ResourceNotFoundError('No financial hold found for this client in that agency'));
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(record));
+  } catch (err) {
+    req.Logger.error('getFinancialHold unknown error', err);
     next(err);
   }
 };

@@ -21,5 +21,5 @@ export enum FinancialHoldEnum {
 export interface OrganisationJobAggregateRecordInterface extends BaseAggregateRecordInterface {
   payment_term_jobs?: OrganisationJobInterface;
   financial_hold_jobs?: OrganisationJobInterface;
-  financial_hold_type?: OrganisationJobInterface
+  financial_hold_type?: OrganisationJobInterface;
 }
