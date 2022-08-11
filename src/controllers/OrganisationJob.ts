@@ -247,6 +247,16 @@ export const inheritFinancialHold = async (
 
       return next(new ResourceNotFoundError('Agency Client resource not found'));
     }
+    if (clientInformation.client_type === 'organisation') {
+      return next(
+        new ValidationError('Operation not possible due to inheritance problem').setErrors([
+          {
+            code: 'INVALID_CLIENT_TYPE',
+            message: 'Cannot be inherited on organisation client type'
+          }
+        ])
+      );
+    }
     const command: InitiateInheritFinancialHoldCommandInterface = {
       aggregateId: {
         name: 'organisation_job',

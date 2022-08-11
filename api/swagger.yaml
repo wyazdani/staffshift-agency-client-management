@@ -572,6 +572,29 @@ paths:
       summary: "Initiate Apply financial hold to client"
       tags:
         - "Financial Hold"
+    delete:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "clearFinancialHold"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/initiate_financial_hold_payload"
+      responses:
+        202:
+          description: "Initiate Clear financial hold to client"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/financial_hold_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Initiate Clear financial hold to client"
+      tags:
+        - "Financial Hold"
     get:
       x-swagger-router-controller: "OrganisationJob"
       operationId: "getFinancialHold"
@@ -595,6 +618,35 @@ paths:
         default:
           $ref: "#/responses/server_error_model"
       summary: "Retrieves a financial hold"
+      tags:
+        - "Financial Hold"
+  /agency/{agency_id}/client/{client_id}/inherit-financial-hold:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "inheritFinancialHold"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/initiate_financial_hold_payload"
+      responses:
+        202:
+          description: "Initiate Inherit financial hold to client"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/financial_hold_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Initiate Inherit financial hold to client"
       tags:
         - "Financial Hold"
 parameters:
