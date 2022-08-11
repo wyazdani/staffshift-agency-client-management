@@ -155,6 +155,231 @@ describe('OrganisationJobWriteProjectionHandler', () => {
       });
     });
 
+    describe('INITIATE_APPLY_FINANCIAL_HOLD Event', () => {
+      it('Test when success', () => {
+        const aggregate: any = {
+          last_sequence_id: 1
+        };
+        const eventData = {
+          _id: 'id',
+          client_id: clientId,
+          note: 'test'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED,
+          aggregate_id: {
+            name: OrganisationJobCommandEnum.INITIATE_APPLY_FINANCIAL_HOLD,
+            agency_id: agencyId,
+            organisation: organisationId
+          },
+          data: eventData,
+          sequence_id: 2,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(
+          EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED,
+          aggregate,
+          event
+        );
+
+        result.financial_hold_jobs.should.deep.equal({
+          id: 'started'
+        });
+        result.financial_hold_type.should.deep.equal({
+          id: 'applied'
+        });
+      });
+    });
+
+    describe('INITIATE_CLEAR_FINANCIAL_HOLD Event', () => {
+      it('Test when success', () => {
+        const aggregate: any = {
+          last_sequence_id: 1
+        };
+        const eventData = {
+          _id: 'id',
+          client_id: clientId,
+          note: 'test'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED,
+          aggregate_id: {
+            name: OrganisationJobCommandEnum.INITIATE_CLEAR_FINANCIAL_HOLD,
+            agency_id: agencyId,
+            organisation: organisationId
+          },
+          data: eventData,
+          sequence_id: 2,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(
+          EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED,
+          aggregate,
+          event
+        );
+
+        result.financial_hold_jobs.should.deep.equal({
+          id: 'started'
+        });
+        result.financial_hold_type.should.deep.equal({
+          id: 'cleared'
+        });
+      });
+    });
+
+    describe('INITIATE_INHERIT_FINANCIAL_HOLD Event', () => {
+      it('Test when success', () => {
+        const aggregate: any = {
+          last_sequence_id: 1
+        };
+        const eventData = {
+          _id: 'id',
+          client_id: clientId,
+          note: 'test'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED,
+          aggregate_id: {
+            name: OrganisationJobCommandEnum.INITIATE_INHERIT_FINANCIAL_HOLD,
+            agency_id: agencyId,
+            organisation: organisationId
+          },
+          data: eventData,
+          sequence_id: 2,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(
+          EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED,
+          aggregate,
+          event
+        );
+
+        result.financial_hold_jobs.should.deep.equal({
+          id: 'started'
+        });
+        result.financial_hold_type.should.deep.equal({
+          id: 'apply_inherited'
+        });
+      });
+    });
+
+    describe('COMPLETE_APPLY_FINANCIAL_HOLD Event', () => {
+      it('Test when success', () => {
+        const aggregate: any = {
+          last_sequence_id: 1
+        };
+        const eventData = {
+          _id: 'id'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED,
+          aggregate_id: {
+            name: OrganisationJobCommandEnum.COMPLETE_APPLY_FINANCIAL_HOLD,
+            agency_id: agencyId,
+            organisation: organisationId
+          },
+          data: eventData,
+          sequence_id: 2,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(
+          EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED,
+          aggregate,
+          event
+        );
+
+        result.financial_hold_jobs.should.deep.equal({
+          id: 'completed'
+        });
+      });
+    });
+
+    describe('COMPLETE_CLEAR_FINANCIAL_HOLD Event', () => {
+      it('Test when success', () => {
+        const aggregate: any = {
+          last_sequence_id: 1
+        };
+        const eventData = {
+          _id: 'id'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED,
+          aggregate_id: {
+            name: OrganisationJobCommandEnum.COMPLETE_CLEAR_FINANCIAL_HOLD,
+            agency_id: agencyId,
+            organisation: organisationId
+          },
+          data: eventData,
+          sequence_id: 2,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(
+          EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED,
+          aggregate,
+          event
+        );
+
+        result.financial_hold_jobs.should.deep.equal({
+          id: 'completed'
+        });
+      });
+    });
+
+    describe('COMPLETE_INHERIT_FINANCIAL_HOLD Event', () => {
+      it('Test when success', () => {
+        const aggregate: any = {
+          last_sequence_id: 1
+        };
+        const eventData = {
+          _id: 'id'
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED,
+          aggregate_id: {
+            name: OrganisationJobCommandEnum.COMPLETE_INHERIT_FINANCIAL_HOLD,
+            agency_id: agencyId,
+            organisation: organisationId
+          },
+          data: eventData,
+          sequence_id: 2,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id'
+        });
+
+        const result = projectionHandler.execute(
+          EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED,
+          aggregate,
+          event
+        );
+
+        result.financial_hold_jobs.should.deep.equal({
+          id: 'completed'
+        });
+      });
+    });
+
     it('Test throw error when event not found', () => {
       const aggregate: any = {
         last_sequence_id: 1
