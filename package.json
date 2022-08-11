@@ -1,6 +1,6 @@
 {
   "name": "staffshift-agency-client-management",
-  "version": "1.44.0",
+  "version": "1.44.1",
   "description": "Micro service for managing staffshift agency clients",
   "main": "src/http_server.ts",
   "scripts": {
