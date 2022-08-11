@@ -4,6 +4,7 @@ import {OrganisationJobCommandInterface} from '../OrganisationJobCommandInterfac
 export interface InitiateInheritFinancialHoldCommandDataInterface {
   _id: string;
   client_id: string;
+  note: string;
 }
 
 export interface InitiateInheritFinancialHoldCommandInterface extends OrganisationJobCommandInterface {
