@@ -1,7 +1,13 @@
 import {BaseAggregateRecordInterface} from 'BaseAggregateRecordInterface';
 
-export interface OrganisationJobInterface {
+export interface PaymentTermInterface {
   [index: string]: string;
+}
+export interface FinancialHoldInterface {
+  [index: string]: {
+    status: string;
+    type: string;
+  };
 }
 
 export enum PaymentTermEnum {
@@ -20,7 +26,6 @@ export enum FinancialHoldEnum {
 }
 
 export interface OrganisationJobAggregateRecordInterface extends BaseAggregateRecordInterface {
-  payment_term_jobs?: OrganisationJobInterface;
-  financial_hold_jobs?: OrganisationJobInterface;
-  financial_hold_type?: OrganisationJobInterface;
+  payment_term_jobs?: PaymentTermInterface;
+  financial_hold_jobs?: FinancialHoldInterface;
 }

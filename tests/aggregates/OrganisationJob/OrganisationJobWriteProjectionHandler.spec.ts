@@ -187,10 +187,8 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          id: 'started'
-        });
-        result.financial_hold_type.should.deep.equal({
-          id: 'applied'
+          status: 'started',
+          type: 'applied'
         });
       });
     });
@@ -227,10 +225,8 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          id: 'started'
-        });
-        result.financial_hold_type.should.deep.equal({
-          id: 'cleared'
+          status: 'started',
+          type: 'cleared'
         });
       });
     });

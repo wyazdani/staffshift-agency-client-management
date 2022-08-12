@@ -1,4 +1,4 @@
-import {has, includes} from 'lodash';
+import {find, has, includes} from 'lodash';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
@@ -90,12 +90,12 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   async validateCompleteApplyFinancialHold(command: CompleteApplyFinancialHoldCommandDataInterface): Promise<void> {
     if (
       !has(this.aggregate.financial_hold_jobs, command._id) ||
-      this.aggregate?.financial_hold_type[command._id] !== FinancialHoldEnum.APPLIED
+      this.aggregate?.financial_hold_jobs[command._id].type !== FinancialHoldEnum.APPLIED
     ) {
       throw new ResourceNotFoundError(`Job ${command._id} is not found`);
     }
 
-    if (this.aggregate?.financial_hold_jobs[command._id] === FinancialHoldEnum.COMPLETED) {
+    if (this.aggregate?.financial_hold_jobs[command._id].status === FinancialHoldEnum.COMPLETED) {
       throw new ValidationError('Job is already completed').setErrors([
         {
           code: 'JOB_ALREADY_COMPLETED',
@@ -109,12 +109,12 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   async validateCompleteClearFinancialHold(command: CompleteClearFinancialHoldCommandDataInterface): Promise<void> {
     if (
       !has(this.aggregate.financial_hold_jobs, command._id) ||
-      this.aggregate?.financial_hold_type[command._id] !== FinancialHoldEnum.CLEARED
+      this.aggregate?.financial_hold_jobs[command._id].type !== FinancialHoldEnum.CLEARED
     ) {
       throw new ResourceNotFoundError(`Job ${command._id} is not found`);
     }
 
-    if (this.aggregate?.financial_hold_jobs[command._id] === FinancialHoldEnum.COMPLETED) {
+    if (this.aggregate?.financial_hold_jobs[command._id].status === FinancialHoldEnum.COMPLETED) {
       throw new ValidationError('Job is already completed').setErrors([
         {
           code: 'JOB_ALREADY_COMPLETED',
@@ -128,12 +128,12 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   async validateCompleteInheritFinancialHold(command: CompleteInheritFinancialHoldCommandDataInterface): Promise<void> {
     if (
       !has(this.aggregate.financial_hold_jobs, command._id) ||
-      this.aggregate?.financial_hold_type[command._id] !== FinancialHoldEnum.APPLY_INHERITED
+      this.aggregate?.financial_hold_jobs[command._id].type !== FinancialHoldEnum.APPLY_INHERITED
     ) {
       throw new ResourceNotFoundError(`Job ${command._id} is not found`);
     }
 
-    if (this.aggregate?.financial_hold_jobs[command._id] === FinancialHoldEnum.COMPLETED) {
+    if (this.aggregate?.financial_hold_jobs[command._id].status === FinancialHoldEnum.COMPLETED) {
       throw new ValidationError('Job is already completed').setErrors([
         {
           code: 'JOB_ALREADY_COMPLETED',
@@ -167,7 +167,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * - we don't have another job running for financial hold
    */
   private validateFinancialHoldNotRunningAnotherProcess(id: string) {
-    if (includes(this.aggregate.financial_hold_jobs, FinancialHoldEnum.STARTED)) {
+    if (find(this.aggregate.financial_hold_jobs, FinancialHoldEnum.STARTED)) {
       throw new ValidationError('Another job active').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
