@@ -266,7 +266,8 @@ describe('OrganisationJobAggregate', () => {
   describe('validateInitiateApplyFinancialHold', () => {
     const command: InitiateApplyFinancialHoldCommandDataInterface = {
       _id: 'job id',
-      client_id: 'client_id'
+      client_id: 'client_id',
+      note: 'test'
     };
 
     it('Test another job process active error', async () => {
@@ -308,7 +309,8 @@ describe('OrganisationJobAggregate', () => {
   describe('validateInitiateClearFinancialHold', () => {
     const command: InitiateClearFinancialHoldCommandDataInterface = {
       _id: 'job id',
-      client_id: 'client_id'
+      client_id: 'client_id',
+      note: 'test'
     };
 
     it('Test another job process active error', async () => {
@@ -350,7 +352,8 @@ describe('OrganisationJobAggregate', () => {
   describe('validateInitiateInheritFinancialHold', () => {
     const command: InitiateInheritFinancialHoldCommandDataInterface = {
       _id: 'job id',
-      client_id: 'client_id'
+      client_id: 'client_id',
+      note: 'test'
     };
 
     it('Test another job process active error', async () => {
