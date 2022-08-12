@@ -1478,6 +1478,306 @@ Description: A short description of the event
 ```
 
  </td><td> Applying payment term completed inheritance for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED </td><td> AgencyClientApplyFinancialHoldInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "note",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying financial hold is initiated for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED </td><td> AgencyClientClearFinancialHoldInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "note",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Clear financial hold is initiated for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED </td><td> AgencyClientApplyFinancialHoldInheritanceInitiated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "note",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying financial hold inheritance is initiated for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED </td><td> AgencyClientApplyFinancialHoldCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying financial hold is completed for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED </td><td> AgencyClientClearFinancialHoldCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Clear financial hold is completed for the agency client </td></tr>
+<tr><td> AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED </td><td> AgencyClientApplyFinancialHoldInheritanceCompleted </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "organisation_job"
+    },
+    "organisation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "name",
+    "organisation_id"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Applying financial hold inheritance is completed for the agency client </td></tr>
 <tr><td> AGENCY_CLIENT_FINANCIAL_HOLD_APPLIED </td><td> AgencyClientFinancialHoldApplied </td><td> 
 
 ```json
