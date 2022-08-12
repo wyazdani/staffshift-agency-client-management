@@ -1,7 +1,7 @@
 import {LoggerContext} from 'a24-logzio-winston';
 import {assert} from 'chai';
 import {describe} from 'mocha';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {SinonStub} from 'sinon';
 import sinon, {stubInterface} from 'ts-sinon';
 import {ConsultantJobProcessAggregate} from '../../../../src/aggregates/ConsultantJobProcess/ConsultantJobProcessAggregate';
@@ -89,7 +89,7 @@ describe('ConsultantUnassignProcess', () => {
 
       execRetryService.callsFake((func) => func());
       clientAssignments.getEstimatedCount.resolves(2);
-      const assignmentId = new ObjectID();
+      const assignmentId = new ObjectId();
 
       clientAssignments.getClientConsultantAssignments.resolves([
         {
@@ -98,7 +98,7 @@ describe('ConsultantUnassignProcess', () => {
           consultant_role_id: consultantRoleId
         },
         {
-          _id: new ObjectID(),
+          _id: new ObjectId(),
           client_id: clientIdB,
           consultant_role_id: consultantRoleId
         }
@@ -173,7 +173,7 @@ describe('ConsultantUnassignProcess', () => {
         }
       });
       clientAssignments.getEstimatedCount.resolves(2);
-      const assignmentId = new ObjectID();
+      const assignmentId = new ObjectId();
 
       clientAssignments.getClientConsultantAssignments.resolves([
         {
@@ -182,7 +182,7 @@ describe('ConsultantUnassignProcess', () => {
           consultant_role_id: consultantRoleId
         },
         {
-          _id: new ObjectID(),
+          _id: new ObjectId(),
           client_id: clientIdB,
           consultant_role_id: consultantRoleId
         }
@@ -238,7 +238,7 @@ describe('ConsultantUnassignProcess', () => {
         }
       });
       clientAssignments.getEstimatedCount.resolves(2);
-      const assignmentId = new ObjectID();
+      const assignmentId = new ObjectId();
 
       clientAssignments.getClientConsultantAssignments.resolves([
         {
@@ -247,7 +247,7 @@ describe('ConsultantUnassignProcess', () => {
           consultant_role_id: consultantRoleId
         },
         {
-          _id: new ObjectID(),
+          _id: new ObjectId(),
           client_id: clientIdB,
           consultant_role_id: consultantRoleId
         }
@@ -303,7 +303,7 @@ describe('ConsultantUnassignProcess', () => {
         }
       });
       clientAssignments.getEstimatedCount.resolves(2);
-      const assignmentId = new ObjectID();
+      const assignmentId = new ObjectId();
 
       clientAssignments.getClientConsultantAssignments.resolves([
         {
@@ -312,7 +312,7 @@ describe('ConsultantUnassignProcess', () => {
           consultant_role_id: consultantRoleId
         },
         {
-          _id: new ObjectID(),
+          _id: new ObjectId(),
           client_id: clientIdB,
           consultant_role_id: consultantRoleId
         }
@@ -368,7 +368,7 @@ describe('ConsultantUnassignProcess', () => {
         }
       });
       clientAssignments.getEstimatedCount.resolves(2);
-      const assignmentId = new ObjectID();
+      const assignmentId = new ObjectId();
 
       clientAssignments.getClientConsultantAssignments.resolves([
         {
@@ -377,7 +377,7 @@ describe('ConsultantUnassignProcess', () => {
           consultant_role_id: consultantRoleId
         },
         {
-          _id: new ObjectID(),
+          _id: new ObjectId(),
           client_id: clientIdB,
           consultant_role_id: consultantRoleId
         }

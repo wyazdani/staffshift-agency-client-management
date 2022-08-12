@@ -62,6 +62,7 @@ coverage/
 /tmp
 
 # Exclude local config files
+config/local*
 config/local.json
 config/local.js
 config/local-development.json
