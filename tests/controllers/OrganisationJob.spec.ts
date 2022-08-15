@@ -10,7 +10,7 @@ import {
 } from '../../src/controllers/OrganisationJob';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
-import {ObjectID, ObjectId} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {CommandBus} from '../../src/aggregates/CommandBus';
 import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
@@ -51,7 +51,7 @@ describe('OrganisationJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
         _id: '3123123',
         agency_id: agencyId,
@@ -94,7 +94,7 @@ describe('OrganisationJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
         _id: '3123123',
         agency_id: agencyId,
@@ -137,7 +137,7 @@ describe('OrganisationJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
         _id: '3123123',
         agency_id: agencyId,
@@ -198,7 +198,7 @@ describe('OrganisationJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
         _id: '3123123',
         agency_id: agencyId,
@@ -240,7 +240,7 @@ describe('OrganisationJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
         _id: '3123123',
         agency_id: agencyId,
@@ -282,7 +282,7 @@ describe('OrganisationJob Controller', () => {
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
         _id: '3123123',
         agency_id: agencyId,

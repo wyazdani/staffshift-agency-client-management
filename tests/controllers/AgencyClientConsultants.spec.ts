@@ -6,7 +6,7 @@ import {
 } from '../../src/controllers/AgencyClientConsultants';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {AgencyClientCommandEnum} from '../../src/aggregates/AgencyClient/types';
 import {GenericRepository} from '../../src/GenericRepository';
 import {QueryHelper} from 'a24-node-query-utils';
@@ -55,7 +55,7 @@ describe('AgencyClientConsultants', () => {
       const setHeader = sinon.stub(res, 'setHeader');
       const end = sinon.stub(res, 'end');
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
 
       const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
@@ -83,7 +83,7 @@ describe('AgencyClientConsultants', () => {
       const res = fakeResponse();
       const next = sinon.spy();
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(id);
+      sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const error = new Error('custom');
       const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 

@@ -1,6 +1,6 @@
 import {ServerResponse} from 'http';
 import {get, isEmpty} from 'lodash';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {
@@ -34,7 +34,7 @@ export const initiateApplyPaymentTerm = async (
     const payload = get(req, 'swagger.params.initiate_apply_payment_term_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
 
     const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
@@ -82,7 +82,7 @@ export const initiateInheritApplyPaymentTerm = async (
     const payload = get(req, 'swagger.params.initiate_apply_payment_term_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
 
     const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
@@ -142,7 +142,7 @@ export const applyFinancialHold = async (
     const payload = get(req, 'swagger.params.initiate_financial_hold_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
 
     const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
@@ -190,7 +190,7 @@ export const clearFinancialHold = async (
     const payload = get(req, 'swagger.params.initiate_financial_hold_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
 
     const clientInformation = await getClientInformation(agencyId, clientId, logger);
 
@@ -238,7 +238,7 @@ export const inheritFinancialHold = async (
     const payload = get(req, 'swagger.params.initiate_financial_hold_payload.value', {});
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const id = new ObjectID().toString();
+    const id = new ObjectId().toString();
 
     const clientInformation = await getClientInformation(agencyId, clientId, logger);
 

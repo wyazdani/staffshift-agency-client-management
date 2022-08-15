@@ -11,7 +11,7 @@ import {GenericRepository} from '../../src/GenericRepository';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
 import {LocationHelper} from '../../src/helpers/LocationHelper';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {AgencyCommandEnum} from '../../src/aggregates/Agency/types';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {QueryHelper} from 'a24-node-query-utils';
@@ -52,7 +52,7 @@ describe('AgencyConsultantRole', () => {
       const end = sinon.stub(res, 'end');
       const getRelativeLocation = sinon.stub(LocationHelper, 'getRelativeLocation').returns(location);
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(roleId);
+      sinon.stub(ObjectId.prototype, 'toString').returns(roleId);
 
       const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
 
@@ -96,7 +96,7 @@ describe('AgencyConsultantRole', () => {
       const res = fakeResponse();
       const next = sinon.spy();
 
-      sinon.stub(ObjectID.prototype, 'toString').returns(roleId);
+      sinon.stub(ObjectId.prototype, 'toString').returns(roleId);
       const error = new Error('custom');
       const execute = sinon.stub(CommandBus.prototype, 'execute').rejects(error);
 

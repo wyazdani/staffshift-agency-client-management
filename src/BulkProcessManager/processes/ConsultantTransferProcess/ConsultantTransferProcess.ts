@@ -2,7 +2,7 @@ import {LoggerContext} from 'a24-logzio-winston';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
 import {ConsultantJobTransferInitiatedEventStoreDataInterface} from 'EventTypes';
 import {differenceWith} from 'lodash';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {ConsultantJobAggregateIdInterface} from '../../../aggregates/ConsultantJob/types';
 import {ConsultantJobProcessAggregateStatusEnum} from '../../../aggregates/ConsultantJobProcess/types/ConsultantJobProcessAggregateStatusEnum';
@@ -148,7 +148,7 @@ export class ConsultantTransferProcess implements ProcessInterface {
           from_id: assignment._id.toString(),
           to_consultant_id: this.initiateEvent.data.to_consultant_id,
           to_consultant_role_id: assignment.consultant_role_id,
-          to_id: new ObjectID().toString()
+          to_id: new ObjectId().toString()
         }
       );
     } catch (error) {

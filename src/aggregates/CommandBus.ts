@@ -1,4 +1,4 @@
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 import {EventRepository} from '../EventRepository';
 import {AgencyCommandBus} from './Agency/AgencyCommandBus';
 import {AgencyClientCommandBus} from './AgencyClient/AgencyClientCommandBus';
@@ -199,6 +199,6 @@ export class CommandBus {
   }
 
   private generateId(): string {
-    return new ObjectID().toString();
+    return new ObjectId().toString();
   }
 }
