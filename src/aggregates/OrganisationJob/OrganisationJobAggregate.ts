@@ -14,7 +14,11 @@ import {
   InitiateInheritFinancialHoldCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from './types/CommandTypes';
-import {FinancialHoldStatusEnum, FinancialHoldTypeEnum, PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
+import {
+  FinancialHoldStatusEnum,
+  FinancialHoldTypeEnum,
+  PaymentTermEnum
+} from './types/OrganisationJobAggregateRecordInterface';
 
 export class OrganisationJobAggregate extends AbstractAggregate<
   OrganisationJobAggregateIdInterface,

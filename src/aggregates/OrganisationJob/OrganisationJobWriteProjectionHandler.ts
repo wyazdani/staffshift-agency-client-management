@@ -3,16 +3,14 @@ import {EventsEnum} from '../../Events';
 import {has} from 'lodash';
 import {EventStoreModelInterface} from '../../models/EventStore';
 import {OrganisationJobAggregateRecordInterface} from './types';
-import {FinancialHoldStatusEnum, FinancialHoldTypeEnum, PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
 import {
-  AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface
-} from 'EventTypes/AgencyClientApplyPaymentTermInitiatedEventInterface';
-import {
-  AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface
-} from 'EventTypes/AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface';
-import {
-  AgencyClientApplyPaymentTermCompletedEventStoreDataInterface
-} from 'EventTypes/AgencyClientApplyPaymentTermCompletedEventInterface';
+  FinancialHoldStatusEnum,
+  FinancialHoldTypeEnum,
+  PaymentTermEnum
+} from './types/OrganisationJobAggregateRecordInterface';
+import {AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyPaymentTermInitiatedEventInterface';
+import {AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface';
+import {AgencyClientApplyPaymentTermCompletedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyPaymentTermCompletedEventInterface';
 import {AgencyClientApplyFinancialHoldInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldInitiatedEventInterface';
 import {AgencyClientApplyFinancialHoldCompletedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldCompletedEventInterface';
 import {AgencyClientClearFinancialHoldInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientClearFinancialHoldInitiatedEventInterface';

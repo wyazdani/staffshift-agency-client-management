@@ -22,7 +22,6 @@ export enum FinancialHoldStatusEnum {
   COMPLETED = 'completed'
 }
 export enum FinancialHoldTypeEnum {
-
   APPLY_INHERITED = 'apply_inherited',
   APPLIED = 'applied',
   CLEARED = 'cleared'
