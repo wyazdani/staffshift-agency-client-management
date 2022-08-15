@@ -24,7 +24,6 @@ import {
   CompleteClearFinancialHoldCommandInterface
 } from '../../../../aggregates/OrganisationJob/types/CommandTypes';
 import {EventRepository} from '../../../../EventRepository';
-import {EventsEnum} from '../../../../Events';
 import {AgencyClientsProjectionV2} from '../../../../models/AgencyClientsProjectionV2';
 import {EventStore} from '../../../../models/EventStore';
 import {ProcessInterface} from '../../../types/ProcessInterface';
@@ -41,6 +40,17 @@ type InitiateEventDataType =
   | AgencyClientClearFinancialHoldInitiatedEventStoreDataInterface;
 
 /**
+ * Determines type of the process
+ * in this process we cover these two types of processes:
+ * - clearing financial hold
+ * - applying financial hold
+ */
+export enum FinancialHoldProcessTypeEnum {
+  APPLY = 'apply',
+  CLEAR = 'clear'
+}
+
+/**
  * sets financial hold on a client and then applies inherited financial hold on all it's children and it's grandchildren
  * some children might not inherit from parent, then we don't apply inherited financial hold on those
  */
@@ -53,7 +63,11 @@ export class SetFinancialHoldProcess implements ProcessInterface {
   private agencyClientRepository: AgencyClientRepository;
   private retryableSetFinancialHold: RetryableSetFinancialHold;
   private processAggregate: ClientInheritanceProcessAggregate;
-  constructor(private logger: LoggerContext, private opts: SetFinancialHoldProcessOptsInterface) {}
+  constructor(
+    private logger: LoggerContext,
+    private processType: FinancialHoldProcessTypeEnum,
+    private opts: SetFinancialHoldProcessOptsInterface
+  ) {}
 
   private initDependencies() {
     const eventRepository = new EventRepository(
@@ -116,7 +130,7 @@ export class SetFinancialHoldProcess implements ProcessInterface {
 
     this.initDependencies();
     this.logger.info('Set Financial Hold background process started', {eventId});
-    const financialHold = this.initiateEvent.type === EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED;
+    const financialHold = this.processType === FinancialHoldProcessTypeEnum.APPLY;
 
     this.processAggregate = await this.processRepository.getAggregate(this.processAggregateId);
     const agencyClient = await this.getAgencyClient(this.initiateEvent.data.client_id);
@@ -191,9 +205,13 @@ export class SetFinancialHoldProcess implements ProcessInterface {
     this.logger.info('Set financial hold background process finished', {eventId});
   }
 
+  /**
+   * because the process is for both clearing and applying a financial hold, we need to see what is the job type and
+   * then issue the right command
+   */
   async complete(): Promise<void> {
     try {
-      if (this.initiateEvent.type === EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED) {
+      if (this.processType === FinancialHoldProcessTypeEnum.APPLY) {
         const command: CompleteApplyFinancialHoldCommandInterface = {
           aggregateId: this.initiateEvent.aggregate_id,
           type: OrganisationJobCommandEnum.COMPLETE_APPLY_FINANCIAL_HOLD,
