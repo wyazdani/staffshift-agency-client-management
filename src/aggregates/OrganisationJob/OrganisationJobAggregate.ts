@@ -1,4 +1,4 @@
-import {find, has, includes} from 'lodash';
+import {filter, find, has, includes} from 'lodash';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../AbstractAggregate';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
@@ -167,7 +167,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
    * - we don't have another job running for financial hold
    */
   private validateFinancialHoldNotRunningAnotherProcess(id: string) {
-    if (find(this.aggregate.financial_hold_jobs, FinancialHoldEnum.STARTED)) {
+    if (filter(this.aggregate.financial_hold_jobs, {status: FinancialHoldEnum.STARTED}).length > 0) {
       throw new ValidationError('Another job active').setErrors([
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',

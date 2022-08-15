@@ -3,6 +3,7 @@ import {CompleteApplyFinancialHoldCommandInterface} from '../types/CommandTypes'
 import {OrganisationJobRepository} from '../OrganisationJobRepository';
 import {OrganisationJobCommandHandlerInterface} from '../types/OrganisationJobCommandHandlerInterface';
 import {OrganisationJobCommandEnum} from '../types';
+import {AgencyClientApplyFinancialHoldCompletedEventInterface} from 'EventTypes';
 
 export class CompleteApplyFinancialHoldCommandHandler implements OrganisationJobCommandHandlerInterface {
   constructor(private repository: OrganisationJobRepository) {}
@@ -21,7 +22,7 @@ export class CompleteApplyFinancialHoldCommandHandler implements OrganisationJob
         aggregate_id: aggregate.getId(),
         data: command.data,
         sequence_id: ++eventId
-      }
+      } as AgencyClientApplyFinancialHoldCompletedEventInterface
     ]);
   }
 }

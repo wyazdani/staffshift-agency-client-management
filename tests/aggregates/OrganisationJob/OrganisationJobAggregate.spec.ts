@@ -273,7 +273,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test another job process active error', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'started'
+          'job id': {
+            status: 'started',
+            type: 'applied'
+          }
         },
         last_sequence_id: 1
       };
@@ -296,7 +299,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test success scenario', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'completed'
+          'job id': {
+            status: 'completed',
+            type: 'applied'
+          }
         },
         last_sequence_id: 1
       };
@@ -316,7 +322,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test another job process active error', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'started'
+          'job id': {
+            status: 'started',
+            type: 'cleared'
+          }
         },
         last_sequence_id: 1
       };
@@ -339,7 +348,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test success scenario', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'completed'
+          'job id': {
+            status: 'completed',
+            type: 'cleared'
+          }
         },
         last_sequence_id: 1
       };
@@ -359,7 +371,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test another job process active error', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'started'
+          'job id': {
+            status: 'started',
+            type: 'apply_inherited'
+          }
         },
         last_sequence_id: 1
       };
@@ -382,7 +397,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test success scenario', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'completed'
+          'job id': {
+            status: 'completed',
+            type: 'apply_inherited'
+          }
         },
         last_sequence_id: 1
       };
@@ -412,10 +430,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test Job is already completed error', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'completed'
-        },
-        financial_hold_type: {
-          'job id': 'applied'
+          'job id': {
+            status: 'completed',
+            type: 'applied'
+          }
         },
         last_sequence_id: 1
       };
@@ -439,8 +457,11 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test not apply error', async () => {
       const aggregate = {
-        financial_hold_type: {
-          'job id': 'not_applied'
+        financial_hold_jobs: {
+          'job id': {
+            status: 'started',
+            type: 'not_applied'
+          }
         },
         last_sequence_id: 1
       };
@@ -455,10 +476,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test success scenario', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'started'
-        },
-        financial_hold_type: {
-          'job id': 'applied'
+          'job id': {
+            status: 'started',
+            type: 'applied'
+          }
         },
         last_sequence_id: 1
       };
@@ -489,10 +510,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test Job is already completed error', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'completed'
-        },
-        financial_hold_type: {
-          'job id': 'cleared'
+          'job id': {
+            status: 'completed',
+            type: 'cleared'
+          }
         },
         last_sequence_id: 1
       };
@@ -516,8 +537,11 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test not cleared error', async () => {
       const aggregate = {
-        financial_hold_type: {
-          'job id': 'not_cleared'
+        financial_hold_jobs: {
+          'job id': {
+            status: 'started',
+            type: 'not_cleared'
+          }
         },
         last_sequence_id: 1
       };
@@ -532,10 +556,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test success scenario', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'started'
-        },
-        financial_hold_type: {
-          'job id': 'cleared'
+          'job id': {
+            status: 'started',
+            type: 'cleared'
+          }
         },
         last_sequence_id: 1
       };
@@ -566,10 +590,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test Job is already completed error', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'completed'
-        },
-        financial_hold_type: {
-          'job id': 'apply_inherited'
+          'job id': {
+            status: 'completed',
+            type: 'apply_inherited'
+          }
         },
         last_sequence_id: 1
       };
@@ -591,10 +615,13 @@ describe('OrganisationJobAggregate', () => {
       );
     });
 
-    it('Test not cleared error', async () => {
+    it('Test not inherited error', async () => {
       const aggregate = {
-        financial_hold_type: {
-          'job id': 'not_inherited'
+        financial_hold_jobs: {
+          'job id': {
+            status: 'started',
+            type: 'not_inherited'
+          }
         },
         last_sequence_id: 1
       };
@@ -609,10 +636,10 @@ describe('OrganisationJobAggregate', () => {
     it('Test success scenario', async () => {
       const aggregate = {
         financial_hold_jobs: {
-          'job id': 'started'
-        },
-        financial_hold_type: {
-          'job id': 'apply_inherited'
+          'job id': {
+            status: 'started',
+            type: 'apply_inherited'
+          }
         },
         last_sequence_id: 1
       };

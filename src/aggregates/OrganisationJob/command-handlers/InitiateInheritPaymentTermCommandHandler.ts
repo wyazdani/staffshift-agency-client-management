@@ -3,6 +3,7 @@ import {InitiateInheritPaymentTermCommandInterface} from '../types/CommandTypes'
 import {OrganisationJobRepository} from '../OrganisationJobRepository';
 import {OrganisationJobCommandHandlerInterface} from '../types/OrganisationJobCommandHandlerInterface';
 import {OrganisationJobCommandEnum} from '../types';
+import {AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface} from 'EventTypes/AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface';
 
 export class InitiateInheritPaymentTermCommandHandler implements OrganisationJobCommandHandlerInterface {
   constructor(private repository: OrganisationJobRepository) {}
@@ -21,7 +22,7 @@ export class InitiateInheritPaymentTermCommandHandler implements OrganisationJob
         aggregate_id: aggregate.getId(),
         data: command.data,
         sequence_id: ++eventId
-      }
+      } as AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface
     ]);
   }
 }

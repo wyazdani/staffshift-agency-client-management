@@ -187,8 +187,10 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          status: 'started',
-          type: 'applied'
+          id: {
+            status: 'started',
+            type: 'applied'
+          }
         });
       });
     });
@@ -225,8 +227,10 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          status: 'started',
-          type: 'cleared'
+          id: {
+            status: 'started',
+            type: 'cleared'
+          }
         });
       });
     });
@@ -263,10 +267,10 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          id: 'started'
-        });
-        result.financial_hold_type.should.deep.equal({
-          id: 'apply_inherited'
+          id: {
+            status: 'started',
+            type: 'apply_inherited'
+          }
         });
       });
     });
@@ -301,7 +305,10 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          id: 'completed'
+          id: {
+            status: 'completed',
+            type: 'applied'
+          }
         });
       });
     });
@@ -336,7 +343,10 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          id: 'completed'
+          id: {
+            status: 'completed',
+            type: 'cleared'
+          }
         });
       });
     });
@@ -371,7 +381,10 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         );
 
         result.financial_hold_jobs.should.deep.equal({
-          id: 'completed'
+          id: {
+            status: 'completed',
+            type: 'apply_inherited'
+          }
         });
       });
     });
