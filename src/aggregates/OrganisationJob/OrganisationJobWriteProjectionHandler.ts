@@ -3,27 +3,16 @@ import {EventsEnum} from '../../Events';
 import {has} from 'lodash';
 import {EventStoreModelInterface} from '../../models/EventStore';
 import {OrganisationJobAggregateRecordInterface} from './types';
-import {FinancialHoldEnum, PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
+import {FinancialHoldStatusEnum, FinancialHoldTypeEnum, PaymentTermEnum} from './types/OrganisationJobAggregateRecordInterface';
 import {
-  AgencyClientApplyPaymentTermInitiatedEventInterface,
   AgencyClientApplyPaymentTermInitiatedEventStoreDataInterface
 } from 'EventTypes/AgencyClientApplyPaymentTermInitiatedEventInterface';
 import {
-  AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface,
   AgencyClientApplyPaymentTermInheritanceInitiatedEventStoreDataInterface
 } from 'EventTypes/AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface';
 import {
-  AgencyClientApplyPaymentTermCompletedEventInterface,
   AgencyClientApplyPaymentTermCompletedEventStoreDataInterface
 } from 'EventTypes/AgencyClientApplyPaymentTermCompletedEventInterface';
-import {
-  AgencyClientApplyFinancialHoldCompletedEventInterface,
-  AgencyClientApplyFinancialHoldInheritanceCompletedEventInterface,
-  AgencyClientApplyFinancialHoldInheritanceInitiatedEventInterface,
-  AgencyClientApplyFinancialHoldInitiatedEventInterface,
-  AgencyClientClearFinancialHoldCompletedEventInterface,
-  AgencyClientClearFinancialHoldInitiatedEventInterface
-} from 'EventTypes';
 import {AgencyClientApplyFinancialHoldInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldInitiatedEventInterface';
 import {AgencyClientApplyFinancialHoldCompletedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldCompletedEventInterface';
 import {AgencyClientClearFinancialHoldInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientClearFinancialHoldInitiatedEventInterface';
@@ -78,8 +67,8 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         const eventData = event.data as AgencyClientApplyFinancialHoldInitiatedEventStoreDataInterface;
 
         aggregate.financial_hold_jobs[eventData._id] = {
-          status: FinancialHoldEnum.STARTED,
-          type: FinancialHoldEnum.APPLIED
+          status: FinancialHoldStatusEnum.STARTED,
+          type: FinancialHoldTypeEnum.APPLIED
         };
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
@@ -87,10 +76,10 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         const eventData = event.data as AgencyClientApplyFinancialHoldCompletedEventStoreDataInterface;
 
         aggregate.financial_hold_jobs[eventData._id]
-          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldEnum.COMPLETED)
+          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED)
           : (aggregate.financial_hold_jobs[eventData._id] = {
-            status: FinancialHoldEnum.COMPLETED,
-            type: FinancialHoldEnum.APPLIED
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED
           });
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
@@ -98,8 +87,8 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         const eventData = event.data as AgencyClientClearFinancialHoldInitiatedEventStoreDataInterface;
 
         aggregate.financial_hold_jobs[eventData._id] = {
-          status: FinancialHoldEnum.STARTED,
-          type: FinancialHoldEnum.CLEARED
+          status: FinancialHoldStatusEnum.STARTED,
+          type: FinancialHoldTypeEnum.CLEARED
         };
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
@@ -107,10 +96,10 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         const eventData = event.data as AgencyClientClearFinancialHoldCompletedEventStoreDataInterface;
 
         aggregate.financial_hold_jobs[eventData._id]
-          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldEnum.COMPLETED)
+          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED)
           : (aggregate.financial_hold_jobs[eventData._id] = {
-            status: FinancialHoldEnum.COMPLETED,
-            type: FinancialHoldEnum.CLEARED
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.CLEARED
           });
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
@@ -118,8 +107,8 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         const eventData = event.data as AgencyClientApplyFinancialHoldInheritanceInitiatedEventStoreDataInterface;
 
         aggregate.financial_hold_jobs[eventData._id] = {
-          status: FinancialHoldEnum.STARTED,
-          type: FinancialHoldEnum.APPLY_INHERITED
+          status: FinancialHoldStatusEnum.STARTED,
+          type: FinancialHoldTypeEnum.APPLY_INHERITED
         };
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
@@ -127,10 +116,10 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
         const eventData = event.data as AgencyClientApplyFinancialHoldInheritanceCompletedEventStoreDataInterface;
 
         aggregate.financial_hold_jobs[eventData._id]
-          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldEnum.COMPLETED)
+          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED)
           : (aggregate.financial_hold_jobs[eventData._id] = {
-            status: FinancialHoldEnum.COMPLETED,
-            type: FinancialHoldEnum.APPLY_INHERITED
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLY_INHERITED
           });
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
