@@ -152,13 +152,12 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
       return;
     }
     const parentFinancialHold = await this.getFinancialHoldTerm(agencyClient);
-    const parentFinancialHoldNote = await this.getFinancialHoldNote(agencyClient);
     const success =
       this.isProgressed(this.initiateEvent.data.client_id) ||
       (await this.retryableSetFinancialHold.setInheritedFinancialHold(
         this.initiateEvent.data.client_id,
-        parentFinancialHold, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
-        parentFinancialHoldNote,
+        parentFinancialHold.term, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
+        parentFinancialHold.note,
         true // we force it here since if it's not inherited, we make it inherited
       ));
 
@@ -171,8 +170,8 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     if (clientType === 'site') {
       await this.applyFinancilaHoldOnAllWards(
         this.initiateEvent.data.client_id,
-        parentFinancialHold,
-        parentFinancialHoldNote
+        parentFinancialHold.term,
+        parentFinancialHold.note
       );
     } else {
       this.logger.info('It was ward, so there are no children.');
@@ -259,7 +258,9 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     });
   }
 
-  private async getFinancialHoldTerm(agencyClientAggregate: AgencyClientAggregate): Promise<boolean | null> {
+  private async getFinancialHoldTerm(
+    agencyClientAggregate: AgencyClientAggregate
+  ): Promise<{term: boolean; note: string} | null> {
     const parentId = agencyClientAggregate.getParentClientId();
 
     const parentFinancialHold = await this.financialHoldRepository.getAggregate({
@@ -268,18 +269,9 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
       client_id: parentId
     });
 
-    return parentFinancialHold.getFinancialHold();
-  }
-
-  private async getFinancialHoldNote(agencyClientAggregate: AgencyClientAggregate): Promise<string | null> {
-    const parentId = agencyClientAggregate.getParentClientId();
-
-    const parentFinancialHold = await this.financialHoldRepository.getAggregate({
-      name: 'financial_hold',
-      agency_id: this.initiateEvent.aggregate_id.agency_id,
-      client_id: parentId
-    });
-
-    return parentFinancialHold.getNote();
+    return {
+      term: parentFinancialHold.getFinancialHold(),
+      note: parentFinancialHold.getNote()
+    };
   }
 }
