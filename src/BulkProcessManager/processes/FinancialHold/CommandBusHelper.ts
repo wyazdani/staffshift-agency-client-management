@@ -29,7 +29,7 @@ export class CommandBusHelper {
     } as StartClientInheritanceProcessCommandInterface);
   }
 
-  async setFinancialHold(clientId: string, financial_hold: boolean, note: string): Promise<void> {
+  async setFinancialHold(clientId: string, financialHold: boolean, note: string): Promise<void> {
     await this.commandBus.execute({
       aggregateId: {
         name: 'financial_hold',
@@ -37,7 +37,7 @@ export class CommandBusHelper {
         client_id: clientId
       },
       type: FinancialHoldCommandEnum.SET_FINANCIAL_HOLD,
-      data: {financial_hold, note}
+      data: {financial_hold: financialHold, note}
     } as SetFinancialHoldCommandInterface);
   }
 
