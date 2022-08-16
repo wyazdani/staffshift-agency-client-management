@@ -764,7 +764,7 @@ parameters:
     name: initiate_financial_hold_payload
     in: body
     required: true
-    description: "The payload used to initiate financial hold to client"
+    description: "The payload used to initiate apply/clear/inherit financial hold to client"
     schema:
       $ref: "#/definitions/initiate_financial_hold_payload_def"
   x_request_id:
