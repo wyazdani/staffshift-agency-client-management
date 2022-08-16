@@ -377,7 +377,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           'job id': {
             status: FinancialHoldStatusEnum.STARTED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -403,7 +403,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           'job id': {
             status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -424,7 +424,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           id: {
             status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -470,7 +470,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           'job id': {
             status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -510,7 +510,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           id: {
             status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -556,7 +556,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           'job id': {
             status: FinancialHoldStatusEnum.STARTED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -596,7 +596,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           id: {
             status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -614,7 +614,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           'job id': {
             status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -660,7 +660,7 @@ describe('OrganisationJobAggregate', () => {
         financial_hold_jobs: {
           'job id': {
             status: FinancialHoldStatusEnum.STARTED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1

@@ -96,7 +96,7 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
 
         aggregate.financial_hold_jobs[eventData._id] = {
           status: FinancialHoldStatusEnum.STARTED,
-          type: FinancialHoldTypeEnum.APPLY_INHERITED
+          type: FinancialHoldTypeEnum.APPLIED_INHERITED
         };
         return {...aggregate, last_sequence_id: event.sequence_id};
       }

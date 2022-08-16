@@ -100,7 +100,7 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteInheritFinancialHold(command: CompleteInheritFinancialHoldCommandDataInterface): Promise<void> {
-    this.validateCompleteFinancialHold(command, FinancialHoldTypeEnum.APPLY_INHERITED);
+    this.validateCompleteFinancialHold(command, FinancialHoldTypeEnum.APPLIED_INHERITED);
   }
 
   /**
