@@ -73,12 +73,7 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
       case EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED: {
         const eventData = event.data as AgencyClientApplyFinancialHoldCompletedEventStoreDataInterface;
 
-        aggregate.financial_hold_jobs[eventData._id]
-          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED)
-          : (aggregate.financial_hold_jobs[eventData._id] = {
-            status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLIED
-          });
+        aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED: {
@@ -93,12 +88,7 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
       case EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED: {
         const eventData = event.data as AgencyClientClearFinancialHoldCompletedEventStoreDataInterface;
 
-        aggregate.financial_hold_jobs[eventData._id]
-          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED)
-          : (aggregate.financial_hold_jobs[eventData._id] = {
-            status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.CLEARED
-          });
+        aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       case EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED: {
@@ -113,12 +103,7 @@ implements WriteProjectionInterface<OrganisationJobAggregateRecordInterface> {
       case EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED: {
         const eventData = event.data as AgencyClientApplyFinancialHoldInheritanceCompletedEventStoreDataInterface;
 
-        aggregate.financial_hold_jobs[eventData._id]
-          ? (aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED)
-          : (aggregate.financial_hold_jobs[eventData._id] = {
-            status: FinancialHoldStatusEnum.COMPLETED,
-            type: FinancialHoldTypeEnum.APPLY_INHERITED
-          });
+        aggregate.financial_hold_jobs[eventData._id].status = FinancialHoldStatusEnum.COMPLETED;
         return {...aggregate, last_sequence_id: event.sequence_id};
       }
       default:

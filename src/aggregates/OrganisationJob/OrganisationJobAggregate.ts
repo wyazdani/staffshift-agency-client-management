@@ -92,60 +92,15 @@ export class OrganisationJobAggregate extends AbstractAggregate<
   }
 
   async validateCompleteApplyFinancialHold(command: CompleteApplyFinancialHoldCommandDataInterface): Promise<void> {
-    if (
-      !has(this.aggregate.financial_hold_jobs, command._id) ||
-      this.aggregate?.financial_hold_jobs[command._id].type !== FinancialHoldTypeEnum.APPLIED
-    ) {
-      throw new ResourceNotFoundError(`Job ${command._id} is not found`);
-    }
-
-    if (this.aggregate?.financial_hold_jobs[command._id].status === FinancialHoldStatusEnum.COMPLETED) {
-      throw new ValidationError('Job is already completed').setErrors([
-        {
-          code: 'JOB_ALREADY_COMPLETED',
-          message: `Job ${command._id} has already been completed`,
-          path: ['_id']
-        }
-      ]);
-    }
+    this.validateCompleteFinancialHold(command, FinancialHoldTypeEnum.APPLIED);
   }
 
   async validateCompleteClearFinancialHold(command: CompleteClearFinancialHoldCommandDataInterface): Promise<void> {
-    if (
-      !has(this.aggregate.financial_hold_jobs, command._id) ||
-      this.aggregate?.financial_hold_jobs[command._id].type !== FinancialHoldTypeEnum.CLEARED
-    ) {
-      throw new ResourceNotFoundError(`Job ${command._id} is not found`);
-    }
-
-    if (this.aggregate?.financial_hold_jobs[command._id].status === FinancialHoldStatusEnum.COMPLETED) {
-      throw new ValidationError('Job is already completed').setErrors([
-        {
-          code: 'JOB_ALREADY_COMPLETED',
-          message: `Job ${command._id} has already been completed`,
-          path: ['_id']
-        }
-      ]);
-    }
+    this.validateCompleteFinancialHold(command, FinancialHoldTypeEnum.CLEARED);
   }
 
   async validateCompleteInheritFinancialHold(command: CompleteInheritFinancialHoldCommandDataInterface): Promise<void> {
-    if (
-      !has(this.aggregate.financial_hold_jobs, command._id) ||
-      this.aggregate?.financial_hold_jobs[command._id].type !== FinancialHoldTypeEnum.APPLY_INHERITED
-    ) {
-      throw new ResourceNotFoundError(`Job ${command._id} is not found`);
-    }
-
-    if (this.aggregate?.financial_hold_jobs[command._id].status === FinancialHoldStatusEnum.COMPLETED) {
-      throw new ValidationError('Job is already completed').setErrors([
-        {
-          code: 'JOB_ALREADY_COMPLETED',
-          message: `Job ${command._id} has already been completed`,
-          path: ['_id']
-        }
-      ]);
-    }
+    this.validateCompleteFinancialHold(command, FinancialHoldTypeEnum.APPLY_INHERITED);
   }
 
   /**
@@ -176,6 +131,36 @@ export class OrganisationJobAggregate extends AbstractAggregate<
         {
           code: 'ANOTHER_JOB_PROCESS_ACTIVE',
           message: `Can't create job id ${id}, as there is another job in progress`
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks:
+   * - the job is not already completed
+   * - if the job exists/found
+   */
+  private validateCompleteFinancialHold(
+    command:
+      | CompleteClearFinancialHoldCommandDataInterface
+      | CompleteClearFinancialHoldCommandDataInterface
+      | CompleteInheritFinancialHoldCommandDataInterface,
+    type: string
+  ) {
+    if (
+      !has(this.aggregate.financial_hold_jobs, command._id) ||
+      this.aggregate?.financial_hold_jobs[command._id].type !== type
+    ) {
+      throw new ResourceNotFoundError(`Job ${command._id} is not found`);
+    }
+
+    if (this.aggregate?.financial_hold_jobs[command._id].status === FinancialHoldStatusEnum.COMPLETED) {
+      throw new ValidationError('Job is already completed').setErrors([
+        {
+          code: 'JOB_ALREADY_COMPLETED',
+          message: `Job ${command._id} has already been completed`,
+          path: ['_id']
         }
       ]);
     }
