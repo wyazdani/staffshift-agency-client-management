@@ -35,8 +35,8 @@ interface ApplyFinancialHoldProcessOptsInterface {
 }
 
 /**
- * force inherit the client from the parent and then apply inherited pay term on all it's children and it's grandchildren
- * some children might not inherit from parent, then we don't apply inherited payment term on those
+ * force inherit the client from the parent and then apply inherited financial hold on all it's children and it's grandchildren
+ * some children might not inherit from parent, then we don't apply inherited financial hold on those
  */
 export class InheritFinancialHoldProcess implements ProcessInterface {
   private initiateEvent: EventStorePubSubModelInterface<
@@ -96,13 +96,13 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   /**
    * Steps:
    * - We first check if the client is linked
-   * - force apply inherited pay term on the client
+   * - force apply inherited financial hold on the client
    * - if client type is organisation
    *   - break
    * - if client type is site
    *   - find all wards under that site
    *     - for loop on all wards
-   *       - apply inherited payment term on ward(without force)
+   *       - apply inherited financial hold on ward(without force)
    * - if client type is ward, do nothing
    */
   async execute(
@@ -115,7 +115,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     const eventId = initiateEvent._id;
 
     this.initDependencies();
-    this.logger.info('Inherit Payment Term background process started', {
+    this.logger.info('Inherit Financial Hold background process started', {
       eventId
     });
 
@@ -135,7 +135,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
 
       await this.commandBusHelper.startProcess(estimatedCount);
     } else if (currentStatus === ClientInheritanceProcessAggregateStatusEnum.COMPLETED) {
-      this.logger.info('inherit payment term process already completed', {
+      this.logger.info('inherit financial hold process already completed', {
         id: initiateEvent._id
       });
       return;
@@ -152,28 +152,33 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
       return;
     }
     const parentFinancialHold = await this.getFinancialHoldTerm(agencyClient);
+    const parentFinancialHoldNote = await this.getFinancialHoldNote(agencyClient);
     const success =
       this.isProgressed(this.initiateEvent.data.client_id) ||
       (await this.retryableSetFinancialHold.setInheritedFinancialHold(
         this.initiateEvent.data.client_id,
-        parentFinancialHold, // parent financial hold can be null, which means on parent we don't have any pay term configuration. we need to propagate the null to the children
-        '',
+        parentFinancialHold, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
+        parentFinancialHoldNote,
         true // we force it here since if it's not inherited, we make it inherited
       ));
 
     if (!success) {
-      this.logger.info('was not able to inherit pay term on the actual node. completing the process', {eventId});
+      this.logger.info('was not able to inherit financial hold on the actual node. completing the process', {eventId});
       await this.commandBusHelper.completeProcess();
       return;
     }
 
     if (clientType === 'site') {
-      await this.applyFinancilaHoldOnAllWards(this.initiateEvent.data.client_id, parentFinancialHold);
+      await this.applyFinancilaHoldOnAllWards(
+        this.initiateEvent.data.client_id,
+        parentFinancialHold,
+        parentFinancialHoldNote
+      );
     } else {
       this.logger.info('It was ward, so there are no children.');
     }
     await this.commandBusHelper.completeProcess();
-    this.logger.info('Apply payment term background process finished', {
+    this.logger.info('Apply financial hold background process finished', {
       eventId
     });
   }
@@ -207,9 +212,13 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   }
 
   /**
-   * apply inherited payment term on all wards under the site id
+   * apply inherited financial hold on all wards under the site id
    */
-  private async applyFinancilaHoldOnAllWards(siteId: string, FinancialHold: boolean | null): Promise<void> {
+  private async applyFinancilaHoldOnAllWards(
+    siteId: string,
+    FinancialHold: boolean | null,
+    FinancialHoldNote: string | null
+  ): Promise<void> {
     const wards = await AgencyClientsProjectionV2.getAllLinkedWards(
       this.initiateEvent.aggregate_id.agency_id,
       this.initiateEvent.aggregate_id.organisation_id,
@@ -222,8 +231,8 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
           await this.retryableSetFinancialHold.setInheritedFinancialHold(
             ward.client_id,
             FinancialHold,
-            '',
-            false // we set force to false, since if the ward is not inherited we don't want to apply payment term
+            FinancialHoldNote,
+            false // we set force to false, since if the ward is not inherited we don't want to apply financial hold
           )
         ) {
           this.logger.debug('Applied financial-hold on ward', {
@@ -231,7 +240,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
           });
         } else {
           this.logger.info(
-            'not able to apply inherited payment term on ward due to internal error or ward is not inherited',
+            'not able to apply inherited financial hold on ward due to internal error or ward is not inherited',
             {
               ward_id: ward.client_id
             }
@@ -260,5 +269,17 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     });
 
     return parentFinancialHold.getFinancialHold();
+  }
+
+  private async getFinancialHoldNote(agencyClientAggregate: AgencyClientAggregate): Promise<string | null> {
+    const parentId = agencyClientAggregate.getParentClientId();
+
+    const parentFinancialHold = await this.financialHoldRepository.getAggregate({
+      name: 'financial_hold',
+      agency_id: this.initiateEvent.aggregate_id.agency_id,
+      client_id: parentId
+    });
+
+    return parentFinancialHold.getNote();
   }
 }
