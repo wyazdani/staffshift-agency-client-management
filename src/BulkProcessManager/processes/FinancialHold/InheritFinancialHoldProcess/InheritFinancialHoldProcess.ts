@@ -168,7 +168,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     }
 
     if (clientType === 'site') {
-      await this.applyFinancilaHoldOnAllWards(
+      await this.setFinancilaHoldOnAllWards(
         this.initiateEvent.data.client_id,
         parentFinancialHold.term,
         parentFinancialHold.note
@@ -213,10 +213,10 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   /**
    * apply inherited financial hold on all wards under the site id
    */
-  private async applyFinancilaHoldOnAllWards(
+  private async setFinancilaHoldOnAllWards(
     siteId: string,
-    FinancialHold: boolean | null,
-    FinancialHoldNote: string | null
+    financialHold: boolean | null,
+    financialHoldNote: string | null
   ): Promise<void> {
     const wards = await AgencyClientsProjectionV2.getAllLinkedWards(
       this.initiateEvent.aggregate_id.agency_id,
@@ -229,8 +229,8 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
         if (
           await this.retryableSetFinancialHold.setInheritedFinancialHold(
             ward.client_id,
-            FinancialHold,
-            FinancialHoldNote,
+            financialHold,
+            financialHoldNote,
             false // we set force to false, since if the ward is not inherited we don't want to apply financial hold
           )
         ) {
@@ -260,7 +260,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
 
   private async getFinancialHoldTerm(
     agencyClientAggregate: AgencyClientAggregate
-  ): Promise<{term: boolean; note: string} | null> {
+  ): Promise<{term: boolean; note: string}> {
     const parentId = agencyClientAggregate.getParentClientId();
 
     const parentFinancialHold = await this.financialHoldRepository.getAggregate({
