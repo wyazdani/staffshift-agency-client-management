@@ -28,7 +28,6 @@ import {ProcessInterface} from '../../../types/ProcessInterface';
 import {CommandBusHelper} from '../CommandBusHelper';
 import {RetryableSetFinancialHold} from '../RetryableSetFinancialHold';
 import {AgencyClientApplyFinancialHoldInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldInitiatedEventInterface';
-import {NullTypeFormatter} from 'ts-json-schema-generator';
 
 interface ApplyFinancialHoldProcessOptsInterface {
   maxRetry: number;
@@ -152,12 +151,12 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
       await this.commandBusHelper.completeProcess();
       return;
     }
-    const parentFinancialHold = await this.getFinancialHoldInformation(agencyClient);
+    const parentFinancialHold = await this.getParentFinancialHold(agencyClient);
     const success =
       this.isProgressed(this.initiateEvent.data.client_id) ||
       (await this.retryableSetFinancialHold.setInheritedFinancialHold(
         this.initiateEvent.data.client_id,
-        parentFinancialHold.financialHold, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
+        parentFinancialHold.financial_hold, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
         parentFinancialHold.note,
         true // we force it here since if it's not inherited, we make it inherited
       ));
@@ -171,7 +170,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     if (clientType === 'site') {
       await this.setFinancilaHoldOnAllWards(
         this.initiateEvent.data.client_id,
-        parentFinancialHold.financialHold,
+        parentFinancialHold.financial_hold,
         parentFinancialHold.note
       );
     } else {
@@ -259,9 +258,12 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     });
   }
 
-  private async getFinancialHoldInformation(
+  /**
+   * returns financial hold and note property from parent
+   */
+  private async getParentFinancialHold(
     agencyClientAggregate: AgencyClientAggregate
-  ): Promise<{financialHold: boolean | null; note: string | null}> {
+  ): Promise<{financial_hold: boolean | null; note: string | null}> {
     const parentId = agencyClientAggregate.getParentClientId();
 
     const parentFinancialHold = await this.financialHoldRepository.getAggregate({
@@ -271,7 +273,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     });
 
     return {
-      financialHold: parentFinancialHold.getFinancialHold(),
+      financial_hold: parentFinancialHold.getFinancialHold(),
       note: parentFinancialHold.getNote()
     };
   }
