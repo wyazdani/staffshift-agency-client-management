@@ -1642,9 +1642,6 @@ definitions:
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
           - ENUM_MISMATCH
-          - INVALID_CLIENT_TYPE
-          - MIN_LENGTH
-          - MAX_LENGTH
       message:
         type: string
       errors:
@@ -1665,6 +1662,9 @@ definitions:
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
                 - ENUM_MISMATCH
+                - INVALID_CLIENT_TYPE
+                - MIN_LENGTH
+                - MAX_LENGTH
             message:
               type: string
             path:
