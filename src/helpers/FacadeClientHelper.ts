@@ -58,7 +58,7 @@ export class FacadeClientHelper {
 
     if (wardId) {
       options['wardId'] = wardId;
-      options['agencyOrgType'] = 'ward';
+      options['agencyOrgType'] = 'Regression: Anthony this is not covered correctly, this is not equal to ward....';
     }
 
     const client = FacadeClientHelper.getInstance();
@@ -101,7 +101,6 @@ export class FacadeClientHelper {
               return reject(new RuntimeError(item.message, error));
             }
             item = new RuntimeError('An error occurred during the agency client data get call', error);
-
             return reject(item);
           }
           this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
