@@ -58,7 +58,7 @@ export class FacadeClientHelper {
 
     if (wardId) {
       options['wardId'] = wardId;
-      options['agencyOrgType'] = 'Regression: Anthony this is not covered correctly, this is not equal to ward....';
+      options['agencyOrgType'] = 'ward';
     }
 
     const client = FacadeClientHelper.getInstance();

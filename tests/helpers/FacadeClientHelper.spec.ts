@@ -174,7 +174,7 @@ describe('FacadeClientHelper Class', () => {
       assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'ward');
     });
 
-    it.only('test for authorization error when downstream returns 401 status code with both ward id and site id', async () => {
+    it('test for authorization error when downstream returns 401 status code with both ward id and site id', async () => {
       const apiResponse = {
         statusCode: 401,
         body: {
