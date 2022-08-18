@@ -29,7 +29,7 @@ import {CommandBusHelper} from '../CommandBusHelper';
 import {RetryableSetFinancialHold} from '../RetryableSetFinancialHold';
 import {AgencyClientApplyFinancialHoldInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldInitiatedEventInterface';
 
-interface ApplyFinancialHoldProcessOptsInterface {
+interface InheritFinancialHoldProcessOptsInterface {
   maxRetry: number;
   retryDelay: number;
 }
@@ -51,7 +51,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   private retryableSetFinancialHold: RetryableSetFinancialHold;
   private processAggregate: ClientInheritanceProcessAggregate;
   private financialHoldRepository: FinancialHoldRepository;
-  constructor(private logger: LoggerContext, private opts: ApplyFinancialHoldProcessOptsInterface) {}
+  constructor(private logger: LoggerContext, private opts: InheritFinancialHoldProcessOptsInterface) {}
 
   private initDependencies() {
     const eventRepository = new EventRepository(
