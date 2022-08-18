@@ -1071,6 +1071,8 @@ definitions:
     properties:
       note:
         type: string
+        minLength: 3
+        maxLength: 255
     additionalProperties: false
   get_payment_term_def:
     type: object
