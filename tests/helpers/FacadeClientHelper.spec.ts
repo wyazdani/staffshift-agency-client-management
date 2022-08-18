@@ -443,7 +443,6 @@ describe('FacadeClientHelper Class', () => {
       assert.equal(result, apiResponse.body);
       assert.equal(listAgencyOrganisationLink.callCount, 1, 'listAgencyOrganisationLink not called');
     });
-    
   });
 
   describe('getUserFullName()', () => {
@@ -541,7 +540,7 @@ describe('FacadeClientHelper Class', () => {
         .getUserFullName(userId)
         .should.be.rejectedWith(RuntimeError, 'An error occurred during getUserDetails get call');
     });
-    
+
     it('runtime error is thrown when getting error without a response', async () => {
       const apiResponse = {
         statusCode: 500,
@@ -659,7 +658,7 @@ describe('FacadeClientHelper Class', () => {
       sinon.stub(StaffshiftFacadeClient, 'AgencyOrganisationLinkApi').returns({
         listAgencyOrganisationLink
       });
-      const result = await client.getAgencyClientDetailsListing( {
+      const result = await client.getAgencyClientDetailsListing({
         xRequestId: logger.requestId
       });
 
@@ -684,6 +683,6 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetailsListing()
         .should.be.rejectedWith(RuntimeError, 'An error occurred during the agency client data get call');
-    })
+    });
   });
 });
