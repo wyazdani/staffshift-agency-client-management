@@ -1643,6 +1643,8 @@ definitions:
           - PATTERN
           - ENUM_MISMATCH
           - INVALID_CLIENT_TYPE
+          - MIN_LENGTH
+          - MAX_LENGTH
       message:
         type: string
       errors:
