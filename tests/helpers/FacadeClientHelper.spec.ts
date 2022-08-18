@@ -73,6 +73,7 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetails('agency id', 'organisation id', 'site id', undefined)
         .should.be.rejectedWith(ValidationError, 'some validation message');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'site');
     });
 
     it('test for validation error when downstream returns 400 status code with ward id and no site id', async () => {
@@ -92,6 +93,7 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetails('agency id', 'organisation id', undefined, 'ward id')
         .should.be.rejectedWith(ValidationError, 'some validation message');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'ward');
     });
 
     it('test for validation error when downstream returns 400 status code with both ward id and site id', async () => {
@@ -149,6 +151,7 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetails('agency id', 'organisation id', 'site id', undefined)
         .should.be.rejectedWith(AuthorizationError, 'API token specified');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'site');
     });
 
     it('test for authorization error when downstream returns 401 status code with ward id and no site id', async () => {
@@ -168,9 +171,10 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetails('agency id', 'organisation id', undefined, 'ward id')
         .should.be.rejectedWith(AuthorizationError, 'API token specified');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'ward');
     });
 
-    it('test for authorization error when downstream returns 401 status code with both ward id and site id', async () => {
+    it.only('test for authorization error when downstream returns 401 status code with both ward id and site id', async () => {
       const apiResponse = {
         statusCode: 401,
         body: {
@@ -187,6 +191,7 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetails('agency id', 'organisation id', 'site id', 'ward id')
         .should.be.rejectedWith(AuthorizationError, 'API token specified');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'ward');
     });
 
     it('test it resolves successfully when downstream returns 404', async () => {
@@ -381,6 +386,7 @@ describe('FacadeClientHelper Class', () => {
 
       assert.equal(result, apiResponse.body);
       assert.equal(listAgencyOrganisationLink.callCount, 1, 'listAgencyOrganisationLink not called');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'site');
     });
 
     it('success scenario with ward id and no site id', async () => {
@@ -410,6 +416,7 @@ describe('FacadeClientHelper Class', () => {
 
       assert.equal(result, apiResponse.body);
       assert.equal(listAgencyOrganisationLink.callCount, 1, 'listAgencyOrganisationLink not called');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'ward');
     });
 
     it('success scenario with both site id and ward id', async () => {
@@ -439,6 +446,7 @@ describe('FacadeClientHelper Class', () => {
 
       assert.equal(result, apiResponse.body);
       assert.equal(listAgencyOrganisationLink.callCount, 1, 'listAgencyOrganisationLink not called');
+      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'ward');
     });
   });
 
