@@ -17,6 +17,10 @@ import {
   InitiateInheritFinancialHoldCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from '../../../src/aggregates/OrganisationJob/types/CommandTypes';
+import {
+  FinancialHoldStatusEnum,
+  FinancialHoldTypeEnum
+} from '../../../src/aggregates/OrganisationJob/types/OrganisationJobAggregateRecordInterface';
 
 describe('OrganisationJobAggregate', () => {
   const aggregateId: OrganisationJobAggregateIdInterface = {
@@ -274,8 +278,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'applied'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED
           }
         },
         last_sequence_id: 1
@@ -300,8 +304,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'completed',
-            type: 'applied'
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED
           }
         },
         last_sequence_id: 1
@@ -323,8 +327,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'cleared'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.CLEARED
           }
         },
         last_sequence_id: 1
@@ -349,8 +353,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'completed',
-            type: 'cleared'
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.CLEARED
           }
         },
         last_sequence_id: 1
@@ -372,8 +376,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'apply_inherited'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -398,8 +402,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'completed',
-            type: 'apply_inherited'
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -417,6 +421,12 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test Job Not Found error', async () => {
       const aggregate = {
+        financial_hold_jobs: {
+          id: {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
         last_sequence_id: 1
       };
 
@@ -431,8 +441,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'completed',
-            type: 'applied'
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED
           }
         },
         last_sequence_id: 1
@@ -459,8 +469,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'not_applied'
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -477,8 +487,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'applied'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED
           }
         },
         last_sequence_id: 1
@@ -497,6 +507,12 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test Job Not Found error', async () => {
       const aggregate = {
+        financial_hold_jobs: {
+          id: {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
         last_sequence_id: 1
       };
 
@@ -511,8 +527,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'completed',
-            type: 'cleared'
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.CLEARED
           }
         },
         last_sequence_id: 1
@@ -539,8 +555,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'not_cleared'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -557,8 +573,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'cleared'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.CLEARED
           }
         },
         last_sequence_id: 1
@@ -577,6 +593,12 @@ describe('OrganisationJobAggregate', () => {
 
     it('Test Job Not Found error', async () => {
       const aggregate = {
+        financial_hold_jobs: {
+          id: {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
         last_sequence_id: 1
       };
 
@@ -591,8 +613,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'completed',
-            type: 'apply_inherited'
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1
@@ -619,8 +641,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'not_inherited'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED
           }
         },
         last_sequence_id: 1
@@ -637,8 +659,8 @@ describe('OrganisationJobAggregate', () => {
       const aggregate = {
         financial_hold_jobs: {
           'job id': {
-            status: 'started',
-            type: 'apply_inherited'
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
           }
         },
         last_sequence_id: 1

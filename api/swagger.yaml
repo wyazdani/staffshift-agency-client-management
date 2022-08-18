@@ -764,7 +764,7 @@ parameters:
     name: initiate_financial_hold_payload
     in: body
     required: true
-    description: "The payload used to initiate financial hold to client"
+    description: "The payload used to initiate apply/clear/inherit financial hold to client"
     schema:
       $ref: "#/definitions/initiate_financial_hold_payload_def"
   x_request_id:
@@ -1071,6 +1071,8 @@ definitions:
     properties:
       note:
         type: string
+        minLength: 3
+        maxLength: 255
     additionalProperties: false
   get_payment_term_def:
     type: object
@@ -1640,7 +1642,6 @@ definitions:
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
           - ENUM_MISMATCH
-          - INVALID_CLIENT_TYPE
       message:
         type: string
       errors:
@@ -1661,6 +1662,9 @@ definitions:
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
                 - ENUM_MISMATCH
+                - INVALID_CLIENT_TYPE
+                - MIN_LENGTH
+                - MAX_LENGTH
             message:
               type: string
             path:
