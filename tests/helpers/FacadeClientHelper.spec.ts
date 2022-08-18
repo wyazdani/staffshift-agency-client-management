@@ -5,10 +5,7 @@ import {assert} from 'chai';
 import {LoggerContext} from 'a24-logzio-winston';
 import StaffshiftFacadeClient, {
   AgencyOrganisationLinkDataType,
-  UserDetailsDataType,
-  ApiClient,
-  ListAgencyOrgLinkOptionsType
-
+  UserDetailsDataType
 } from 'a24-node-staffshift-facade-client';
 import {ValidationError, AuthorizationError, RuntimeError, ResourceNotFoundError} from 'a24-node-error-utils';
 
