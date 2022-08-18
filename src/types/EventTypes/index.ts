@@ -35,4 +35,10 @@ export {AgencyClientFinancialHoldClearedEventInterface} from './AgencyClientFina
 export {AgencyClientFinancialHoldInheritedEventInterface} from './AgencyClientFinancialHoldInheritedEventInterface';
 export {AgencyClientClearFinancialHoldInheritedEventInterface} from './AgencyClientClearFinancialHoldInheritedEventInterface';
 export {AgencyClientEmptyFinancialHoldInheritedEventInterface} from './AgencyClientEmptyFinancialHoldInheritedEventInterface';
+export {AgencyClientApplyFinancialHoldCompletedEventInterface} from './AgencyClientApplyFinancialHoldCompletedEventInterface';
+export {AgencyClientApplyFinancialHoldInheritanceCompletedEventInterface} from './AgencyClientApplyFinancialHoldInheritanceCompletedEventInterface';
+export {AgencyClientApplyFinancialHoldInitiatedEventInterface} from './AgencyClientApplyFinancialHoldInitiatedEventInterface';
+export {AgencyClientApplyFinancialHoldInheritanceInitiatedEventInterface} from './AgencyClientApplyFinancialHoldInheritanceInitiatedEventInterface';
+export {AgencyClientClearFinancialHoldCompletedEventInterface} from './AgencyClientClearFinancialHoldCompletedEventInterface';
+export {AgencyClientClearFinancialHoldInitiatedEventInterface} from './AgencyClientClearFinancialHoldInitiatedEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

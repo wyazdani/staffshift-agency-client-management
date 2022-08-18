@@ -3,9 +3,7 @@ import {
   AgencyClientFinancialHoldsProjection,
   FINANCIAL_HOLD_PROJECTION_ENUM
 } from '../../../../src/models/AgencyClientFinancialHoldsProjectionV1';
-import {
-  AgencyClientClearFinancialHoldInheritedEventHandler
-} from '../../../../src/projections/AgencyClientFinancialHoldsProjectionV1/event-handlers';
+import {AgencyClientClearFinancialHoldInheritedEventHandler} from '../../../../src/projections/AgencyClientFinancialHoldsProjectionV1/event-handlers';
 
 describe('AgencyClientClearFinancialHoldInheritedEventHandler', () => {
   afterEach(() => {

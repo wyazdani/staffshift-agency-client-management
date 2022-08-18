@@ -6,11 +6,21 @@ import {OrganisationJobAggregate} from '../../../src/aggregates/OrganisationJob/
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {OrganisationJobAggregateIdInterface} from '../../../src/aggregates/OrganisationJob/types';
 import {
+  CompleteApplyFinancialHoldCommandDataInterface,
   CompleteApplyPaymentTermCommandDataInterface,
+  CompleteClearFinancialHoldCommandDataInterface,
+  CompleteInheritFinancialHoldCommandDataInterface,
   CompleteInheritPaymentTermCommandDataInterface,
+  InitiateApplyFinancialHoldCommandDataInterface,
   InitiateApplyPaymentTermCommandDataInterface,
+  InitiateClearFinancialHoldCommandDataInterface,
+  InitiateInheritFinancialHoldCommandDataInterface,
   InitiateInheritPaymentTermCommandDataInterface
 } from '../../../src/aggregates/OrganisationJob/types/CommandTypes';
+import {
+  FinancialHoldStatusEnum,
+  FinancialHoldTypeEnum
+} from '../../../src/aggregates/OrganisationJob/types/OrganisationJobAggregateRecordInterface';
 
 describe('OrganisationJobAggregate', () => {
   const aggregateId: OrganisationJobAggregateIdInterface = {
@@ -254,6 +264,411 @@ describe('OrganisationJobAggregate', () => {
       const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
 
       await organisationJobAggregate.validateCompleteApplyPaymentTerm(command);
+    });
+  });
+
+  describe('validateInitiateApplyFinancialHold', () => {
+    const command: InitiateApplyFinancialHoldCommandDataInterface = {
+      _id: 'job id',
+      client_id: 'client_id',
+      note: 'test'
+    };
+
+    it('Test another job process active error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED
+          }
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateInitiateApplyFinancialHold(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Another job active').setErrors([
+          {
+            code: 'ANOTHER_JOB_PROCESS_ACTIVE',
+            message: `Can't create job id ${command._id}, as there is another job in progress`
+          }
+        ])
+      );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED
+          }
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateInitiateApplyFinancialHold(command);
+    });
+  });
+
+  describe('validateInitiateClearFinancialHold', () => {
+    const command: InitiateClearFinancialHoldCommandDataInterface = {
+      _id: 'job id',
+      client_id: 'client_id',
+      note: 'test'
+    };
+
+    it('Test another job process active error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.CLEARED
+          }
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateInitiateClearFinancialHold(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Another job active').setErrors([
+          {
+            code: 'ANOTHER_JOB_PROCESS_ACTIVE',
+            message: `Can't create job id ${command._id}, as there is another job in progress`
+          }
+        ])
+      );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.CLEARED
+          }
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateInitiateClearFinancialHold(command);
+    });
+  });
+
+  describe('validateInitiateInheritFinancialHold', () => {
+    const command: InitiateInheritFinancialHoldCommandDataInterface = {
+      _id: 'job id',
+      client_id: 'client_id',
+      note: 'test'
+    };
+
+    it('Test another job process active error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateInitiateInheritFinancialHold(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Another job active').setErrors([
+          {
+            code: 'ANOTHER_JOB_PROCESS_ACTIVE',
+            message: `Can't create job id ${command._id}, as there is another job in progress`
+          }
+        ])
+      );
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateInitiateInheritFinancialHold(command);
+    });
+  });
+
+  describe('validateCompleteApplyFinancialHold', () => {
+    const command: CompleteApplyFinancialHoldCommandDataInterface = {
+      _id: 'job id'
+    };
+
+    it('Test Job Not Found error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          id: {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate
+        .validateCompleteApplyFinancialHold(command)
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
+    });
+
+    it('Test Job is already completed error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateCompleteApplyFinancialHold(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Job is already completed').setErrors([
+          {
+            code: 'JOB_ALREADY_COMPLETED',
+            message: `Job ${command._id} has already been completed`,
+            path: ['_id']
+          }
+        ])
+      );
+    });
+
+    it('Test not apply error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate
+        .validateCompleteApplyFinancialHold(command)
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateCompleteApplyFinancialHold(command);
+    });
+  });
+
+  describe('validateCompleteClearFinancialHold', () => {
+    const command: CompleteClearFinancialHoldCommandDataInterface = {
+      _id: 'job id'
+    };
+
+    it('Test Job Not Found error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          id: {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate
+        .validateCompleteClearFinancialHold(command)
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
+    });
+
+    it('Test Job is already completed error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.CLEARED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateCompleteClearFinancialHold(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Job is already completed').setErrors([
+          {
+            code: 'JOB_ALREADY_COMPLETED',
+            message: `Job ${command._id} has already been completed`,
+            path: ['_id']
+          }
+        ])
+      );
+    });
+
+    it('Test not cleared error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate
+        .validateCompleteClearFinancialHold(command)
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.CLEARED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateCompleteClearFinancialHold(command);
+    });
+  });
+
+  describe('validateCompleteInheritFinancialHold', () => {
+    const command: CompleteInheritFinancialHoldCommandDataInterface = {
+      _id: 'job id'
+    };
+
+    it('Test Job Not Found error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          id: {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate
+        .validateCompleteInheritFinancialHold(command)
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
+    });
+
+    it('Test Job is already completed error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.COMPLETED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      const error = await organisationJobAggregate
+        .validateCompleteInheritFinancialHold(command)
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Job is already completed').setErrors([
+          {
+            code: 'JOB_ALREADY_COMPLETED',
+            message: `Job ${command._id} has already been completed`,
+            path: ['_id']
+          }
+        ])
+      );
+    });
+
+    it('Test not inherited error', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate
+        .validateCompleteInheritFinancialHold(command)
+        .should.be.rejectedWith(ResourceNotFoundError, `Job ${command._id} is not found`);
+    });
+
+    it('Test success scenario', async () => {
+      const aggregate = {
+        financial_hold_jobs: {
+          'job id': {
+            status: FinancialHoldStatusEnum.STARTED,
+            type: FinancialHoldTypeEnum.APPLIED_INHERITED
+          }
+        },
+        last_sequence_id: 1
+      };
+
+      const organisationJobAggregate = new OrganisationJobAggregate(aggregateId, aggregate);
+
+      await organisationJobAggregate.validateCompleteInheritFinancialHold(command);
     });
   });
 });

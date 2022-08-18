@@ -2,7 +2,13 @@ import {
   InitiateApplyPaymentTermCommandHandler,
   CompleteInheritPaymentTermCommandHandler,
   CompleteApplyPaymentTermCommandHandler,
-  InitiateInheritPaymentTermCommandHandler
+  InitiateInheritPaymentTermCommandHandler,
+  InitiateApplyFinancialHoldCommandHandler,
+  InitiateClearFinancialHoldCommandHandler,
+  InitiateInheritFinancialHoldCommandHandler,
+  CompleteApplyFinancialHoldCommandHandler,
+  CompleteClearFinancialHoldCommandHandler,
+  CompleteInheritFinancialHoldCommandHandler
 } from './command-handlers';
 import {EventRepository} from '../../EventRepository';
 import {OrganisationJobCommandHandlerInterface} from './types/OrganisationJobCommandHandlerInterface';
@@ -13,7 +19,13 @@ const handlers = [
   InitiateApplyPaymentTermCommandHandler,
   CompleteInheritPaymentTermCommandHandler,
   CompleteApplyPaymentTermCommandHandler,
-  InitiateInheritPaymentTermCommandHandler
+  InitiateInheritPaymentTermCommandHandler,
+  InitiateApplyFinancialHoldCommandHandler,
+  InitiateClearFinancialHoldCommandHandler,
+  InitiateInheritFinancialHoldCommandHandler,
+  CompleteApplyFinancialHoldCommandHandler,
+  CompleteClearFinancialHoldCommandHandler,
+  CompleteInheritFinancialHoldCommandHandler
 ];
 
 /**

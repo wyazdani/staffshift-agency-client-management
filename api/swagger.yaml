@@ -549,6 +549,52 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "applyFinancialHold"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/initiate_financial_hold_payload"
+      responses:
+        202:
+          description: "Initiate Apply financial hold to client"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/financial_hold_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Initiate Apply financial hold to client"
+      tags:
+        - "Financial Hold"
+    delete:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "clearFinancialHold"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/initiate_financial_hold_payload"
+      responses:
+        202:
+          description: "Initiate Clear financial hold to client"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/financial_hold_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Initiate Clear financial hold to client"
+      tags:
+        - "Financial Hold"
     get:
       x-swagger-router-controller: "OrganisationJob"
       operationId: "getFinancialHold"
@@ -572,6 +618,35 @@ paths:
         default:
           $ref: "#/responses/server_error_model"
       summary: "Retrieves a financial hold"
+      tags:
+        - "Financial Hold"
+  /agency/{agency_id}/client/{client_id}/inherit-financial-hold:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "OrganisationJob"
+      operationId: "inheritFinancialHold"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/initiate_financial_hold_payload"
+      responses:
+        202:
+          description: "Initiate Inherit financial hold to client"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/financial_hold_inherit_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Initiate Inherit financial hold to client"
       tags:
         - "Financial Hold"
 parameters:
@@ -685,6 +760,13 @@ parameters:
     description: "The payload used to initiate apply payment term to client"
     schema:
       $ref: "#/definitions/initiate_apply_payment_term_payload_def"
+  initiate_financial_hold_payload:
+    name: initiate_financial_hold_payload
+    in: body
+    required: true
+    description: "The payload used to initiate apply/clear/inherit financial hold to client"
+    schema:
+      $ref: "#/definitions/initiate_financial_hold_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -981,6 +1063,16 @@ definitions:
       term:
         type: string
         enum: ['credit','pay_in_advance']
+    additionalProperties: false
+  initiate_financial_hold_payload_def:
+    type: object
+    required:
+      - note
+    properties:
+      note:
+        type: string
+        minLength: 3
+        maxLength: 255
     additionalProperties: false
   get_payment_term_def:
     type: object
@@ -1535,6 +1627,99 @@ definitions:
           - REQUIRED
       message:
         type: string
+    additionalProperties: false
+  financial_hold_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+          - ENUM_MISMATCH
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ANOTHER_JOB_PROCESS_ACTIVE
+                - ENUM_MISMATCH
+                - MIN_LENGTH
+                - MAX_LENGTH
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
+  financial_hold_inherit_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+          - ENUM_MISMATCH
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ANOTHER_JOB_PROCESS_ACTIVE
+                - ENUM_MISMATCH
+                - INVALID_CLIENT_TYPE
+                - MIN_LENGTH
+                - MAX_LENGTH
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
     additionalProperties: false
 responses:
   unauthorize_error_model:
