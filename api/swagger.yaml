@@ -639,7 +639,7 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/financial_hold_validation_error_model"
+            $ref: "#/definitions/financial_hold_inherit_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -1629,6 +1629,52 @@ definitions:
         type: string
     additionalProperties: false
   financial_hold_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+          - ENUM_MISMATCH
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ANOTHER_JOB_PROCESS_ACTIVE
+                - ENUM_MISMATCH
+                - MIN_LENGTH
+                - MAX_LENGTH
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
+  financial_hold_inherit_validation_error_model:
     type: object
     required:
       - code
