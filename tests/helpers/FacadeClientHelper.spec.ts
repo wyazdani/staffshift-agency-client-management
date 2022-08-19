@@ -929,6 +929,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
+        assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
         clb(apiResponse, null, apiResponse);
       });
 
@@ -948,6 +949,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
+        assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
         clb(apiResponse, null, apiResponse);
       });
 
@@ -963,6 +965,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
+        assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
         clb(apiResponse, null, apiResponse);
       });
 
@@ -982,6 +985,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
+        assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
         clb(apiResponse, null, apiResponse);
       });
 
@@ -1006,6 +1010,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
+        assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
         clb(null, apiResponse, apiResponse);
       });
 
@@ -1030,6 +1035,7 @@ describe('FacadeClientHelper Class', () => {
       };
       const client = new FacadeClientHelper(logger);
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
+        assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
         clb(apiResponse, null, null);
       });
 
