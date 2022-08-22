@@ -5,8 +5,8 @@ export interface PaymentTermInterface {
 }
 export interface FinancialHoldInterface {
   [index: string]: {
-    status: string;
-    type: string;
+    status: FinancialHoldStatusEnum;
+    type: FinancialHoldTypeEnum;
   };
 }
 
@@ -17,10 +17,12 @@ export enum PaymentTermEnum {
   COMPLETED_INHERITED = 'completed_inherited'
 }
 
-export enum FinancialHoldEnum {
+export enum FinancialHoldStatusEnum {
   STARTED = 'started',
-  COMPLETED = 'completed',
-  APPLY_INHERITED = 'apply_inherited',
+  COMPLETED = 'completed'
+}
+export enum FinancialHoldTypeEnum {
+  APPLIED_INHERITED = 'applied_inherited',
   APPLIED = 'applied',
   CLEARED = 'cleared'
 }

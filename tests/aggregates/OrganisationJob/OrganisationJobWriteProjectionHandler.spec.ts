@@ -3,7 +3,6 @@ import {EventsEnum} from '../../../src/Events';
 import {EventStore} from '../../../src/models/EventStore';
 import {assert} from 'chai';
 import {AgencyConsultantRoleEnabledEventStoreDataInterface} from '../../../src/types/EventTypes';
-import {AgencyClientApplyPaymentTermInitiatedEventInterface} from '../../../src/types/EventTypes/AgencyClientApplyPaymentTermInitiatedEventInterface';
 import {OrganisationJobCommandEnum} from '../../../src/aggregates/OrganisationJob/types';
 
 describe('OrganisationJobWriteProjectionHandler', () => {
@@ -269,20 +268,26 @@ describe('OrganisationJobWriteProjectionHandler', () => {
         result.financial_hold_jobs.should.deep.equal({
           id: {
             status: 'started',
-            type: 'apply_inherited'
+            type: 'applied_inherited'
           }
         });
       });
     });
 
     describe('COMPLETE_APPLY_FINANCIAL_HOLD Event', () => {
-      it('Test when success', () => {
+      it('Test success scenario', () => {
         const aggregate: any = {
-          last_sequence_id: 1
+          last_sequence_id: 1,
+          financial_hold_jobs: {
+            id: {
+              status: 'started'
+            }
+          }
         };
         const eventData = {
           _id: 'id'
         };
+
         const event = new EventStore({
           type: EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED,
           aggregate_id: {
@@ -306,8 +311,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
 
         result.financial_hold_jobs.should.deep.equal({
           id: {
-            status: 'completed',
-            type: 'applied'
+            status: 'completed'
           }
         });
       });
@@ -316,7 +320,12 @@ describe('OrganisationJobWriteProjectionHandler', () => {
     describe('COMPLETE_CLEAR_FINANCIAL_HOLD Event', () => {
       it('Test when success', () => {
         const aggregate: any = {
-          last_sequence_id: 1
+          last_sequence_id: 1,
+          financial_hold_jobs: {
+            id: {
+              status: 'started'
+            }
+          }
         };
         const eventData = {
           _id: 'id'
@@ -344,8 +353,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
 
         result.financial_hold_jobs.should.deep.equal({
           id: {
-            status: 'completed',
-            type: 'cleared'
+            status: 'completed'
           }
         });
       });
@@ -354,7 +362,12 @@ describe('OrganisationJobWriteProjectionHandler', () => {
     describe('COMPLETE_INHERIT_FINANCIAL_HOLD Event', () => {
       it('Test when success', () => {
         const aggregate: any = {
-          last_sequence_id: 1
+          last_sequence_id: 1,
+          financial_hold_jobs: {
+            id: {
+              status: 'started'
+            }
+          }
         };
         const eventData = {
           _id: 'id'
@@ -382,8 +395,7 @@ describe('OrganisationJobWriteProjectionHandler', () => {
 
         result.financial_hold_jobs.should.deep.equal({
           id: {
-            status: 'completed',
-            type: 'apply_inherited'
+            status: 'completed'
           }
         });
       });
@@ -391,7 +403,12 @@ describe('OrganisationJobWriteProjectionHandler', () => {
 
     it('Test throw error when event not found', () => {
       const aggregate: any = {
-        last_sequence_id: 1
+        last_sequence_id: 1,
+        financial_hold_jobs: {
+          id: {
+            status: 'started'
+          }
+        }
       };
       const eventData: AgencyConsultantRoleEnabledEventStoreDataInterface = {
         _id: 'oops'

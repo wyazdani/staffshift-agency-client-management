@@ -133,7 +133,10 @@ export class SetFinancialHoldProcess implements ProcessInterface {
     const financialHold = this.processType === FinancialHoldProcessTypeEnum.APPLY;
 
     this.processAggregate = await this.processRepository.getAggregate(this.processAggregateId);
-    const agencyClient = await this.getAgencyClient(this.initiateEvent.data.client_id);
+    const agencyClient = await this.agencyClientRepository.getAggregate({
+      agency_id: this.initiateEvent.aggregate_id.agency_id,
+      client_id: this.initiateEvent.data.client_id
+    });
 
     const currentStatus = this.processAggregate.getCurrentStatus();
     const clientType = agencyClient.getClientType();
@@ -235,13 +238,6 @@ export class SetFinancialHoldProcess implements ProcessInterface {
       }
       throw error;
     }
-  }
-
-  private async getAgencyClient(clientId: string): Promise<AgencyClientAggregate> {
-    return await this.agencyClientRepository.getAggregate({
-      agency_id: this.initiateEvent.aggregate_id.agency_id,
-      client_id: clientId
-    });
   }
 
   /**
