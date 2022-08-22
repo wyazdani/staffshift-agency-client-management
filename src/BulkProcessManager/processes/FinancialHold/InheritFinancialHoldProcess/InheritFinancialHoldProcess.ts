@@ -168,7 +168,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     }
 
     if (clientType === 'site') {
-      await this.setFinancilaHoldOnAllWards(this.initiateEvent.data.client_id, parentFinancialHold);
+      await this.setFinancialHoldOnAllWards(this.initiateEvent.data.client_id, parentFinancialHold);
     } else {
       this.logger.info('It was ward, so there are no children.');
     }
@@ -209,7 +209,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   /**
    * apply inherited financial hold on all wards under the site id
    */
-  private async setFinancilaHoldOnAllWards(siteId: string, financialHold: boolean | null): Promise<void> {
+  private async setFinancialHoldOnAllWards(siteId: string, financialHold: boolean | null): Promise<void> {
     const wards = await AgencyClientsProjectionV2.getAllLinkedWards(
       this.initiateEvent.aggregate_id.agency_id,
       this.initiateEvent.aggregate_id.organisation_id,
