@@ -156,7 +156,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
       this.isProgressed(this.initiateEvent.data.client_id) ||
       (await this.retryableSetFinancialHold.setInheritedFinancialHold(
         this.initiateEvent.data.client_id,
-        parentFinancialHold.financial_hold, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
+        parentFinancialHold, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
         this.initiateEvent.data.note,
         true // we force it here since if it's not inherited, we make it inherited
       ));
@@ -168,7 +168,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     }
 
     if (clientType === 'site') {
-      await this.setFinancilaHoldOnAllWards(this.initiateEvent.data.client_id, parentFinancialHold.financial_hold);
+      await this.setFinancilaHoldOnAllWards(this.initiateEvent.data.client_id, parentFinancialHold);
     } else {
       this.logger.info('It was ward, so there are no children.');
     }
@@ -253,9 +253,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   /**
    * returns financial hold and note property from parent
    */
-  private async getParentFinancialHold(
-    agencyClientAggregate: AgencyClientAggregate
-  ): Promise<{financial_hold: boolean | null; note: string | null}> {
+  private async getParentFinancialHold(agencyClientAggregate: AgencyClientAggregate): Promise<boolean | null> {
     const parentId = agencyClientAggregate.getParentClientId();
 
     const parentFinancialHold = await this.financialHoldRepository.getAggregate({
@@ -264,9 +262,6 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
       client_id: parentId
     });
 
-    return {
-      financial_hold: parentFinancialHold.getFinancialHold(),
-      note: parentFinancialHold.getNote()
-    };
+    return parentFinancialHold.getFinancialHold();
   }
 }
