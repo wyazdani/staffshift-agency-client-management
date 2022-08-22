@@ -1,15 +1,15 @@
 import {LoggerContext} from 'a24-logzio-winston';
+import {FinancialHoldRepository} from '../../../aggregates/FinancialHold/FinancialHoldRepository';
+import {FinancialHoldWriteProjectionHandler} from '../../../aggregates/FinancialHold/FinancialHoldWriteProjectionHandler';
 import {AgencyRepository} from '../../../aggregates/Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../../../aggregates/Agency/AgencyWriteProjectionHandler';
 import {AgencyClientRepository} from '../../../aggregates/AgencyClient/AgencyClientRepository';
 import {AgencyClientWriteProjectionHandler} from '../../../aggregates/AgencyClient/AgencyClientWriteProjectionHandler';
 import {AgencyClientAggregateIdInterface} from '../../../aggregates/AgencyClient/types';
 import {CommandBus} from '../../../aggregates/CommandBus';
-import {PaymentTermRepository} from '../../../aggregates/PaymentTerm/PaymentTermRepository';
-import {PaymentTermWriteProjectionHandler} from '../../../aggregates/PaymentTerm/PaymentTermWriteProjectionHandler';
-import {PaymentTermCommandEnum} from '../../../aggregates/PaymentTerm/types';
-import {ApplyInheritedPaymentTermCommandInterface} from '../../../aggregates/PaymentTerm/types/CommandTypes';
 import {EventRepository} from '../../../EventRepository';
+import {SetInheritedFinancialHoldCommandInterface} from '../../../aggregates/FinancialHold/types/CommandTypes';
+import {FinancialHoldCommandEnum} from '../../../aggregates/FinancialHold/types';
 
 /**
  * receives the event for agency client linked or synced and then do the following:
@@ -48,41 +48,43 @@ export class FinancialHoldAgencyClientLinkPropagator {
     }
     const agencyId = aggregateId.agency_id;
     const clientId = aggregateId.client_id;
-    const paymentTermRepository = new PaymentTermRepository(
+    const financialHoldRepository = new FinancialHoldRepository(
       this.eventRepository,
-      new PaymentTermWriteProjectionHandler()
+      new FinancialHoldWriteProjectionHandler()
     );
     const commandBus = new CommandBus(this.eventRepository);
 
     if (payload.client_type === 'site') {
       // load parent's financial hold and then apply on the node
-      const parentAggregate = await paymentTermRepository.getAggregate({
-        name: 'payment_term',
+      const parentAggregate = await financialHoldRepository.getAggregate({
+        name: 'financial_hold',
         agency_id: agencyId,
         client_id: payload.organisation_id
       });
-      const parentPaymentTerm = parentAggregate.getPaymentTerm();
+      const parentFinancialHold = parentAggregate.getFinancialHold();
+      const parentFinancialHoldNote = parentAggregate.getNote();
 
       await commandBus.execute({
         aggregateId: {
-          name: 'payment_term',
+          name: 'financial_hold',
           agency_id: agencyId,
           client_id: clientId
         },
-        type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+        type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
         data: {
-          term: parentPaymentTerm,
-          force: true // we force it since we want to inherit from parent event even it was not inherited before
+          financial_hold: parentFinancialHold,
+          force: true, // we force it since we want to inherit from parent event even it was not inherited before
+          note: parentFinancialHoldNote
         }
-      } as ApplyInheritedPaymentTermCommandInterface);
+      } as SetInheritedFinancialHoldCommandInterface);
     } else {
       // Type is ward, now we need to load parent, check agency client aggregate
       // check if last linked event is after parent financial hold? if yes fine
       // otherwise load parent's parent
 
       // load parent's financial hold
-      const sitePaymentTerm = await paymentTermRepository.getAggregate({
-        name: 'payment_term',
+      const siteFinancialHold = await financialHoldRepository.getAggregate({
+        name: 'financial_hold',
         agency_id: agencyId,
         client_id: payload.site_id
       });
@@ -98,47 +100,49 @@ export class FinancialHoldAgencyClientLinkPropagator {
 
       /**
        * scenarios:
-       * - site pay term event is after agency client event => load from org aggregate
+       * - site financial hold event is after agency client event => load from org aggregate
        * - site financial hold aggregate is empty => load from org aggregate
        * - otherwise load from site aggregate
        */
       if (
-        siteAgencyClient.getLinkedDate() > sitePaymentTerm.getLastEventDate() ||
-        sitePaymentTerm.getLastEventDate() === null ||
+        siteAgencyClient.getLinkedDate() > siteFinancialHold.getLastEventDate() ||
+        siteFinancialHold.getLastEventDate() === null ||
         siteAgencyClient.getLinkedDate() === null
       ) {
         // we now need to go to organisation financial hold
-        const orgPaymentTerm = await paymentTermRepository.getAggregate({
-          name: 'payment_term',
+        const orgFinancialHold = await financialHoldRepository.getAggregate({
+          name: 'financial_hold',
           agency_id: agencyId,
           client_id: payload.organisation_id
         });
 
         await commandBus.execute({
           aggregateId: {
-            name: 'payment_term',
+            name: 'financial_hold',
             agency_id: agencyId,
             client_id: clientId
           },
-          type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+          type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
           data: {
-            term: orgPaymentTerm.getPaymentTerm(),
+            financial_hold: orgFinancialHold.getFinancialHold(),
+            note: orgFinancialHold.getNote(),
             force: true
           }
-        } as ApplyInheritedPaymentTermCommandInterface);
+        } as SetInheritedFinancialHoldCommandInterface);
       } else {
         await commandBus.execute({
           aggregateId: {
-            name: 'payment_term',
+            name: 'financial_hold',
             agency_id: agencyId,
             client_id: clientId
           },
-          type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+          type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
           data: {
-            term: sitePaymentTerm.getPaymentTerm(),
+            financial_hold: siteFinancialHold.getFinancialHold(),
+            note: siteFinancialHold.getNote(),
             force: true
           }
-        } as ApplyInheritedPaymentTermCommandInterface);
+        } as SetInheritedFinancialHoldCommandInterface);
       }
     }
   }

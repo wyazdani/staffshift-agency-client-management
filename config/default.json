@@ -211,7 +211,15 @@
           "projector": "./projections/AgencyClientFinancialHoldsProjectionV1/AgencyClientFinancialHoldsProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
-      }]
+      }, {
+        "name": "Financial Hold Agency Client Link",
+        "bindings": [{
+          "id": "financial-hold-agency-client-link",
+          "projector": "./event-store-listeners/FinancialHoldAgencyClientLink/FinancialHoldAgencyClientLinkListener",
+          "topicName": "ss.global.event.store.staffshift.agency.client.management",
+          "skipSeed": true
+        }]
+    }]
     }
   },
   "bulk_process_manager": {
