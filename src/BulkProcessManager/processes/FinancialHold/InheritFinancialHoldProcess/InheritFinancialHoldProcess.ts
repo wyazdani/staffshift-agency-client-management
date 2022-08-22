@@ -3,7 +3,6 @@ import {ValidationError} from 'a24-node-error-utils';
 import {AgencyClientApplyFinancialHoldInheritanceInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldInheritanceInitiatedEventInterface';
 import {find, get} from 'lodash';
 import {FinancialHoldRepository} from '../../../../aggregates/FinancialHold/FinancialHoldRepository';
-import {OrganisationJobWriteProjectionHandler} from '../../../../aggregates/OrganisationJob/OrganisationJobWriteProjectionHandler';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import {AgencyRepository} from '../../../../aggregates/Agency/AgencyRepository';
 import {AgencyWriteProjectionHandler} from '../../../../aggregates/Agency/AgencyWriteProjectionHandler';
@@ -28,6 +27,7 @@ import {ProcessInterface} from '../../../types/ProcessInterface';
 import {CommandBusHelper} from '../CommandBusHelper';
 import {RetryableSetFinancialHold} from '../RetryableSetFinancialHold';
 import {AgencyClientApplyFinancialHoldInitiatedEventStoreDataInterface} from 'EventTypes/AgencyClientApplyFinancialHoldInitiatedEventInterface';
+import {FinancialHoldWriteProjectionHandler} from '../../../../aggregates/FinancialHold/FinancialHoldWriteProjectionHandler';
 
 interface InheritFinancialHoldProcessOptsInterface {
   maxRetry: number;
@@ -89,7 +89,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     );
     this.financialHoldRepository = new FinancialHoldRepository(
       eventRepository,
-      new OrganisationJobWriteProjectionHandler()
+      new FinancialHoldWriteProjectionHandler()
     );
   }
 
