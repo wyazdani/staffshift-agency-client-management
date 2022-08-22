@@ -117,7 +117,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -135,7 +135,6 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetails('agency id', 'organisation id', 'site id', undefined)
         .should.be.rejectedWith(ValidationError, 'some validation message');
-      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'site');
     });
 
     it('test for validation error when downstream returns 400 status code with ward id and no site id', async () => {
@@ -147,7 +146,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -176,7 +175,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -206,7 +205,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -235,7 +234,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -263,7 +262,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -281,7 +280,6 @@ describe('FacadeClientHelper Class', () => {
       await client
         .getAgencyClientDetails('agency id', 'organisation id', 'site id', undefined)
         .should.be.rejectedWith(AuthorizationError, 'API token specified');
-      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'site');
     });
 
     it('test for authorization error when downstream returns 401 status code with ward id and no site id', async () => {
@@ -293,7 +291,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -322,7 +320,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -348,7 +346,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -373,7 +371,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -397,7 +395,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -422,7 +420,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -447,7 +445,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -477,7 +475,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -506,7 +504,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -534,7 +532,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -563,7 +561,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -592,7 +590,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -627,7 +625,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
@@ -664,7 +662,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId
       };
@@ -699,7 +697,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
@@ -720,7 +718,6 @@ describe('FacadeClientHelper Class', () => {
 
       assert.equal(result, apiResponse.body);
       assert.equal(listAgencyOrganisationLink.callCount, 1, 'listAgencyOrganisationLink not called');
-      assert.equal(listAgencyOrganisationLink.args[0][1]['agencyOrgType'], 'site');
     });
 
     it('success scenario with ward id and no site id', async () => {
@@ -737,7 +734,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'ward',
@@ -774,7 +771,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         siteId: 'site id',
