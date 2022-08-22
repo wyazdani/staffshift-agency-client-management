@@ -179,7 +179,7 @@ describe('InheritFinancialHoldProcess', () => {
         agency_id: agencyId,
         client_id: clientId
       });
-      setInheritedFinancialHold.should.have.been.calledOnceWith(wardA, true, undefined);
+      setInheritedFinancialHold.should.have.been.calledOnceWith(wardA, true, 'oops');
       getFinancialHoldAggregate.should.have.been.calledOnceWith({
         name: 'financial_hold',
         agency_id: agencyId,
@@ -458,7 +458,7 @@ describe('InheritFinancialHoldProcess', () => {
         agency_id: agencyId,
         client_id: clientId
       });
-      setInheritedFinancialHold.should.have.been.calledOnceWith(wardA, true, undefined);
+      setInheritedFinancialHold.should.have.been.calledOnceWith(wardA, true, 'oops');
       getFinancialHoldAggregate.should.have.been.calledOnceWith({
         name: 'financial_hold',
         agency_id: agencyId,

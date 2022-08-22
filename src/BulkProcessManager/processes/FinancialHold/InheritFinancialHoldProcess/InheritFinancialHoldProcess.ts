@@ -157,7 +157,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
       (await this.retryableSetFinancialHold.setInheritedFinancialHold(
         this.initiateEvent.data.client_id,
         parentFinancialHold.financial_hold, // parent financial hold can be null, which means on parent we don't have any financial hold configuration. we need to propagate the null to the children
-        parentFinancialHold.note,
+        this.initiateEvent.data.note,
         true // we force it here since if it's not inherited, we make it inherited
       ));
 
@@ -168,11 +168,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
     }
 
     if (clientType === 'site') {
-      await this.setFinancilaHoldOnAllWards(
-        this.initiateEvent.data.client_id,
-        parentFinancialHold.financial_hold,
-        parentFinancialHold.note
-      );
+      await this.setFinancilaHoldOnAllWards(this.initiateEvent.data.client_id, parentFinancialHold.financial_hold);
     } else {
       this.logger.info('It was ward, so there are no children.');
     }
@@ -213,11 +209,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   /**
    * apply inherited financial hold on all wards under the site id
    */
-  private async setFinancilaHoldOnAllWards(
-    siteId: string,
-    financialHold: boolean | null,
-    financialHoldNote: string | null
-  ): Promise<void> {
+  private async setFinancilaHoldOnAllWards(siteId: string, financialHold: boolean | null): Promise<void> {
     const wards = await AgencyClientsProjectionV2.getAllLinkedWards(
       this.initiateEvent.aggregate_id.agency_id,
       this.initiateEvent.aggregate_id.organisation_id,
@@ -230,7 +222,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
           await this.retryableSetFinancialHold.setInheritedFinancialHold(
             ward.client_id,
             financialHold,
-            financialHoldNote,
+            this.initiateEvent.data.note,
             false // we set force to false, since if the ward is not inherited we don't want to apply financial hold
           )
         ) {
