@@ -1045,11 +1045,11 @@ describe('FacadeClientHelper Class', () => {
 
   describe('getInstance()', () => {
 
-    it.only('success when using correct client config', async () => {
+    it('success when using correct client config', async () => {
       const clientApi = new StaffshiftFacadeClient.ApiClient();
-      const configStub=sinon.stub(clientConfig, 'request_options').returns(clientConfig.request_options);
+      const configStub = sinon.stub(clientConfig, 'request_options').returns(clientConfig.request_options);
       const requestOptions = clientConfig.request_options;
-      const clientApiStub=sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
+      const clientApiStub = sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
 
       clientApi.basePath=`${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
       clientApi.timeout=clientConfig.request_timeout;
@@ -1058,14 +1058,14 @@ describe('FacadeClientHelper Class', () => {
       assert.equal(result, clientApi);
     });
 
-    it.only('failure when using incorrect client config', async () => {
+    it('failure when using incorrect client config', async () => {
       const clientApi = new StaffshiftFacadeClient.ApiClient();
       const requestOptions:any = {};
       const clientApiStub=sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
       const configStub=sinon.stub(clientConfig, 'request_options').returns({});
 
-      clientApi.basePath=`${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
-      clientApi.timeout=clientConfig.request_timeout;
+      clientApi.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
+      clientApi.timeout = clientConfig.request_timeout;
       const result=FacadeClientHelper.getInstance();
 
       assert.equal(result, clientApi);

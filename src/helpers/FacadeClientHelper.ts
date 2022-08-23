@@ -17,6 +17,7 @@ const clientConfig = config.get<HttpServiceConfigurationInterface>('a24-staffshi
  * Will expose the client functions to the rest of the application
  */
 export class FacadeClientHelper {
+
   /**
    * Constructor
    *
