@@ -111,6 +111,7 @@
         "format": ["PascalCase"],
         "suffix": ["Type"]
       }
-    ]
+    ],
+    "space-infix-ops": ["error"]
   }
 }
