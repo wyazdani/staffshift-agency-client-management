@@ -30,7 +30,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -60,7 +60,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -89,7 +89,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType=
+      const requestOptions:ListAgencyOrgLinkOptionsType =
       {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
@@ -1051,9 +1051,9 @@ describe('FacadeClientHelper Class', () => {
       const requestOptions = clientConfig.request_options;
       const clientApiStub = sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
 
-      clientApi.basePath=`${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
-      clientApi.timeout=clientConfig.request_timeout;
-      const result=FacadeClientHelper.getInstance();
+      clientApi.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
+      clientApi.timeout = clientConfig.request_timeout;
+      const result = FacadeClientHelper.getInstance();
 
       assert.equal(result, clientApi);
     });
@@ -1061,12 +1061,12 @@ describe('FacadeClientHelper Class', () => {
     it('failure when using incorrect client config', async () => {
       const clientApi = new StaffshiftFacadeClient.ApiClient();
       const requestOptions:any = {};
-      const clientApiStub=sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
-      const configStub=sinon.stub(clientConfig, 'request_options').returns({});
+      const clientApiStub = sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
+      const configStub = sinon.stub(clientConfig, 'request_options').returns({});
 
       clientApi.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
       clientApi.timeout = clientConfig.request_timeout;
-      const result=FacadeClientHelper.getInstance();
+      const result = FacadeClientHelper.getInstance();
 
       assert.equal(result, clientApi);
     });
