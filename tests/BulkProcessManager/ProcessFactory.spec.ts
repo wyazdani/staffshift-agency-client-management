@@ -2,6 +2,8 @@ import sinon from 'sinon';
 import {ConsultantAssignProcess} from '../../src/BulkProcessManager/processes/ConsultantAssignProcess/ConsultantAssignProcess';
 import {ConsultantTransferProcess} from '../../src/BulkProcessManager/processes/ConsultantTransferProcess/ConsultantTransferProcess';
 import {ConsultantUnassignProcess} from '../../src/BulkProcessManager/processes/ConsultantUnassignProcess/ConsultantUnassignProcess';
+import {InheritFinancialHoldProcess} from '../../src/BulkProcessManager/processes/FinancialHold/InheritFinancialHoldProcess/InheritFinancialHoldProcess';
+import {SetFinancialHoldProcess} from '../../src/BulkProcessManager/processes/FinancialHold/SetFinancialHoldProcess/SetFinancialHoldProcess';
 import {ApplyPaymentTermProcess} from '../../src/BulkProcessManager/processes/PaymentTerm/ApplyPaymentTermProcess/ApplyPaymentTermProcess';
 import {InheritPaymentTermProcess} from '../../src/BulkProcessManager/processes/PaymentTerm/InheritPaymentTermProcess/InheritPaymentTermProcess';
 import {ProcessFactory} from '../../src/BulkProcessManager/ProcessFactory';
@@ -56,6 +58,33 @@ describe('ProcessFactory', () => {
       );
 
       process.should.be.instanceof(InheritPaymentTermProcess);
+    });
+
+    it('Test AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED', () => {
+      const process = ProcessFactory.getProcess(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED
+      );
+
+      process.should.be.instanceof(SetFinancialHoldProcess);
+    });
+
+    it('Test AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED', () => {
+      const process = ProcessFactory.getProcess(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED
+      );
+
+      process.should.be.instanceof(SetFinancialHoldProcess);
+    });
+
+    it('Test AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED', () => {
+      const process = ProcessFactory.getProcess(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED
+      );
+
+      process.should.be.instanceof(InheritFinancialHoldProcess);
     });
 
     it('Test not found', () => {
