@@ -61,8 +61,6 @@ export class FinancialHoldAgencyClientLinkPropagator {
         agency_id: agencyId,
         client_id: payload.organisation_id
       });
-      const parentFinancialHold = parentAggregate.getFinancialHold();
-      const parentFinancialHoldNote = parentAggregate.getNote();
 
       await commandBus.execute({
         aggregateId: {
@@ -72,9 +70,9 @@ export class FinancialHoldAgencyClientLinkPropagator {
         },
         type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
         data: {
-          financial_hold: parentFinancialHold,
-          force: true, // we force it since we want to inherit from parent event even it was not inherited before
-          note: parentFinancialHoldNote
+          financial_hold: parentAggregate.getFinancialHold(),
+          force: true, // we force it since we want to inherit from parent financial hold even it was not inherited before
+          note: parentAggregate.getNote()
         }
       } as SetInheritedFinancialHoldCommandInterface);
     } else {
