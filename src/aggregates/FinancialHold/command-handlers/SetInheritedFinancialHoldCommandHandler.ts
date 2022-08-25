@@ -35,6 +35,7 @@ export class SetInheritedFinancialHoldCommandHandler implements FinancialHoldCom
       note = command.data.note;
     } else {
       type = EventsEnum.AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED;
+      note = command.data.note;
     }
 
     let eventId = aggregate.getLastSequenceId();
