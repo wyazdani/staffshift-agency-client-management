@@ -18,6 +18,9 @@ describe('AgencyClientEmptyFinancialHoldInheritedEventHandler', () => {
         aggregate_id: {
           agency_id: agencyId,
           client_id: clientId
+        },
+        data: {
+          note: 'sample'
         }
       };
       const updateOne = sinon.stub(AgencyClientFinancialHoldsProjection, 'updateOne').resolves();
@@ -32,10 +35,8 @@ describe('AgencyClientEmptyFinancialHoldInheritedEventHandler', () => {
         {
           $set: {
             inherited: true,
-            financial_hold: FINANCIAL_HOLD_PROJECTION_ENUM.NOT_SET
-          },
-          $unset: {
-            note: 1
+            financial_hold: FINANCIAL_HOLD_PROJECTION_ENUM.NOT_SET,
+            note: 'sample'
           }
         },
         {

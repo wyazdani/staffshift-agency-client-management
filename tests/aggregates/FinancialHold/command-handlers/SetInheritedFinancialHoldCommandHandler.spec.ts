@@ -98,7 +98,8 @@ describe('SetInheritedFinancialHoldCommandHandler class', () => {
         type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
         data: {
           financial_hold: null,
-          force: false
+          force: false,
+          note
         }
       };
       const repository = stubInterface<FinancialHoldRepository>();
@@ -117,7 +118,7 @@ describe('SetInheritedFinancialHoldCommandHandler class', () => {
         {
           type: EventsEnum.AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED,
           aggregate_id: aggregate.getId(),
-          data: {},
+          data: {note},
           sequence_id: 2
         }
       ]);
