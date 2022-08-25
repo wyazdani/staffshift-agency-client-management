@@ -629,7 +629,9 @@ describe('FacadeClientHelper Class', () => {
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
-        siteId: 'site id'
+        siteId: 'site id',
+        agencyId: 'agency id',
+        organisationId: 'organisation id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -664,7 +666,10 @@ describe('FacadeClientHelper Class', () => {
       const client = new FacadeClientHelper(logger);
       const requestOptions:ListAgencyOrgLinkOptionsType =
       {
-        xRequestId: logger.requestId
+        xRequestId: logger.requestId,
+        agencyId: 'agency id',
+        organisationId: 'organisation id',
+        agencyOrgType: 'organisation'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -701,7 +706,9 @@ describe('FacadeClientHelper Class', () => {
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
-        siteId: 'site id'
+        siteId: 'site id',
+        agencyId: 'agency id',
+        organisationId: 'organisation id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -738,7 +745,9 @@ describe('FacadeClientHelper Class', () => {
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'ward',
-        wardId: 'ward id'
+        wardId: 'ward id',
+        agencyId: 'agency id',
+        organisationId: 'organisation id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -776,7 +785,9 @@ describe('FacadeClientHelper Class', () => {
         xRequestId: logger.requestId,
         siteId: 'site id',
         agencyOrgType: 'ward',
-        wardId: 'ward id'
+        wardId: 'ward id',
+        agencyId: 'agency id',
+        organisationId: 'organisation id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -1047,28 +1058,14 @@ describe('FacadeClientHelper Class', () => {
 
     it('success when using correct client config', async () => {
       const clientApi = new StaffshiftFacadeClient.ApiClient();
-      const configStub = sinon.stub(clientConfig, 'request_options').returns(clientConfig.request_options);
       const requestOptions = clientConfig.request_options;
-      const clientApiStub = sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
 
       clientApi.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
       clientApi.timeout = clientConfig.request_timeout;
       const result = FacadeClientHelper.getInstance();
 
-      assert.equal(result, clientApi);
-    });
-
-    it('failure when using incorrect client config', async () => {
-      const clientApi = new StaffshiftFacadeClient.ApiClient();
-      const requestOptions:any = {};
-      const clientApiStub = sinon.stub(StaffshiftFacadeClient, 'ApiClient').returns(clientApi);
-      const configStub = sinon.stub(clientConfig, 'request_options').returns({});
-
-      clientApi.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
-      clientApi.timeout = clientConfig.request_timeout;
-      const result = FacadeClientHelper.getInstance();
-
-      assert.equal(result, clientApi);
+      assert.deepEqual(result.basePath, clientApi.basePath);
+      assert.deepEqual(result.timeout, clientApi.timeout);
     });
 
   });
