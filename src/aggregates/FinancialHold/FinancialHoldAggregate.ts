@@ -32,8 +32,8 @@ export class FinancialHoldAggregate extends AbstractAggregate<
    * returns the current financial hold
    * null means nothing is set
    */
-  getFinancialHold(): boolean | null {
-    return this.aggregate.financial_hold || null;
+  getFinancialHold(): boolean {
+    return this.aggregate.financial_hold;
   }
 
   /**
