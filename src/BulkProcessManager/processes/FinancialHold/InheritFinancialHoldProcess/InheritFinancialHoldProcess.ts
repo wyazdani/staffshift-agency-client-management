@@ -253,7 +253,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
   /**
    * returns financial hold property from parent
    */
-  private async getParentFinancialHold(agencyClientAggregate: AgencyClientAggregate): Promise<boolean> {
+  private async getParentFinancialHold(agencyClientAggregate: AgencyClientAggregate): Promise<boolean | null> {
     const parentId = agencyClientAggregate.getParentClientId();
 
     const parentFinancialHold = await this.financialHoldRepository.getAggregate({

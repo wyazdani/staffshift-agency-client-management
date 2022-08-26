@@ -1,6 +1,7 @@
 import {ValidationError} from 'a24-node-error-utils';
 import {FinancialHoldAggregateIdInterface, FinancialHoldAggregateRecordInterface} from './types';
 import {AbstractAggregate} from '../AbstractAggregate';
+import {isBoolean} from 'lodash';
 
 export class FinancialHoldAggregate extends AbstractAggregate<
   FinancialHoldAggregateIdInterface,
@@ -32,8 +33,8 @@ export class FinancialHoldAggregate extends AbstractAggregate<
    * returns the current financial hold
    * null means nothing is set
    */
-  getFinancialHold(): boolean {
-    return this.aggregate.financial_hold;
+  getFinancialHold(): boolean | null {
+    return isBoolean(this.aggregate.financial_hold) ? this.aggregate.financial_hold : null;
   }
 
   /**
