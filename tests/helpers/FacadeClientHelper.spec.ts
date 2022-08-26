@@ -1061,8 +1061,8 @@ describe('FacadeClientHelper Class', () => {
 
       const result = FacadeClientHelper.getInstance();
 
-      assert.equal(result.basePath, `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`);
-      assert.equal(result.timeout, clientConfig.request_timeout);
+      assert.deepEqual(result.basePath, `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`);
+      assert.deepEqual(result.timeout, clientConfig.request_timeout);
     });
 
   });
