@@ -1057,15 +1057,12 @@ describe('FacadeClientHelper Class', () => {
   describe('getInstance()', () => {
 
     it('success when using correct client config', async () => {
-      const clientApi = new StaffshiftFacadeClient.ApiClient();
       const requestOptions = clientConfig.request_options;
 
-      clientApi.basePath = `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`;
-      clientApi.timeout = clientConfig.request_timeout;
       const result = FacadeClientHelper.getInstance();
 
-      assert.equal(result.basePath, clientApi.basePath);
-      assert.equal(result.timeout, clientApi.timeout);
+      assert.equal(result.basePath, `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`);
+      assert.equal(result.timeout, clientConfig.request_timeout);
     });
 
   });
