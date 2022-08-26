@@ -629,9 +629,7 @@ describe('FacadeClientHelper Class', () => {
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
-        siteId: 'site id',
-        agencyId: 'agency id',
-        organisationId: 'organisation id'
+        siteId: 'site id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -666,10 +664,7 @@ describe('FacadeClientHelper Class', () => {
       const client = new FacadeClientHelper(logger);
       const requestOptions:ListAgencyOrgLinkOptionsType =
       {
-        xRequestId: logger.requestId,
-        agencyId: 'agency id',
-        organisationId: 'organisation id',
-        agencyOrgType: 'organisation'
+        xRequestId: logger.requestId
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -706,9 +701,7 @@ describe('FacadeClientHelper Class', () => {
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
-        siteId: 'site id',
-        agencyId: 'agency id',
-        organisationId: 'organisation id'
+        siteId: 'site id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -745,9 +738,7 @@ describe('FacadeClientHelper Class', () => {
       {
         xRequestId: logger.requestId,
         agencyOrgType: 'ward',
-        wardId: 'ward id',
-        agencyId: 'agency id',
-        organisationId: 'organisation id'
+        wardId: 'ward id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
@@ -785,9 +776,7 @@ describe('FacadeClientHelper Class', () => {
         xRequestId: logger.requestId,
         siteId: 'site id',
         agencyOrgType: 'ward',
-        wardId: 'ward id',
-        agencyId: 'agency id',
-        organisationId: 'organisation id'
+        wardId: 'ward id'
       };
       const listAgencyOrganisationLink = sinon.spy((_authorization, _options, clb) => {
         assert.deepStrictEqual(_authorization, `token ${clientConfig.api_token}`);
