@@ -1058,7 +1058,6 @@ describe('FacadeClientHelper Class', () => {
 
     it('success when using correct client config', async () => {
       const requestOptions = clientConfig.request_options;
-
       const result = FacadeClientHelper.getInstance();
 
       assert.deepEqual(result.basePath, `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`);
