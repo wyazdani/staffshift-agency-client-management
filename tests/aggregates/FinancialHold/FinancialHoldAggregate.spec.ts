@@ -76,6 +76,15 @@ describe('FinancialHoldAggregate', () => {
       financialHoldAggregate.getFinancialHold().should.be.false;
     });
 
+    it('Test returns null when it is not set', async () => {
+      const aggregate = {
+        last_sequence_id: 0
+      };
+      const financialHoldAggregate = new FinancialHoldAggregate(aggregateId, aggregate);
+
+      (financialHoldAggregate.getFinancialHold() === null).should.be.true;
+    });
+
     it('Test returns financial hold', async () => {
       const aggregate: FinancialHoldAggregateRecordInterface = {
         last_sequence_id: 1,
