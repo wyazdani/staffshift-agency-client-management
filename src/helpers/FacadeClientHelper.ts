@@ -51,7 +51,6 @@ export class FacadeClientHelper {
     options.agencyOrgType = 'organisation';
     options.agencyId = agencyId;
     options.organisationId = organisationId;
-    //if options isn't defined, it won't create agencyId,agencyOrgType and organisationId properties #https://github.com/A24Group/staffshift-agency-client-management/issues/245
 
     if (siteId) {
       options['siteId'] = siteId;
