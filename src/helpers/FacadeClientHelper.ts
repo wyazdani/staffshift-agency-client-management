@@ -17,6 +17,7 @@ const clientConfig = config.get<HttpServiceConfigurationInterface>('a24-staffshi
  * Will expose the client functions to the rest of the application
  */
 export class FacadeClientHelper {
+
   /**
    * Constructor
    *
@@ -50,6 +51,7 @@ export class FacadeClientHelper {
         agencyOrgType: 'organisation'
       };
     }
+    //if options isn't defined, it won't create agencyId,agencyOrgType and organisationId properties #https://github.com/A24Group/staffshift-agency-client-management/issues/245
 
     if (siteId) {
       options['siteId'] = siteId;
@@ -101,7 +103,6 @@ export class FacadeClientHelper {
               return reject(new RuntimeError(item.message, error));
             }
             item = new RuntimeError('An error occurred during the agency client data get call', error);
-
             return reject(item);
           }
           this.logger.debug('The agency client GET call to staffshift facade service has been completed successfully', {
