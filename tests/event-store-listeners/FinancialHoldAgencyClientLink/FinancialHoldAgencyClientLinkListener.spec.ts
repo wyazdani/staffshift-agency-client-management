@@ -1,31 +1,15 @@
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 import sinon, {stubInterface} from 'ts-sinon';
+import {EventHandlerFactory} from '../../../src/event-store-listeners/FinancialHoldAgencyClientLink/EventHandlerFactory';
+import FinancialHoldAgencyClientLinkListener from '../../../src/event-store-listeners/FinancialHoldAgencyClientLink/FinancialHoldAgencyClientLinkListener';
+import {EventRepository} from '../../../src/EventRepository';
 import {EventsEnum} from '../../../src/Events';
-import BulkProcessManagerProjector from '../../../src/projections/BulkProcessManagerV1/BulkProcessManagerProjector';
-import {EventHandlerFactory} from '../../../src/projections/BulkProcessManagerV1/EventHandlerFactory';
 import {EventHandlerInterface} from '../../../src/types/EventHandlerInterface';
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
-const events = [
-  EventsEnum.CONSULTANT_JOB_ASSIGN_INITIATED,
-  EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED,
-  EventsEnum.CONSULTANT_JOB_UNASSIGN_INITIATED,
-  EventsEnum.CONSULTANT_JOB_UNASSIGN_COMPLETED,
-  EventsEnum.CONSULTANT_JOB_TRANSFER_INITIATED,
-  EventsEnum.CONSULTANT_JOB_TRANSFER_COMPLETED,
-  EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED,
-  EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_COMPLETED,
-  EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_INITIATED,
-  EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INHERITANCE_COMPLETED,
-  EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INITIATED,
-  EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_COMPLETED,
-  EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INITIATED,
-  EventsEnum.AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_COMPLETED,
-  EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_INITIATED,
-  EventsEnum.AGENCY_CLIENT_APPLY_FINANCIAL_HOLD_INHERITANCE_COMPLETED
-];
+const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
-describe('BulkProcessManagerProjector class', () => {
+describe('FinancialHoldAgencyClientLinkListener class', () => {
   afterEach(() => {
     sinon.restore();
   });
@@ -33,7 +17,7 @@ describe('BulkProcessManagerProjector class', () => {
     it('Test ignore not related events', async () => {
       const getHandler = sinon.stub(EventHandlerFactory, 'getHandler');
       const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const projector = new BulkProcessManagerProjector();
+      const projector = new FinancialHoldAgencyClientLinkListener();
 
       await projector.project(logger, {
         type: 'sample'
@@ -50,17 +34,20 @@ describe('BulkProcessManagerProjector class', () => {
         handler.handle.resolves();
         const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
         const logger = TestUtilsLogger.getLogger(sinon.spy());
-        const projector = new BulkProcessManagerProjector();
+        const projector = new FinancialHoldAgencyClientLinkListener();
 
         await projector.project(logger, event);
-        getHandler.should.have.been.calledWith(event.type, logger);
+        getHandler.getCall(0).args[0].should.equal(event.type);
+        getHandler.getCall(0).args[1].should.equal(logger);
+        getHandler.getCall(0).args[2].should.be.instanceOf(EventRepository);
+        getHandler.should.have.been.calledOnce;
         handler.handle.should.have.been.calledWith(event);
       });
     }
 
     it('Test rejects the promise in case of error', async () => {
       const event: any = {
-        type: EventsEnum.CONSULTANT_JOB_ASSIGN_COMPLETED
+        type: events[0]
       };
       const handler = stubInterface<EventHandlerInterface<EventStorePubSubModelInterface>>();
       const error = new Error('sample error');
@@ -68,10 +55,13 @@ describe('BulkProcessManagerProjector class', () => {
       handler.handle.rejects(error);
       const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
       const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const projector = new BulkProcessManagerProjector();
+      const projector = new FinancialHoldAgencyClientLinkListener();
 
       await projector.project(logger, event).should.have.been.rejectedWith(error);
-      getHandler.should.have.been.calledWith(event.type, logger);
+      getHandler.getCall(0).args[0].should.equal(event.type);
+      getHandler.getCall(0).args[1].should.equal(logger);
+      getHandler.getCall(0).args[2].should.be.instanceOf(EventRepository);
+      getHandler.should.have.been.calledOnce;
       handler.handle.should.have.been.calledWith(event);
     });
   });
