@@ -41,7 +41,10 @@ export enum EventsEnum {
   AGENCY_CLIENT_FINANCIAL_HOLD_INHERITED = 'AgencyClientFinancialHoldInherited',
   AGENCY_CLIENT_FINANCIAL_HOLD_CLEARED = 'AgencyClientFinancialHoldCleared',
   AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INHERITED = 'AgencyClientClearFinancialHoldInherited',
-  AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED = 'AgencyClientEmptyFinancialHoldInherited'
+  AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED = 'AgencyClientEmptyFinancialHoldInherited',
+  AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET = 'AgencyClientRequiresPONumberSet',
+  AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset'
+
 }
 
 type EventsType = {
@@ -222,5 +225,15 @@ export const events: EventsType = {
     name: 'AgencyClientEmptyFinancialHoldInherited',
     description:
       'empty financial hold for agency client is inherited from the parent since no financial hold was set on the parent'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET]: {
+    name: 'AgencyClientRequiresPONumberSet',
+    description:
+      'set requires po number for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET]: {
+    name: 'AgencyClientRequiresPONumberUnset',
+    description:
+    'unset requires po number for agency client'
   }
 };
