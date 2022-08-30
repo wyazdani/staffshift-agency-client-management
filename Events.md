@@ -1967,8 +1967,15 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
-  "additionalProperties": false,
-  "properties": {}
+  "properties": {
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "note"
+  ],
+  "additionalProperties": false
 }
 ```
 

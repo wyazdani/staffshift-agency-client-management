@@ -20,10 +20,8 @@ implements
       {
         $set: {
           inherited: true,
-          financial_hold: FINANCIAL_HOLD_PROJECTION_ENUM.NOT_SET
-        },
-        $unset: {
-          note: 1 // We unset the note since an empty financial hold inherited event never have any note on it
+          financial_hold: FINANCIAL_HOLD_PROJECTION_ENUM.NOT_SET,
+          note: event.data.note
         }
       },
       {
