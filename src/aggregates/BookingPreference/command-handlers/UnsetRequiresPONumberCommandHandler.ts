@@ -2,7 +2,7 @@ import {AgencyClientRequiresPONumberUnsetEventInterface} from 'EventTypes';
 import {EventsEnum} from '../../../Events';
 import {BookingPreferenceRepository} from '../BookingPreferenceRepository';
 import {BookingPreferenceCommandEnum} from '../types';
-import {SetRequiresPONumberCommandInterface} from '../types/CommandTypes';
+import {UnsetRequiresPONumberCommandInterface} from '../types/CommandTypes';
 import {BookingPreferenceCommandHandlerInterface} from '../types/BookingPreferenceCommandHandlerInterface';
 
 export class UnsetRequiresPONumberCommandHandler implements BookingPreferenceCommandHandlerInterface {
@@ -10,7 +10,7 @@ export class UnsetRequiresPONumberCommandHandler implements BookingPreferenceCom
 
   constructor(private repository: BookingPreferenceRepository) {}
 
-  async execute(command: SetRequiresPONumberCommandInterface): Promise<void> {
+  async execute(command: UnsetRequiresPONumberCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateUnsetRequiresPONumber();
