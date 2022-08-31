@@ -16,7 +16,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
   /**
    * checks if requires_po_number is not set
    */
-  validateSetRequiresPONumber(): void {
+  async validateSetRequiresPONumber(): Promise<void> {
     if (this.aggregate.requires_po_number === true) {
       throw new ValidationError('PO Number is already set').setErrors([
         {
@@ -30,7 +30,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
   /**
    * checks if requires_po_number is not unset
    */
-  validateUnsetRequiresPONumber(): void {
+  async validateUnsetRequiresPONumber(): Promise<void> {
     if (this.aggregate.requires_po_number === false) {
       throw new ValidationError('PO Number is not set').setErrors([
         {
