@@ -1,10 +1,18 @@
-import {ApplyInheritedPaymentTermCommandHandler, ApplyPaymentTermCommandHandler} from './command-handlers';
+import {
+  ApplyInheritedPaymentTermCommandHandler,
+  ApplyPaymentTermCommandHandler,
+  InheritPaymentTermForNewClientLinkCommandHandler
+} from './command-handlers';
 import {PaymentTermRepository} from './PaymentTermRepository';
 import {EventRepository} from '../../EventRepository';
 import {PaymentTermWriteProjectionHandler} from './PaymentTermWriteProjectionHandler';
 import {PaymentTermCommandHandlerInterface} from './types/PaymentTermCommandHandlerInterface';
 
-const handlers = [ApplyPaymentTermCommandHandler, ApplyInheritedPaymentTermCommandHandler];
+const handlers = [
+  ApplyPaymentTermCommandHandler,
+  ApplyInheritedPaymentTermCommandHandler,
+  InheritPaymentTermForNewClientLinkCommandHandler
+];
 
 /**
  * Responsible for routing all commands to their corresponding handlers
