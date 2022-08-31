@@ -1,7 +1,3 @@
-import {AgencyClientClearFinancialHoldInheritedEventStoreDataInterface} from 'EventTypes/AgencyClientClearFinancialHoldInheritedEventInterface';
-import {AgencyClientFinancialHoldAppliedEventStoreDataInterface} from 'EventTypes/AgencyClientFinancialHoldAppliedEventInterface';
-import {AgencyClientFinancialHoldClearedEventStoreDataInterface} from 'EventTypes/AgencyClientFinancialHoldClearedEventInterface';
-import {AgencyClientFinancialHoldInheritedEventStoreDataInterface} from 'EventTypes/AgencyClientFinancialHoldInheritedEventInterface';
 import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
 import {EventStoreModelInterface} from '../../models/EventStore';

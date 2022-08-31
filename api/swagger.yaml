@@ -661,6 +661,62 @@ paths:
       summary: "Initiate Inherit financial hold to client"
       tags:
         - "Financial Hold"
+  /agency/{agency_id}/client/{client_id}/booking-preference/requires-po-number:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "setRequiresPONumber"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        202:
+          description: "Will Set requires PO Number"
+          schema:
+            $ref: "#/definitions/empty_payload_def"
+        400:
+          description: "Validation error."
+          schema:
+            $ref: "#/definitions/empty_payload_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Will Set requires PO Number"
+      tags:
+        - "Booking Preferences"
+    delete:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "unsetRequiresPONumber"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        202:
+          description: "Will Unset requires PO Number"
+          schema:
+            $ref: "#/definitions/empty_payload_def"
+        400:
+          description: "Validation error."
+          schema:
+            $ref: "#/definitions/empty_payload_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Will Unset requires PO Number"
+      tags:
+        - "Booking Preferences"
 parameters:
  # Query PARAMS
   query_client_type:

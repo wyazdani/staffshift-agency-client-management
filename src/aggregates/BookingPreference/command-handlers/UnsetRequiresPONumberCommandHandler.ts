@@ -5,9 +5,6 @@ import {BookingPreferenceCommandEnum} from '../types';
 import {SetRequiresPONumberCommandInterface} from '../types/CommandTypes';
 import {BookingPreferenceCommandHandlerInterface} from '../types/BookingPreferenceCommandHandlerInterface';
 
-/**
- * `requires_po_number` is required and we will pick it from the command
- */
 export class UnsetRequiresPONumberCommandHandler implements BookingPreferenceCommandHandlerInterface {
   public commandType = BookingPreferenceCommandEnum.UNSET_REQUIRES_PO_NUMBER;
 
