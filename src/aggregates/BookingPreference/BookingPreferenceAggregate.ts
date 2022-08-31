@@ -1,7 +1,7 @@
 import {BookingPreferenceAggregateIdInterface, BookingPreferenceAggregateRecordInterface} from './types';
 import {AbstractAggregate} from '../AbstractAggregate';
 
-export class FinancialHoldAggregate extends AbstractAggregate<
+export class BookingPreferenceAggregate extends AbstractAggregate<
   BookingPreferenceAggregateIdInterface,
   BookingPreferenceAggregateRecordInterface
 > {
@@ -10,5 +10,13 @@ export class FinancialHoldAggregate extends AbstractAggregate<
     protected aggregate: BookingPreferenceAggregateRecordInterface
   ) {
     super(id, aggregate);
+  }
+
+  /**
+   * returns the current financial hold
+   * null means nothing is set
+   */
+  getRequiresPONumber(): boolean | null {
+    return this.aggregate.requires_po_number;
   }
 }
