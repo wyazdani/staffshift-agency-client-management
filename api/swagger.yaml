@@ -1653,7 +1653,6 @@ definitions:
           - MODEL_VALIDATION_FAILED
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
-          - ENUM_MISMATCH
       message:
         type: string
       errors:
@@ -1673,7 +1672,6 @@ definitions:
                 - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
-                - ENUM_MISMATCH
                 - MIN_LENGTH
                 - MAX_LENGTH
             message:
@@ -1699,7 +1697,6 @@ definitions:
           - MODEL_VALIDATION_FAILED
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
-          - ENUM_MISMATCH
       message:
         type: string
       errors:
@@ -1719,7 +1716,6 @@ definitions:
                 - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
-                - ENUM_MISMATCH
                 - INVALID_CLIENT_TYPE
                 - MIN_LENGTH
                 - MAX_LENGTH
