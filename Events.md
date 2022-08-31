@@ -2008,4 +2008,112 @@ Description: A short description of the event
 ```
 
  </td><td> empty financial hold for agency client is inherited from the parent since no financial hold was set on the parent </td></tr>
+<tr><td> AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET </td><td> AgencyClientRequiresPONumberSet </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "requires_po_number": {
+      "type": "boolean"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "requires_po_number",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> set requires po number for agency client </td></tr>
+<tr><td> AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET </td><td> AgencyClientRequiresPONumberUnset </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "requires_po_number": {
+      "type": "boolean"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "requires_po_number",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> unset requires po number for agency client </td></tr>
 </table><!--DATA_END-->
