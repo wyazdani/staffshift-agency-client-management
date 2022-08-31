@@ -1,1 +1,2 @@
-export * from './SetRequiresPoNumberCommandInterface';
+export * from './SetRequiresPONumberCommandInterface';
+export * from './UnsetRequiresPONumberCommandInterface';

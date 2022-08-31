@@ -41,4 +41,6 @@ export {AgencyClientApplyFinancialHoldInitiatedEventInterface} from './AgencyCli
 export {AgencyClientApplyFinancialHoldInheritanceInitiatedEventInterface} from './AgencyClientApplyFinancialHoldInheritanceInitiatedEventInterface';
 export {AgencyClientClearFinancialHoldCompletedEventInterface} from './AgencyClientClearFinancialHoldCompletedEventInterface';
 export {AgencyClientClearFinancialHoldInitiatedEventInterface} from './AgencyClientClearFinancialHoldInitiatedEventInterface';
+export {AgencyClientRequiresPONumberSetEventInterface} from './AgencyClientRequiresPONumberSetEventInterface';
+export {AgencyClientRequiresPONumberUnsetEventInterface} from './AgencyClientRequiresPONumberUnsetEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

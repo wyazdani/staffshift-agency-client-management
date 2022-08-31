@@ -1,11 +1,11 @@
 import {BookingPreferenceCommandEnum} from '../BookingPreferenceCommandEnum';
 import {BookingPreferenceCommandInterface} from '..';
 
-export interface SetRequiresPoNumberCommandDataInterface {
+export interface SetRequiresPONumberCommandDataInterface {
   requires_po_number: boolean;
 }
 
-export interface SetRequiresPoNumberCommandInterface extends BookingPreferenceCommandInterface {
+export interface SetRequiresPONumberCommandInterface extends BookingPreferenceCommandInterface {
   type: BookingPreferenceCommandEnum.SET_REQUIRES_PO_NUMBER;
-  data: SetRequiresPoNumberCommandDataInterface;
+  data: SetRequiresPONumberCommandDataInterface;
 }
