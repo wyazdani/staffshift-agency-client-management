@@ -15,6 +15,8 @@ export class SetRequiresPONumberCommandHandler implements BookingPreferenceComma
 
   async execute(command: SetRequiresPONumberCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
+
+    await aggregate.validateSetRequiresPONumber();
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
@@ -22,7 +24,7 @@ export class SetRequiresPONumberCommandHandler implements BookingPreferenceComma
         type: EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET,
         aggregate_id: aggregate.getId(),
         data: {
-          requires_po_number: command.data.requires_po_number
+          requires_po_number: true
         },
         sequence_id: ++eventId
       } as AgencyClientRequiresPONumberSetEventInterface
