@@ -682,7 +682,7 @@ paths:
         400:
           description: "Validation error."
           schema:
-            $ref: "#/definitions/empty_payload_error_model"
+            $ref: "#/definitions/set_requires_po_number_payload_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -707,7 +707,7 @@ paths:
         400:
           description: "Validation error."
           schema:
-            $ref: "#/definitions/empty_payload_error_model"
+            $ref: "#/definitions/unset_requires_po_number_payload_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -1420,6 +1420,84 @@ definitions:
               type: "string"
               enum:
                 - "OBJECT_ADDITIONAL_PROPERTIES"
+            message:
+              type: "string"
+            path:
+              type: "array"
+              items:
+                type: "string"
+            description:
+              type: "string"
+          additionalProperties: false
+    additionalProperties: false
+  set_requires_po_number_payload_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - "SCHEMA_VALIDATION_FAILED"
+          - "MODEL_VALIDATION_FAILED"
+          - "PATTERN"
+          - "REQUIRED"
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: "string"
+              enum:
+                - "OBJECT_ADDITIONAL_PROPERTIES"
+                - "ALREADY_SET"
+            message:
+              type: "string"
+            path:
+              type: "array"
+              items:
+                type: "string"
+            description:
+              type: "string"
+          additionalProperties: false
+    additionalProperties: false
+  unset_requires_po_number_payload_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - "SCHEMA_VALIDATION_FAILED"
+          - "MODEL_VALIDATION_FAILED"
+          - "PATTERN"
+          - "REQUIRED"
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: "string"
+              enum:
+                - "OBJECT_ADDITIONAL_PROPERTIES"
+                - "ALREADY_NOT_SET"
             message:
               type: "string"
             path:

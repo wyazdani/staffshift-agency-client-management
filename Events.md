@@ -2013,23 +2013,8 @@ Description: A short description of the event
 ```json
 {
   "type": "object",
-  "properties": {
-    "_id": {
-      "type": "string"
-    },
-    "requires_po_number": {
-      "type": "boolean"
-    },
-    "client_id": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "_id",
-    "requires_po_number",
-    "client_id"
-  ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "properties": {}
 }
 ```
 
@@ -2061,29 +2046,14 @@ Description: A short description of the event
 }
 ```
 
- </td><td> set requires po number for agency client </td></tr>
+ </td><td> It will set requires po number for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET </td><td> AgencyClientRequiresPONumberUnset </td><td> 
 
 ```json
 {
   "type": "object",
-  "properties": {
-    "_id": {
-      "type": "string"
-    },
-    "requires_po_number": {
-      "type": "boolean"
-    },
-    "client_id": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "_id",
-    "requires_po_number",
-    "client_id"
-  ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "properties": {}
 }
 ```
 
@@ -2115,5 +2085,5 @@ Description: A short description of the event
 }
 ```
 
- </td><td> unset requires po number for agency client </td></tr>
+ </td><td> It will unset requires po number for agency client </td></tr>
 </table><!--DATA_END-->

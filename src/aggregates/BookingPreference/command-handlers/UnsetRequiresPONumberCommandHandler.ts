@@ -20,9 +20,7 @@ export class UnsetRequiresPONumberCommandHandler implements BookingPreferenceCom
       {
         type: EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET,
         aggregate_id: aggregate.getId(),
-        data: {
-          requires_po_number: false
-        },
+        data: {},
         sequence_id: ++eventId
       } as AgencyClientRequiresPONumberUnsetEventInterface
     ]);

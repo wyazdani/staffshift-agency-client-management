@@ -34,8 +34,10 @@ export const setRequiresPONumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ResourceNotFoundError)) {
-      logger.error('unknown error in setRequiresPONumber', err);
+    if (!(err instanceof ValidationError)) {
+      logger.error('unknown error in setRequiresPONumber', {
+        error: err
+      });
     }
     next(err);
   }
