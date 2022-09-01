@@ -1,10 +1,18 @@
-import {SetRequiresPONumberCommandHandler, UnsetRequiresPONumberCommandHandler} from './command-handlers';
+import {
+  SetRequiresPONumberCommandHandler,
+  UnsetRequiresPONumberCommandHandler,
+  SetRequiresShiftRefNumberCommandHandler
+} from './command-handlers';
 import {BookingPreferenceRepository} from './BookingPreferenceRepository';
 import {EventRepository} from '../../EventRepository';
 import {BookingPreferenceWriteProjectionHandler} from './BookingPreferenceWriteProjectionHandler';
 import {BookingPreferenceCommandHandlerInterface} from './types/BookingPreferenceCommandHandlerInterface';
 
-const handlers = [UnsetRequiresPONumberCommandHandler, SetRequiresPONumberCommandHandler];
+const handlers = [
+  UnsetRequiresPONumberCommandHandler,
+  SetRequiresPONumberCommandHandler,
+  SetRequiresShiftRefNumberCommandHandler
+];
 
 /**
  * Responsible for routing all commands to their corresponding handlers

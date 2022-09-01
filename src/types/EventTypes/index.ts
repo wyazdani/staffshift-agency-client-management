@@ -43,4 +43,5 @@ export {AgencyClientClearFinancialHoldCompletedEventInterface} from './AgencyCli
 export {AgencyClientClearFinancialHoldInitiatedEventInterface} from './AgencyClientClearFinancialHoldInitiatedEventInterface';
 export {AgencyClientRequiresPONumberSetEventInterface} from './AgencyClientRequiresPONumberSetEventInterface';
 export {AgencyClientRequiresPONumberUnsetEventInterface} from './AgencyClientRequiresPONumberUnsetEventInterface';
+export {AgencyClientRequiresShiftRefNumberSetEventInterface} from './AgencyClientRequiresShiftRefNumberSetEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

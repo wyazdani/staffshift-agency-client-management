@@ -4,10 +4,15 @@ import {assert} from 'chai';
 import {EventRepository} from '../../../src/EventRepository';
 import {
   SetRequiresPONumberCommandHandler,
-  UnsetRequiresPONumberCommandHandler
+  UnsetRequiresPONumberCommandHandler,
+  SetRequiresShiftRefNumberCommandHandler
 } from '../../../src/aggregates/BookingPreference/command-handlers';
 
-const expectedHandlers = [SetRequiresPONumberCommandHandler, UnsetRequiresPONumberCommandHandler];
+const expectedHandlers = [
+  SetRequiresPONumberCommandHandler,
+  UnsetRequiresPONumberCommandHandler,
+  SetRequiresShiftRefNumberCommandHandler
+];
 
 describe('BookingPreferenceCommandBus class', () => {
   describe('getCommandHandlers()', () => {

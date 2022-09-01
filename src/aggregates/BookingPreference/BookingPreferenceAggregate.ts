@@ -40,4 +40,18 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
       ]);
     }
   }
+
+  /**
+   * checks if requires_po_number is not unset
+   */
+  async validateSetRequiresShiftRefNumber(): Promise<void> {
+    if (this.aggregate.requires_shift_ref_number === true) {
+      throw new ValidationError('Shift Ref Number is already set').setErrors([
+        {
+          code: 'ALREADY_SET',
+          message: 'Shift Ref Number is already set'
+        }
+      ]);
+    }
+  }
 }

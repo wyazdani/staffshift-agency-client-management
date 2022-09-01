@@ -1,5 +1,10 @@
-import {SetRequiresPONumberCommandDataInterface, UnsetRequiresPONumberCommandDataInterface} from './CommandTypes';
+import {
+  SetRequiresPONumberCommandDataInterface,
+  UnsetRequiresPONumberCommandDataInterface,
+  SetRequiresShiftRefNumberCommandDataInterface
+} from './CommandTypes';
 
 export type BookingPreferenceCommandDataType =
   | SetRequiresPONumberCommandDataInterface
-  | UnsetRequiresPONumberCommandDataInterface;
+  | UnsetRequiresPONumberCommandDataInterface
+  | SetRequiresShiftRefNumberCommandDataInterface;
