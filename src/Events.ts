@@ -45,7 +45,7 @@ export enum EventsEnum {
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET = 'AgencyClientRequiresPONumberSet',
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset',
   AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET = 'AgencyClientRequiresUniquePONumberSet',
-  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET = 'AgencyClientRequiresUniquePONumberUnset',
+  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET = 'AgencyClientRequiresUniquePONumberUnset'
 }
 
 type EventsType = {
