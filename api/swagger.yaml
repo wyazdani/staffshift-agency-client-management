@@ -682,7 +682,7 @@ paths:
         400:
           description: "Validation error."
           schema:
-            $ref: "#/definitions/set_requires_po_number_payload_error_model"
+            $ref: "#/definitions/set_requires_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -707,7 +707,7 @@ paths:
         400:
           description: "Validation error."
           schema:
-            $ref: "#/definitions/unset_requires_po_number_payload_error_model"
+            $ref: "#/definitions/unset_requires_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -1399,7 +1399,7 @@ definitions:
               type: "string"
           additionalProperties: false
     additionalProperties: false
-  set_requires_po_number_payload_error_model:
+  set_requires_po_number_error_model:
     type: object
     required:
       - code
@@ -1438,7 +1438,7 @@ definitions:
               type: "string"
           additionalProperties: false
     additionalProperties: false
-  unset_requires_po_number_payload_error_model:
+  unset_requires_po_number_error_model:
     type: object
     required:
       - code
