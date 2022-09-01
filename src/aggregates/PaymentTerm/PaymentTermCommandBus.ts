@@ -1,7 +1,7 @@
 import {
   ApplyInheritedPaymentTermCommandHandler,
   ApplyPaymentTermCommandHandler,
-  InheritPaymentTermForNewClientLinkCommandHandler
+  InheritPaymentTermClientLinkCommandHandler
 } from './command-handlers';
 import {PaymentTermRepository} from './PaymentTermRepository';
 import {EventRepository} from '../../EventRepository';
@@ -11,7 +11,7 @@ import {PaymentTermCommandHandlerInterface} from './types/PaymentTermCommandHand
 const handlers = [
   ApplyPaymentTermCommandHandler,
   ApplyInheritedPaymentTermCommandHandler,
-  InheritPaymentTermForNewClientLinkCommandHandler
+  InheritPaymentTermClientLinkCommandHandler
 ];
 
 /**

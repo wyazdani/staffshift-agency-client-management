@@ -8,7 +8,7 @@ import {CommandBus} from '../../../aggregates/CommandBus';
 import {PaymentTermRepository} from '../../../aggregates/PaymentTerm/PaymentTermRepository';
 import {PaymentTermWriteProjectionHandler} from '../../../aggregates/PaymentTerm/PaymentTermWriteProjectionHandler';
 import {PaymentTermCommandEnum} from '../../../aggregates/PaymentTerm/types';
-import {InheritPaymentTermForNewClientLinkCommandInterface} from '../../../aggregates/PaymentTerm/types/CommandTypes';
+import {InheritPaymentTermClientLinkCommandInterface} from '../../../aggregates/PaymentTerm/types/CommandTypes';
 import {EventRepository} from '../../../EventRepository';
 
 /**
@@ -69,11 +69,11 @@ export class PaymentTermAgencyClientLinkPropagator {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_FOR_NEW_CLIENT_LINK,
+        type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
         data: {
           term: parentPaymentTerm
         }
-      } as InheritPaymentTermForNewClientLinkCommandInterface);
+      } as InheritPaymentTermClientLinkCommandInterface);
     } else {
       // Type is ward, now we need to load parent, check agency client aggregate
       // check if last linked event is after parent payment term? if yes fine
@@ -119,11 +119,11 @@ export class PaymentTermAgencyClientLinkPropagator {
             agency_id: agencyId,
             client_id: clientId
           },
-          type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_FOR_NEW_CLIENT_LINK,
+          type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
           data: {
             term: orgPaymentTerm.getPaymentTerm()
           }
-        } as InheritPaymentTermForNewClientLinkCommandInterface);
+        } as InheritPaymentTermClientLinkCommandInterface);
       } else {
         await commandBus.execute({
           aggregateId: {
@@ -131,11 +131,11 @@ export class PaymentTermAgencyClientLinkPropagator {
             agency_id: agencyId,
             client_id: clientId
           },
-          type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_FOR_NEW_CLIENT_LINK,
+          type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
           data: {
             term: sitePaymentTerm.getPaymentTerm()
           }
-        } as InheritPaymentTermForNewClientLinkCommandInterface);
+        } as InheritPaymentTermClientLinkCommandInterface);
       }
     }
   }

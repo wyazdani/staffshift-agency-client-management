@@ -6,10 +6,10 @@ import {PAYMENT_TERM_ENUM} from '../types/PaymentTermAggregateRecordInterface';
 import {PaymentTermCommandHandlerInterface} from '../types/PaymentTermCommandHandlerInterface';
 import {PaymentTermCommandEnum} from '../types';
 import {EventsEnum} from '../../../Events';
-import {InheritPaymentTermForNewClientLinkCommandInterface} from '../types/CommandTypes';
+import {InheritPaymentTermClientLinkCommandInterface} from '../types/CommandTypes';
 
-export class InheritPaymentTermForNewClientLinkCommandHandler implements PaymentTermCommandHandlerInterface {
-  public commandType = PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_FOR_NEW_CLIENT_LINK;
+export class InheritPaymentTermClientLinkCommandHandler implements PaymentTermCommandHandlerInterface {
+  public commandType = PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK;
 
   constructor(private repository: PaymentTermRepository) {}
   /**
@@ -22,7 +22,7 @@ export class InheritPaymentTermForNewClientLinkCommandHandler implements Payment
    *
    * issue: https://github.com/A24Group/staffshift-agency-client-management/issues/257
    */
-  async execute(command: InheritPaymentTermForNewClientLinkCommandInterface): Promise<void> {
+  async execute(command: InheritPaymentTermClientLinkCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let type: string;
@@ -34,8 +34,7 @@ export class InheritPaymentTermForNewClientLinkCommandHandler implements Payment
     } else {
       if (aggregate.getLastSequenceId() === 0) {
         /**
-         * I would like to log it but due to the design of command handlers it was not possible.
-         * Also it should be fine that we are doing nothing, even if we read from secondary and we are behind master
+         * It should be fine that we are doing nothing, even if we read from secondary and we are behind master
          * that's fine. because we will be behind on secondary even in the event listener to do this check
          */
         return;

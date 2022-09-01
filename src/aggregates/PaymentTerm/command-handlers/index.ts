@@ -1,3 +1,3 @@
 export * from './ApplyPaymentTermCommandHandler';
 export * from './ApplyInheritedPaymentTermCommandHandler';
-export * from './InheritPaymentTermForNewClientLinkCommandHandler';
+export * from './InheritPaymentTermClientLinkCommandHandler';
