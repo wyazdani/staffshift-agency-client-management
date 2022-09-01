@@ -44,10 +44,10 @@ describe('BookingPreferenceAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Requires PO Number is already set').setErrors([
+        new ValidationError('Could not run command as state was already set').setErrors([
           {
             code: 'ALREADY_SET',
-            message: 'Could not run command as state was already set'
+            message: 'Requires PO Number is already set'
           }
         ])
       );
@@ -86,10 +86,10 @@ describe('BookingPreferenceAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Requires PO Number is not set').setErrors([
+        new ValidationError('Could not run command as state was already not set').setErrors([
           {
             code: 'ALREADY_NOT_SET',
-            message: 'Could not run command as state was already not set'
+            message: 'Requires PO Number is not set'
           }
         ])
       );
