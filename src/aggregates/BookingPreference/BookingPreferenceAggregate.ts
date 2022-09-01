@@ -46,10 +46,10 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   async validateSetRequiresShiftRefNumber(): Promise<void> {
     if (this.aggregate.requires_shift_ref_number === true) {
-      throw new ValidationError('Shift Ref Number is already set').setErrors([
+      throw new ValidationError('Could not run command as state was already set').setErrors([
         {
           code: 'ALREADY_SET',
-          message: 'Shift Ref Number is already set'
+          message: 'Requires Shift Ref Number is already set'
         }
       ]);
     }

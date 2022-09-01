@@ -738,7 +738,7 @@ paths:
         400:
           description: "Validation error."
           schema:
-            $ref: "#/definitions/set_requires_shift_ref_number_payload_error_model"
+            $ref: "#/definitions/set_requires_shift_ref_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -1898,7 +1898,7 @@ definitions:
               type: string
           additionalProperties: false
     additionalProperties: false
-  set_requires_shift_ref_number_payload_error_model:
+  set_requires_shift_ref_number_error_model:
     type: object
     required:
       - code

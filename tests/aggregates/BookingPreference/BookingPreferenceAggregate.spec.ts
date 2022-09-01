@@ -128,10 +128,10 @@ describe('BookingPreferenceAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Requires Shift Ref Number is already set').setErrors([
+        new ValidationError('Could not run command as state was already set').setErrors([
           {
             code: 'ALREADY_SET',
-            message: 'Could not run command as state was already set'
+            message: 'Requires Shift Ref Number is already set'
           }
         ])
       );

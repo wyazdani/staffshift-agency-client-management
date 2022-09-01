@@ -56,7 +56,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
     });
 
     describe('AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET Event', () => {
-      it('Test event', () => {
+      it('Test success scenario', () => {
         const aggregate: any = {
           last_sequence_id: 1
         };
