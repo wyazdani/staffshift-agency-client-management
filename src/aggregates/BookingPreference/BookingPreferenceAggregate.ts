@@ -18,10 +18,10 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   async validateSetRequiresPONumber(): Promise<void> {
     if (this.aggregate.requires_po_number === true) {
-      throw new ValidationError('Requires PO Number is already set').setErrors([
+      throw new ValidationError('Could not run command as state was already set').setErrors([
         {
           code: 'ALREADY_SET',
-          message: 'Could not run command as state was already set'
+          message: 'Requires PO Number is already set'
         }
       ]);
     }
@@ -32,10 +32,10 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   async validateUnsetRequiresPONumber(): Promise<void> {
     if (this.aggregate.requires_po_number === false) {
-      throw new ValidationError('Requires PO Number is not set').setErrors([
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
-          message: 'Could not run command as state was already not set'
+          message: 'Requires PO Number is not set'
         }
       ]);
     }
