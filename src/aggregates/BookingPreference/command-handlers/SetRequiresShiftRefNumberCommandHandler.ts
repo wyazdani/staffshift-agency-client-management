@@ -20,9 +20,7 @@ export class SetRequiresShiftRefNumberCommandHandler implements BookingPreferenc
       {
         type: EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET,
         aggregate_id: aggregate.getId(),
-        data: {
-          requires_shift_ref_number: true
-        },
+        data: {},
         sequence_id: ++eventId
       } as AgencyClientRequiresShiftRefNumberSetEventInterface
     ]);

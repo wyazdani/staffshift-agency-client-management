@@ -42,7 +42,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
   }
 
   /**
-   * checks if requires_po_number is not unset
+   * checks if requires_shift_ref_number is set
    */
   async validateSetRequiresShiftRefNumber(): Promise<void> {
     if (this.aggregate.requires_shift_ref_number === true) {
