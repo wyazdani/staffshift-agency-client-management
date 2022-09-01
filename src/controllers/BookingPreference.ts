@@ -34,7 +34,7 @@ export const setRequiresPONumber = async (
     res.end();
   } catch (err) {
     if (!(err instanceof ResourceNotFoundError)) {
-      logger.error('unknown error in setRequiresPONumber');
+      logger.error('unknown error in setRequiresPONumber', err);
     }
     next(err);
   }
@@ -65,7 +65,7 @@ export const unsetRequiresPONumber = async (
     res.end();
   } catch (err) {
     if (!(err instanceof ResourceNotFoundError)) {
-      logger.error('unknown error in unSetRequiresPONumber');
+      logger.error('unknown error in unSetRequiresPONumber', err);
     }
     next(err);
   }
