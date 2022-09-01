@@ -21,6 +21,7 @@ describe('BookingPreferenceAggregate', () => {
 
     bookingPreferenceAggregate.should.be.instanceof(AbstractAggregate);
   });
+
   describe('validateSetRequiresPONumber()', () => {
     it('Test when aggregate does not have any events in it', async () => {
       const aggregate = {
@@ -43,10 +44,10 @@ describe('BookingPreferenceAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('PO Number is already set').setErrors([
+        new ValidationError('Requires PO Number is already set').setErrors([
           {
             code: 'ALREADY_SET',
-            message: 'PO Number is already set'
+            message: 'Could not run command as state was already set'
           }
         ])
       );
@@ -60,6 +61,48 @@ describe('BookingPreferenceAggregate', () => {
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
       await bookingPreferenceAggregate.validateSetRequiresPONumber();
+    });
+  });
+
+  describe('validateUnsetRequiresPONumber()', () => {
+    it('Test when aggregate does not have any events in it', async () => {
+      const aggregate = {
+        last_sequence_id: 0
+      };
+      const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
+
+      await bookingPreferenceAggregate.validateUnsetRequiresPONumber();
+    });
+
+    it('Test when requires PO Number is not set error', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        requires_po_number: false
+      };
+      const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
+
+      const error = await bookingPreferenceAggregate
+        .validateUnsetRequiresPONumber()
+        .should.be.rejectedWith(ValidationError);
+
+      error.assertEqual(
+        new ValidationError('Requires PO Number is not set').setErrors([
+          {
+            code: 'ALREADY_NOT_SET',
+            message: 'Could not run command as state was already not set'
+          }
+        ])
+      );
+    });
+
+    it('Test when requires PO Number is set', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        requires_po_number: true
+      };
+      const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
+
+      await bookingPreferenceAggregate.validateUnsetRequiresPONumber();
     });
   });
 
@@ -85,13 +128,23 @@ describe('BookingPreferenceAggregate', () => {
         .should.be.rejectedWith(ValidationError);
 
       error.assertEqual(
-        new ValidationError('Shift Ref Number is already set').setErrors([
+        new ValidationError('Requires Shift Ref Number is already set').setErrors([
           {
             code: 'ALREADY_SET',
-            message: 'Shift Ref Number is already set'
+            message: 'Could not run command as state was already set'
           }
         ])
       );
+    });
+
+    it('Test when requires Shift Ref Number is not set', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        requires_shift_ref_number: false
+      };
+      const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
+
+      await bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
     });
   });
 });

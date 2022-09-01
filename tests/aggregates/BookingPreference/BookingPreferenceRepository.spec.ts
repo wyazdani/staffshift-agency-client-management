@@ -25,6 +25,7 @@ describe('BookingPreferenceRepository class', () => {
 
     bookingPreferenceRepository.should.be.instanceof(AbstractRepository);
   });
+
   describe('getAggregate()', () => {
     it('Test calling AgencyAggregate', async () => {
       const pointInTime: EventPointInTimeType = {sequence_id: 100};

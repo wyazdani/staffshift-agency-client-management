@@ -10,7 +10,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
     const note = 'sample note';
 
     describe('AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET Event', () => {
-      it('Test event', () => {
+      it('Test success scenario', () => {
         const aggregate: any = {
           last_sequence_id: 1
         };
@@ -33,7 +33,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
     });
 
     describe('AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET Event', () => {
-      it('Test event', () => {
+      it('Test success scenario', () => {
         const aggregate: any = {
           last_sequence_id: 1
         };
