@@ -43,7 +43,9 @@ export enum EventsEnum {
   AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INHERITED = 'AgencyClientClearFinancialHoldInherited',
   AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED = 'AgencyClientEmptyFinancialHoldInherited',
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET = 'AgencyClientRequiresPONumberSet',
-  AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset'
+  AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset',
+  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET = 'AgencyClientRequiresUniquePONumberSet',
+  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET = 'AgencyClientRequiresUniquePONumberUnset',
 }
 
 type EventsType = {
@@ -232,5 +234,13 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresPONumberUnset',
     description: 'It will unset requires po number for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET]: {
+    name: 'AgencyClientRequiresUniquePONumberSet',
+    description: 'It will unset requires unique po number for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET]: {
+    name: 'AgencyClientRequiresUniquePONumberUnset',
+    description: 'It will unset requires unique po number for agency client'
   }
 };
