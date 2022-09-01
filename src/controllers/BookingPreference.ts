@@ -2,7 +2,7 @@ import {ServerResponse} from 'http';
 import {get, isEmpty} from 'lodash';
 import {ObjectId} from 'mongodb';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
-import {ResourceNotFoundError} from 'a24-node-error-utils';
+import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {BookingPreferenceCommandEnum} from '../aggregates/BookingPreference/types';
 import {
   SetRequiresPONumberCommandInterface,
@@ -33,8 +33,10 @@ export const setRequiresPONumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ResourceNotFoundError)) {
-      logger.error('unknown error in setRequiresPONumber', err);
+    if (!(err instanceof ValidationError)) {
+      logger.error('unknown error in setRequiresPONumber', {
+        error: err
+      });
     }
     next(err);
   }
@@ -64,8 +66,10 @@ export const unsetRequiresPONumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ResourceNotFoundError)) {
-      logger.error('unknown error in unSetRequiresPONumber', err);
+    if (!(err instanceof ValidationError)) {
+      logger.error('unknown error in unSetRequiresPONumber', {
+        error: err
+      });
     }
     next(err);
   }

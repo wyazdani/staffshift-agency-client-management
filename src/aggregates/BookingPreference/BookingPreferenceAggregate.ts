@@ -28,7 +28,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
   }
 
   /**
-   * checks if requires_po_number is not unset
+   * checks if requires_po_number is set
    */
   async validateUnsetRequiresPONumber(): Promise<void> {
     if (this.aggregate.requires_po_number === false) {

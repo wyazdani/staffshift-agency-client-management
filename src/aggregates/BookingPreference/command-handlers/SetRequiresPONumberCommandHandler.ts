@@ -20,9 +20,7 @@ export class SetRequiresPONumberCommandHandler implements BookingPreferenceComma
       {
         type: EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET,
         aggregate_id: aggregate.getId(),
-        data: {
-          requires_po_number: true
-        },
+        data: {},
         sequence_id: ++eventId
       } as AgencyClientRequiresPONumberSetEventInterface
     ]);
