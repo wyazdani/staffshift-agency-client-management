@@ -2125,4 +2125,58 @@ Description: A short description of the event
 ```
 
  </td><td> It will set requires shift ref number for agency client </td></tr>
+<tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET </td><td> AgencyClientRequiresShiftRefNumberUnset </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "requires_shift_ref_number": {
+      "type": "boolean"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "requires_shift_ref_number",
+    "client_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> It will unset requires shift ref number for agency client </td></tr>
 </table><!--DATA_END-->
