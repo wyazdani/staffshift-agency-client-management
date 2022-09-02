@@ -6,7 +6,7 @@ import {SetRequiresUniquePONumberCommandInterface} from '../types/CommandTypes';
 import {BookingPreferenceCommandHandlerInterface} from '../types/BookingPreferenceCommandHandlerInterface';
 
 export class SetRequiresUniquePONumberCommandHandler implements BookingPreferenceCommandHandlerInterface {
-  public commandType = BookingPreferenceCommandEnum.SET_REQUIRES_PO_NUMBER;
+  public commandType = BookingPreferenceCommandEnum.SET_REQUIRES_UNIQUE_PO_NUMBER;
 
   constructor(private repository: BookingPreferenceRepository) {}
 
