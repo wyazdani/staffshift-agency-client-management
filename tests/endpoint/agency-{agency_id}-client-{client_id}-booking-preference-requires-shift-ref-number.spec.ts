@@ -14,9 +14,6 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-shif
     name: 'John Doe',
     iat: 1516239022
   });
-  const payload = {
-    note: 'test'
-  };
   const headers = {
     'x-request-jwt': jwtToken,
     Accept: 'application/json',
@@ -57,7 +54,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-shif
               properties: {
                 code: {
                   type: 'string',
-                  enum: ['OBJECT_ADDITIONAL_PROPERTIES']
+                  enum: ['OBJECT_ADDITIONAL_PROPERTIES', 'ALREADY_SET']
                 },
                 message: {
                   type: 'string'

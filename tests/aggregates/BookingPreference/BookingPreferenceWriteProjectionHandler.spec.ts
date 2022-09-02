@@ -63,7 +63,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
         const event = new EventStore({
           type: EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET,
           aggregate_id: {},
-          data: {note},
+          data: {},
           sequence_id: 1,
           meta_data: {
             user_id: 'fake_user'
