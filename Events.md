@@ -2086,4 +2086,82 @@ Description: A short description of the event
 ```
 
  </td><td> It will unset requires po number for agency client </td></tr>
+<tr><td> AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET </td><td> AgencyClientRequiresUniquePONumberSet </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> It will unset requires unique po number for agency client </td></tr>
+<tr><td> AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET </td><td> AgencyClientRequiresUniquePONumberUnset </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> It will unset requires unique po number for agency client </td></tr>
 </table><!--DATA_END-->
