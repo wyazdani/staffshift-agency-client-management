@@ -7,7 +7,6 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
   describe('execute()', () => {
     const projectionHandler = new BookingPreferenceWriteProjectionHandler();
     const date = new Date();
-    const note = 'sample note';
 
     describe('AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET Event', () => {
       it('Test success scenario', () => {
@@ -17,7 +16,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
         const event = new EventStore({
           type: EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET,
           aggregate_id: {},
-          data: {note},
+          data: {},
           sequence_id: 1,
           meta_data: {
             user_id: 'fake_user'
@@ -40,7 +39,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
         const event = new EventStore({
           type: EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET,
           aggregate_id: {},
-          data: {note},
+          data: {},
           sequence_id: 1,
           meta_data: {
             user_id: 'fake_user'
