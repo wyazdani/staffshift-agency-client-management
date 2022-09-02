@@ -14,9 +14,6 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-po-n
     name: 'John Doe',
     iat: 1516239022
   });
-  const payload = {
-    note: 'test'
-  };
   const headers = {
     'x-request-jwt': jwtToken,
     Accept: 'application/json',
