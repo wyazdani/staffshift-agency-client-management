@@ -7,7 +7,8 @@ import {BookingPreferenceCommandEnum} from '../aggregates/BookingPreference/type
 import {
   SetRequiresPONumberCommandInterface,
   UnsetRequiresPONumberCommandInterface,
-  SetRequiresShiftRefNumberCommandInterface
+  SetRequiresShiftRefNumberCommandInterface,
+  UnsetRequiresShiftRefNumberCommandInterface
 } from '../aggregates/BookingPreference/types/CommandTypes';
 
 export const setRequiresPONumber = async (
@@ -102,6 +103,37 @@ export const setRequiresShiftRefNumber = async (
       logger.error('unknown error in setRequiresShiftRefNumber', {
         error: err
       });
+    }
+    next(err);
+  }
+};
+
+export const unsetRequiresShiftRefNumber = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  const logger = req.Logger;
+
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const command: UnsetRequiresShiftRefNumberCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.UNSET_REQUIRES_SHIFT_REF_NUMBER,
+      data: {}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      logger.error('unknown error in unSetRequiresShiftRefNumber', err);
     }
     next(err);
   }

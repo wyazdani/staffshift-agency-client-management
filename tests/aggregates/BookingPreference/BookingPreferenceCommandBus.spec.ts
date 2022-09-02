@@ -5,13 +5,15 @@ import {EventRepository} from '../../../src/EventRepository';
 import {
   SetRequiresPONumberCommandHandler,
   UnsetRequiresPONumberCommandHandler,
-  SetRequiresShiftRefNumberCommandHandler
+  SetRequiresShiftRefNumberCommandHandler,
+  UnsetRequiresShiftRefNumberCommandHandler
 } from '../../../src/aggregates/BookingPreference/command-handlers';
 
 const expectedHandlers = [
   SetRequiresPONumberCommandHandler,
   UnsetRequiresPONumberCommandHandler,
-  SetRequiresShiftRefNumberCommandHandler
+  SetRequiresShiftRefNumberCommandHandler,
+  UnsetRequiresShiftRefNumberCommandHandler
 ];
 
 describe('BookingPreferenceCommandBus class', () => {

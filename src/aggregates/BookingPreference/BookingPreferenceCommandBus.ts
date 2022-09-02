@@ -1,7 +1,8 @@
 import {
   SetRequiresPONumberCommandHandler,
   UnsetRequiresPONumberCommandHandler,
-  SetRequiresShiftRefNumberCommandHandler
+  SetRequiresShiftRefNumberCommandHandler,
+  UnsetRequiresShiftRefNumberCommandHandler
 } from './command-handlers';
 import {BookingPreferenceRepository} from './BookingPreferenceRepository';
 import {EventRepository} from '../../EventRepository';
@@ -11,6 +12,7 @@ import {BookingPreferenceCommandHandlerInterface} from './types/BookingPreferenc
 const handlers = [
   UnsetRequiresPONumberCommandHandler,
   SetRequiresPONumberCommandHandler,
+  UnsetRequiresShiftRefNumberCommandHandler,
   SetRequiresShiftRefNumberCommandHandler
 ];
 
