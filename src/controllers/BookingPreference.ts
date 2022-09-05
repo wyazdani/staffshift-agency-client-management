@@ -119,9 +119,6 @@ export const unsetRequiresShiftRefNumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      logger.error('unknown error in unSetRequiresShiftRefNumber', err);
-    }
     next(err);
   }
 };
