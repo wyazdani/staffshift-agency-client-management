@@ -62,9 +62,6 @@ export const unsetRequiresPONumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      logger.error('unknown error in unSetRequiresPONumber', err);
-    }
     next(err);
   }
 };
@@ -93,11 +90,6 @@ export const setRequiresShiftRefNumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      logger.error('unknown error in setRequiresShiftRefNumber', {
-        error: err
-      });
-    }
     next(err);
   }
 };
