@@ -533,7 +533,7 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/payment_term_validation_error_model"
+            $ref: "#/definitions/inherit_payment_term_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -1626,6 +1626,49 @@ definitions:
               type: string
           additionalProperties: false
     additionalProperties: false
+  inherit_payment_term_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+          - INVALID_CLIENT_TYPE
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ANOTHER_JOB_PROCESS_ACTIVE
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
   get_financial_hold_validation_error_model:
     type: object
     required:
@@ -1653,7 +1696,6 @@ definitions:
           - MODEL_VALIDATION_FAILED
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
-          - ENUM_MISMATCH
       message:
         type: string
       errors:
@@ -1673,7 +1715,6 @@ definitions:
                 - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
-                - ENUM_MISMATCH
                 - MIN_LENGTH
                 - MAX_LENGTH
             message:
@@ -1699,7 +1740,6 @@ definitions:
           - MODEL_VALIDATION_FAILED
           - SCHEMA_VALIDATION_FAILED
           - PATTERN
-          - ENUM_MISMATCH
       message:
         type: string
       errors:
@@ -1719,7 +1759,6 @@ definitions:
                 - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ANOTHER_JOB_PROCESS_ACTIVE
-                - ENUM_MISMATCH
                 - INVALID_CLIENT_TYPE
                 - MIN_LENGTH
                 - MAX_LENGTH
