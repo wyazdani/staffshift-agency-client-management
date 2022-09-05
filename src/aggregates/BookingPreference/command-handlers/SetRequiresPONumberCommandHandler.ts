@@ -13,7 +13,7 @@ export class SetRequiresPONumberCommandHandler implements BookingPreferenceComma
   async execute(command: SetRequiresPONumberCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
-    await aggregate.validateSetRequiresPONumber();
+    aggregate.validateSetRequiresPONumber();
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([

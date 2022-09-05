@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {ValidationError} from 'a24-node-error-utils';
+import assert from 'assert';
 import {AbstractAggregate} from '../../../src/aggregates/AbstractAggregate';
 import {BookingPreferenceAggregate} from '../../../src/aggregates/BookingPreference/BookingPreferenceAggregate';
 import {
@@ -30,7 +31,7 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      await bookingPreferenceAggregate.validateSetRequiresPONumber();
+      bookingPreferenceAggregate.validateSetRequiresPONumber();
     });
 
     it('Test when requires PO Number is set error', async () => {
@@ -40,18 +41,19 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      const error = await bookingPreferenceAggregate
-        .validateSetRequiresPONumber()
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Could not run command as state was already set').setErrors([
-          {
-            code: 'ALREADY_SET',
-            message: 'Requires PO Number is already set'
-          }
-        ])
-      );
+      try {
+        bookingPreferenceAggregate.validateSetRequiresPONumber();
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.assertEqual(
+          new ValidationError('Could not run command as state was already set').setErrors([
+            {
+              code: 'ALREADY_SET',
+              message: 'Requires PO Number is already set'
+            }
+          ])
+        );
+      }
     });
 
     it('Test when requires PO Number is not set', async () => {
@@ -61,7 +63,7 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      await bookingPreferenceAggregate.validateSetRequiresPONumber();
+      bookingPreferenceAggregate.validateSetRequiresPONumber();
     });
   });
 
@@ -72,7 +74,7 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      await bookingPreferenceAggregate.validateUnsetRequiresPONumber();
+      bookingPreferenceAggregate.validateUnsetRequiresPONumber();
     });
 
     it('Test when requires PO Number is not set error', async () => {
@@ -82,18 +84,19 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      const error = await bookingPreferenceAggregate
-        .validateUnsetRequiresPONumber()
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Could not run command as state was already not set').setErrors([
-          {
-            code: 'ALREADY_NOT_SET',
-            message: 'Requires PO Number is not set'
-          }
-        ])
-      );
+      try {
+        bookingPreferenceAggregate.validateUnsetRequiresPONumber();
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.assertEqual(
+          new ValidationError('Could not run command as state was already not set').setErrors([
+            {
+              code: 'ALREADY_NOT_SET',
+              message: 'Requires PO Number is not set'
+            }
+          ])
+        );
+      }
     });
 
     it('Test when requires PO Number is set', async () => {

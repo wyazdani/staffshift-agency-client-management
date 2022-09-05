@@ -13,7 +13,7 @@ export class UnsetRequiresPONumberCommandHandler implements BookingPreferenceCom
   async execute(command: UnsetRequiresPONumberCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
-    await aggregate.validateUnsetRequiresPONumber();
+    aggregate.validateUnsetRequiresPONumber();
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
