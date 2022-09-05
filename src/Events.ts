@@ -232,7 +232,7 @@ export const events: EventsType = {
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresPONumberUnset',
-    description: 'It will unset requires po number for agency client'
+    description: 'Requires po number was unset for agency client'
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET]: {
     name: 'AgencyClientRequiresShiftRefNumberSet',
