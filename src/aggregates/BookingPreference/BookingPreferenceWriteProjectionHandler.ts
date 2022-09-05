@@ -19,6 +19,7 @@ implements WriteProjectionInterface<BookingPreferenceAggregateRecordInterface> {
         break;
       case EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET:
         aggregate.requires_po_number = false;
+        aggregate.requires_unique_po_number = false;
         break;
       case EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET:
         aggregate.requires_unique_po_number = true;

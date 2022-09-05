@@ -9,7 +9,12 @@ import {
   UnsetRequiresUniquePONumberCommandHandler
 } from '../../../src/aggregates/BookingPreference/command-handlers';
 
-const expectedHandlers = [SetRequiresPONumberCommandHandler, UnsetRequiresPONumberCommandHandler, SetRequiresUniquePONumberCommandHandler, UnsetRequiresUniquePONumberCommandHandler];
+const expectedHandlers = [
+  SetRequiresPONumberCommandHandler,
+  UnsetRequiresPONumberCommandHandler,
+  SetRequiresUniquePONumberCommandHandler,
+  UnsetRequiresUniquePONumberCommandHandler
+];
 
 describe('BookingPreferenceCommandBus class', () => {
   describe('getCommandHandlers()', () => {

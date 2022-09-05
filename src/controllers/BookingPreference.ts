@@ -6,7 +6,9 @@ import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {BookingPreferenceCommandEnum} from '../aggregates/BookingPreference/types';
 import {
   SetRequiresPONumberCommandInterface,
-  UnsetRequiresPONumberCommandInterface
+  SetRequiresUniquePONumberCommandInterface,
+  UnsetRequiresPONumberCommandInterface,
+  UnsetRequiresUniquePONumberCommandInterface
 } from '../aggregates/BookingPreference/types/CommandTypes';
 
 export const setRequiresPONumber = async (
@@ -68,6 +70,72 @@ export const unsetRequiresPONumber = async (
   } catch (err) {
     if (!(err instanceof ValidationError)) {
       logger.error('unknown error in unSetRequiresPONumber', {
+        error: err
+      });
+    }
+    next(err);
+  }
+};
+
+export const setRequiresUniquePONumber = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  const logger = req.Logger;
+
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const command: SetRequiresUniquePONumberCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.SET_REQUIRES_UNIQUE_PO_NUMBER,
+      data: {}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      logger.error('unknown error in setRequiresUniquePONumber', {
+        error: err
+      });
+    }
+    next(err);
+  }
+};
+
+export const unsetRequiresUniquePONumber = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  const logger = req.Logger;
+
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const command: UnsetRequiresUniquePONumberCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.UNSET_REQUIRES_UNIQUE_PO_NUMBER,
+      data: {}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      logger.error('unknown error in unsetRequiresUniquePONumber', {
         error: err
       });
     }

@@ -13,7 +13,7 @@ export class SetRequiresUniquePONumberCommandHandler implements BookingPreferenc
   async execute(command: SetRequiresUniquePONumberCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
-    await aggregate.validateSetRequiresUniquePONumber();
+    aggregate.validateSetRequiresUniquePONumber();
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([
