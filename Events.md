@@ -2124,5 +2124,5 @@ Description: A short description of the event
 }
 ```
 
- </td><td> It will set requires shift ref number for agency client </td></tr>
+ </td><td> Sets requires shift ref number for agency client </td></tr>
 </table><!--DATA_END-->
