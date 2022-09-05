@@ -168,7 +168,7 @@ describe('BookingPreferenceAggregate', () => {
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
       try {
-        bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+        bookingPreferenceAggregate.validateUnsetRequiresShiftRefNumber();
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(

@@ -63,7 +63,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
       throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
-          message: 'Requires Shift Ref Number is not set'
+          message: 'Requires Shift Ref Number is already not set'
         }
       ]);
     }
