@@ -228,7 +228,7 @@ export const events: EventsType = {
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET]: {
     name: 'AgencyClientRequiresPONumberSet',
-    description: 'It will set requires po number for agency client'
+    description: 'Requires po number was set for agency client'
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresPONumberUnset',
