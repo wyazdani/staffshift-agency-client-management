@@ -773,6 +773,81 @@ paths:
       summary: "Will Unset requires Unique PO Number"
       tags:
         - "Booking Preferences"
+  /agency/{agency_id}/client/{client_id}/booking-preference/requires-booking-password:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "setRequiresBookingPassword"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/booking_password_payload"
+      responses:
+        202:
+          description: "Will Set Requires Booking Password"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/booking_password_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Will Set Requires Booking Password"
+      tags:
+        - "Booking Preferences"
+    put:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "updateBookingPassword"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/booking_password_payload"
+      responses:
+        202:
+          description: "Will Update Booking Passwords"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/booking_password_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Will Update Booking Passwords"
+      tags:
+        - "Booking Preferences"
+    delete:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "unsetRequiresBookingPassword"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        202:
+          description: "Will Unset Require Booking Password"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/unset_booking_password_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          $ref: "#/responses/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Will Unset Require Booking Password"
+      tags:
+        - "Booking Preferences"
 parameters:
  # Query PARAMS
   query_client_type:
@@ -891,6 +966,13 @@ parameters:
     description: "The payload used to initiate apply/clear/inherit financial hold to client"
     schema:
       $ref: "#/definitions/initiate_financial_hold_payload_def"
+  booking_password_payload:
+    name: booking_password_payload
+    in: body
+    required: true
+    description: "The payload used to set/update booking passwords for client"
+    schema:
+      $ref: "#/definitions/booking_password_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -1197,6 +1279,20 @@ definitions:
         type: string
         minLength: 3
         maxLength: 255
+    additionalProperties: false
+  booking_password_payload_def:
+    type: object
+    required:
+      - booking_passwords
+    properties:
+      booking_passwords:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: string
+          minLength: 1
+          maxLength: 100
     additionalProperties: false
   get_payment_term_def:
     type: object
@@ -1992,6 +2088,93 @@ definitions:
                 - INVALID_CLIENT_TYPE
                 - MIN_LENGTH
                 - MAX_LENGTH
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
+  booking_password_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - MIN_LENGTH
+                - MAX_LENGTH
+                - ALREADY_SET
+                - ARRAY_LENGTH_SHORT
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
+  unset_booking_password_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - ALREADY_NOT_SET
             message:
               type: string
             path:
