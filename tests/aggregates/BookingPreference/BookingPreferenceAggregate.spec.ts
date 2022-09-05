@@ -1,3 +1,4 @@
+import {assert} from 'chai';
 import {ValidationError} from 'a24-node-error-utils';
 import {AbstractAggregate} from '../../../src/aggregates/AbstractAggregate';
 import {BookingPreferenceAggregate} from '../../../src/aggregates/BookingPreference/BookingPreferenceAggregate';
@@ -113,7 +114,7 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      await bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+      bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
     });
 
     it('Test when requires Shift Ref Number is set error', async () => {
@@ -123,18 +124,19 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      const error = await bookingPreferenceAggregate
-        .validateSetRequiresShiftRefNumber()
-        .should.be.rejectedWith(ValidationError);
-
-      error.assertEqual(
-        new ValidationError('Could not run command as state was already set').setErrors([
-          {
-            code: 'ALREADY_SET',
-            message: 'Requires Shift Ref Number is already set'
-          }
-        ])
-      );
+      try {
+        bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.assertEqual(
+          new ValidationError('Could not run command as state was already set').setErrors([
+            {
+              code: 'ALREADY_SET',
+              message: 'Requires Shift Ref Number is already set'
+            }
+          ])
+        );
+      }
     });
 
     it('Test when requires Shift Ref Number is not set', async () => {
@@ -144,7 +146,7 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      await bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+      bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
     });
   });
 

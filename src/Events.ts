@@ -237,10 +237,10 @@ export const events: EventsType = {
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET]: {
     name: 'AgencyClientRequiresShiftRefNumberSet',
-    description: 'It will set requires shift ref number for agency client'
+    description: 'Set requires shift ref number for agency client'
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresShiftRefNumberUnset',
-    description: 'It will unset requires shift ref number for agency client'
+    description: 'Unset requires shift ref number for agency client'
   }
 };

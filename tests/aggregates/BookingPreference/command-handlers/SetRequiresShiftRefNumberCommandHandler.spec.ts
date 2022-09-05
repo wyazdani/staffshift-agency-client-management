@@ -15,6 +15,7 @@ describe('SetRequiresShiftRefNumberCommandHandler class', () => {
     afterEach(() => {
       sinon.restore();
     });
+
     it('Test success scenario for set requires shift ref number', async () => {
       const command: SetRequiresShiftRefNumberCommandInterface = {
         aggregateId: {
