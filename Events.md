@@ -2046,7 +2046,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Requires po number was set for agency client </td></tr>
+ </td><td> It will set requires po number for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET </td><td> AgencyClientRequiresPONumberUnset </td><td> 
 
 ```json
@@ -2085,7 +2085,6 @@ Description: A short description of the event
 }
 ```
 
-<<<<<<< HEAD
  </td><td> It will unset requires po number for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET </td><td> AgencyClientRequiresShiftRefNumberSet </td><td> 
 
@@ -2125,8 +2124,8 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Sets requires shift ref number for agency client </td></tr>
-<tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET </td><td> AgencyClientRequiresShiftRefNumberUnset </td><td> 
+ </td><td> Requires shift ref number was set for agency client </td></tr>
+ <tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET </td><td> AgencyClientRequiresShiftRefNumberUnset </td><td> 
 
 ```json
 {
