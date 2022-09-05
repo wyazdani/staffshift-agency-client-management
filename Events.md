@@ -2125,7 +2125,7 @@ Description: A short description of the event
 ```
 
  </td><td> Requires shift ref number was set for agency client </td></tr>
- <tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET </td><td> AgencyClientRequiresShiftRefNumberUnset </td><td> 
+<tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET </td><td> AgencyClientRequiresShiftRefNumberUnset </td><td> 
 
 ```json
 {
@@ -2162,5 +2162,6 @@ Description: A short description of the event
   }
 }
 ```
- </td><td> Requires po number was unset for agency client </td></tr>
+
+ </td><td> Requires shift ref number was unset for agency client </td></tr>
 </table><!--DATA_END-->
