@@ -45,4 +45,7 @@ export {AgencyClientRequiresPONumberSetEventInterface} from './AgencyClientRequi
 export {AgencyClientRequiresPONumberUnsetEventInterface} from './AgencyClientRequiresPONumberUnsetEventInterface';
 export {AgencyClientRequiresUniquePONumberSetEventInterface} from './AgencyClientRequiresUniquePONumberSetEventInterface';
 export {AgencyClientRequiresUniquePONumberUnsetEventInterface} from './AgencyClientRequiresUniquePONumberUnsetEventInterface';
+export {AgencyClientRequiresBookingPasswordSetEventInterface} from './AgencyClientRequiresBookingPasswordSetEventInterface';
+export {AgencyClientRequiresBookingPasswordUnsetEventInterface} from './AgencyClientRequiresBookingPasswordUnsetEventInterface';
+export {AgencyClientBookingPasswordsUpdatedEventInterface} from './AgencyClientBookingPasswordsUpdatedEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

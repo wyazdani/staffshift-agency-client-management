@@ -45,7 +45,10 @@ export enum EventsEnum {
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET = 'AgencyClientRequiresPONumberSet',
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset',
   AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET = 'AgencyClientRequiresUniquePONumberSet',
-  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET = 'AgencyClientRequiresUniquePONumberUnset'
+  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET = 'AgencyClientRequiresUniquePONumberUnset',
+  AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET = 'AgencyClientRequiresBookingPasswordSet',
+  AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET = 'AgencyClientRequiresBookingPasswordUnset',
+  AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED = 'AgencyClientBookingPasswordsUpdated'
 }
 
 type EventsType = {
@@ -242,5 +245,17 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresUniquePONumberUnset',
     description: 'Requires unique po number was unset for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET]: {
+    name: 'AgencyClientRequiresBookingPasswordSet',
+    description: 'Requires booking password was set for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET]: {
+    name: 'AgencyClientRequiresBookingPasswordUnset',
+    description: 'Requires booking password was unset for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED]: {
+    name: 'AgencyClientBookingPasswordsUpdated',
+    description: 'Booking passwords were updated for agency client'
   }
 };

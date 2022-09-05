@@ -72,7 +72,6 @@ export const setRequiresUniquePONumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
@@ -99,7 +98,6 @@ export const unsetRequiresUniquePONumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
