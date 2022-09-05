@@ -72,7 +72,6 @@ export const setRequiresUniquePONumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const logger = req.Logger;
 
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
@@ -91,11 +90,6 @@ export const setRequiresUniquePONumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      logger.error('unknown error in setRequiresUniquePONumber', {
-        error: err
-      });
-    }
     next(err);
   }
 };
@@ -105,7 +99,6 @@ export const unsetRequiresUniquePONumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const logger = req.Logger;
 
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
@@ -124,11 +117,6 @@ export const unsetRequiresUniquePONumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      logger.error('unknown error in unsetRequiresUniquePONumber', {
-        error: err
-      });
-    }
     next(err);
   }
 };
