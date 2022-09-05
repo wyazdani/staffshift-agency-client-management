@@ -2046,7 +2046,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> It will set requires po number for agency client </td></tr>
+ </td><td> Requires po number was set for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET </td><td> AgencyClientRequiresPONumberUnset </td><td> 
 
 ```json
@@ -2085,7 +2085,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> It will unset requires po number for agency client </td></tr>
+ </td><td> Requires po number was unset for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET </td><td> AgencyClientRequiresUniquePONumberSet </td><td> 
 
 ```json
@@ -2124,7 +2124,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> It will unset requires unique po number for agency client </td></tr>
+ </td><td> Requires unique po number was set for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET </td><td> AgencyClientRequiresUniquePONumberUnset </td><td> 
 
 ```json
@@ -2163,5 +2163,140 @@ Description: A short description of the event
 }
 ```
 
- </td><td> It will unset requires unique po number for agency client </td></tr>
+ </td><td> Requires unique po number was unset for agency client </td></tr>
+<tr><td> AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET </td><td> AgencyClientRequiresBookingPasswordSet </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "passwords": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 0
+    }
+  },
+  "required": [
+    "passwords"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Requires booking password was set for agency client </td></tr>
+<tr><td> AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET </td><td> AgencyClientRequiresBookingPasswordUnset </td><td> 
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {}
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Requires booking password was unset for agency client </td></tr>
+<tr><td> AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED </td><td> AgencyClientBookingPasswordsUpdated </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "passwords": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 0
+    }
+  },
+  "required": [
+    "passwords"
+  ],
+  "additionalProperties": false
+}
+```
+
+ </td><td> 
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "const": "booking_preference"
+    },
+    "client_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "agency_id",
+    "client_id",
+    "name"
+  ],
+  "additionalProperties": {
+    "type": "string"
+  }
+}
+```
+
+ </td><td> Booking passwords were updated for agency client </td></tr>
 </table><!--DATA_END-->
