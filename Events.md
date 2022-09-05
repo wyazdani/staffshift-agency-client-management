@@ -2170,14 +2170,14 @@ Description: A short description of the event
 {
   "type": "object",
   "properties": {
-    "passwords": {
+    "booking_passwords": {
       "type": "array",
       "minItems": 0,
       "maxItems": 0
     }
   },
   "required": [
-    "passwords"
+    "booking_passwords"
   ],
   "additionalProperties": false
 }
@@ -2257,14 +2257,14 @@ Description: A short description of the event
 {
   "type": "object",
   "properties": {
-    "passwords": {
+    "booking_passwords": {
       "type": "array",
       "minItems": 0,
       "maxItems": 0
     }
   },
   "required": [
-    "passwords"
+    "booking_passwords"
   ],
   "additionalProperties": false
 }
