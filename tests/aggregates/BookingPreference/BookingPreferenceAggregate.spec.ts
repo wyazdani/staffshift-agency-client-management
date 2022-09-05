@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {ValidationError} from 'a24-node-error-utils';
-import assert from 'assert';
 import {AbstractAggregate} from '../../../src/aggregates/AbstractAggregate';
 import {BookingPreferenceAggregate} from '../../../src/aggregates/BookingPreference/BookingPreferenceAggregate';
 import {
