@@ -13,7 +13,7 @@ export class SetRequiresShiftRefNumberCommandHandler implements BookingPreferenc
   async execute(command: SetRequiresShiftRefNumberCommandInterface): Promise<void> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
-    await aggregate.validateSetRequiresShiftRefNumber();
+    aggregate.validateSetRequiresShiftRefNumber();
     let eventId = aggregate.getLastSequenceId();
 
     await this.repository.save([

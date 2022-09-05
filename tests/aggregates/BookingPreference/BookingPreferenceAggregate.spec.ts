@@ -114,7 +114,7 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      await bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+      bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
     });
 
     it('Test when requires Shift Ref Number is set error', async () => {
@@ -146,7 +146,7 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      await bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+      bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
     });
   });
 });
