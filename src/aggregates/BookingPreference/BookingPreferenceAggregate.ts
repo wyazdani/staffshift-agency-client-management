@@ -77,4 +77,46 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
       ]);
     }
   }
+
+  /**
+   * checks if requires_booking_password is not set
+   */
+  validateSetRequiresBookingPassword(): void {
+    if (this.aggregate.requires_booking_password === true) {
+      throw new ValidationError('Could not run command as state was already set').setErrors([
+        {
+          code: 'ALREADY_SET',
+          message: 'Requires booking password is set'
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks if requires_booking_password is set
+   */
+  validateUnsetRequiresBookingPassword(): void {
+    if (this.aggregate.requires_booking_password === false) {
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
+        {
+          code: 'ALREADY_NOT_SET',
+          message: 'Requires booking password is not set'
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks if requires_booking_password is set
+   */
+  validateUpdateBookingPasswords(): void {
+    if (this.aggregate.requires_booking_password === false) {
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
+        {
+          code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
+          message: 'Requires booking password is not set'
+        }
+      ]);
+    }
+  }
 }

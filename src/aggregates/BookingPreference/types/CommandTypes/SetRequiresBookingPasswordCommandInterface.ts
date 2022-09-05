@@ -2,7 +2,7 @@ import {BookingPreferenceCommandEnum} from '../BookingPreferenceCommandEnum';
 import {BookingPreferenceCommandInterface} from '..';
 
 export interface SetRequiresBookingPasswordCommandDataInterface {
-  passwords: [];
+  booking_passwords: [];
 }
 
 export interface SetRequiresBookingPasswordCommandInterface extends BookingPreferenceCommandInterface {

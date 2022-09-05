@@ -1,8 +1,11 @@
 import {
+  SetRequiresBookingPasswordCommandHandler,
   SetRequiresPONumberCommandHandler,
   SetRequiresUniquePONumberCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
   UnsetRequiresPONumberCommandHandler,
-  UnsetRequiresUniquePONumberCommandHandler
+  UnsetRequiresUniquePONumberCommandHandler,
+  UpdateBookingPasswordsCommandHandler
 } from './command-handlers';
 import {BookingPreferenceRepository} from './BookingPreferenceRepository';
 import {EventRepository} from '../../EventRepository';
@@ -13,7 +16,10 @@ const handlers = [
   UnsetRequiresPONumberCommandHandler,
   SetRequiresPONumberCommandHandler,
   SetRequiresUniquePONumberCommandHandler,
-  UnsetRequiresUniquePONumberCommandHandler
+  UnsetRequiresUniquePONumberCommandHandler,
+  SetRequiresBookingPasswordCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
+  UpdateBookingPasswordsCommandHandler
 ];
 
 /**

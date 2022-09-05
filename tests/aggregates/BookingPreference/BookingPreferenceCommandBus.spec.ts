@@ -3,17 +3,23 @@ import {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
 import {EventRepository} from '../../../src/EventRepository';
 import {
+  SetRequiresBookingPasswordCommandHandler,
   SetRequiresPONumberCommandHandler,
   SetRequiresUniquePONumberCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
   UnsetRequiresPONumberCommandHandler,
-  UnsetRequiresUniquePONumberCommandHandler
+  UnsetRequiresUniquePONumberCommandHandler,
+  UpdateBookingPasswordsCommandHandler
 } from '../../../src/aggregates/BookingPreference/command-handlers';
 
 const expectedHandlers = [
   SetRequiresPONumberCommandHandler,
   UnsetRequiresPONumberCommandHandler,
   SetRequiresUniquePONumberCommandHandler,
-  UnsetRequiresUniquePONumberCommandHandler
+  UnsetRequiresUniquePONumberCommandHandler,
+  SetRequiresBookingPasswordCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
+  UpdateBookingPasswordsCommandHandler
 ];
 
 describe('BookingPreferenceCommandBus class', () => {

@@ -1,3 +1,5 @@
+import {AgencyClientBookingPasswordsUpdatedEventStoreDataInterface} from 'EventTypes/AgencyClientBookingPasswordsUpdatedEventInterface';
+import {AgencyClientRequiresBookingPasswordSetEventStoreDataInterface} from 'EventTypes/AgencyClientRequiresBookingPasswordSetEventInterface';
 import {WriteProjectionInterface} from 'WriteProjectionInterface';
 import {EventsEnum} from '../../Events';
 import {EventStoreModelInterface} from '../../models/EventStore';
@@ -26,6 +28,21 @@ implements WriteProjectionInterface<BookingPreferenceAggregateRecordInterface> {
         break;
       case EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET:
         aggregate.requires_unique_po_number = false;
+        break;
+      case EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET:
+        aggregate.requires_booking_password = true;
+        aggregate.booking_passwords = (
+          event.data as AgencyClientRequiresBookingPasswordSetEventStoreDataInterface
+        ).booking_passwords;
+        break;
+      case EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET:
+        aggregate.requires_booking_password = false;
+        aggregate.booking_passwords = [];
+        break;
+      case EventsEnum.AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED:
+        aggregate.booking_passwords = (
+          event.data as AgencyClientBookingPasswordsUpdatedEventStoreDataInterface
+        ).booking_passwords;
         break;
       default:
         throw new Error(`Event type not supported: ${type}`);
