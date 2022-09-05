@@ -2124,7 +2124,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Set requires shift ref number for agency client </td></tr>
+ </td><td> Sets requires shift ref number for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET </td><td> AgencyClientRequiresShiftRefNumberUnset </td><td> 
 
 ```json
@@ -2163,5 +2163,6 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Unset requires shift ref number for agency client </td></tr>
+ </td><td> It will unset requires shift ref number for agency client </td></tr>
+ 
 </table><!--DATA_END-->
