@@ -785,7 +785,7 @@ paths:
       security:
         - jwt: []
       parameters:
-        - $ref: "#/parameters/booking_password_payload"
+        - $ref: "#/parameters/set_booking_password_payload"
       responses:
         202:
           description: "Will Set Requires Booking Password"
@@ -808,7 +808,7 @@ paths:
       security:
         - jwt: []
       parameters:
-        - $ref: "#/parameters/booking_password_payload"
+        - $ref: "#/parameters/update_booking_password_payload"
       responses:
         202:
           description: "Will Update Booking Passwords"
@@ -966,13 +966,20 @@ parameters:
     description: "The payload used to initiate apply/clear/inherit financial hold to client"
     schema:
       $ref: "#/definitions/initiate_financial_hold_payload_def"
-  booking_password_payload:
-    name: booking_password_payload
+  update_booking_password_payload:
+    name: update_booking_password_payload
     in: body
     required: true
     description: "The payload used to set/update booking passwords for client"
     schema:
-      $ref: "#/definitions/booking_password_payload_def"
+      $ref: "#/definitions/update_booking_password_payload_def"
+  set_booking_password_payload:
+    name: set_booking_password_payload
+    in: body
+    required: true
+    description: "The payload used to set/update booking passwords for client"
+    schema:
+      $ref: "#/definitions/set_booking_password_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -1280,7 +1287,21 @@ definitions:
         minLength: 3
         maxLength: 255
     additionalProperties: false
-  booking_password_payload_def:
+  update_booking_password_payload_def:
+    type: object
+    required:
+      - booking_passwords
+    properties:
+      booking_passwords:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: string
+          minLength: 1
+          maxLength: 100
+    additionalProperties: false
+  set_booking_password_payload_def:
     type: object
     required:
       - booking_passwords
@@ -2133,6 +2154,7 @@ definitions:
                 - MAX_LENGTH
                 - REQUIRES_BOOKING_PASSWORD_NOT_SET
                 - ARRAY_LENGTH_SHORT
+                - OBJECT_MISSING_REQUIRED_PROPERTY
             message:
               type: string
             path:
@@ -2178,6 +2200,7 @@ definitions:
                 - MAX_LENGTH
                 - ALREADY_SET
                 - ARRAY_LENGTH_SHORT
+                - OBJECT_MISSING_REQUIRED_PROPERTY
             message:
               type: string
             path:

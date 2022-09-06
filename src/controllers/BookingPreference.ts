@@ -130,7 +130,7 @@ export const setRequiresBookingPassword = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const payload = get(req, 'swagger.params.booking_password_payload.value', {});
+    const payload = get(req, 'swagger.params.set_booking_password_payload.value', {});
     const command: SetRequiresBookingPasswordCommandInterface = {
       aggregateId: {
         name: 'booking_preference',
@@ -148,7 +148,7 @@ export const setRequiresBookingPassword = async (
     if (!(err instanceof ValidationError)) {
       req.Logger.error('unknown error in setRequiresBookingPassword', {
         error: err,
-        payload: get(req, 'swagger.params.booking_password_payload.value')
+        payload: get(req, 'swagger.params.set_booking_password_payload.value')
       });
     }
     next(err);
@@ -189,7 +189,7 @@ export const updateBookingPassword = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
-    const payload = get(req, 'swagger.params.booking_password_payload.value', {});
+    const payload = get(req, 'swagger.params.update_booking_password_payload.value', {});
     const command: UpdateBookingPasswordsCommandInterface = {
       aggregateId: {
         name: 'booking_preference',
@@ -207,7 +207,7 @@ export const updateBookingPassword = async (
     if (!(err instanceof ValidationError)) {
       req.Logger.error('unknown error in updateBookingPassword', {
         error: err,
-        payload: get(req, 'swagger.params.booking_password_payload.value')
+        payload: get(req, 'swagger.params.update_booking_password_payload.value')
       });
     }
     next(err);
