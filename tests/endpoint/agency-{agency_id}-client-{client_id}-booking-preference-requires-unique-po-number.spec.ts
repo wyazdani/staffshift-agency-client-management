@@ -80,58 +80,6 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-uniq
       res.statusCode.should.equal(202);
     });
 
-    it('should respond with 400 Validation Error', async () => {
-      const schema = {
-        type: 'object',
-        required: ['code', 'message'],
-        properties: {
-          code: {
-            type: 'string',
-            enum: ['SCHEMA_VALIDATION_FAILED', 'MODEL_VALIDATION_FAILED']
-          },
-          message: {
-            type: 'string'
-          },
-          errors: {
-            type: 'array',
-            items: {
-              type: 'object',
-              required: ['code', 'message', 'path'],
-              properties: {
-                code: {
-                  type: 'string',
-                  enum: ['OBJECT_ADDITIONAL_PROPERTIES', 'ALREADY_NOT_SET']
-                },
-                message: {
-                  type: 'string'
-                },
-                path: {
-                  type: 'array',
-                  items: {
-                    type: 'string'
-                  }
-                },
-                description: {
-                  type: 'string'
-                }
-              },
-              additionalProperties: false
-            }
-          }
-        },
-        additionalProperties: false
-      };
-      const res = await api
-        .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-unique-po-number`)
-        .set(headers)
-        .send({
-          test: 'test'
-        });
-
-      assert.equal(res.statusCode, 400);
-      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
-    });
-
     it('should respond with 401 Failed to authenticate', async () => {
       const schema = {
         type: 'object',

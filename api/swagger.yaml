@@ -970,14 +970,14 @@ parameters:
     name: update_booking_password_payload
     in: body
     required: true
-    description: "The payload used to set/update booking passwords for client"
+    description: "The payload used to update booking passwords for client"
     schema:
       $ref: "#/definitions/update_booking_password_payload_def"
   set_booking_password_payload:
     name: set_booking_password_payload
     in: body
     required: true
-    description: "The payload used to set/update booking passwords for client"
+    description: "The payload used to set booking passwords for client"
     schema:
       $ref: "#/definitions/set_booking_password_payload_def"
   x_request_id:
