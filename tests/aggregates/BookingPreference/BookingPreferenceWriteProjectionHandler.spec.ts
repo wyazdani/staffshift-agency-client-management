@@ -7,7 +7,9 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
   describe('execute()', () => {
     const projectionHandler = new BookingPreferenceWriteProjectionHandler();
     const date = new Date();
-    const bookingPasswords = ['test'];
+    const payload = {
+      booking_passwords: ['test']
+    };
 
     describe('AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET Event', () => {
       it('Test success scenario', () => {
@@ -118,7 +120,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
         const event = new EventStore({
           type: EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET,
           aggregate_id: {},
-          data: {booking_passwords: ['test']},
+          data: payload,
           sequence_id: 1,
           meta_data: {
             user_id: 'fake_user'
@@ -134,7 +136,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
         );
 
         result.requires_booking_password.should.be.true;
-        result.booking_passwords.should.be.equal(bookingPasswords);
+        result.booking_passwords.should.be.equal(payload.booking_passwords);
       });
     });
 
@@ -173,7 +175,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
         const event = new EventStore({
           type: EventsEnum.AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED,
           aggregate_id: {},
-          data: {booking_passwords: ['test']},
+          data: payload,
           sequence_id: 1,
           meta_data: {
             user_id: 'fake_user'
@@ -184,7 +186,7 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
 
         const result = projectionHandler.execute(EventsEnum.AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED, aggregate, event);
 
-        result.booking_passwords.should.be.equal(bookingPasswords);
+        result.booking_passwords.should.be.equal(payload.booking_passwords);
       });
     });
 

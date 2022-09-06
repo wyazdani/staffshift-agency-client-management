@@ -792,7 +792,7 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/booking_password_validation_error_model"
+            $ref: "#/definitions/set_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -815,7 +815,7 @@ paths:
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
-            $ref: "#/definitions/booking_password_validation_error_model"
+            $ref: "#/definitions/update_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
         404:
@@ -2098,7 +2098,52 @@ definitions:
               type: string
           additionalProperties: false
     additionalProperties: false
-  booking_password_validation_error_model:
+  update_booking_password_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - REQUIRED
+          - MODEL_VALIDATION_FAILED
+          - SCHEMA_VALIDATION_FAILED
+          - PATTERN
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: string
+              enum:
+                - REQUIRED
+                - INVALID_TYPE
+                - PATTERN
+                - OBJECT_ADDITIONAL_PROPERTIES
+                - MIN_LENGTH
+                - MAX_LENGTH
+                - REQUIRES_BOOKING_PASSWORD_NOT_SET
+                - ARRAY_LENGTH_SHORT
+            message:
+              type: string
+            path:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+          additionalProperties: false
+    additionalProperties: false
+  set_booking_password_validation_error_model:
     type: object
     required:
       - code
