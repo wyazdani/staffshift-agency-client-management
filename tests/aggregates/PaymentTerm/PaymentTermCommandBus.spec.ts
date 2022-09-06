@@ -4,10 +4,15 @@ import {assert} from 'chai';
 import {EventRepository} from '../../../src/EventRepository';
 import {
   ApplyInheritedPaymentTermCommandHandler,
-  ApplyPaymentTermCommandHandler
+  ApplyPaymentTermCommandHandler,
+  InheritPaymentTermClientLinkCommandHandler
 } from '../../../src/aggregates/PaymentTerm/command-handlers';
 
-const expectedHandlers = [ApplyInheritedPaymentTermCommandHandler, ApplyPaymentTermCommandHandler];
+const expectedHandlers = [
+  ApplyInheritedPaymentTermCommandHandler,
+  ApplyPaymentTermCommandHandler,
+  InheritPaymentTermClientLinkCommandHandler
+];
 
 describe('PaymentTermCommandBus class', () => {
   describe('getCommandHandlers()', () => {
