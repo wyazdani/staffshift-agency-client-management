@@ -30,8 +30,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -60,8 +59,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -89,8 +87,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -117,8 +114,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -146,8 +142,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -175,8 +170,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -205,8 +199,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -234,8 +227,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -262,8 +254,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -291,8 +282,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -320,8 +310,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -346,8 +335,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -371,8 +359,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -395,8 +382,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -420,8 +406,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -445,8 +430,7 @@ describe('FacadeClientHelper Class', () => {
         statusCode: 404
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -475,8 +459,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -504,8 +487,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -532,8 +514,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -561,8 +542,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -590,8 +570,7 @@ describe('FacadeClientHelper Class', () => {
         }
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -625,8 +604,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
         siteId: 'site id',
@@ -664,8 +642,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyId: 'agency id',
         organisationId: 'organisation id',
@@ -702,8 +679,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyOrgType: 'site',
         siteId: 'site id',
@@ -741,8 +717,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         agencyOrgType: 'ward',
         wardId: 'ward id',
@@ -780,8 +755,7 @@ describe('FacadeClientHelper Class', () => {
         body: [record]
       };
       const client = new FacadeClientHelper(logger);
-      const requestOptions:ListAgencyOrgLinkOptionsType =
-      {
+      const requestOptions: ListAgencyOrgLinkOptionsType = {
         xRequestId: logger.requestId,
         siteId: 'site id',
         agencyOrgType: 'ward',
@@ -922,11 +896,9 @@ describe('FacadeClientHelper Class', () => {
         .getUserFullName(userId)
         .should.be.rejectedWith(RuntimeError, 'Error occurred during user details GET call');
     });
-
   });
 
   describe('getAgencyClientDetailsListing()', () => {
-
     it('test for validation error when downstream returns 400 status code', async () => {
       const apiResponse = {
         statusCode: 400,
@@ -942,9 +914,7 @@ describe('FacadeClientHelper Class', () => {
       });
 
       sinon.stub(StaffshiftFacadeClient, 'AgencyOrganisationLinkApi').returns({listAgencyOrganisationLink});
-      await client
-        .getAgencyClientDetailsListing()
-        .should.be.rejectedWith(ValidationError, 'some validation message');
+      await client.getAgencyClientDetailsListing().should.be.rejectedWith(ValidationError, 'some validation message');
     });
 
     it('test for authorization error when downstream returns 401 status code', async () => {
@@ -962,9 +932,7 @@ describe('FacadeClientHelper Class', () => {
       });
 
       sinon.stub(StaffshiftFacadeClient, 'AgencyOrganisationLinkApi').returns({listAgencyOrganisationLink});
-      await client
-        .getAgencyClientDetailsListing()
-        .should.be.rejectedWith(AuthorizationError, 'API token specified');
+      await client.getAgencyClientDetailsListing().should.be.rejectedWith(AuthorizationError, 'API token specified');
     });
 
     it('test it resolves successfully when downstream returns 404 ', async () => {
@@ -998,9 +966,7 @@ describe('FacadeClientHelper Class', () => {
       });
 
       sinon.stub(StaffshiftFacadeClient, 'AgencyOrganisationLinkApi').returns({listAgencyOrganisationLink});
-      await client
-        .getAgencyClientDetailsListing()
-        .should.be.rejectedWith(RuntimeError, 'Internal server error');
+      await client.getAgencyClientDetailsListing().should.be.rejectedWith(RuntimeError, 'Internal server error');
     });
 
     it('success scenario', async () => {
@@ -1055,15 +1021,15 @@ describe('FacadeClientHelper Class', () => {
   });
 
   describe('getInstance()', () => {
-
     it('success when using correct client config', async () => {
       const requestOptions = clientConfig.request_options;
       const result = FacadeClientHelper.getInstance();
 
-      assert.deepEqual(result.basePath, `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`);
+      assert.deepEqual(
+        result.basePath,
+        `${requestOptions.protocol}://${requestOptions.host}:${requestOptions.port}/${requestOptions.version}`
+      );
       assert.deepEqual(result.timeout, clientConfig.request_timeout);
     });
-
   });
-
 });

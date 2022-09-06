@@ -54,10 +54,9 @@ describe('FinancialHoldAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+        type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
         data: {
           financial_hold: true,
-          force: true,
           note: 'oops'
         }
       });
@@ -103,10 +102,9 @@ describe('FinancialHoldAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+        type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
         data: {
           financial_hold: true,
-          force: true,
           note: 'oops'
         }
       });
@@ -163,10 +161,9 @@ describe('FinancialHoldAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+        type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
         data: {
           financial_hold: true,
-          force: true,
           note: 'oops'
         }
       });
@@ -223,10 +220,9 @@ describe('FinancialHoldAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+        type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
         data: {
           financial_hold: true,
-          force: true,
           note: 'oops'
         }
       });
@@ -283,10 +279,9 @@ describe('FinancialHoldAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+        type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
         data: {
           financial_hold: true,
-          force: true,
           note: 'oops'
         }
       });
