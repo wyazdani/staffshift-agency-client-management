@@ -54,10 +54,9 @@ describe('PaymentTermAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+        type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
         data: {
-          term: PAYMENT_TERM_ENUM.CREDIT,
-          force: true
+          term: PAYMENT_TERM_ENUM.CREDIT
         }
       });
     });
@@ -100,10 +99,9 @@ describe('PaymentTermAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+        type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
         data: {
-          term: PAYMENT_TERM_ENUM.CREDIT,
-          force: true
+          term: PAYMENT_TERM_ENUM.CREDIT
         }
       });
     });
@@ -156,10 +154,9 @@ describe('PaymentTermAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+        type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
         data: {
-          term: PAYMENT_TERM_ENUM.CREDIT,
-          force: true
+          term: PAYMENT_TERM_ENUM.CREDIT
         }
       });
     });
@@ -212,10 +209,9 @@ describe('PaymentTermAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+        type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
         data: {
-          term: PAYMENT_TERM_ENUM.CREDIT,
-          force: true
+          term: PAYMENT_TERM_ENUM.CREDIT
         }
       });
     });
@@ -268,10 +264,9 @@ describe('PaymentTermAgencyClientLinkPropagator', () => {
           agency_id: aggregateId.agency_id,
           client_id: aggregateId.client_id
         },
-        type: PaymentTermCommandEnum.APPLY_INHERITED_PAYMENT_TERM,
+        type: PaymentTermCommandEnum.INHERIT_PAYMENT_TERM_CLIENT_LINK,
         data: {
-          term: PAYMENT_TERM_ENUM.CREDIT,
-          force: true
+          term: PAYMENT_TERM_ENUM.CREDIT
         }
       });
     });

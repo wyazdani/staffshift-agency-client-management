@@ -1,10 +1,18 @@
-import {SetInheritedFinancialHoldCommandHandler, SetFinancialHoldCommandHandler} from './command-handlers';
+import {
+  SetInheritedFinancialHoldCommandHandler,
+  SetFinancialHoldCommandHandler,
+  InheritFinancialHoldClientLinkCommandHandler
+} from './command-handlers';
 import {FinancialHoldRepository} from './FinancialHoldRepository';
 import {EventRepository} from '../../EventRepository';
 import {FinancialHoldWriteProjectionHandler} from './FinancialHoldWriteProjectionHandler';
 import {FinancialHoldCommandHandlerInterface} from './types/FinancialHoldCommandHandlerInterface';
 
-const handlers = [SetFinancialHoldCommandHandler, SetInheritedFinancialHoldCommandHandler];
+const handlers = [
+  SetFinancialHoldCommandHandler,
+  SetInheritedFinancialHoldCommandHandler,
+  InheritFinancialHoldClientLinkCommandHandler
+];
 
 /**
  * Responsible for routing all commands to their corresponding handlers

@@ -8,7 +8,7 @@ import {AgencyClientWriteProjectionHandler} from '../../../aggregates/AgencyClie
 import {AgencyClientAggregateIdInterface} from '../../../aggregates/AgencyClient/types';
 import {CommandBus} from '../../../aggregates/CommandBus';
 import {EventRepository} from '../../../EventRepository';
-import {SetInheritedFinancialHoldCommandInterface} from '../../../aggregates/FinancialHold/types/CommandTypes';
+import {InheritFinancialHoldClientLinkCommandInterface} from '../../../aggregates/FinancialHold/types/CommandTypes';
 import {FinancialHoldCommandEnum} from '../../../aggregates/FinancialHold/types';
 
 /**
@@ -68,13 +68,12 @@ export class FinancialHoldAgencyClientLinkPropagator {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+        type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
         data: {
           financial_hold: parentAggregate.getFinancialHold(),
-          force: true, // we force it since we want to inherit from parent financial hold even it was not inherited before
           note: parentAggregate.getNote()
         }
-      } as SetInheritedFinancialHoldCommandInterface);
+      } as InheritFinancialHoldClientLinkCommandInterface);
     } else {
       // Type is ward, now we need to load parent, check agency client aggregate
       // check if last linked event is after parent financial hold? if yes fine
@@ -120,13 +119,12 @@ export class FinancialHoldAgencyClientLinkPropagator {
             agency_id: agencyId,
             client_id: clientId
           },
-          type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+          type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
           data: {
             financial_hold: orgFinancialHold.getFinancialHold(),
-            note: orgFinancialHold.getNote(),
-            force: true
+            note: orgFinancialHold.getNote()
           }
-        } as SetInheritedFinancialHoldCommandInterface);
+        } as InheritFinancialHoldClientLinkCommandInterface);
       } else {
         await commandBus.execute({
           aggregateId: {
@@ -134,13 +132,12 @@ export class FinancialHoldAgencyClientLinkPropagator {
             agency_id: agencyId,
             client_id: clientId
           },
-          type: FinancialHoldCommandEnum.SET_INHERITED_FINANCIAL_HOLD,
+          type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
           data: {
             financial_hold: siteFinancialHold.getFinancialHold(),
-            note: siteFinancialHold.getNote(),
-            force: true
+            note: siteFinancialHold.getNote()
           }
-        } as SetInheritedFinancialHoldCommandInterface);
+        } as InheritFinancialHoldClientLinkCommandInterface);
       }
     }
   }
