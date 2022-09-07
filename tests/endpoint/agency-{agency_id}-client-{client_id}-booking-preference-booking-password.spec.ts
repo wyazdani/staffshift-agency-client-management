@@ -10,7 +10,7 @@ TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
 const bookingPreferenceScenario = new BookingPreferenceScenario();
 
-describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-booking-password', () => {
+describe('agency-{agency_id}-client-{client_id}-booking-preference-booking-password', () => {
   const jwtToken = getJWT({
     sub: '5ff6e098fb83732f8e23dc92',
     name: 'John Doe',
@@ -28,55 +28,18 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
   beforeEach(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
-  describe('post', () => {
+
+  describe('put', () => {
     const payload = {
       booking_passwords: ['1', '12']
     };
 
-    it('should respond with 202 updates requires-booking-password', async () => {
-      const res = await api
-        .post(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
-        .set(headers)
-        .send(payload);
-
-      res.statusCode.should.equal(202);
-    });
-
-    it('should respond with 401 Failed to authenticate', async () => {
-      const schema = {
-        type: 'object',
-        required: ['code', 'message'],
-        properties: {
-          code: {
-            type: 'string',
-            enum: ['UNAUTHORIZED']
-          },
-          message: {
-            type: 'string'
-          }
-        },
-        additionalProperties: false
-      };
-      const otherHeaders = cloneDeep(headers);
-
-      otherHeaders['x-request-jwt'] = 'invalid';
-      const res = await api
-        .post(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
-        .set(otherHeaders)
-        .send(payload);
-
-      assert.equal(res.statusCode, 401);
-      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
-    });
-  });
-
-  describe('delete', () => {
-    it('should respond with 202 updates requires-booking-password', async () => {
+    it('should respond with 202 updates booking-password', async () => {
       await bookingPreferenceScenario.setRequiresBookingPassword(agencyId, clientId);
       const res = await api
-        .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
+        .put(`/agency/${agencyId}/client/${clientId}/booking-preference/booking-password`)
         .set(headers)
-        .send({});
+        .send(payload);
 
       res.statusCode.should.equal(202);
     });
@@ -100,9 +63,9 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
 
       otherHeaders['x-request-jwt'] = 'invalid';
       const res = await api
-        .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
+        .put(`/agency/${agencyId}/client/${clientId}/booking-preference/booking-password`)
         .set(otherHeaders)
-        .send({});
+        .send(payload);
 
       assert.equal(res.statusCode, 401);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');

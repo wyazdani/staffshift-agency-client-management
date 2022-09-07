@@ -113,5 +113,4 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-shif
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
   });
-
 });

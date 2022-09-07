@@ -777,7 +777,7 @@ paths:
       security:
         - jwt: []
       parameters:
-        - $ref: "#/parameters/set_booking_password_payload"
+        - $ref: "#/parameters/set_requires_booking_password_payload"
       responses:
         202:
           description: "Will Set Requires Booking Password"
@@ -790,27 +790,6 @@ paths:
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set Requires Booking Password"
-      tags:
-        - "Booking Preferences"
-    put:
-      x-swagger-router-controller: "BookingPreference"
-      operationId: "updateBookingPassword"
-      security:
-        - jwt: []
-      parameters:
-        - $ref: "#/parameters/update_booking_password_payload"
-      responses:
-        202:
-          description: "Will Update Booking Passwords"
-        400:
-          description: "Validation error. Usually caused by a missing or invalid parameter."
-          schema:
-            $ref: "#/definitions/update_booking_password_validation_error_model"
-        401:
-          $ref: "#/responses/unauthorize_error_model"
-        default:
-          $ref: "#/responses/server_error_model"
-      summary: "Will Update Booking Passwords"
       tags:
         - "Booking Preferences"
     delete:
@@ -834,6 +813,33 @@ paths:
       summary: "Will Unset Require Booking Password"
       tags:
         - "Booking Preferences"
+  /agency/{agency_id}/client/{client_id}/booking-preference/booking-password:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    put:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "updateBookingPassword"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/update_booking_password_payload"
+      responses:
+        202:
+          description: "Will Update Booking Passwords"
+        400:
+          description: "Validation error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/update_booking_password_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Will Update Booking Passwords"
+      tags:
+        - "Booking Preferences"  
   /agency/{agency_id}/client/{client_id}/booking-preference/requires-shift-ref-number:
     parameters:
       - $ref: "#/parameters/x_request_id"
@@ -988,13 +994,13 @@ parameters:
     description: "The payload used to update booking passwords for client"
     schema:
       $ref: "#/definitions/update_booking_password_payload_def"
-  set_booking_password_payload:
-    name: set_booking_password_payload
+  set_requires_booking_password_payload:
+    name: set_requires_booking_password_payload
     in: body
     required: true
     description: "The payload used to set booking passwords for client"
     schema:
-      $ref: "#/definitions/set_booking_password_payload_def"
+      $ref: "#/definitions/set_requires_booking_password_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -1316,7 +1322,7 @@ definitions:
           minLength: 1
           maxLength: 100
     additionalProperties: false
-  set_booking_password_payload_def:
+  set_requires_booking_password_payload_def:
     type: object
     required:
       - booking_passwords
@@ -2246,9 +2252,6 @@ definitions:
             code:
               type: string
               enum:
-                - REQUIRED
-                - INVALID_TYPE
-                - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - MIN_LENGTH
                 - MAX_LENGTH
@@ -2292,9 +2295,6 @@ definitions:
             code:
               type: string
               enum:
-                - REQUIRED
-                - INVALID_TYPE
-                - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - ALREADY_NOT_SET
             message:
