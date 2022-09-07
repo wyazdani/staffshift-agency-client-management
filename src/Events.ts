@@ -43,7 +43,8 @@ export enum EventsEnum {
   AGENCY_CLIENT_CLEAR_FINANCIAL_HOLD_INHERITED = 'AgencyClientClearFinancialHoldInherited',
   AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED = 'AgencyClientEmptyFinancialHoldInherited',
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET = 'AgencyClientRequiresPONumberSet',
-  AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset'
+  AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset',
+  AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET = 'AgencyClientRequiresShiftRefNumberSet'
 }
 
 type EventsType = {
@@ -232,5 +233,9 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresPONumberUnset',
     description: 'Requires po number was unset for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET]: {
+    name: 'AgencyClientRequiresShiftRefNumberSet',
+    description: 'Requires shift ref number was set for agency client'
   }
 };

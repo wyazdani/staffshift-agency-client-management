@@ -39,7 +39,6 @@ deref(reffedSwagger, (err, swagerDef) => {
 
   // Generates an array of JavaScript test files following specified configuration
   const arrTests = stt.testGen(swagger, config);
-
   for (let i = 0; i < arrTests.length; i++) {
     // eslint-disable-next-line no-sync
     fs.writeFileSync(path + arrTests[i].name, arrTests[i].test, 'utf8');

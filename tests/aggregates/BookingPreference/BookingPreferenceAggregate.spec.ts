@@ -1,5 +1,5 @@
+import {assert} from 'chai';
 import {ValidationError} from 'a24-node-error-utils';
-import assert from 'assert';
 import {AbstractAggregate} from '../../../src/aggregates/AbstractAggregate';
 import {BookingPreferenceAggregate} from '../../../src/aggregates/BookingPreference/BookingPreferenceAggregate';
 import {
@@ -106,6 +106,49 @@ describe('BookingPreferenceAggregate', () => {
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
       await bookingPreferenceAggregate.validateUnsetRequiresPONumber();
+    });
+  });
+
+  describe('validateSetRequiresShiftRefNumber()', () => {
+    it('Test when aggregate does not have any events in it', async () => {
+      const aggregate = {
+        last_sequence_id: 0
+      };
+      const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
+
+      bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+    });
+
+    it('Test when requires Shift Ref Number is set error', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        requires_shift_ref_number: true
+      };
+      const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
+
+      try {
+        bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.assertEqual(
+          new ValidationError('Could not run command as state was already set').setErrors([
+            {
+              code: 'ALREADY_SET',
+              message: 'Requires Shift Ref Number is already set'
+            }
+          ])
+        );
+      }
+    });
+
+    it('Test when requires Shift Ref Number is defined as false', async () => {
+      const aggregate = {
+        last_sequence_id: 1,
+        requires_shift_ref_number: false
+      };
+      const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
+
+      bookingPreferenceAggregate.validateSetRequiresShiftRefNumber();
     });
   });
 });
