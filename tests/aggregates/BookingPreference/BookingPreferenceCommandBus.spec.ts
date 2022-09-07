@@ -9,7 +9,8 @@ import {
   UnsetRequiresBookingPasswordCommandHandler,
   UnsetRequiresPONumberCommandHandler,
   UnsetRequiresUniquePONumberCommandHandler,
-  UpdateBookingPasswordsCommandHandler
+  UpdateBookingPasswordsCommandHandler,
+  SetRequiresShiftRefNumberCommandHandler
 } from '../../../src/aggregates/BookingPreference/command-handlers';
 
 const expectedHandlers = [
@@ -19,7 +20,8 @@ const expectedHandlers = [
   UnsetRequiresUniquePONumberCommandHandler,
   SetRequiresBookingPasswordCommandHandler,
   UnsetRequiresBookingPasswordCommandHandler,
-  UpdateBookingPasswordsCommandHandler
+  UpdateBookingPasswordsCommandHandler,
+  SetRequiresShiftRefNumberCommandHandler
 ];
 
 describe('BookingPreferenceCommandBus class', () => {

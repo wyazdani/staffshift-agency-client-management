@@ -48,4 +48,5 @@ export {AgencyClientRequiresUniquePONumberUnsetEventInterface} from './AgencyCli
 export {AgencyClientRequiresBookingPasswordSetEventInterface} from './AgencyClientRequiresBookingPasswordSetEventInterface';
 export {AgencyClientRequiresBookingPasswordUnsetEventInterface} from './AgencyClientRequiresBookingPasswordUnsetEventInterface';
 export {AgencyClientBookingPasswordsUpdatedEventInterface} from './AgencyClientBookingPasswordsUpdatedEventInterface';
+export {AgencyClientRequiresShiftRefNumberSetEventInterface} from './AgencyClientRequiresShiftRefNumberSetEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

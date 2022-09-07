@@ -11,7 +11,8 @@ import {
   UnsetRequiresBookingPasswordCommandInterface,
   UnsetRequiresPONumberCommandInterface,
   UnsetRequiresUniquePONumberCommandInterface,
-  UpdateBookingPasswordsCommandInterface
+  UpdateBookingPasswordsCommandInterface,
+  SetRequiresShiftRefNumberCommandInterface
 } from '../aggregates/BookingPreference/types/CommandTypes';
 
 export const setRequiresPONumber = async (
@@ -210,6 +211,34 @@ export const updateBookingPassword = async (
         payload: get(req, 'swagger.params.update_booking_password_payload.value')
       });
     }
+    next(err);
+  }
+};
+
+export const setRequiresShiftRefNumber = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  const logger = req.Logger;
+
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const command: SetRequiresShiftRefNumberCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.SET_REQUIRES_SHIFT_REF_NUMBER,
+      data: {}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
     next(err);
   }
 };

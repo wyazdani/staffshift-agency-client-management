@@ -5,3 +5,4 @@ export * from './UnsetRequiresUniquePONumberCommandInterface';
 export * from './SetRequiresBookingPasswordCommandInterface';
 export * from './UnsetRequiresBookingPasswordCommandInterface';
 export * from './UpdateBookingPasswordsCommandInterface';
+export * from './SetRequiresShiftRefNumberCommandInterface';

@@ -44,6 +44,9 @@ implements WriteProjectionInterface<BookingPreferenceAggregateRecordInterface> {
           event.data as AgencyClientBookingPasswordsUpdatedEventStoreDataInterface
         ).booking_passwords;
         break;
+      case EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET:
+        aggregate.requires_shift_ref_number = true;
+        break;
       default:
         throw new Error(`Event type not supported: ${type}`);
     }

@@ -834,6 +834,35 @@ paths:
       summary: "Will Unset Require Booking Password"
       tags:
         - "Booking Preferences"
+  /agency/{agency_id}/client/{client_id}/booking-preference/requires-shift-ref-number:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    post:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "setRequiresShiftRefNumber"
+      security:
+        - jwt: []
+      parameters:
+        - $ref: "#/parameters/empty_payload"
+      responses:
+        202:
+          description: "Will Set requires Shift Ref Number"
+          schema:
+            $ref: "#/definitions/empty_payload_def"
+        400:
+          description: "Validation error."
+          schema:
+            $ref: "#/definitions/set_requires_shift_ref_number_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Will Set requires Shift Ref Number"
+      tags:
+        - "Booking Preferences"
 parameters:
  # Query PARAMS
   query_client_type:
@@ -2276,6 +2305,45 @@ definitions:
                 type: string
             description:
               type: string
+          additionalProperties: false
+    additionalProperties: false
+  set_requires_shift_ref_number_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - "SCHEMA_VALIDATION_FAILED"
+          - "MODEL_VALIDATION_FAILED"
+          - "PATTERN"
+          - "REQUIRED"
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: object
+          required:
+            - code
+            - message
+            - path
+          properties:
+            code:
+              type: "string"
+              enum:
+                - "OBJECT_ADDITIONAL_PROPERTIES"
+                - "ALREADY_SET"
+            message:
+              type: "string"
+            path:
+              type: "array"
+              items:
+                type: "string"
+            description:
+              type: "string"
           additionalProperties: false
     additionalProperties: false
 responses:

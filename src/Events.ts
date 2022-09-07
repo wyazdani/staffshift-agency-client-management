@@ -48,7 +48,8 @@ export enum EventsEnum {
   AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET = 'AgencyClientRequiresUniquePONumberUnset',
   AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET = 'AgencyClientRequiresBookingPasswordSet',
   AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET = 'AgencyClientRequiresBookingPasswordUnset',
-  AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED = 'AgencyClientBookingPasswordsUpdated'
+  AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED = 'AgencyClientBookingPasswordsUpdated',
+  AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET = 'AgencyClientRequiresShiftRefNumberSet'
 }
 
 type EventsType = {
@@ -257,5 +258,9 @@ export const events: EventsType = {
   [EventsEnum.AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED]: {
     name: 'AgencyClientBookingPasswordsUpdated',
     description: 'Booking passwords were updated for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET]: {
+    name: 'AgencyClientRequiresShiftRefNumberSet',
+    description: 'Requires shift ref number was set for agency client'
   }
 };
