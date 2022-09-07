@@ -23,7 +23,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-shif
     'X-Request-Id': '123'
   };
 
-  afterEach(async () => {
+  beforeEach(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
   describe('post', () => {
