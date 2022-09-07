@@ -685,8 +685,6 @@ paths:
             $ref: "#/definitions/set_requires_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set requires PO Number"
@@ -710,8 +708,6 @@ paths:
             $ref: "#/definitions/unset_requires_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset requires PO Number"
@@ -741,8 +737,6 @@ paths:
             $ref: "#/definitions/set_requires_unique_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set requires Unique PO Number"
@@ -766,8 +760,6 @@ paths:
             $ref: "#/definitions/unset_requires_unique_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset requires Unique PO Number"
@@ -795,8 +787,6 @@ paths:
             $ref: "#/definitions/set_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set Requires Booking Password"
@@ -818,8 +808,6 @@ paths:
             $ref: "#/definitions/update_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Update Booking Passwords"
@@ -841,8 +829,6 @@ paths:
             $ref: "#/definitions/unset_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset Require Booking Password"
