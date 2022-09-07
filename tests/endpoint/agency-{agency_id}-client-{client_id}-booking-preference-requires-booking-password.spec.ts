@@ -22,13 +22,13 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
     'Content-Type': 'application/json',
     'X-Request-Id': '123'
   };
+  const agencyId = '6141d5be5863dc2202000001';
+  const clientId = '6141d64365e0e52381000001';
 
-  beforeEach(async () => {
+  before(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
   describe('post', () => {
-    const agencyId = '6141d5be5863dc2202000001';
-    const clientId = '6141d64365e0e52381000001';
     const payload = {
       booking_passwords: ['1', '12']
     };
@@ -71,8 +71,6 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
   });
 
   describe('put', () => {
-    const agencyId = '6141d5be5863dc2202000001';
-    const clientId = '6141d64365e0e52381000001';
     const payload = {
       booking_passwords: ['1', '12']
     };
@@ -115,9 +113,6 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
   });
 
   describe('delete', () => {
-    const agencyId = '6141d5be5863dc2202000001';
-    const clientId = '6141d64365e0e52381000001';
-
     it('should respond with 202 updates requires-booking-password', async () => {
       const res = await api
         .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)

@@ -31,7 +31,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    * checks if requires_po_number is set
    */
   validateUnsetRequiresPONumber(): void {
-    if (this.aggregate.requires_po_number === false) {
+    if (this.aggregate.requires_po_number === undefined || this.aggregate.requires_po_number === false) {
       throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
@@ -68,7 +68,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    * checks if requires_unique_po_number is set
    */
   validateUnsetRequiresUniquePONumber(): void {
-    if (this.aggregate.requires_unique_po_number === false) {
+    if (this.aggregate.requires_unique_po_number === undefined || this.aggregate.requires_unique_po_number === false) {
       throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
@@ -96,7 +96,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    * checks if requires_booking_password is set
    */
   validateUnsetRequiresBookingPassword(): void {
-    if (this.aggregate.requires_booking_password === false) {
+    if (this.aggregate.requires_booking_password === undefined || this.aggregate.requires_booking_password === false) {
       throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
@@ -110,7 +110,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    * checks if requires_booking_password is set
    */
   validateUpdateBookingPasswords(): void {
-    if (this.aggregate.requires_booking_password === false) {
+    if (this.aggregate.requires_booking_password === undefined || this.aggregate.requires_booking_password === false) {
       throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',

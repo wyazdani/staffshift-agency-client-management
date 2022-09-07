@@ -4,9 +4,11 @@ import {assert} from 'chai';
 import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
 import {cloneDeep} from 'lodash';
+import {BookingPreferenceScenario} from './scenarios/BookingPreferenceScenario';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
+const bookingPreferenceScenario = new BookingPreferenceScenario();
 
 describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-po-number', () => {
   const jwtToken = getJWT({
@@ -21,6 +23,9 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-po-n
     'X-Request-Id': '123'
   };
 
+  before(async () => {
+    await bookingPreferenceScenario.deleteAllEvents();
+  });
   describe('post', () => {
     const agencyId = '6141d5be5863dc2202000001';
     const clientId = '6141d64365e0e52381000001';

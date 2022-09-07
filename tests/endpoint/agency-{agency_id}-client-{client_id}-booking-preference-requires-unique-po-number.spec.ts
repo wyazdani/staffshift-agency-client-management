@@ -16,6 +16,8 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-uniq
     name: 'John Doe',
     iat: 1516239022
   });
+  const agencyId = '6141d5be5863dc2202000001';
+  const clientId = '6141d64365e0e52381000001';
   const headers = {
     'x-request-jwt': jwtToken,
     Accept: 'application/json',
@@ -23,13 +25,10 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-uniq
     'X-Request-Id': '123'
   };
 
-  beforeEach(async () => {
+  before(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
   describe('post', () => {
-    const agencyId = '6141d5be5863dc2202000001';
-    const clientId = '6141d64365e0e52381000001';
-
     it('should respond with 202 updates requires-unique-po-number', async () => {
       const res = await api
         .post(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-unique-po-number`)
@@ -68,9 +67,6 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-uniq
   });
 
   describe('delete', () => {
-    const agencyId = '6141d5be5863dc2202000001';
-    const clientId = '6141d64365e0e52381000001';
-
     it('should respond with 202 updates requires-po-number', async () => {
       const res = await api
         .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-unique-po-number`)
