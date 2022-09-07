@@ -4,10 +4,15 @@ import {assert} from 'chai';
 import {EventRepository} from '../../../src/EventRepository';
 import {
   SetInheritedFinancialHoldCommandHandler,
-  SetFinancialHoldCommandHandler
+  SetFinancialHoldCommandHandler,
+  InheritFinancialHoldClientLinkCommandHandler
 } from '../../../src/aggregates/FinancialHold/command-handlers';
 
-const expectedHandlers = [SetInheritedFinancialHoldCommandHandler, SetFinancialHoldCommandHandler];
+const expectedHandlers = [
+  SetInheritedFinancialHoldCommandHandler,
+  SetFinancialHoldCommandHandler,
+  InheritFinancialHoldClientLinkCommandHandler
+];
 
 describe('FinancialHoldCommandBus class', () => {
   describe('getCommandHandlers()', () => {

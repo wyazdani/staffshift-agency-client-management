@@ -44,13 +44,12 @@ export class FacadeClientHelper {
   ): Promise<AgencyOrganisationLinkDataType[]> {
     if (!options) {
       options = {
-        xRequestId: this.logger.requestId,
-        agencyId: agencyId,
-        organisationId: organisationId,
-        agencyOrgType: 'organisation'
+        xRequestId: this.logger.requestId
       };
     }
-    //if options isn't defined, it won't create agencyId,agencyOrgType and organisationId properties #https://github.com/A24Group/staffshift-agency-client-management/issues/245
+    options.agencyOrgType = 'organisation';
+    options.agencyId = agencyId;
+    options.organisationId = organisationId;
 
     if (siteId) {
       options['siteId'] = siteId;
