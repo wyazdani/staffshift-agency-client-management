@@ -741,8 +741,6 @@ paths:
             $ref: "#/definitions/set_requires_shift_ref_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set requires Shift Ref Number"
