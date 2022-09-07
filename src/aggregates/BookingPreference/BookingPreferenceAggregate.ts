@@ -54,7 +54,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
         }
       ]);
     }
-    if (this.aggregate.requires_po_number === false) {
+    if (this.aggregate.requires_po_number === undefined || this.aggregate.requires_po_number === false) {
       throw new ValidationError('Could not run command as state was not set').setErrors([
         {
           code: 'PO_NUMBER_NOT_SET',

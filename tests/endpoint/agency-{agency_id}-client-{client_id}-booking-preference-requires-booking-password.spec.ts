@@ -25,7 +25,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
   const agencyId = '6141d5be5863dc2202000001';
   const clientId = '6141d64365e0e52381000001';
 
-  before(async () => {
+  beforeEach(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
   describe('post', () => {
@@ -76,6 +76,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
     };
 
     it('should respond with 202 updates requires-booking-password', async () => {
+      await bookingPreferenceScenario.setRequiresBookingPassword(agencyId, clientId);
       const res = await api
         .put(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
         .set(headers)
@@ -114,6 +115,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
 
   describe('delete', () => {
     it('should respond with 202 updates requires-booking-password', async () => {
+      await bookingPreferenceScenario.setRequiresBookingPassword(agencyId, clientId);
       const res = await api
         .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
         .set(headers)

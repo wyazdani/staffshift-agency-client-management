@@ -23,7 +23,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-po-n
     'X-Request-Id': '123'
   };
 
-  before(async () => {
+  beforeEach(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
   describe('post', () => {
@@ -124,6 +124,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-po-n
     const clientId = '6141d64365e0e52381000001';
 
     it('should respond with 202 updates requires-po-number', async () => {
+      await bookingPreferenceScenario.setRequiresPONumber(agencyId, clientId);
       const res = await api
         .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-po-number`)
         .set(headers)

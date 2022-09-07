@@ -122,13 +122,25 @@ describe('BookingPreferenceAggregate', () => {
   });
 
   describe('validateSetRequiresUniquePONumber()', () => {
-    it('Test when aggregate does not have any events in it', async () => {
+    it('Test when aggregate does not have any events in it error', async () => {
       const aggregate = {
         last_sequence_id: 0
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      bookingPreferenceAggregate.validateSetRequiresUniquePONumber();
+      try {
+        bookingPreferenceAggregate.validateSetRequiresUniquePONumber();
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.assertEqual(
+          new ValidationError('Could not run command as state was not set').setErrors([
+            {
+              code: 'PO_NUMBER_NOT_SET',
+              message: 'Requires PO Number is not set'
+            }
+          ])
+        );
+      }
     });
 
     it('Test when requires unique PO Number is not set', async () => {
