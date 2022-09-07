@@ -1,5 +1,10 @@
-import {SetFinancialHoldCommandDataInterface, SetInheritedFinancialHoldCommandDataInterface} from './CommandTypes';
+import {
+  SetFinancialHoldCommandDataInterface,
+  SetInheritedFinancialHoldCommandDataInterface,
+  InheritFinancialHoldClientLinkCommandDataInterface
+} from './CommandTypes';
 
 export type FinancialHoldCommandDataType =
   | SetFinancialHoldCommandDataInterface
-  | SetInheritedFinancialHoldCommandDataInterface;
+  | SetInheritedFinancialHoldCommandDataInterface
+  | InheritFinancialHoldClientLinkCommandDataInterface;
