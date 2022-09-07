@@ -159,7 +159,19 @@ describe('BookingPreferenceAggregate', () => {
       };
       const bookingPreferenceAggregate = new BookingPreferenceAggregate(aggregateId, aggregate);
 
-      bookingPreferenceAggregate.validateUnsetRequiresShiftRefNumber();
+      try {
+        bookingPreferenceAggregate.validateUnsetRequiresShiftRefNumber();
+        assert.fail('It should not happen');
+      } catch (error) {
+        error.assertEqual(
+          new ValidationError('Could not run command as state was already not set').setErrors([
+            {
+              code: 'ALREADY_NOT_SET',
+              message: 'Requires Shift Ref Number is already not set'
+            }
+          ])
+        );
+      }
     });
 
     it('Test when requires Shift Ref Number is not set error', async () => {

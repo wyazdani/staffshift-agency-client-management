@@ -59,7 +59,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    * checks if requires_shift_ref_number is set
    */
   validateUnsetRequiresShiftRefNumber(): void {
-    if (this.aggregate.requires_shift_ref_number === false) {
+    if (this.aggregate.requires_shift_ref_number === undefined || this.aggregate.requires_shift_ref_number === false) {
       throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
