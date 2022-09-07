@@ -141,7 +141,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires Shift Ref Number is not set', async () => {
+    it('Test when requires Shift Ref Number is defined as false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_shift_ref_number: false
