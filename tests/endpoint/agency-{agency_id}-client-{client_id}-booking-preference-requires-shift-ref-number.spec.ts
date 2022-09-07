@@ -23,7 +23,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-shif
     'X-Request-Id': '123'
   };
 
-  afterEach(async () => {
+  before(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
   describe('post', () => {
@@ -123,24 +123,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-shif
     const agencyId = '6141d5be5863dc2202000001';
     const clientId = '6141d64365e0e52381000001';
 
-    it('should respond with 400 Validation Error ALREADY_NOT_SET', async () => {
-      const errorBody = {
-        code: 'MODEL_VALIDATION_FAILED',
-        message: 'Could not run command as state was already not set'
-      };
-
-      const res = await api
-        .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-shift-ref-number`)
-        .set(headers)
-        .send({});
-
-      assert.equal(res.statusCode, 400);
-      assert.equal(res.body.code, errorBody.code);
-      assert.equal(res.body.message, errorBody.message);
-    });
-
     it('should respond with 202 updates requires-shift-ref-number', async () => {
-      await bookingPreferenceScenario.setRequiresShiftRefNumber(agencyId, clientId);
       const res = await api
         .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-shift-ref-number`)
         .set(headers)
