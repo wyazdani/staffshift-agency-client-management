@@ -764,8 +764,6 @@ paths:
             $ref: "#/definitions/unset_requires_shift_ref_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
-        404:
-          $ref: "#/responses/resource_not_found"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset requires Shift Ref Number"
