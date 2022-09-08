@@ -2,11 +2,11 @@ import {BaseEventStoreDataInterface} from 'EventTypes';
 import {BookingPreferenceAggregateIdInterface} from '../../aggregates/BookingPreference/types';
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AgencyClientRequiresShiftRefNumberSetEventStoreDataInterface extends BaseEventStoreDataInterface {}
+export interface AgencyClientRequiresShiftRefNumberUnsetEventStoreDataInterface extends BaseEventStoreDataInterface {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AgencyClientRequiresShiftRefNumberSetEventInterface
+export interface AgencyClientRequiresShiftRefNumberUnsetEventInterface
   extends EventStorePubSubModelInterface<
-    AgencyClientRequiresShiftRefNumberSetEventStoreDataInterface,
+    AgencyClientRequiresShiftRefNumberUnsetEventStoreDataInterface,
     BookingPreferenceAggregateIdInterface
   > {}
