@@ -27,5 +27,5 @@ describe('SwaggerValidator', () => {
     if (!_.isEmpty(listOfErrors)) {
       throw new Error('These fields should be defined in swagger.yaml file: \n' + listOfErrors.join('\n'));
     }
-  });
+  }).timeout(4000);
 });
