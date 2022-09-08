@@ -993,14 +993,14 @@ parameters:
     required: true
     description: "The payload used to update booking passwords for client"
     schema:
-      $ref: "#/definitions/update_booking_password_payload_def"
+      $ref: "#/definitions/booking_password_payload_def"
   set_requires_booking_password_payload:
     name: set_requires_booking_password_payload
     in: body
     required: true
     description: "The payload used to set booking passwords for client"
     schema:
-      $ref: "#/definitions/set_requires_booking_password_payload_def"
+      $ref: "#/definitions/booking_password_payload_def"
   x_request_id:
     name: X-Request-Id
     in: header
@@ -1308,21 +1308,7 @@ definitions:
         minLength: 3
         maxLength: 255
     additionalProperties: false
-  update_booking_password_payload_def:
-    type: object
-    required:
-      - booking_passwords
-    properties:
-      booking_passwords:
-        type: array
-        minItems: 1
-        uniqueItems: true
-        items:
-          type: string
-          minLength: 1
-          maxLength: 100
-    additionalProperties: false
-  set_requires_booking_password_payload_def:
+  booking_password_payload_def:
     type: object
     required:
       - booking_passwords
