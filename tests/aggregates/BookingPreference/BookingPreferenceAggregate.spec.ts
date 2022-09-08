@@ -55,7 +55,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires PO Number is not set', async () => {
+    it('Test when requires PO Number is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_po_number: false
@@ -266,7 +266,7 @@ describe('BookingPreferenceAggregate', () => {
       bookingPreferenceAggregate.validateSetRequiresBookingPassword();
     });
 
-    it('Test when requires unique booking password is false', async () => {
+    it('Test when requires booking password is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: false
@@ -276,7 +276,7 @@ describe('BookingPreferenceAggregate', () => {
       bookingPreferenceAggregate.validateSetRequiresBookingPassword();
     });
 
-    it('Test when requires unique booking password is set', async () => {
+    it('Test when requires booking password is set', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: true
@@ -321,7 +321,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires unique booking password is false', async () => {
+    it('Test when requires booking password is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: false
@@ -343,7 +343,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires unique booking password is set', async () => {
+    it('Test when requires booking password is set', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: true
@@ -376,7 +376,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires unique booking password is not set', async () => {
+    it('Test when requires booking password is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: false
