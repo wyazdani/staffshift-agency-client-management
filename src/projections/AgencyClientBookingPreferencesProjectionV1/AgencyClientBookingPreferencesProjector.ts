@@ -3,7 +3,17 @@ import {EventStoreProjectorInterface, EventStorePubSubModelInterface} from 'ss-e
 import {EventsEnum} from '../../Events';
 import {EventHandlerFactory} from './EventHandlerFactory';
 
-const events = [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET];
+const events = [
+  EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET,
+  EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET,
+  EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET,
+  EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET,
+  EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET,
+  EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET,
+  EventsEnum.AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED,
+  EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET,
+  EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET
+];
 
 export default class AgencyClientBookingPreferencesProjector implements EventStoreProjectorInterface {
   async project(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
