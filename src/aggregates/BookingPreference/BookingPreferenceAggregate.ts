@@ -18,7 +18,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateSetRequiresPONumber(): void {
     if (this.aggregate.requires_po_number == true) {
-      throw new ValidationError('Could not run command as state is already set').setErrors([
+      throw new ValidationError('Could not run command as state was already set').setErrors([
         {
           code: 'ALREADY_SET',
           message: 'Requires PO Number is already set'
@@ -32,7 +32,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateUnsetRequiresPONumber(): void {
     if (!this.aggregate.requires_po_number) {
-      throw new ValidationError('Could not run command as state is already not set').setErrors([
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
           message: 'Requires PO Number is already not set'
@@ -47,7 +47,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateSetRequiresUniquePONumber(): void {
     if (this.aggregate.requires_unique_po_number == true) {
-      throw new ValidationError('Could not run command as state is already set').setErrors([
+      throw new ValidationError('Could not run command as state was already set').setErrors([
         {
           code: 'ALREADY_SET',
           message: 'Requires Unique PO Number is already set'
@@ -55,7 +55,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
       ]);
     }
     if (!this.aggregate.requires_po_number) {
-      throw new ValidationError('Could not run command as state is not set').setErrors([
+      throw new ValidationError('Could not run command as state was not set').setErrors([
         {
           code: 'PO_NUMBER_NOT_SET',
           message: 'Requires PO Number is not set'
@@ -69,7 +69,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateUnsetRequiresUniquePONumber(): void {
     if (!this.aggregate.requires_unique_po_number) {
-      throw new ValidationError('Could not run command as state is already not set').setErrors([
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
           message: 'Requires Unique PO Number is already not set'
@@ -83,7 +83,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateSetRequiresBookingPassword(): void {
     if (this.aggregate.requires_booking_password == true) {
-      throw new ValidationError('Could not run command as state is already set').setErrors([
+      throw new ValidationError('Could not run command as state was already set').setErrors([
         {
           code: 'ALREADY_SET',
           message: 'Requires booking password is already set'
@@ -97,7 +97,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateUnsetRequiresBookingPassword(): void {
     if (!this.aggregate.requires_booking_password) {
-      throw new ValidationError('Could not run command as state is already not set').setErrors([
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
           message: 'Requires booking password is already not set'
@@ -111,7 +111,7 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateUpdateBookingPasswords(): void {
     if (!this.aggregate.requires_booking_password) {
-      throw new ValidationError('Could not run command as state is already not set').setErrors([
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
           message: 'Requires booking password is already not set'
