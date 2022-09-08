@@ -217,6 +217,33 @@ describe('BookingPreferenceWriteProjectionHandler', () => {
       });
     });
 
+    describe('AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET Event', () => {
+      it('Test success scenario', () => {
+        const aggregate: any = {
+          last_sequence_id: 1
+        };
+        const event = new EventStore({
+          type: EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET,
+          aggregate_id: {},
+          data: {},
+          sequence_id: 1,
+          meta_data: {
+            user_id: 'fake_user'
+          },
+          correlation_id: 'fake_id',
+          created_at: date
+        });
+
+        const result = projectionHandler.execute(
+          EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET,
+          aggregate,
+          event
+        );
+
+        result.requires_shift_ref_number.should.be.false;
+      });
+    });
+
     it('Test throw error when event not found', () => {
       const aggregate: any = {
         last_sequence_id: 1

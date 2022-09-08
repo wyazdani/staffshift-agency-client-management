@@ -6,7 +6,8 @@ import {
   UnsetRequiresPONumberCommandDataInterface,
   UnsetRequiresUniquePONumberCommandDataInterface,
   UpdateBookingPasswordsCommandDataInterface,
-  SetRequiresShiftRefNumberCommandDataInterface
+  SetRequiresShiftRefNumberCommandDataInterface,
+  UnsetRequiresShiftRefNumberCommandDataInterface
 } from './CommandTypes';
 
 export type BookingPreferenceCommandDataType =
@@ -17,4 +18,5 @@ export type BookingPreferenceCommandDataType =
   | UnsetRequiresUniquePONumberCommandDataInterface
   | SetRequiresPONumberCommandDataInterface
   | UnsetRequiresPONumberCommandDataInterface
-  | SetRequiresShiftRefNumberCommandDataInterface;
+  | SetRequiresShiftRefNumberCommandDataInterface
+  | UnsetRequiresShiftRefNumberCommandDataInterface;

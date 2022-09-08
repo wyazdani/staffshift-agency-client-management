@@ -6,3 +6,4 @@ export * from './SetRequiresBookingPasswordCommandHandler';
 export * from './UnsetRequiresBookingPasswordCommandHandler';
 export * from './UpdateBookingPasswordsCommandHandler';
 export * from './SetRequiresShiftRefNumberCommandHandler';
+export * from './UnsetRequiresShiftRefNumberCommandHandler';

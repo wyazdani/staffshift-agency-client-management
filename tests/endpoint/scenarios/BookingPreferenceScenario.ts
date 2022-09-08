@@ -1,13 +1,26 @@
+import {AbstractScenario} from './AbstractScenario';
 import {BookingPreferenceCommandEnum} from '../../../src/aggregates/BookingPreference/types';
 import {
   SetRequiresBookingPasswordCommandInterface,
   SetRequiresPONumberCommandInterface,
+  SetRequiresShiftRefNumberCommandInterface,
   SetRequiresUniquePONumberCommandInterface
 } from '../../../src/aggregates/BookingPreference/types/CommandTypes';
-import {EventsEnum} from '../../../src/Events';
-import {AbstractScenario} from './AbstractScenario';
 
 export class BookingPreferenceScenario extends AbstractScenario {
+  async setRequiresShiftRefNumber(agencyId: string, clientId: string): Promise<void> {
+    const command: SetRequiresShiftRefNumberCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.SET_REQUIRES_SHIFT_REF_NUMBER,
+      data: {}
+    };
+
+    await this.commandBus.execute(command);
+  }
   async setRequiresPONumber(agencyId: string, clientId: string): Promise<void> {
     const command: SetRequiresPONumberCommandInterface = {
       type: BookingPreferenceCommandEnum.SET_REQUIRES_PO_NUMBER,

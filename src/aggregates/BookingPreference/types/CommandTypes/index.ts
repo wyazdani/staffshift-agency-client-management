@@ -6,3 +6,4 @@ export * from './SetRequiresBookingPasswordCommandInterface';
 export * from './UnsetRequiresBookingPasswordCommandInterface';
 export * from './UpdateBookingPasswordsCommandInterface';
 export * from './SetRequiresShiftRefNumberCommandInterface';
+export * from './UnsetRequiresShiftRefNumberCommandInterface';
