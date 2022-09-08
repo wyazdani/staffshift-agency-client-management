@@ -2085,7 +2085,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Requires po number was unset for agency client </td></tr>
+ </td><td> Requires po number was not set for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET </td><td> AgencyClientRequiresUniquePONumberSet </td><td> 
 
 ```json
@@ -2163,7 +2163,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Requires unique po number was unset for agency client </td></tr>
+ </td><td> Requires unique po number was not set for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET </td><td> AgencyClientRequiresBookingPasswordSet </td><td> 
 
 ```json
@@ -2250,7 +2250,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Requires booking password was unset for agency client </td></tr>
+ </td><td> Requires booking password was not set for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED </td><td> AgencyClientBookingPasswordsUpdated </td><td> 
 
 ```json
@@ -2298,7 +2298,7 @@ Description: A short description of the event
 }
 ```
 
- </td><td> Booking passwords were updated for agency client </td></tr>
+ </td><td> Booking passwords updated for agency client </td></tr>
 <tr><td> AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET </td><td> AgencyClientRequiresShiftRefNumberSet </td><td> 
 
 ```json
