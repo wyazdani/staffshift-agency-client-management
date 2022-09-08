@@ -16,7 +16,7 @@ implements
       },
       {
         $set: {
-          requires_shift_ref_number: true
+          requires_shift_ref_number: false
         }
       },
       {

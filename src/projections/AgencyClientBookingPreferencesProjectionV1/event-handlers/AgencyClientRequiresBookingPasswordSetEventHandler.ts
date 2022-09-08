@@ -17,7 +17,7 @@ implements
       {
         $set: {
           requires_booking_password: true,
-          booking_passwords: event.aggregate_id.booking_passwords
+          booking_passwords: event.data.booking_passwords
         }
       },
       {
