@@ -43,6 +43,11 @@ export {AgencyClientClearFinancialHoldCompletedEventInterface} from './AgencyCli
 export {AgencyClientClearFinancialHoldInitiatedEventInterface} from './AgencyClientClearFinancialHoldInitiatedEventInterface';
 export {AgencyClientRequiresPONumberSetEventInterface} from './AgencyClientRequiresPONumberSetEventInterface';
 export {AgencyClientRequiresPONumberUnsetEventInterface} from './AgencyClientRequiresPONumberUnsetEventInterface';
+export {AgencyClientRequiresUniquePONumberSetEventInterface} from './AgencyClientRequiresUniquePONumberSetEventInterface';
+export {AgencyClientRequiresUniquePONumberUnsetEventInterface} from './AgencyClientRequiresUniquePONumberUnsetEventInterface';
+export {AgencyClientRequiresBookingPasswordSetEventInterface} from './AgencyClientRequiresBookingPasswordSetEventInterface';
+export {AgencyClientRequiresBookingPasswordUnsetEventInterface} from './AgencyClientRequiresBookingPasswordUnsetEventInterface';
+export {AgencyClientBookingPasswordsUpdatedEventInterface} from './AgencyClientBookingPasswordsUpdatedEventInterface';
 export {AgencyClientRequiresShiftRefNumberSetEventInterface} from './AgencyClientRequiresShiftRefNumberSetEventInterface';
 export {AgencyClientRequiresShiftRefNumberUnsetEventInterface} from './AgencyClientRequiresShiftRefNumberUnsetEventInterface';
 export {BaseEventStoreDataInterface} from './BaseEventStoreDataInterface';

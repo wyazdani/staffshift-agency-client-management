@@ -1,6 +1,11 @@
 import {
+  SetRequiresBookingPasswordCommandHandler,
   SetRequiresPONumberCommandHandler,
+  SetRequiresUniquePONumberCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
   UnsetRequiresPONumberCommandHandler,
+  UnsetRequiresUniquePONumberCommandHandler,
+  UpdateBookingPasswordsCommandHandler,
   SetRequiresShiftRefNumberCommandHandler,
   UnsetRequiresShiftRefNumberCommandHandler
 } from './command-handlers';
@@ -12,6 +17,11 @@ import {BookingPreferenceCommandHandlerInterface} from './types/BookingPreferenc
 const handlers = [
   UnsetRequiresPONumberCommandHandler,
   SetRequiresPONumberCommandHandler,
+  SetRequiresUniquePONumberCommandHandler,
+  UnsetRequiresUniquePONumberCommandHandler,
+  SetRequiresBookingPasswordCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
+  UpdateBookingPasswordsCommandHandler,
   UnsetRequiresShiftRefNumberCommandHandler,
   SetRequiresShiftRefNumberCommandHandler
 ];

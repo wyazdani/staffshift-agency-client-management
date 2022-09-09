@@ -44,6 +44,11 @@ export enum EventsEnum {
   AGENCY_CLIENT_EMPTY_FINANCIAL_HOLD_INHERITED = 'AgencyClientEmptyFinancialHoldInherited',
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET = 'AgencyClientRequiresPONumberSet',
   AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET = 'AgencyClientRequiresPONumberUnset',
+  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET = 'AgencyClientRequiresUniquePONumberSet',
+  AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET = 'AgencyClientRequiresUniquePONumberUnset',
+  AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET = 'AgencyClientRequiresBookingPasswordSet',
+  AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET = 'AgencyClientRequiresBookingPasswordUnset',
+  AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED = 'AgencyClientBookingPasswordsUpdated',
   AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET = 'AgencyClientRequiresShiftRefNumberSet',
   AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET = 'AgencyClientRequiresShiftRefNumberUnset'
 }
@@ -229,18 +234,38 @@ export const events: EventsType = {
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_SET]: {
     name: 'AgencyClientRequiresPONumberSet',
-    description: 'Requires po number was set for agency client'
+    description: 'Requires po number is set for agency client'
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresPONumberUnset',
-    description: 'Requires po number was unset for agency client'
+    description: 'Requires po number is not set for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_SET]: {
+    name: 'AgencyClientRequiresUniquePONumberSet',
+    description: 'Requires unique po number is set for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_UNIQUE_PO_NUMBER_UNSET]: {
+    name: 'AgencyClientRequiresUniquePONumberUnset',
+    description: 'Requires unique po number is not set for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_SET]: {
+    name: 'AgencyClientRequiresBookingPasswordSet',
+    description: 'Requires booking password is set for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_REQUIRES_BOOKING_PASSWORD_UNSET]: {
+    name: 'AgencyClientRequiresBookingPasswordUnset',
+    description: 'Requires booking password is not set for agency client'
+  },
+  [EventsEnum.AGENCY_CLIENT_BOOKING_PASSWORDS_UPDATED]: {
+    name: 'AgencyClientBookingPasswordsUpdated',
+    description: 'Booking passwords updated for agency client'
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET]: {
     name: 'AgencyClientRequiresShiftRefNumberSet',
-    description: 'Requires shift ref number was set for agency client'
+    description: 'Requires shift ref number is set for agency client'
   },
   [EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET]: {
     name: 'AgencyClientRequiresShiftRefNumberUnset',
-    description: 'Requires shift ref number was unset for agency client'
+    description: 'Requires shift ref number is not set for agency client'
   }
 };

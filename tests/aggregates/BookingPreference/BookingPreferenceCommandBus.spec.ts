@@ -3,8 +3,13 @@ import {stubConstructor} from 'ts-sinon';
 import {assert} from 'chai';
 import {EventRepository} from '../../../src/EventRepository';
 import {
+  SetRequiresBookingPasswordCommandHandler,
   SetRequiresPONumberCommandHandler,
+  SetRequiresUniquePONumberCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
   UnsetRequiresPONumberCommandHandler,
+  UnsetRequiresUniquePONumberCommandHandler,
+  UpdateBookingPasswordsCommandHandler,
   SetRequiresShiftRefNumberCommandHandler,
   UnsetRequiresShiftRefNumberCommandHandler
 } from '../../../src/aggregates/BookingPreference/command-handlers';
@@ -12,6 +17,11 @@ import {
 const expectedHandlers = [
   SetRequiresPONumberCommandHandler,
   UnsetRequiresPONumberCommandHandler,
+  SetRequiresUniquePONumberCommandHandler,
+  UnsetRequiresUniquePONumberCommandHandler,
+  SetRequiresBookingPasswordCommandHandler,
+  UnsetRequiresBookingPasswordCommandHandler,
+  UpdateBookingPasswordsCommandHandler,
   SetRequiresShiftRefNumberCommandHandler,
   UnsetRequiresShiftRefNumberCommandHandler
 ];

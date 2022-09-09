@@ -31,11 +31,90 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    * checks if requires_po_number is set
    */
   validateUnsetRequiresPONumber(): void {
-    if (this.aggregate.requires_po_number === false) {
+    if (!this.aggregate.requires_po_number) {
       throw new ValidationError('Could not run command as state was already not set').setErrors([
         {
           code: 'ALREADY_NOT_SET',
+          message: 'Requires PO Number is already not set'
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks if requires_unique_po_number is not set
+   * checks if requires_po_number is set
+   */
+  validateSetRequiresUniquePONumber(): void {
+    if (this.aggregate.requires_unique_po_number === true) {
+      throw new ValidationError('Could not run command as state was already set').setErrors([
+        {
+          code: 'ALREADY_SET',
+          message: 'Requires Unique PO Number is already set'
+        }
+      ]);
+    }
+    if (!this.aggregate.requires_po_number) {
+      throw new ValidationError('Could not run command as state was not set').setErrors([
+        {
+          code: 'PO_NUMBER_NOT_SET',
           message: 'Requires PO Number is not set'
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks if requires_unique_po_number is set
+   */
+  validateUnsetRequiresUniquePONumber(): void {
+    if (!this.aggregate.requires_unique_po_number) {
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
+        {
+          code: 'ALREADY_NOT_SET',
+          message: 'Requires Unique PO Number is already not set'
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks if requires_booking_password is not set
+   */
+  validateSetRequiresBookingPassword(): void {
+    if (this.aggregate.requires_booking_password === true) {
+      throw new ValidationError('Could not run command as state was already set').setErrors([
+        {
+          code: 'ALREADY_SET',
+          message: 'Requires booking password is already set'
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks if requires_booking_password is set
+   */
+  validateUnsetRequiresBookingPassword(): void {
+    if (!this.aggregate.requires_booking_password) {
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
+        {
+          code: 'ALREADY_NOT_SET',
+          message: 'Requires booking password is already not set'
+        }
+      ]);
+    }
+  }
+
+  /**
+   * checks if requires_booking_password is set
+   */
+  validateUpdateBookingPasswords(): void {
+    if (!this.aggregate.requires_booking_password) {
+      throw new ValidationError('Could not run command as state was already not set').setErrors([
+        {
+          code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
+          message: 'Requires booking password is already not set'
         }
       ]);
     }

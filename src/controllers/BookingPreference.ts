@@ -5,8 +5,13 @@ import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {BookingPreferenceCommandEnum} from '../aggregates/BookingPreference/types';
 import {
+  SetRequiresBookingPasswordCommandInterface,
   SetRequiresPONumberCommandInterface,
+  SetRequiresUniquePONumberCommandInterface,
+  UnsetRequiresBookingPasswordCommandInterface,
   UnsetRequiresPONumberCommandInterface,
+  UnsetRequiresUniquePONumberCommandInterface,
+  UpdateBookingPasswordsCommandInterface,
   SetRequiresShiftRefNumberCommandInterface,
   UnsetRequiresShiftRefNumberCommandInterface
 } from '../aggregates/BookingPreference/types/CommandTypes';
@@ -63,6 +68,150 @@ export const unsetRequiresPONumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
+    next(err);
+  }
+};
+
+export const setRequiresUniquePONumber = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const command: SetRequiresUniquePONumberCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.SET_REQUIRES_UNIQUE_PO_NUMBER,
+      data: {}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const unsetRequiresUniquePONumber = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const command: UnsetRequiresUniquePONumberCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.UNSET_REQUIRES_UNIQUE_PO_NUMBER,
+      data: {}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const setRequiresBookingPassword = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const payload = get(req, 'swagger.params.set_requires_booking_password_payload.value', {});
+    const command: SetRequiresBookingPasswordCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.SET_REQUIRES_BOOKING_PASSWORD,
+      data: {...payload}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      req.Logger.error('unknown error in setRequiresBookingPassword', {
+        error: err,
+        payload: get(req, 'swagger.params.set_requires_booking_password_payload.value')
+      });
+    }
+    next(err);
+  }
+};
+
+export const unsetRequiresBookingPassword = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const command: UnsetRequiresBookingPasswordCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.UNSET_REQUIRES_BOOKING_PASSWORD,
+      data: {}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateBookingPassword = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const payload = get(req, 'swagger.params.update_booking_password_payload.value', {});
+    const command: UpdateBookingPasswordsCommandInterface = {
+      aggregateId: {
+        name: 'booking_preference',
+        agency_id: agencyId,
+        client_id: clientId
+      },
+      type: BookingPreferenceCommandEnum.UPDATE_BOOKING_PASSWORDS,
+      data: {...payload}
+    };
+
+    await req.commandBus.execute(command);
+    res.statusCode = 202;
+    res.end();
+  } catch (err) {
+    if (!(err instanceof ValidationError)) {
+      req.Logger.error('unknown error in updateBookingPassword', {
+        error: err,
+        payload: get(req, 'swagger.params.update_booking_password_payload.value')
+      });
+    }
     next(err);
   }
 };
