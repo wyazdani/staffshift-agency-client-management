@@ -1,6 +1,5 @@
 import {ServerResponse} from 'http';
-import {get, isEmpty} from 'lodash';
-import {ObjectId} from 'mongodb';
+import {get} from 'lodash';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {BookingPreferenceCommandEnum} from '../aggregates/BookingPreference/types';
@@ -15,6 +14,11 @@ import {
   SetRequiresShiftRefNumberCommandInterface,
   UnsetRequiresShiftRefNumberCommandInterface
 } from '../aggregates/BookingPreference/types/CommandTypes';
+import {
+  AgencyClientBookingPreferencesProjectionV1DocumentType,
+  AgencyClientBookingPreferencesProjection
+} from '../models/AgencyClientBookingPreferencesProjectionV1';
+import {GenericRepository} from '../GenericRepository';
 
 export const setRequiresPONumber = async (
   req: SwaggerRequestInterface,
@@ -268,6 +272,38 @@ export const unsetRequiresShiftRefNumber = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * returns booking preference for the agency client from the read projection
+ */
+export const getBookingPreference = async (
+  req: SwaggerRequestInterface,
+  res: ServerResponse,
+  next: (error?: Error) => void
+): Promise<void> => {
+  try {
+    const agencyId = get(req, 'swagger.params.agency_id.value', '');
+    const clientId = get(req, 'swagger.params.client_id.value', '');
+    const repository = new GenericRepository<AgencyClientBookingPreferencesProjectionV1DocumentType>(
+      req.Logger,
+      AgencyClientBookingPreferencesProjection
+    );
+    const record = await repository.findOne({
+      agency_id: agencyId,
+      client_id: clientId
+    });
+
+    if (!record) {
+      return next(new ResourceNotFoundError('No booking preference found for this client in that agency'));
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(record));
+  } catch (err) {
+    req.Logger.error('getBookingPreference unknown error', err);
     next(err);
   }
 };
