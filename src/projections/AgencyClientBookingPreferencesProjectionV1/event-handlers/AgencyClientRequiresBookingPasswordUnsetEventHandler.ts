@@ -1,5 +1,4 @@
 import {EventHandlerInterface} from 'EventHandlerInterface';
-import {AgencyClientRequiresBookingPasswordSetEventStoreDataInterface} from 'EventTypes/AgencyClientRequiresBookingPasswordSetEventInterface';
 import {AgencyClientRequiresBookingPasswordUnsetEventStoreDataInterface} from 'EventTypes/AgencyClientRequiresBookingPasswordUnsetEventInterface';
 import {AgencyClientBookingPreferencesProjection} from '../../../models/AgencyClientBookingPreferencesProjectionV1';
 import {EventStoreModelInterface} from '../../../models/EventStore';
