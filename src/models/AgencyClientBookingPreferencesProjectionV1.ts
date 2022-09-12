@@ -26,27 +26,27 @@ const bookingPreferences = new Schema<AgencyClientBookingPreferencesProjectionV1
     },
     requires_po_number: {
       type: Boolean,
-      required: true,
+      required: false,
       description: 'Requires po number'
     },
     requires_unique_po_number: {
       type: Boolean,
-      required: true,
+      required: false,
       description: 'Requires unique po number'
     },
     requires_booking_password: {
       type: Boolean,
-      required: true,
+      required: false,
       description: 'Requires booking password'
     },
     booking_passwords: {
       type: [],
-      required: true,
+      required: false,
       description: 'booking passwords array'
     },
     requires_shift_ref_number: {
       type: Boolean,
-      required: true,
+      required: false,
       description: 'Requires shift ref number'
     }
   },

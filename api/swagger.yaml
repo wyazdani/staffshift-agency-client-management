@@ -922,7 +922,7 @@ paths:
           $ref: "#/responses/server_error_model"
       summary: "Retrieves a booking preference"
       tags:
-        - "Financial Hold"
+        - "Booking Preferences"
 parameters:
  # Query PARAMS
   query_client_type:
