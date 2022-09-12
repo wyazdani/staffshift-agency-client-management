@@ -303,7 +303,6 @@ export const getBookingPreference = async (
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(record));
   } catch (err) {
-    req.Logger.error('getBookingPreference unknown error', err);
     next(err);
   }
 };
