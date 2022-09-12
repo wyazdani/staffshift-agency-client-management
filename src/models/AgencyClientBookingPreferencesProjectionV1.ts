@@ -3,11 +3,11 @@ import {Document, Schema, model} from 'mongoose';
 export type AgencyClientBookingPreferencesProjectionV1DocumentType = Document & {
   agency_id: string;
   client_id: string;
-  requires_po_number: boolean;
-  requires_unique_po_number: boolean;
-  requires_booking_password: boolean;
+  requires_po_number?: boolean;
+  requires_unique_po_number?: boolean;
+  requires_booking_password?: boolean;
   booking_passwords?: string[];
-  requires_shift_ref_number: boolean;
+  requires_shift_ref_number?: boolean;
   created_at: Date;
   updated_at: Date;
 };

@@ -12,7 +12,6 @@ const validator = new ZSchema({});
 const bookingPreferenceScenario = new BookingPreferenceScenario();
 
 describe('agency-{agency_id}-client-{client_id}-booking-preference', () => {
-
   afterEach(async () => {
     await bookingPreferenceScenario.deleteAllEvents();
   });
