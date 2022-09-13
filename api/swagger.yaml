@@ -2300,15 +2300,13 @@ definitions:
             code:
               type: string
               enum:
-                - REQUIRED
-                - INVALID_TYPE
-                - PATTERN
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - MIN_LENGTH
                 - MAX_LENGTH
                 - REQUIRES_BOOKING_PASSWORD_NOT_SET
                 - ARRAY_LENGTH_SHORT
                 - OBJECT_MISSING_REQUIRED_PROPERTY
+                - ARRAY_UNIQUE
             message:
               type: string
             path:
@@ -2352,6 +2350,7 @@ definitions:
                 - ALREADY_SET
                 - ARRAY_LENGTH_SHORT
                 - OBJECT_MISSING_REQUIRED_PROPERTY
+                - ARRAY_UNIQUE
             message:
               type: string
             path:
