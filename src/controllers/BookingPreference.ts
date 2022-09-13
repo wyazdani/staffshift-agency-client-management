@@ -147,12 +147,6 @@ export const setRequiresBookingPassword = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      req.Logger.error('unknown error in setRequiresBookingPassword', {
-        error: err,
-        payload: get(req, 'swagger.params.set_requires_booking_password_payload.value')
-      });
-    }
     next(err);
   }
 };
@@ -206,12 +200,6 @@ export const updateBookingPassword = async (
     res.statusCode = 202;
     res.end();
   } catch (err) {
-    if (!(err instanceof ValidationError)) {
-      req.Logger.error('unknown error in updateBookingPassword', {
-        error: err,
-        payload: get(req, 'swagger.params.update_booking_password_payload.value')
-      });
-    }
     next(err);
   }
 };

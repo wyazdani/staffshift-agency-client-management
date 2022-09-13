@@ -3,7 +3,7 @@ import {BookingPreferenceAggregateIdInterface} from '../../aggregates/BookingPre
 import {EventStorePubSubModelInterface} from 'ss-eventstore';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AgencyClientRequiresBookingPasswordSetEventStoreDataInterface extends BaseEventStoreDataInterface {
-  booking_passwords: [];
+  booking_passwords: string[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
