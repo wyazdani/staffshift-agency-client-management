@@ -2172,8 +2172,9 @@ Description: A short description of the event
   "properties": {
     "booking_passwords": {
       "type": "array",
-      "minItems": 0,
-      "maxItems": 0
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [
@@ -2259,8 +2260,9 @@ Description: A short description of the event
   "properties": {
     "booking_passwords": {
       "type": "array",
-      "minItems": 0,
-      "maxItems": 0
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [
