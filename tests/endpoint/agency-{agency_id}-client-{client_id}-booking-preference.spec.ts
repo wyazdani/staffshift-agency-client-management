@@ -95,6 +95,67 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference', () => {
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
 
+    it('should respond with 200 Retrieves a single Agency Client booking preference with Optional Properties', async () => {
+      const schema = {
+        type: 'object',
+        required: ['_id', 'agency_id', 'client_id', 'updated_at', 'created_at', '__v'],
+        properties: {
+          _id: {
+            type: 'string',
+            pattern: '^[0-9a-fA-F]{24}$'
+          },
+          agency_id: {
+            type: 'string',
+            pattern: '^[0-9a-fA-F]{24}$'
+          },
+          client_id: {
+            type: 'string',
+            pattern: '^[0-9a-fA-F]{24}$'
+          },
+          requires_po_number: {
+            type: 'boolean'
+          },
+          requires_unique_po_number: {
+            type: 'boolean'
+          },
+          requires_booking_password: {
+            type: 'boolean'
+          },
+          booking_passwords: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          },
+          requires_shift_ref_number: {
+            type: 'boolean'
+          },
+          updated_at: {
+            type: 'string',
+            format: 'date-time'
+          },
+          created_at: {
+            type: 'string',
+            format: 'date-time'
+          },
+          __v: {
+            type: 'integer'
+          }
+        },
+        additionalProperties: false
+      };
+
+      await AgencyClientBookingPreferencesProjectionScenarios.createWithOptionals({
+        agency_id: agencyId,
+        client_id: clientId
+      });
+
+      const res = await api.get(`/agency/${agencyId}/client/${clientId}/booking-preference`).set(headers).send();
+
+      assert.equal(res.statusCode, 200);
+      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
+    });
+
     it('should respond with 401', async () => {
       const schema = {
         type: 'object',
