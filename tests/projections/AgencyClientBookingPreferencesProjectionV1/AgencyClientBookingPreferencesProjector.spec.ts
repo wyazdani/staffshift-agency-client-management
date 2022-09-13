@@ -34,7 +34,7 @@ describe('AgencyClientBookingPreferencesProjector', () => {
 
         await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
         handler.handle.should.have.been.calledOnceWith(event);
-        getHandler.getCall(0).args[0].should.equal(eventType);
+        getHandler.should.have.been.calledOnceWith(eventType);
         getHandler.should.have.been.calledOnce;
       });
     }
