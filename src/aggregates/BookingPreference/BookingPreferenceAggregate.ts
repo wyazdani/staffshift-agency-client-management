@@ -111,10 +111,10 @@ export class BookingPreferenceAggregate extends AbstractAggregate<
    */
   validateUpdateBookingPasswords(): void {
     if (!this.aggregate.requires_booking_password) {
-      throw new ValidationError('Could not run command as state is already not set').setErrors([
+      throw new ValidationError('Could not run command as state is not set').setErrors([
         {
           code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
-          message: 'Requires booking password is already not set'
+          message: 'Requires booking password is not set'
         }
       ]);
     }
