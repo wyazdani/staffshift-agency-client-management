@@ -28,7 +28,7 @@ mongoose.connection.on('error', (error: Error) => {
   try {
     const eventStoreHttpClient = new EventStoreHttpClient(loggerContext, {
       issuer_service_name: config.get('app_name'),
-      ...config.get('event_store.projection.staffshift-agency-client-management-event-store')
+      ...config.get('event_store.listener.staffshift-agency-client-management-event-store')
     });
     const processManager = new BulkProcessManager(loggerContext, {
       parallel_limit: config.get<number>('bulk_process_manager.parallel_limit'),

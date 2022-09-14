@@ -26,7 +26,7 @@ mongoose.connection.on('error', (error: Error) => {
     const seedJob = await SeedingJob.createInstance({
       bindingId: 'agency-clients-v2',
       eventStoreHttpClientConfig: {
-        ...config.get('event_store.projection.staffshift-agency-client-management-event-store'),
+        ...config.get('event_store.listener.staffshift-agency-client-management-event-store'),
         issuer_service_name: config.get('app_name')
       },
       messageProcessor: {
@@ -39,7 +39,7 @@ mongoose.connection.on('error', (error: Error) => {
         database_host: config.get('event_store.mongo.database_host'),
         options: config.get('event_store.mongo.options')
       },
-      projectorFilePath: './AgencyClientsProjector',
+      listenerFilePath: './AgencyClientsProjector',
       topicName: 'ss.global.event.store.staffshift.agency.client.management'
     });
 

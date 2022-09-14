@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {EventStoreProjectorInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
+import {EventListenerInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
 import {EventRepository} from '../../EventRepository';
 import {EventsEnum} from '../../Events';
 import {EventStore} from '../../models/EventStore';
@@ -11,8 +11,8 @@ const events = [
   EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED
 ];
 
-export default class AgencyClientConsultantsProjector implements EventStoreProjectorInterface {
-  async project(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
+export default class AgencyClientConsultantsProjector implements EventListenerInterface {
+  async onEvent(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
     const eventType: EventsEnum = event.type as EventsEnum;
 
     if (!events.includes(eventType)) {

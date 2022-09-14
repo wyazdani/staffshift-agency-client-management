@@ -13,7 +13,7 @@
     "http_server": {
       "port": 3400
     },
-    "projection": {
+    "listener": {
       "staffshift-agency-client-management-event-store": {
         "request_options": {
           "host": "staffshift-agency-client-management-event-store-service"
