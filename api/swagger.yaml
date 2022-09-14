@@ -2215,6 +2215,7 @@ definitions:
             code:
               type: string
               enum:
+                - INVALID_TYPE
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - MIN_LENGTH
                 - MAX_LENGTH
@@ -2259,6 +2260,7 @@ definitions:
             code:
               type: string
               enum:
+                - INVALID_TYPE
                 - OBJECT_ADDITIONAL_PROPERTIES
                 - MIN_LENGTH
                 - MAX_LENGTH
