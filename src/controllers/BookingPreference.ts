@@ -1,5 +1,6 @@
 import {ServerResponse} from 'http';
 import {get} from 'lodash';
+import {ResourceNotFoundError} from 'a24-node-error-utils';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
 import {BookingPreferenceCommandEnum} from '../aggregates/BookingPreference/types';
 import {
