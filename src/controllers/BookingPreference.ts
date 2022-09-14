@@ -1,8 +1,6 @@
 import {ServerResponse} from 'http';
-import {get, isEmpty} from 'lodash';
-import {ObjectId} from 'mongodb';
+import {get} from 'lodash';
 import {SwaggerRequestInterface} from 'SwaggerRequestInterface';
-import {ResourceNotFoundError, ValidationError} from 'a24-node-error-utils';
 import {BookingPreferenceCommandEnum} from '../aggregates/BookingPreference/types';
 import {
   SetRequiresBookingPasswordCommandInterface,
@@ -21,8 +19,6 @@ export const setRequiresPONumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const logger = req.Logger;
-
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
@@ -49,8 +45,6 @@ export const unsetRequiresPONumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const logger = req.Logger;
-
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
@@ -209,8 +203,6 @@ export const setRequiresShiftRefNumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const logger = req.Logger;
-
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
@@ -237,8 +229,6 @@ export const unsetRequiresShiftRefNumber = async (
   res: ServerResponse,
   next: (error: Error) => void
 ): Promise<void> => {
-  const logger = req.Logger;
-
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');

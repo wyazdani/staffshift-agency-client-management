@@ -366,10 +366,10 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state is already not set').setErrors([
+          new ValidationError('Could not run command as state is not set').setErrors([
             {
               code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
-              message: 'Requires booking password is already not set'
+              message: 'Requires booking password is not set'
             }
           ])
         );
@@ -388,10 +388,10 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state is already not set').setErrors([
+          new ValidationError('Could not run command as state is not set').setErrors([
             {
               code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
-              message: 'Requires booking password is already not set'
+              message: 'Requires booking password is not set'
             }
           ])
         );
