@@ -26,7 +26,7 @@ mongoose.connection.on('error', (error: Error) => {
     const seedJob = await SeedingJob.createInstance({
       bindingId: 'agency-client-booking-preferences-v1',
       eventStoreHttpClientConfig: {
-        ...config.get('event_store.listener.staffshift-agency-client-management-event-store'),
+        ...config.get('event_store.subscriber.staffshift-agency-client-management-event-store'),
         issuer_service_name: config.get('app_name')
       },
       messageProcessor: {

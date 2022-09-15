@@ -1,9 +1,9 @@
 'use strict';
 const sourceCollection = 'EventStoreProjectionTracker';
-const destCollection = 'EventStoreListenerTracker';
+const destCollection = 'EventStoreSubscriberTracker';
 
 module.exports = {
-  id: '0032-copy-EventStoreProjectionTracker-to-EventStoreListenerTracker',
+  id: '0032-copy-EventStoreProjectionTracker-to-EventStoreSubscriberTracker',
   up: (db, cb) => {
     return db.collection(sourceCollection).find({}).toArray((err, trackerRecords) => {
       if (err) {

@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {EventListenerInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
+import {EventStoreListenerInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
 import {EventsEnum} from '../../Events';
 import {EventHandlerFactory} from './EventHandlerFactory';
 
@@ -15,7 +15,7 @@ const events = [
   EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_UNSET
 ];
 
-export default class AgencyClientBookingPreferencesProjector implements EventListenerInterface {
+export default class AgencyClientBookingPreferencesProjector implements EventStoreListenerInterface {
   async onEvent(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
     const eventType: EventsEnum = event.type as EventsEnum;
 

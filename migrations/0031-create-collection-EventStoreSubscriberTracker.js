@@ -1,8 +1,8 @@
 'use strict';
-const collectionName = 'EventStoreListenerTracker';
+const collectionName = 'EventStoreSubscriberTracker';
 
 module.exports = {
-  id: '0031-create-collection-EventStoreListenerTracker',
+  id: '0031-create-collection-EventStoreSubscriberTracker',
 
   up: (db, cb) => {
     db.createCollection(collectionName, {collation: {locale: 'en_US', strength: 2}}, cb);

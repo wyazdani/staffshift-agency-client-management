@@ -150,7 +150,7 @@
       "topic_name": "ss.global.event.store.staffshift.agency.client.management",
       "api_end_point": "https://europe-west1-pubsub.googleapis.com"
     },
-    "listener": {
+    "subscriber": {
       "staffshift-agency-client-management-event-store": {
         "api_token": "SomeSecret",
         "request_options": {
@@ -160,7 +160,7 @@
           "version": "v1"
         }
       },
-      "listeners": [{
+      "subscribers": [{
         "name": "Agency Clients V2",
         "bindings": [{
           "id": "agency-clients-v2",

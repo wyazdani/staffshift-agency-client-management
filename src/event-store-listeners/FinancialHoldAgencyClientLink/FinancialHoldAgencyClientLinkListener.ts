@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {EventListenerInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
+import {EventStoreListenerInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
 import {EventRepository} from '../../EventRepository';
 import {EventsEnum} from '../../Events';
 import {EventStore} from '../../models/EventStore';
@@ -7,7 +7,7 @@ import {EventHandlerFactory} from './EventHandlerFactory';
 
 const events = [EventsEnum.AGENCY_CLIENT_LINKED, EventsEnum.AGENCY_CLIENT_SYNCED];
 
-export default class FinancialHoldAgencyClientLinkListener implements EventListenerInterface {
+export default class FinancialHoldAgencyClientLinkListener implements EventStoreListenerInterface {
   async onEvent(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
     const eventType: EventsEnum = event.type as EventsEnum;
 
