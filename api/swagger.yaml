@@ -892,6 +892,37 @@ paths:
       summary: "Will Unset requires Shift Ref Number"
       tags:
         - "Booking Preferences"
+  /agency/{agency_id}/client/{client_id}/booking-preference:
+    parameters:
+      - $ref: "#/parameters/x_request_id"
+      - $ref: "#/parameters/x_request_jwt"
+      - $ref: "#/parameters/agency_id"
+      - $ref: "#/parameters/client_id"
+    get:
+      x-swagger-router-controller: "BookingPreference"
+      operationId: "getBookingPreference"
+      security:
+        - jwt: []
+      responses:
+        200:
+          description: "Retrieves a booking preference for the client in that agency."
+          schema:
+            $ref: "#/definitions/get_booking_preference_def"
+        400:
+          description: "Validation Error. Usually caused by a missing or invalid parameter."
+          schema:
+            $ref: "#/definitions/get_booking_preference_validation_error_model"
+        401:
+          $ref: "#/responses/unauthorize_error_model"
+        404:
+          description: "Booking preference is not set on the client"
+          schema:
+            $ref: "#/definitions/resource_not_found"
+        default:
+          $ref: "#/responses/server_error_model"
+      summary: "Retrieves a booking preference"
+      tags:
+        - "Booking Preferences"
 parameters:
  # Query PARAMS
   query_client_type:
@@ -1414,6 +1445,46 @@ definitions:
         type: boolean
       note:
         type: string
+      updated_at:
+        type: string
+        format: date-time
+      created_at:
+        type: string
+        format: date-time
+      __v:
+        type: integer
+    additionalProperties: false
+  get_booking_preference_def:
+    type: object
+    required:
+      - _id
+      - agency_id
+      - client_id
+      - updated_at
+      - created_at
+      - __v
+    properties:
+      _id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      agency_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      client_id:
+        type: string
+        pattern: ^[0-9a-fA-F]{24}$
+      requires_po_number:
+        type: boolean
+      requires_unique_po_number:
+        type: boolean
+      requires_booking_password:
+        type: boolean
+      booking_passwords:
+        type: array
+        items:
+            type: "string"
+      requires_shift_ref_number:
+        type: boolean
       updated_at:
         type: string
         format: date-time
@@ -2086,6 +2157,20 @@ definitions:
           additionalProperties: false
     additionalProperties: false
   get_financial_hold_validation_error_model:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PATTERN
+          - REQUIRED
+      message:
+        type: string
+    additionalProperties: false
+  get_booking_preference_validation_error_model:
     type: object
     required:
       - code

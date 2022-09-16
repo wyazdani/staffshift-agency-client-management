@@ -8,7 +8,8 @@ import {
   unsetRequiresUniquePONumber,
   updateBookingPassword,
   setRequiresShiftRefNumber,
-  unsetRequiresShiftRefNumber
+  unsetRequiresShiftRefNumber,
+  getBookingPreference
 } from '../../src/controllers/BookingPreference';
 import {fakeRequest, fakeResponse} from '../tools/TestUtilsHttp';
 import {assert} from 'chai';
@@ -17,6 +18,8 @@ import {CommandBus} from '../../src/aggregates/CommandBus';
 import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
 import {BookingPreferenceCommandEnum} from '../../src/aggregates/BookingPreference/types';
+import {GenericRepository} from '../../src/GenericRepository';
+import {ResourceNotFoundError} from 'a24-node-error-utils';
 
 describe('BookingPreference Controller', () => {
   const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
@@ -654,6 +657,91 @@ describe('BookingPreference Controller', () => {
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_SHIFT_REF_NUMBER,
         data: {}
       });
+    });
+  });
+
+  describe('getBookingPreference()', function () {
+    it('should return record on success', async function () {
+      const agencyId = 'agency id';
+      const clientId = '61a63e6eb34a527a852d6874';
+      const params = {
+        agency_id: {value: agencyId},
+        client_id: {value: clientId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params,
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
+      const record: any = {
+        _id: clientId,
+        agency_id: agencyId,
+        client_id: clientId,
+        requires_po_number: true,
+        requires_unique_po_number: true,
+        requires_booking_password: true,
+        requires_shift_ref_number: true,
+        booking_passwords: ['test', 'test2']
+      };
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves(record);
+
+      await getBookingPreference(req, res, next);
+      findOne.should.have.been.calledWith({
+        agency_id: agencyId,
+        client_id: clientId
+      });
+      setHeader.should.have.been.calledWith('Content-Type', 'application/json');
+      end.should.have.been.calledWith(JSON.stringify(record));
+    });
+
+    it('should ResourceNotFoundError', async function () {
+      const agencyId = 'agency id';
+      const clientId = '61a63e6eb34a527a852d6874';
+      const params = {
+        agency_id: {value: agencyId},
+        client_id: {value: clientId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params,
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').resolves();
+
+      await getBookingPreference(req, res, next);
+      findOne.should.have.been.calledWith({
+        agency_id: agencyId,
+        client_id: clientId
+      });
+      next.getCall(0).args[0].should.be.instanceOf(ResourceNotFoundError);
+    });
+
+    it('should call next with an error when findOne operation fails', async function () {
+      const agencyId = 'agency id';
+      const clientId = '61a63e6eb34a527a852d6874';
+      const params = {
+        agency_id: {value: agencyId},
+        client_id: {value: clientId}
+      };
+      const req = fakeRequest({
+        swaggerParams: params,
+        commandBus
+      });
+      const res = fakeResponse();
+      const next = sinon.spy();
+      const error = new Error('some error');
+      const findOne = sinon.stub(GenericRepository.prototype, 'findOne').rejects(error);
+
+      await getBookingPreference(req, res, next);
+      findOne.should.have.been.calledWith({
+        client_id: clientId,
+        agency_id: agencyId
+      });
+      assert.deepEqual(next.getCall(0).args[0], error);
     });
   });
 });

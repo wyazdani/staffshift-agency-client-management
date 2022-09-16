@@ -219,7 +219,14 @@
           "topicName": "ss.global.event.store.staffshift.agency.client.management",
           "skipSeed": true
         }]
-    }]
+    }, {
+      "name": "Agency Client Booking Preferences V1",
+      "bindings": [{
+        "id": "agency-client-booking-preferences-v1",
+        "projector": "./projections/AgencyClientBookingPreferencesProjectionV1/AgencyClientBookingPreferencesProjector",
+        "topicName": "ss.global.event.store.staffshift.agency.client.management"
+      }]
+  }]
     }
   },
   "bulk_process_manager": {

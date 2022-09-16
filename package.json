@@ -1,6 +1,6 @@
 {
   "name": "staffshift-agency-client-management",
-  "version": "1.49.0",
+  "version": "1.50.0",
   "description": "Micro service for managing staffshift agency clients",
   "main": "src/http_server.ts",
   "scripts": {
@@ -22,7 +22,8 @@
     "seed-projection-agency-clients-v2": "node dist/projections/AgencyClientsV2/seed_job",
     "seed-projection-agency-client-consultants-v3": "node dist/projections/AgencyClientConsultantsV3/seed_job",
     "seed-projection-agency-client-payment-terms-v1": "node dist/projections/AgencyClientPaymentTermsProjectionV1/seed_job",
-    "seed-projection-agency-client-financial-holds-v1": "node dist/projections/AgencyClientFinancialHoldsProjectionV1/seed_job"
+    "seed-projection-agency-client-financial-holds-v1": "node dist/projections/AgencyClientFinancialHoldsProjectionV1/seed_job",
+    "seed-projection-agency-client-booking-preferences-v1": "node dist/projections/AgencyClientBookingPreferencesProjectionV1/seed_job"
   },
   "pre-commit": [
     "lint"
