@@ -27,5 +27,5 @@ describe('SwaggerValidator', () => {
     if (!_.isEmpty(listOfErrors)) {
       throw new Error('These fields should be defined in swagger.yaml file: \n' + listOfErrors.join('\n'));
     }
-  });
+  }).timeout(4000); // we were not sure why reading swagger takes too long on ci, we increased the timeout to prevent the error.
 });
