@@ -22,7 +22,7 @@ describe('AgencyClientBookingPreferencesProjector', () => {
   afterEach(() => {
     sinon.restore();
   });
-  describe('project()', () => {
+  describe('onEvent()', () => {
     for (const eventType of events) {
       it(`Test ${eventType}`, async () => {
         const handler = stubInterface<EventHandlerInterface<AgencyClientRequiresPONumberSetEventStoreDataInterface>>();

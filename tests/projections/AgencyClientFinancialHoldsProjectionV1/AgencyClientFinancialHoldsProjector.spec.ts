@@ -18,7 +18,7 @@ describe('AgencyClientFinancialHoldsProjector', () => {
   afterEach(() => {
     sinon.restore();
   });
-  describe('project()', () => {
+  describe('onEvent()', () => {
     for (const eventType of events) {
       it(`Test ${eventType}`, async () => {
         const handler = stubInterface<EventHandlerInterface<AgencyClientFinancialHoldAppliedEventStoreDataInterface>>();
@@ -28,7 +28,7 @@ describe('AgencyClientFinancialHoldsProjector', () => {
         handler.handle.resolves();
         const projector = new AgencyClientFinancialHoldsProjector();
 
-        await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
+        await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event);
         handler.handle.should.have.been.calledOnceWith(event);
         getHandler.getCall(0).args[0].should.equal(eventType);
         getHandler.should.have.been.calledOnce;
@@ -40,7 +40,7 @@ describe('AgencyClientFinancialHoldsProjector', () => {
       const getHandler = sinon.stub(EventHandlerFactory, 'getHandler');
       const projector = new AgencyClientFinancialHoldsProjector();
 
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
+      await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event);
       getHandler.should.not.have.been.called;
     });
   });

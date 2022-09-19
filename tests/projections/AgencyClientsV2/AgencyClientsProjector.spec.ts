@@ -17,7 +17,7 @@ describe('projections/AgencyClients/AgencyClientsProjector', () => {
     logger = TestUtilsLogger.getLogger(sinon.spy());
   });
   afterEach(() => sinon.restore());
-  describe('project()', async () => {
+  describe('onEvent()', async () => {
     const events = [
       EventsEnum.AGENCY_CLIENT_LINKED,
       EventsEnum.AGENCY_CLIENT_UNLINKED,
@@ -36,7 +36,7 @@ describe('projections/AgencyClients/AgencyClientsProjector', () => {
         const logger = TestUtilsLogger.getLogger(sinon.spy());
         const projector = new AgencyClientsProjector();
 
-        await projector.project(logger, event);
+        await projector.onEvent(logger, event);
         getHandler.should.have.been.calledWith(event.type, logger);
         handler.handle.should.have.been.calledWith(event);
       });
@@ -50,7 +50,7 @@ describe('projections/AgencyClients/AgencyClientsProjector', () => {
 
       handlerStub.handle.resolves();
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      await projector.project(logger, event);
+      await projector.onEvent(logger, event);
       handlerStub.handle.should.not.have.been.called;
     });
 
@@ -66,7 +66,7 @@ describe('projections/AgencyClients/AgencyClientsProjector', () => {
       const logger = TestUtilsLogger.getLogger(sinon.spy());
       const projector = new AgencyClientsProjector();
 
-      await projector.project(logger, event).should.have.been.rejectedWith(error);
+      await projector.onEvent(logger, event).should.have.been.rejectedWith(error);
       getHandler.should.have.been.calledWith(event.type, logger);
       handler.handle.should.have.been.calledWith(event);
     });

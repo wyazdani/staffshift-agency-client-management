@@ -9,7 +9,10 @@ module.exports = {
       if (err) {
         return cb(err);
       }
-      return db.collection(destCollection).insert(trackerRecords, cb);
+      if (trackerRecords && trackerRecords.length > 0) {
+        return db.collection(destCollection).insertMany(trackerRecords, cb);
+      }
+      return cb();
     });
   },
 
