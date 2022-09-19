@@ -32,7 +32,11 @@ describe('AgencyClientCreditPaymentTermAppliedEventHandler', () => {
         {
           $set: {
             payment_term: PAYMENT_TERM_PROJECTION_ENUM.CREDIT,
-            inherited: false
+            inherited: false,
+            _etags: {
+              [event.aggregate_id.name]: event.sequence_id,
+              organisation_job: event.causation_id
+            }
           }
         },
         {

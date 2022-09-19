@@ -20,7 +20,11 @@ implements
       {
         $set: {
           payment_term: PAYMENT_TERM_PROJECTION_ENUM.CREDIT,
-          inherited: true
+          inherited: true,
+          _etags: {
+            [event.aggregate_id.name]: event.sequence_id,
+            organisation_job: event.causation_id
+          }
         }
       },
       {
