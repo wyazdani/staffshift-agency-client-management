@@ -45,7 +45,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already set').setErrors([
+          new ValidationError('Could not run command as state is already set').setErrors([
             {
               code: 'ALREADY_SET',
               message: 'Requires PO Number is already set'
@@ -55,7 +55,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires PO Number is not set', async () => {
+    it('Test when requires PO Number is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_po_number: false
@@ -78,7 +78,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires PO Number is already not set'
@@ -100,7 +100,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires PO Number is already not set'
@@ -133,7 +133,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was not set').setErrors([
+          new ValidationError('Could not run command as state is not set').setErrors([
             {
               code: 'PO_NUMBER_NOT_SET',
               message: 'Requires PO Number is not set'
@@ -167,7 +167,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already set').setErrors([
+          new ValidationError('Could not run command as state is already set').setErrors([
             {
               code: 'ALREADY_SET',
               message: 'Requires Unique PO Number is already set'
@@ -190,7 +190,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was not set').setErrors([
+          new ValidationError('Could not run command as state is not set').setErrors([
             {
               code: 'PO_NUMBER_NOT_SET',
               message: 'Requires PO Number is not set'
@@ -213,7 +213,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires Unique PO Number is already not set'
@@ -235,7 +235,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires Unique PO Number is already not set'
@@ -266,7 +266,7 @@ describe('BookingPreferenceAggregate', () => {
       bookingPreferenceAggregate.validateSetRequiresBookingPassword();
     });
 
-    it('Test when requires unique booking password is false', async () => {
+    it('Test when requires booking password is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: false
@@ -276,7 +276,7 @@ describe('BookingPreferenceAggregate', () => {
       bookingPreferenceAggregate.validateSetRequiresBookingPassword();
     });
 
-    it('Test when requires unique booking password is set', async () => {
+    it('Test when requires booking password is set', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: true
@@ -288,7 +288,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already set').setErrors([
+          new ValidationError('Could not run command as state is already set').setErrors([
             {
               code: 'ALREADY_SET',
               message: 'Requires booking password is already set'
@@ -311,7 +311,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires booking password is already not set'
@@ -321,7 +321,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires unique booking password is false', async () => {
+    it('Test when requires booking password is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: false
@@ -333,7 +333,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires booking password is already not set'
@@ -343,7 +343,7 @@ describe('BookingPreferenceAggregate', () => {
       }
     });
 
-    it('Test when requires unique booking password is set', async () => {
+    it('Test when requires booking password is set', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: true
@@ -366,17 +366,17 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is not set').setErrors([
             {
               code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
-              message: 'Requires booking password is already not set'
+              message: 'Requires booking password is not set'
             }
           ])
         );
       }
     });
 
-    it('Test when requires unique booking password is not set', async () => {
+    it('Test when requires booking password is false', async () => {
       const aggregate = {
         last_sequence_id: 1,
         requires_booking_password: false
@@ -388,10 +388,10 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is not set').setErrors([
             {
               code: 'REQUIRES_BOOKING_PASSWORD_NOT_SET',
-              message: 'Requires booking password is already not set'
+              message: 'Requires booking password is not set'
             }
           ])
         );
@@ -430,7 +430,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already set').setErrors([
+          new ValidationError('Could not run command as state is already set').setErrors([
             {
               code: 'ALREADY_SET',
               message: 'Requires Shift Ref Number is already set'
@@ -463,7 +463,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires Shift Ref Number is already not set'
@@ -485,7 +485,7 @@ describe('BookingPreferenceAggregate', () => {
         assert.fail('It should not happen');
       } catch (error) {
         error.assertEqual(
-          new ValidationError('Could not run command as state was already not set').setErrors([
+          new ValidationError('Could not run command as state is already not set').setErrors([
             {
               code: 'ALREADY_NOT_SET',
               message: 'Requires Shift Ref Number is already not set'

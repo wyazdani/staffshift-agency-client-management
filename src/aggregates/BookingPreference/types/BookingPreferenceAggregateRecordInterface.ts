@@ -4,6 +4,6 @@ export interface BookingPreferenceAggregateRecordInterface extends BaseAggregate
   requires_po_number?: boolean;
   requires_unique_po_number?: boolean;
   requires_booking_password?: boolean;
-  booking_passwords?: [];
+  booking_passwords?: string[];
   requires_shift_ref_number?: boolean;
 }

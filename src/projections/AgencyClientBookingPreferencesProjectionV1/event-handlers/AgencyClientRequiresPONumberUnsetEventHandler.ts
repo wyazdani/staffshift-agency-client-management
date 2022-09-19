@@ -15,7 +15,8 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientRequiresPO
       },
       {
         $set: {
-          requires_po_number: false
+          requires_po_number: false,
+          requires_unique_po_number: false
         }
       },
       {
