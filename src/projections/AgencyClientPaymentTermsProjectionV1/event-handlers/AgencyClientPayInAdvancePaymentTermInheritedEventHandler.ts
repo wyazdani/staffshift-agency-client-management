@@ -5,6 +5,7 @@ import {
   PAYMENT_TERM_PROJECTION_ENUM
 } from '../../../models/AgencyClientPaymentTermsProjectionV1';
 import {EventStoreModelInterface} from '../../../models/EventStore';
+import {CacheHelper} from '../../../helpers/CacheHelper';
 
 export class AgencyClientPayInAdvancePaymentTermInheritedEventHandler
 implements
@@ -14,6 +15,10 @@ implements
   async handle(
     event: EventStoreModelInterface<AgencyClientPayInAdvancePaymentTermInheritedEventStoreDataInterface>
   ): Promise<void> {
+    const cacheHelper = new CacheHelper();
+    const key = `${event.aggregate_id.agency_id}_${event.aggregate_id.client_id}_org_job`;
+    const organisationJobEvent = await cacheHelper.cacheRetrieveEvent(key, event.causation_id, 100);
+
     await AgencyClientPaymentTermsProjection.updateOne(
       {
         agency_id: event.aggregate_id.agency_id,
@@ -25,7 +30,7 @@ implements
           inherited: true,
           _etags: {
             [event.aggregate_id.name]: event.sequence_id,
-            organisation_job: event.causation_id
+            organisation_job: organisationJobEvent.sequence_id
           }
         }
       },
