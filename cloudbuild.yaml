@@ -31,19 +31,6 @@ steps:
       - 'PROJECT_ID=$PROJECT_ID'
       - 'NODE_ENV=ci'
 
-  # Build mongo legacy
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'docker build -t database --file Dockerfile.mongo_legacy --cache-from gcr.io/$PROJECT_ID/database:4.4.1 . && docker tag database eu.gcr.io/$PROJECT_ID/database:4.4.1 && docker push eu.gcr.io/$PROJECT_ID/database:4.4.1' ]
-
-  # Run the app and dependencies in the background using docker-compose.
-  # We have compose exit with the same code as staffshift-agency-client-management
-  - name: 'docker/compose:1.23.2'
-    args: ['up', '--force-recreate', '--renew-anon-volumes', '--exit-code-from', 'staffshift-agency-client-management']
-    env:
-      - 'PROJECT_ID=$PROJECT_ID'
-      - 'NODE_ENV=ci'
-
   # Build container that regenerates event docs
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
