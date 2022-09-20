@@ -5,7 +5,7 @@ import {
   PAYMENT_TERM_PROJECTION_ENUM
 } from '../../../models/AgencyClientPaymentTermsProjectionV1';
 import {EventStoreModelInterface} from '../../../models/EventStore';
-import {CacheHelper} from '../../../helpers/CacheHelper';
+import {EventStoreCacheHelper} from '../../../helpers/EventStoreCacheHelper';
 
 export class AgencyClientPayInAdvancePaymentTermAppliedEventHandler
 implements
@@ -13,9 +13,9 @@ implements
   async handle(
     event: EventStoreModelInterface<AgencyClientPayInAdvancePaymentTermAppliedEventStoreDataInterface>
   ): Promise<void> {
-    const cacheHelper = new CacheHelper();
-    const key = `${event.aggregate_id.agency_id}_${event.aggregate_id.client_id}_org_job`;
-    const organisationJobEvent = await cacheHelper.cacheRetrieveEvent(key, event.causation_id, 100);
+    const cacheHelper = new EventStoreCacheHelper();
+    const ttl = 100;
+    const organisationJobEvent = await cacheHelper.findEventById(event.causation_id, ttl);
 
     await AgencyClientPaymentTermsProjection.updateOne(
       {
