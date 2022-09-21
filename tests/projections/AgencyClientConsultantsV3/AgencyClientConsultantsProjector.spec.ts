@@ -6,7 +6,7 @@ import {EventHandlerFactory} from '../../../src/projections/AgencyClientConsulta
 import {TestUtilsLogger} from '../../tools/TestUtilsLogger';
 
 describe('Test AgencyClientConsultantsProjectorV2', () => {
-  describe('project()', () => {
+  describe('onEvent()', () => {
     afterEach(() => {
       sinon.restore();
     });
@@ -20,7 +20,7 @@ describe('Test AgencyClientConsultantsProjectorV2', () => {
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyClientConsultantsProjector();
 
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
+      await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event);
       handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
@@ -34,7 +34,7 @@ describe('Test AgencyClientConsultantsProjectorV2', () => {
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyClientConsultantsProjector();
 
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
+      await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event);
       handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
@@ -48,7 +48,7 @@ describe('Test AgencyClientConsultantsProjectorV2', () => {
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyClientConsultantsProjector();
 
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
+      await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event);
       handlerStub.handle.should.have.been.calledOnceWith(event);
     });
 
@@ -62,7 +62,7 @@ describe('Test AgencyClientConsultantsProjectorV2', () => {
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyClientConsultantsProjector();
 
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
+      await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event);
       handlerStub.handle.should.not.have.been.called;
     });
   });
