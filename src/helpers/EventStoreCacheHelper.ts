@@ -1,9 +1,8 @@
-import {BaseEventStoreDataInterface} from 'EventTypes';
 import NodeCache from 'node-cache';
 import {EventStore, EventStoreModelInterface} from '../models/EventStore';
 
 /**
- * CacheHelper
+ * EventStoreCacheHelper
  *
  * Used for caching data
  */
@@ -18,7 +17,7 @@ export class EventStoreCacheHelper {
     this.cacheInit = new NodeCache();
   }
 
-  async findEventById(eventId: string, ttl: number): Promise<EventStoreModelInterface<BaseEventStoreDataInterface>> {
+  async findEventById(eventId: string, ttl: number): Promise<EventStoreModelInterface> {
     if (this.cacheInit.has(eventId)) {
       return this.cacheInit.get(eventId);
     } else {

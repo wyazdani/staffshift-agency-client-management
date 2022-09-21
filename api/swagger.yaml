@@ -1386,6 +1386,7 @@ definitions:
       - payment_term
       - updated_at
       - created_at
+      - _etags
       - __v
     properties:
       _id:
@@ -1405,6 +1406,16 @@ definitions:
           - not_set
       inherited:
         type: boolean
+      _etags:
+        type: object
+        properties:
+          payment_term:
+            type: number
+          organisation_job:
+            type: number
+        required:
+          - payment_term
+          - organisation_job
       updated_at:
         type: string
         format: date-time

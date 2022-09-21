@@ -15,9 +15,9 @@ implements
   async handle(
     event: EventStoreModelInterface<AgencyClientPayInAdvancePaymentTermInheritedEventStoreDataInterface>
   ): Promise<void> {
-    const cacheHelper = new EventStoreCacheHelper();
+    const eventStoreCacheHelper = new EventStoreCacheHelper();
     const ttl = 100;
-    const organisationJobEvent = await cacheHelper.findEventById(event.causation_id, ttl);
+    const organisationJobEvent = await eventStoreCacheHelper.findEventById(event.causation_id, ttl);
 
     await AgencyClientPaymentTermsProjection.updateOne(
       {
