@@ -30,7 +30,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
 
       handlerStub.handle.resolves();
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event);
+      await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event);
       handlerStub.handle.should.not.have.been.called;
     });
 
@@ -55,7 +55,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
         const logger = TestUtilsLogger.getLogger(sinon.spy());
         const projector = new AgencyConsultantRolesProjector();
 
-        await projector.project(logger, event);
+        await projector.onEvent(logger, event);
         getHandler.should.have.been.calledWith(event.type, logger);
         handler.handle.should.have.been.calledWith(event);
       });
@@ -81,7 +81,7 @@ describe('AgencyConsultantRolesProjectorV2', () => {
       sinon.stub(EventHandlerFactory, 'getHandler').returns(handlerStub);
       const projector = new AgencyConsultantRolesProjector();
 
-      await projector.project(TestUtilsLogger.getLogger(sinon.spy()), event).should.have.been.rejectedWith(error);
+      await projector.onEvent(TestUtilsLogger.getLogger(sinon.spy()), event).should.have.been.rejectedWith(error);
       handlerStub.handle.should.have.been.calledOnceWith(event);
     });
   });

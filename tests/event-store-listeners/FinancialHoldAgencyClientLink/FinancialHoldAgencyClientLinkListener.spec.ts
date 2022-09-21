@@ -13,13 +13,13 @@ describe('FinancialHoldAgencyClientLinkListener class', () => {
   afterEach(() => {
     sinon.restore();
   });
-  describe('project()', () => {
+  describe('onEvent()', () => {
     it('Test ignore not related events', async () => {
       const getHandler = sinon.stub(EventHandlerFactory, 'getHandler');
       const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const projector = new FinancialHoldAgencyClientLinkListener();
+      const listener = new FinancialHoldAgencyClientLinkListener();
 
-      await projector.project(logger, {
+      await listener.onEvent(logger, {
         type: 'sample'
       } as any);
       getHandler.should.not.have.been.called;
@@ -34,9 +34,9 @@ describe('FinancialHoldAgencyClientLinkListener class', () => {
         handler.handle.resolves();
         const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
         const logger = TestUtilsLogger.getLogger(sinon.spy());
-        const projector = new FinancialHoldAgencyClientLinkListener();
+        const listener = new FinancialHoldAgencyClientLinkListener();
 
-        await projector.project(logger, event);
+        await listener.onEvent(logger, event);
         getHandler.getCall(0).args[0].should.equal(event.type);
         getHandler.getCall(0).args[1].should.equal(logger);
         getHandler.getCall(0).args[2].should.be.instanceOf(EventRepository);
@@ -55,9 +55,9 @@ describe('FinancialHoldAgencyClientLinkListener class', () => {
       handler.handle.rejects(error);
       const getHandler = sinon.stub(EventHandlerFactory, 'getHandler').returns(handler);
       const logger = TestUtilsLogger.getLogger(sinon.spy());
-      const projector = new FinancialHoldAgencyClientLinkListener();
+      const listener = new FinancialHoldAgencyClientLinkListener();
 
-      await projector.project(logger, event).should.have.been.rejectedWith(error);
+      await listener.onEvent(logger, event).should.have.been.rejectedWith(error);
       getHandler.getCall(0).args[0].should.equal(event.type);
       getHandler.getCall(0).args[1].should.equal(logger);
       getHandler.getCall(0).args[2].should.be.instanceOf(EventRepository);

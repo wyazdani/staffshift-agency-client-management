@@ -150,7 +150,7 @@
       "topic_name": "ss.global.event.store.staffshift.agency.client.management",
       "api_end_point": "https://europe-west1-pubsub.googleapis.com"
     },
-    "projection": {
+    "subscriber": {
       "staffshift-agency-client-management-event-store": {
         "api_token": "SomeSecret",
         "request_options": {
@@ -160,32 +160,32 @@
           "version": "v1"
         }
       },
-      "projections": [{
+      "subscribers": [{
         "name": "Agency Clients V2",
         "bindings": [{
           "id": "agency-clients-v2",
-          "projector": "./projections/AgencyClientsV2/AgencyClientsProjector",
+          "listener": "./projections/AgencyClientsV2/AgencyClientsProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }, {
         "name": "Agency Client Consultants V3",
         "bindings": [{
           "id": "agency-client-consultants-v3",
-          "projector": "./projections/AgencyClientConsultantsV3/AgencyClientConsultantsProjector",
+          "listener": "./projections/AgencyClientConsultantsV3/AgencyClientConsultantsProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }, {
         "name": "Agency Consultant Roles V2",
         "bindings": [{
           "id": "agency-consultant-roles-v2",
-          "projector": "./projections/AgencyConsultantRolesV2/AgencyConsultantRolesProjector",
+          "listener": "./projections/AgencyConsultantRolesV2/AgencyConsultantRolesProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }, {
         "name": "Bulk Process Manager V1",
         "bindings": [{
           "id": "bulk-process-manager-v1",
-          "projector": "./projections/BulkProcessManagerV1/BulkProcessManagerProjector",
+          "listener": "./projections/BulkProcessManagerV1/BulkProcessManagerProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management",
           "skipSeed": true
         }]
@@ -193,14 +193,14 @@
         "name": "Agency Client Payment Terms V1",
         "bindings": [{
           "id": "agency-client-payment-terms-v1",
-          "projector": "./projections/AgencyClientPaymentTermsProjectionV1/AgencyClientPaymentTermsProjector",
+          "listener": "./projections/AgencyClientPaymentTermsProjectionV1/AgencyClientPaymentTermsProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }, {
         "name": "Payment Term Agency Client Link",
         "bindings": [{
           "id": "payment-term-agency-client-link",
-          "projector": "./event-store-listeners/PaymentTermAgencyClientLink/PaymentTermAgencyClientLinkListener",
+          "listener": "./event-store-listeners/PaymentTermAgencyClientLink/PaymentTermAgencyClientLinkListener",
           "topicName": "ss.global.event.store.staffshift.agency.client.management",
           "skipSeed": true
         }]
@@ -208,14 +208,14 @@
         "name": "Agency Client Financial Holds V1",
         "bindings": [{
           "id": "agency-client-financial-holds-v1",
-          "projector": "./projections/AgencyClientFinancialHoldsProjectionV1/AgencyClientFinancialHoldsProjector",
+          "listener": "./projections/AgencyClientFinancialHoldsProjectionV1/AgencyClientFinancialHoldsProjector",
           "topicName": "ss.global.event.store.staffshift.agency.client.management"
         }]
       }, {
         "name": "Financial Hold Agency Client Link",
         "bindings": [{
           "id": "financial-hold-agency-client-link",
-          "projector": "./event-store-listeners/FinancialHoldAgencyClientLink/FinancialHoldAgencyClientLinkListener",
+          "listener": "./event-store-listeners/FinancialHoldAgencyClientLink/FinancialHoldAgencyClientLinkListener",
           "topicName": "ss.global.event.store.staffshift.agency.client.management",
           "skipSeed": true
         }]
@@ -223,7 +223,7 @@
       "name": "Agency Client Booking Preferences V1",
       "bindings": [{
         "id": "agency-client-booking-preferences-v1",
-        "projector": "./projections/AgencyClientBookingPreferencesProjectionV1/AgencyClientBookingPreferencesProjector",
+        "listener": "./projections/AgencyClientBookingPreferencesProjectionV1/AgencyClientBookingPreferencesProjector",
         "topicName": "ss.global.event.store.staffshift.agency.client.management"
       }]
   }]

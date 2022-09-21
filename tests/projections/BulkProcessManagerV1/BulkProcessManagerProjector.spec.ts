@@ -29,13 +29,13 @@ describe('BulkProcessManagerProjector class', () => {
   afterEach(() => {
     sinon.restore();
   });
-  describe('project()', () => {
+  describe('onEvent()', () => {
     it('Test ignore not related events', async () => {
       const getHandler = sinon.stub(EventHandlerFactory, 'getHandler');
       const logger = TestUtilsLogger.getLogger(sinon.spy());
       const projector = new BulkProcessManagerProjector();
 
-      await projector.project(logger, {
+      await projector.onEvent(logger, {
         type: 'sample'
       } as any);
       getHandler.should.not.have.been.called;
@@ -52,7 +52,7 @@ describe('BulkProcessManagerProjector class', () => {
         const logger = TestUtilsLogger.getLogger(sinon.spy());
         const projector = new BulkProcessManagerProjector();
 
-        await projector.project(logger, event);
+        await projector.onEvent(logger, event);
         getHandler.should.have.been.calledWith(event.type, logger);
         handler.handle.should.have.been.calledWith(event);
       });
@@ -70,7 +70,7 @@ describe('BulkProcessManagerProjector class', () => {
       const logger = TestUtilsLogger.getLogger(sinon.spy());
       const projector = new BulkProcessManagerProjector();
 
-      await projector.project(logger, event).should.have.been.rejectedWith(error);
+      await projector.onEvent(logger, event).should.have.been.rejectedWith(error);
       getHandler.should.have.been.calledWith(event.type, logger);
       handler.handle.should.have.been.calledWith(event);
     });
