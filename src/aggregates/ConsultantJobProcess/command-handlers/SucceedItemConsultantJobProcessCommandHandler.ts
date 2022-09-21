@@ -10,7 +10,7 @@ export class SucceedItemConsultantJobProcessCommandHandler implements Consultant
 
   constructor(private repository: ConsultantJobProcessRepository) {}
 
-  async execute(command: SucceedItemConsultantJobProcessCommandInterface): Promise<void> {
+  async execute(command: SucceedItemConsultantJobProcessCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let eventId = aggregate.getLastSequenceId();
@@ -23,5 +23,6 @@ export class SucceedItemConsultantJobProcessCommandHandler implements Consultant
         sequence_id: ++eventId
       } as ConsultantJobProcessItemSucceededEventInterface
     ]);
+    return eventId;
   }
 }

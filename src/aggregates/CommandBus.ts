@@ -59,7 +59,7 @@ export class CommandBus {
     }
   }
 
-  async execute(cmd: AggregateCommandInterface): Promise<void> {
+  async execute(cmd: AggregateCommandInterface): Promise<number> {
     if (!this._commandRegistry[cmd.type]) {
       throw new Error(`Command type: ${cmd.type} has not been registered`);
     }

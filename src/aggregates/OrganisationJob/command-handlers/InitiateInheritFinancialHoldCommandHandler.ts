@@ -9,7 +9,7 @@ export class InitiateInheritFinancialHoldCommandHandler implements OrganisationJ
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.INITIATE_INHERIT_FINANCIAL_HOLD;
 
-  async execute(command: InitiateInheritFinancialHoldCommandInterface): Promise<void> {
+  async execute(command: InitiateInheritFinancialHoldCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateInitiateInheritFinancialHold(command.data);
@@ -24,5 +24,6 @@ export class InitiateInheritFinancialHoldCommandHandler implements OrganisationJ
         sequence_id: ++eventId
       } as AgencyClientApplyFinancialHoldInheritanceInitiatedEventInterface
     ]);
+    return eventId;
   }
 }

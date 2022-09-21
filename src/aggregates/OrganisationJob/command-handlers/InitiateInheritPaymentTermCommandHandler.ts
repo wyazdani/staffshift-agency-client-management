@@ -9,7 +9,7 @@ export class InitiateInheritPaymentTermCommandHandler implements OrganisationJob
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.INITIATE_INHERIT_PAYMENT_TERM;
 
-  async execute(command: InitiateInheritPaymentTermCommandInterface): Promise<void> {
+  async execute(command: InitiateInheritPaymentTermCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateInitiateInheritPaymentTerm(command.data);
@@ -24,5 +24,6 @@ export class InitiateInheritPaymentTermCommandHandler implements OrganisationJob
         sequence_id: ++eventId
       } as AgencyClientApplyPaymentTermInheritanceInitiatedEventInterface
     ]);
+    return eventId;
   }
 }

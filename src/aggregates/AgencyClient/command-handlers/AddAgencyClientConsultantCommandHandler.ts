@@ -16,19 +16,20 @@ export class AddAgencyClientConsultantCommandHandler implements AgencyClientComm
   /**
    * Build and save event caused by addAgencyClientConsultant command
    */
-  async execute(command: AddAgencyClientConsultantCommandInterface): Promise<void> {
+  async execute(command: AddAgencyClientConsultantCommandInterface): Promise<number> {
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     await aggregate.validateAddClientConsultant(command.data);
-    const eventId = aggregate.getLastSequenceId();
+    let eventId = aggregate.getLastSequenceId();
 
     await this.agencyClientRepository.save([
       {
         type: EventsEnum.AGENCY_CLIENT_CONSULTANT_ASSIGNED,
         aggregate_id: aggregate.getId(),
         data: command.data as AgencyClientConsultantAssignedEventStoreDataInterface,
-        sequence_id: eventId + 1
+        sequence_id: ++eventId
       }
     ]);
+    return eventId;
   }
 }

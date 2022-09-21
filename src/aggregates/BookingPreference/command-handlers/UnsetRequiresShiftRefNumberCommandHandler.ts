@@ -10,7 +10,7 @@ export class UnsetRequiresShiftRefNumberCommandHandler implements BookingPrefere
 
   constructor(private repository: BookingPreferenceRepository) {}
 
-  async execute(command: UnsetRequiresShiftRefNumberCommandInterface): Promise<void> {
+  async execute(command: UnsetRequiresShiftRefNumberCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     aggregate.validateUnsetRequiresShiftRefNumber();
@@ -24,5 +24,6 @@ export class UnsetRequiresShiftRefNumberCommandHandler implements BookingPrefere
         sequence_id: ++eventId
       } as AgencyClientRequiresShiftRefNumberUnsetEventInterface
     ]);
+    return eventId;
   }
 }

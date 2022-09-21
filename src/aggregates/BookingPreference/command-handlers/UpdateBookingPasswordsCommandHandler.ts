@@ -10,7 +10,7 @@ export class UpdateBookingPasswordsCommandHandler implements BookingPreferenceCo
 
   constructor(private repository: BookingPreferenceRepository) {}
 
-  async execute(command: UpdateBookingPasswordsCommandInterface): Promise<void> {
+  async execute(command: UpdateBookingPasswordsCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     aggregate.validateUpdateBookingPasswords();
@@ -26,5 +26,6 @@ export class UpdateBookingPasswordsCommandHandler implements BookingPreferenceCo
         sequence_id: ++eventId
       } as AgencyClientBookingPasswordsUpdatedEventInterface
     ]);
+    return eventId;
   }
 }

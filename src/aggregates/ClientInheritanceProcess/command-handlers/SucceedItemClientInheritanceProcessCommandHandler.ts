@@ -11,7 +11,7 @@ implements ClientInheritanceProcessCommandHandlerInterface {
 
   constructor(private repository: ClientInheritanceProcessRepository) {}
 
-  async execute(command: SucceedItemClientInheritanceProcessCommandInterface): Promise<void> {
+  async execute(command: SucceedItemClientInheritanceProcessCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let eventId = aggregate.getLastSequenceId();
@@ -24,5 +24,6 @@ implements ClientInheritanceProcessCommandHandlerInterface {
         sequence_id: ++eventId
       } as AgencyClientInheritanceProcessItemSucceededEventInterface
     ]);
+    return eventId;
   }
 }

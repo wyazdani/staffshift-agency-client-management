@@ -17,7 +17,7 @@ export class ApplyInheritedPaymentTermCommandHandler implements PaymentTermComma
    * when force is true, inherited events will be persisted, it means if the node is not inherited, then we will mark it as inherited
    * but if the force is false, it means we have to check if the node is inherited or no. if no throw an exception
    */
-  async execute(command: ApplyInheritedPaymentTermCommandInterface): Promise<void> {
+  async execute(command: ApplyInheritedPaymentTermCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     if (!command.data.force) {
@@ -46,5 +46,6 @@ export class ApplyInheritedPaymentTermCommandHandler implements PaymentTermComma
         | AgencyClientPayInAdvancePaymentTermInheritedEventInterface
         | AgencyClientEmptyPaymentTermInheritedEventInterface
     ]);
+    return eventId;
   }
 }

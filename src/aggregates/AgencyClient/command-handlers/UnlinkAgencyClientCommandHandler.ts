@@ -16,23 +16,24 @@ export class UnlinkAgencyClientCommandHandler implements AgencyClientCommandHand
   /**
    * Build and save event caused by unlinkAgencyClient command
    */
-  async execute(command: UnlinkAgencyClientCommandInterface): Promise<void> {
+  async execute(command: UnlinkAgencyClientCommandInterface): Promise<number> {
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     const isLinked = aggregate.isLinked();
 
     // If linked OR this is the first time we are dealing with this aggregate
     if (isLinked || aggregate.getLastSequenceId() == 0) {
-      const eventId = aggregate.getLastSequenceId();
+      let eventId = aggregate.getLastSequenceId();
 
       await this.agencyClientRepository.save([
         {
           type: EventsEnum.AGENCY_CLIENT_UNLINKED,
           aggregate_id: aggregate.getId(),
           data: {...command.data} as AgencyClientUnlinkedEventStoreDataInterface,
-          sequence_id: eventId + 1
+          sequence_id: ++eventId
         }
       ]);
+      return eventId;
     }
   }
 }
