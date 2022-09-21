@@ -476,6 +476,10 @@ paths:
       responses:
         202:
           description: "Initiate Apply payment term to client"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
