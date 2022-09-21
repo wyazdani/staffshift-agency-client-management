@@ -1,10 +1,7 @@
-import {assert} from 'chai';
-import {ObjectId} from 'mongodb';
-import {stringify} from 'querystring';
 import sinon from 'ts-sinon';
 import {EventsEnum} from '../../src/Events';
 import {EventStoreCacheHelper} from '../../src/helpers/EventStoreCacheHelper';
-import {EventStore, EventStoreModelInterface} from '../../src/models/EventStore';
+import {EventStore} from '../../src/models/EventStore';
 
 describe('EventStoreCacheHelper Class', () => {
   describe('findEventById', () => {
@@ -13,16 +10,14 @@ describe('EventStoreCacheHelper Class', () => {
         type: EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED,
         aggregate_id: {},
         data: {},
-        sequence_id: 1,
-        meta_data: {
-          user_id: 'test'
-        },
-        correlation_id: '123'
+        sequence_id: 1
       });
+      const save = sinon.stub(EventStore, 'findById').resolves(eventStore);
 
-      //const eventStoreCacheHelper = new EventStoreCacheHelper();
+      const eventStoreCacheHelper = new EventStoreCacheHelper();
 
-      //await eventStoreCacheHelper.findEventById(stringify(eventStore._id), 100);
+      await eventStoreCacheHelper.findEventById('test', 100);
+      save.should.have.been.calledOnceWith();
     });
   });
 });
