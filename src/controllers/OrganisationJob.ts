@@ -61,8 +61,8 @@ export const initiateApplyPaymentTerm = async (
 
     const eventId = await req.commandBus.execute(command);
 
-    setAggregateEtagHeader(res, eventId);
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -123,8 +123,8 @@ export const initiateInheritApplyPaymentTerm = async (
 
     const eventId = await req.commandBus.execute(command);
 
-    setAggregateEtagHeader(res, eventId);
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     if (!(err instanceof ValidationError)) {
