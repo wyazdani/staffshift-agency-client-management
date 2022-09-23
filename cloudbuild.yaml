@@ -1,4 +1,4 @@
-timeout: "2100s" # A 35 minutes timeout as this is taking longer than the default 10 mins
+timeout: "1500s" # A 25 minutes timeout as this is taking longer than the default 10 mins
 steps:
 
 # Pull the Cloud Build Helper, invoke setup to expose shorthand `cloud_build_helper``
