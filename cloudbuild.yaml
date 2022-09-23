@@ -1,60 +1,50 @@
 timeout: "2100s" # A 35 minutes timeout as this is taking longer than the default 10 mins
 steps:
-  # Pull the docker compose
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['pull', 'docker/compose:1.23.2']
 
-  # Build mongo
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'docker build -t database --file Dockerfile.mongo --cache-from gcr.io/$PROJECT_ID/database:5.0.5 . && docker tag database eu.gcr.io/$PROJECT_ID/database:5.0.5 && docker push eu.gcr.io/$PROJECT_ID/database:5.0.5' ]
-    waitFor: ["-"]
+# Pull the Cloud Build Helper, invoke setup to expose shorthand `cloud_build_helper``
+- name: 'eu.gcr.io/registry-153916/cloud_build_helper'
+  entrypoint: 'setup'
+  id: "cloud-helper-setup"
 
-  # Build mountebank
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'docker build -t mountebank --file Dockerfile.mountebank --cache-from gcr.io/$PROJECT_ID/mountebank:latest . && docker tag mountebank eu.gcr.io/$PROJECT_ID/mountebank:latest && docker push eu.gcr.io/$PROJECT_ID/mountebank:latest' ]
-    waitFor: ["-"]
+# Once done, set up all images required for tests in parallell
+- name: 'cloud_build_helper'
+  entrypoint: 'pull-or-build'
+  args: ['database', '5.0.5', 'Dockerfile.mongo']
+  env: [ 'NAMESPACE=staffshift-agency-client-management' ]
+  waitFor: ["cloud-helper-setup"]
 
-  # Build staffshift-agency-client-management
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'docker build --build-arg PRIVATE_SSH_KEY="$$PASSWORD" -t staffshift-agency-client-management .' ]
-    secretEnv: ['PASSWORD']
-    waitFor: ["-"]
+- name: 'cloud_build_helper'
+  entrypoint: 'pull-or-build'
+  args: ['mountebank', '1.0.0', 'Dockerfile.mountebank']
+  env: [ 'NAMESPACE=staffshift-agency-client-management' ]
+  waitFor: ["cloud-helper-setup"]
 
-  # Run the app and dependencies in the background using docker-compose.
-  # We have compose exit with the same code as staffshift-agency-client-management
-  - name: 'docker/compose:1.23.2'
-    args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
-    env:
-      - 'PROJECT_ID=$PROJECT_ID'
-      - 'NODE_ENV=ci'
+- name: 'cloud_build_helper'
+  entrypoint: 'build-with-cache' ## Always build the main image
+  args: ['staffshift-agency-client-management', 'Dockerfile']
+  secretEnv: ['PRIVATE_SSH_KEY']
+  env: [ 'NAMESPACE=staffshift-agency-client-management' ]
+  waitFor: ["cloud-helper-setup"]
 
-  # Build container that regenerates event docs
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'docker build --file Dockerfile.docs --build-arg PRIVATE_SSH_KEY="$$PASSWORD" --build-arg BRANCH_NAME="$BRANCH_NAME" -t staffshift-agency-client-management-docs .' ]
-    secretEnv: ['PASSWORD']
+# Setup complete now, running tests via docker-compose
+- name: 'cloud_build_helper'
+  entrypoint: 'docker-compose'
+  args: ['up', '--exit-code-from', 'staffshift-agency-client-management']
 
-  # Work around as described in https://github.com/GoogleCloudPlatform/cloud-builders/issues/138
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Only push when branch is a version tag"
-        if [[ "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
-        then
-          echo "Will attempt to push image to registry"
-          docker tag staffshift-agency-client-management eu.gcr.io/$PROJECT_ID/staffshift-agency-client-management:$TAG_NAME
-          docker push eu.gcr.io/$PROJECT_ID/staffshift-agency-client-management:$TAG_NAME
-        else
-          echo "Not pushing branch $TAG_NAME to registry"
-          true
-        fi
+- name: 'cloud_build_helper'
+  entrypoint: 'build-with-cache' ## Always build the docs image
+  args: ['staffshift-agency-client-management-docs', 'Dockerfile.docs']
+  secretEnv: ['PRIVATE_SSH_KEY']
+  env: [ 'NAMESPACE=staffshift-agency-client-management', 'DOCKER_BUILD_ARG_INJECTION=--build-arg BRANCH_NAME="$BRANCH_NAME"' ]
+
+# Push and Notify with $TAG_NAME
+- name: 'cloud_build_helper'
+  entrypoint: 'push-tags'
+  args: ['staffshift-agency-client-management', '$TAG_NAME']
+  env: [ 'NAMESPACE=staffshift-agency-client-management' ]
+
 # Secrets
 secrets:
-  - kmsKeyName: projects/registry-153916/locations/global/keyRings/buildargs/cryptoKeys/githhubsshkey
-    secretEnv:
-      PASSWORD: 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
+- kmsKeyName: projects/registry-153916/locations/global/keyRings/buildargs/cryptoKeys/githhubsshkey
+  secretEnv:
+    PRIVATE_SSH_KEY: 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
