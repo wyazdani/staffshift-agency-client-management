@@ -7,6 +7,7 @@ import {
 } from '../../../../src/models/AgencyClientPaymentTermsProjectionV1';
 import {EventStore} from '../../../../src/models/EventStore';
 import {AgencyClientPayInAdvancePaymentTermInheritedEventHandler} from '../../../../src/projections/AgencyClientPaymentTermsProjectionV1/event-handlers/AgencyClientPayInAdvancePaymentTermInheritedEventHandler';
+import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 
 describe('AgencyClientPayInAdvancePaymentTermInheritedEventHandler', () => {
   afterEach(() => {
@@ -36,13 +37,15 @@ describe('AgencyClientPayInAdvancePaymentTermInheritedEventHandler', () => {
         },
         correlation_id: '123'
       });
-      const ttl = 100;
       const eventStoreCacheHelper = sinon.stub(EventStoreCacheHelper.prototype, 'findEventById').resolves(eventStore);
       const updateOne = sinon.stub(AgencyClientPaymentTermsProjection, 'updateOne').resolves();
-      const handler = new AgencyClientPayInAdvancePaymentTermInheritedEventHandler();
+      const handler = new AgencyClientPayInAdvancePaymentTermInheritedEventHandler(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        new EventStoreCacheHelper()
+      );
 
       await handler.handle(event);
-      eventStoreCacheHelper.should.have.been.calledOnceWith(event.causation_id, ttl);
+      eventStoreCacheHelper.should.have.been.calledOnceWith();
       updateOne.should.have.been.calledOnceWith(
         {
           agency_id: event.aggregate_id.agency_id,

@@ -7,6 +7,7 @@ import {
 import {EventStore} from '../../../../src/models/EventStore';
 import {AgencyClientCreditPaymentTermAppliedEventHandler} from '../../../../src/projections/AgencyClientPaymentTermsProjectionV1/event-handlers/AgencyClientCreditPaymentTermAppliedEventHandler';
 import {EventsEnum} from '../../../../src/Events';
+import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 
 describe('AgencyClientCreditPaymentTermAppliedEventHandler', () => {
   afterEach(() => {
@@ -36,13 +37,15 @@ describe('AgencyClientCreditPaymentTermAppliedEventHandler', () => {
         },
         correlation_id: '123'
       });
-      const ttl = 100;
       const eventStoreCacheHelper = sinon.stub(EventStoreCacheHelper.prototype, 'findEventById').resolves(eventStore);
       const updateOne = sinon.stub(AgencyClientPaymentTermsProjection, 'updateOne').resolves();
-      const handler = new AgencyClientCreditPaymentTermAppliedEventHandler();
+      const handler = new AgencyClientCreditPaymentTermAppliedEventHandler(
+        TestUtilsLogger.getLogger(sinon.spy()),
+        new EventStoreCacheHelper()
+      );
 
       await handler.handle(event);
-      eventStoreCacheHelper.should.have.been.calledOnceWith(event.causation_id, ttl);
+      eventStoreCacheHelper.should.have.been.calledOnceWith();
       updateOne.should.have.been.calledOnceWith(
         {
           agency_id: event.aggregate_id.agency_id,

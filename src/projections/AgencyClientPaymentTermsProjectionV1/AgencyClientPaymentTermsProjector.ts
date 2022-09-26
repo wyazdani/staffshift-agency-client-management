@@ -1,4 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
+import {EventStoreCacheHelper} from '../..//helpers/EventStoreCacheHelper';
 import {EventStoreListenerInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
 import {EventsEnum} from '../../Events';
 import {EventHandlerFactory} from './EventHandlerFactory';
@@ -12,6 +13,10 @@ const events = [
 ];
 
 export default class AgencyClientPaymentTermsProjector implements EventStoreListenerInterface {
+  eventStoreCacheHelper: EventStoreCacheHelper;
+  constructor() {
+    this.eventStoreCacheHelper = new EventStoreCacheHelper();
+  }
   async onEvent(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
     const eventType: EventsEnum = event.type as EventsEnum;
 
@@ -21,7 +26,7 @@ export default class AgencyClientPaymentTermsProjector implements EventStoreList
     }
 
     logger.debug('Processing the incoming event', {event});
-    const eventHandler = EventHandlerFactory.getHandler(eventType, logger);
+    const eventHandler = EventHandlerFactory.getHandler(eventType, logger, this.eventStoreCacheHelper);
 
     await eventHandler.handle(event);
   }

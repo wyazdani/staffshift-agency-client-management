@@ -2,6 +2,7 @@ import sinon from 'ts-sinon';
 import {EventsEnum} from '../../src/Events';
 import {EventStoreCacheHelper} from '../../src/helpers/EventStoreCacheHelper';
 import {EventStore} from '../../src/models/EventStore';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 
 describe('EventStoreCacheHelper Class', () => {
   describe('findEventById', () => {
@@ -16,7 +17,7 @@ describe('EventStoreCacheHelper Class', () => {
 
       const eventStoreCacheHelper = new EventStoreCacheHelper();
 
-      await eventStoreCacheHelper.findEventById('test', 100);
+      await eventStoreCacheHelper.findEventById('test', TestUtilsLogger.getLogger(sinon.spy()), '1m');
       save.should.have.been.calledOnceWith();
     });
   });
