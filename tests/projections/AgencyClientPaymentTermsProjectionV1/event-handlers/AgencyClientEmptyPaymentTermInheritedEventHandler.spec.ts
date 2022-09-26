@@ -16,6 +16,7 @@ describe('AgencyClientEmptyPaymentTermInheritedEventHandler', () => {
   describe('handle()', () => {
     const agencyId = 'agency id';
     const clientId = 'client id';
+    const logger = TestUtilsLogger.getLogger(sinon.spy());
 
     it('Test success scenario', async () => {
       const event: any = {
@@ -37,15 +38,13 @@ describe('AgencyClientEmptyPaymentTermInheritedEventHandler', () => {
         },
         correlation_id: '123'
       });
-      const eventStoreCacheHelper = sinon.stub(EventStoreCacheHelper.prototype, 'findEventById').resolves(eventStore);
+      const eventStoreCacheHelper = new EventStoreCacheHelper('1m', 10);
+      const findEventById = sinon.stub(eventStoreCacheHelper, 'findEventById').resolves(eventStore);
       const updateOne = sinon.stub(AgencyClientPaymentTermsProjection, 'updateOne').resolves();
-      const handler = new AgencyClientEmptyPaymentTermInheritedEventHandler(
-        TestUtilsLogger.getLogger(sinon.spy()),
-        new EventStoreCacheHelper('1m')
-      );
+      const handler = new AgencyClientEmptyPaymentTermInheritedEventHandler(logger, eventStoreCacheHelper);
 
       await handler.handle(event);
-      eventStoreCacheHelper.should.have.been.calledOnceWith();
+      findEventById.should.have.been.calledOnceWith(event.causation_id, logger);
       updateOne.should.have.been.calledOnceWith(
         {
           agency_id: event.aggregate_id.agency_id,

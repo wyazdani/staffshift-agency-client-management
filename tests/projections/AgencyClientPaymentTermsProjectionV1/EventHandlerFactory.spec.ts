@@ -17,7 +17,7 @@ describe('EventHandlerFactory', () => {
       EventHandlerFactory.getHandler(
         EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_APPLIED,
         TestUtilsLogger.getLogger(sinon.spy()),
-        new EventStoreCacheHelper('1m')
+        new EventStoreCacheHelper('1m', 10)
       ).should.be.instanceof(AgencyClientCreditPaymentTermAppliedEventHandler);
     });
 
@@ -25,7 +25,7 @@ describe('EventHandlerFactory', () => {
       EventHandlerFactory.getHandler(
         EventsEnum.AGENCY_CLIENT_CREDIT_PAYMENT_TERM_INHERITED,
         TestUtilsLogger.getLogger(sinon.spy()),
-        new EventStoreCacheHelper('1m')
+        new EventStoreCacheHelper('1m', 10)
       ).should.be.instanceof(AgencyClientCreditPaymentTermInheritedEventHandler);
     });
 
@@ -33,7 +33,7 @@ describe('EventHandlerFactory', () => {
       EventHandlerFactory.getHandler(
         EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_APPLIED,
         TestUtilsLogger.getLogger(sinon.spy()),
-        new EventStoreCacheHelper('1m')
+        new EventStoreCacheHelper('1m', 10)
       ).should.be.instanceof(AgencyClientPayInAdvancePaymentTermAppliedEventHandler);
     });
 
@@ -41,7 +41,7 @@ describe('EventHandlerFactory', () => {
       EventHandlerFactory.getHandler(
         EventsEnum.AGENCY_CLIENT_PAY_IN_ADVANCE_PAYMENT_TERM_INHERITED,
         TestUtilsLogger.getLogger(sinon.spy()),
-        new EventStoreCacheHelper('1m')
+        new EventStoreCacheHelper('1m', 10)
       ).should.be.instanceof(AgencyClientPayInAdvancePaymentTermInheritedEventHandler);
     });
 
@@ -49,7 +49,7 @@ describe('EventHandlerFactory', () => {
       EventHandlerFactory.getHandler(
         EventsEnum.AGENCY_CLIENT_EMPTY_PAYMENT_TERM_INHERITED,
         TestUtilsLogger.getLogger(sinon.spy()),
-        new EventStoreCacheHelper('1m')
+        new EventStoreCacheHelper('1m', 10)
       ).should.be.instanceof(AgencyClientEmptyPaymentTermInheritedEventHandler);
     });
 
@@ -58,7 +58,7 @@ describe('EventHandlerFactory', () => {
         EventHandlerFactory.getHandler(
           'sample' as any,
           TestUtilsLogger.getLogger(sinon.spy()),
-          new EventStoreCacheHelper('1m')
+          new EventStoreCacheHelper('1m', 10)
         );
       }, RuntimeError);
     });
