@@ -41,7 +41,7 @@ describe('AgencyClientCreditPaymentTermAppliedEventHandler', () => {
       const updateOne = sinon.stub(AgencyClientPaymentTermsProjection, 'updateOne').resolves();
       const handler = new AgencyClientCreditPaymentTermAppliedEventHandler(
         TestUtilsLogger.getLogger(sinon.spy()),
-        new EventStoreCacheHelper()
+        new EventStoreCacheHelper('1m')
       );
 
       await handler.handle(event);

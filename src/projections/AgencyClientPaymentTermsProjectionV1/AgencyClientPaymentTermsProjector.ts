@@ -13,9 +13,10 @@ const events = [
 ];
 
 export default class AgencyClientPaymentTermsProjector implements EventStoreListenerInterface {
-  eventStoreCacheHelper: EventStoreCacheHelper;
+  private eventStoreCacheHelper: EventStoreCacheHelper;
+  private ttl = '1m';
   constructor() {
-    this.eventStoreCacheHelper = new EventStoreCacheHelper();
+    this.eventStoreCacheHelper = new EventStoreCacheHelper(this.ttl);
   }
   async onEvent(logger: LoggerContext, event: EventStorePubSubModelInterface): Promise<void> {
     const eventType: EventsEnum = event.type as EventsEnum;

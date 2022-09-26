@@ -15,9 +15,9 @@ describe('EventStoreCacheHelper Class', () => {
       });
       const save = sinon.stub(EventStore, 'findById').resolves(eventStore);
 
-      const eventStoreCacheHelper = new EventStoreCacheHelper();
+      const eventStoreCacheHelper = new EventStoreCacheHelper('1m');
 
-      await eventStoreCacheHelper.findEventById('test', TestUtilsLogger.getLogger(sinon.spy()), '1m');
+      await eventStoreCacheHelper.findEventById('test', TestUtilsLogger.getLogger(sinon.spy()));
       save.should.have.been.calledOnceWith();
     });
   });
