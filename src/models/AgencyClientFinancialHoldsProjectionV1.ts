@@ -14,6 +14,10 @@ export type AgencyClientFinancialHoldsProjectionV1DocumentType = Document & {
   note?: string;
   created_at: Date;
   updated_at: Date;
+  _etags: {
+    financial_hold: number;
+    organisation_job: number;
+  };
 };
 
 const financialHolds = new Schema<AgencyClientFinancialHoldsProjectionV1DocumentType>(
@@ -43,6 +47,18 @@ const financialHolds = new Schema<AgencyClientFinancialHoldsProjectionV1Document
       type: Boolean,
       required: true,
       description: 'Shows if the financial hold is inherited or not'
+    },
+    _etags: {
+      financial_hold: {
+        type: Number,
+        required: true,
+        description: 'Last aggregate sequence identifier processed'
+      },
+      organisation_job: {
+        type: Number,
+        required: true,
+        description: 'Sequence identifier of the last organistation job update processed'
+      }
     }
   },
   {
