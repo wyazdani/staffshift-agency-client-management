@@ -28,7 +28,7 @@ export default class AgencyClientFinancialHoldsProjector implements EventStoreLi
     }
 
     logger.debug('Processing the incoming event', {event});
-    const eventHandler = EventHandlerFactory.getHandler(eventType, logger);
+    const eventHandler = EventHandlerFactory.getHandler(eventType, logger, this.eventStoreCacheHelper);
 
     await eventHandler.handle(event);
   }

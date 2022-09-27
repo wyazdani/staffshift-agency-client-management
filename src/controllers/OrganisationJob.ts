@@ -171,8 +171,10 @@ export const applyFinancialHold = async (
       }
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -219,8 +221,10 @@ export const clearFinancialHold = async (
       }
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -277,8 +281,10 @@ export const inheritFinancialHold = async (
       }
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     if (!(err instanceof ValidationError)) {

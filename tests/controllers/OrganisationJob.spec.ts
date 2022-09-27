@@ -511,6 +511,7 @@ describe('OrganisationJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
@@ -523,11 +524,12 @@ describe('OrganisationJob Controller', () => {
         linked: true
       };
       const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(5);
 
       await applyFinancialHold(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"organisation_job:5"'], 'Expected header to be set');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       agencyClient.should.have.been.calledOnceWith();
       execute.should.have.been.calledOnceWith({
@@ -554,6 +556,7 @@ describe('OrganisationJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
@@ -566,11 +569,12 @@ describe('OrganisationJob Controller', () => {
         linked: true
       };
       const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(5);
 
       await applyFinancialHold(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"organisation_job:5"'], 'Expected header to be set');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       agencyClient.should.have.been.calledOnceWith();
       execute.should.have.been.calledOnceWith({
@@ -661,6 +665,7 @@ describe('OrganisationJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
@@ -673,11 +678,12 @@ describe('OrganisationJob Controller', () => {
         linked: true
       };
       const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(5);
 
       await clearFinancialHold(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"organisation_job:5"'], 'Expected header to be set');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       agencyClient.should.have.been.calledOnceWith();
       execute.should.have.been.calledOnceWith({
@@ -704,6 +710,7 @@ describe('OrganisationJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
@@ -716,11 +723,12 @@ describe('OrganisationJob Controller', () => {
         linked: true
       };
       const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(5);
 
       await clearFinancialHold(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"organisation_job:5"'], 'Expected header to be set');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       agencyClient.should.have.been.calledOnceWith();
       execute.should.have.been.calledOnceWith({
@@ -811,6 +819,7 @@ describe('OrganisationJob Controller', () => {
       const res = fakeResponse();
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
+      const setHeader = sinon.stub(res, 'setHeader');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
       const listResponse = {
@@ -823,11 +832,12 @@ describe('OrganisationJob Controller', () => {
         linked: true
       };
       const agencyClient = sinon.stub(GenericRepository.prototype, 'findOne').resolves(listResponse);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(5);
 
       await inheritFinancialHold(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"organisation_job:5"'], 'Expected header to be set');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       agencyClient.should.have.been.calledOnceWith();
       execute.should.have.been.calledOnceWith({
