@@ -19,7 +19,9 @@ export class EventHandlerFactory {
   /**
    * Return event handler based on the event type
    */
-  static getHandler(eventType: EventsEnum, logger: LoggerContext,
+  static getHandler(
+    eventType: EventsEnum,
+    logger: LoggerContext,
     eventStoreCacheHelper: EventStoreCacheHelper
   ): EventHandlerInterface<BaseEventStoreDataInterface> {
     switch (eventType) {
