@@ -1485,7 +1485,7 @@ definitions:
           organisation_job:
             type: number
         required:
-          - payment_term
+          - financial_hold
           - organisation_job
       updated_at:
         type: string
