@@ -24,18 +24,20 @@ export class EventStoreCacheHelper {
 
       return organisationJobEvent as EventStoreModelInterface;
     } else {
-      const organisationJobEvent = await EventStore.findById(eventId);
+      let organisationJobEvent = await EventStore.findById(eventId);
 
       logger.debug('Event Store entry called from collection', {eventId});
       /**
        * EventStoreCacheHelper
        *
-       * We do not cache results which are not found
+       * We will ready from primary if result not found
        * Since we might be reading from secondary
        */
-      if (organisationJobEvent) {
-        this.cache.set(eventId, organisationJobEvent);
+      if (!organisationJobEvent) {
+        logger.debug('Event Store reading from primary', {eventId});
+        organisationJobEvent = await EventStore.findById(eventId).read('primary');
       }
+      this.cache.set(eventId, organisationJobEvent);
       return organisationJobEvent;
     }
   }

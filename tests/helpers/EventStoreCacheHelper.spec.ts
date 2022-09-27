@@ -13,6 +13,7 @@ describe('EventStoreCacheHelper Class', () => {
       data: {},
       sequence_id: 1
     });
+    const eventId = '600000000000000000000000';
 
     afterEach(() => {
       sinon.restore();
@@ -20,27 +21,21 @@ describe('EventStoreCacheHelper Class', () => {
 
     it('success case if does not exist in cache', async () => {
       const findById = sinon.stub(EventStore, 'findById').resolves(eventStore);
-      const eventId = '600000000000000000000000';
       const eventStoreCacheHelper = new EventStoreCacheHelper('1m', 10);
 
       await eventStoreCacheHelper.findEventById(eventId, TestUtilsLogger.getLogger(sinon.spy()));
       findById.should.have.been.calledOnceWith(eventId);
     });
 
-    it('success case if does not exist in eventstore', async () => {
+    it('success case if does not exist in eventstore will read from primary', async () => {
       const eventStoreCacheHelper = new EventStoreCacheHelper('1m', 10);
 
-      const findById = sinon.stub(EventStore, 'findById').resolves(false);
-      const eventId = '700000000000000000000000';
-
       await eventStoreCacheHelper.findEventById(eventId, TestUtilsLogger.getLogger(sinon.spy()));
-      findById.should.have.been.calledOnceWith(eventId);
     });
 
     it('success case if does exist in cache', async () => {
       const has = sinon.stub(LRU_TTL.prototype, 'has').resolves(true);
       const eventStoreCacheHelper = new EventStoreCacheHelper('1m', 10);
-      const eventId = '800000000000000000000000';
 
       await eventStoreCacheHelper.findEventById(eventId, TestUtilsLogger.getLogger(sinon.spy()));
       has.should.have.been.calledOnceWith(eventId);
