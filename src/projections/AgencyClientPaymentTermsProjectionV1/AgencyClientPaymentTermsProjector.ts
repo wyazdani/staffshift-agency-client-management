@@ -1,5 +1,5 @@
 import {LoggerContext} from 'a24-logzio-winston';
-import {EventStoreCacheHelper} from '../..//helpers/EventStoreCacheHelper';
+import {EventStoreCacheHelper} from '../../helpers/EventStoreCacheHelper';
 import {EventStoreListenerInterface, EventStorePubSubModelInterface} from 'ss-eventstore';
 import {EventsEnum} from '../../Events';
 import {EventHandlerFactory} from './EventHandlerFactory';
