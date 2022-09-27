@@ -33,12 +33,8 @@ export class EventStoreCacheHelper {
         organisationJobEvent = await EventStore.findById(eventId).read('primary');
       }
       this.cache.set(eventId, organisationJobEvent);
-      return organisationJobEvent;
-    } else {
-      logger.debug('Fetching cached results', {eventId});
-      const organisationJobEvent = this.cache.get(eventId);
-
-      return organisationJobEvent as EventStoreModelInterface;
     }
+
+    return this.cache.get(eventId) as EventStoreModelInterface;
   }
 }
