@@ -18,12 +18,7 @@ export class EventStoreCacheHelper {
   }
 
   async findEventById(eventId: string, logger: LoggerContext): Promise<EventStoreModelInterface> {
-    if (this.cache.has(eventId)) {
-      logger.debug('Fetching cached results', {eventId});
-      const organisationJobEvent = this.cache.get(eventId);
-
-      return organisationJobEvent as EventStoreModelInterface;
-    } else {
+    if (!this.cache.has(eventId)) {
       let organisationJobEvent = await EventStore.findById(eventId);
 
       logger.debug('Event Store entry called from collection', {eventId});
@@ -39,6 +34,11 @@ export class EventStoreCacheHelper {
       }
       this.cache.set(eventId, organisationJobEvent);
       return organisationJobEvent;
+    } else {
+      logger.debug('Fetching cached results', {eventId});
+      const organisationJobEvent = this.cache.get(eventId);
+
+      return organisationJobEvent as EventStoreModelInterface;
     }
   }
 }
