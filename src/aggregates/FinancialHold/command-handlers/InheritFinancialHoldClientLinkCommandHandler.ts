@@ -17,7 +17,7 @@ export class InheritFinancialHoldClientLinkCommandHandler implements FinancialHo
 
   constructor(private repository: FinancialHoldRepository) {}
 
-  async execute(command: InheritFinancialHoldClientLinkCommandInterface): Promise<void> {
+  async execute(command: InheritFinancialHoldClientLinkCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let type: string;
@@ -48,5 +48,6 @@ export class InheritFinancialHoldClientLinkCommandHandler implements FinancialHo
         | AgencyClientClearFinancialHoldInheritedEventInterface
         | AgencyClientEmptyFinancialHoldInheritedEventInterface
     ]);
+    return eventId;
   }
 }

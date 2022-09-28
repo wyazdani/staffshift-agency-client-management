@@ -10,7 +10,7 @@ export class StartConsultantJobProcessCommandHandler implements ConsultantJobPro
 
   constructor(private repository: ConsultantJobProcessRepository) {}
 
-  async execute(command: StartConsultantJobProcessCommandInterface): Promise<void> {
+  async execute(command: StartConsultantJobProcessCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let eventId = aggregate.getLastSequenceId();
@@ -23,5 +23,6 @@ export class StartConsultantJobProcessCommandHandler implements ConsultantJobPro
         sequence_id: ++eventId
       } as ConsultantJobProcessStartedEventInterface
     ]);
+    return eventId;
   }
 }

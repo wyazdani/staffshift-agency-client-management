@@ -10,7 +10,7 @@ export class SetRequiresPONumberCommandHandler implements BookingPreferenceComma
 
   constructor(private repository: BookingPreferenceRepository) {}
 
-  async execute(command: SetRequiresPONumberCommandInterface): Promise<void> {
+  async execute(command: SetRequiresPONumberCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     aggregate.validateSetRequiresPONumber();
@@ -24,5 +24,6 @@ export class SetRequiresPONumberCommandHandler implements BookingPreferenceComma
         sequence_id: ++eventId
       } as AgencyClientRequiresPONumberSetEventInterface
     ]);
+    return eventId;
   }
 }

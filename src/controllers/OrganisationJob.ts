@@ -23,6 +23,8 @@ import {
 import {AgencyClientsProjectionV2, AgencyClientsProjectionV2DocumentType} from '../models/AgencyClientsProjectionV2';
 import {LoggerContext} from 'a24-logzio-winston';
 
+const ORGANISATION_JOB_AGGREGATE_NAME = 'organisation_job';
+
 export const initiateApplyPaymentTerm = async (
   req: SwaggerRequestInterface,
   res: ServerResponse,
@@ -57,8 +59,10 @@ export const initiateApplyPaymentTerm = async (
       }
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -117,8 +121,10 @@ export const initiateInheritApplyPaymentTerm = async (
       }
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     if (!(err instanceof ValidationError)) {
@@ -359,4 +365,7 @@ export const getFinancialHold = async (
     req.Logger.error('getFinancialHold unknown error', err);
     next(err);
   }
+};
+const setAggregateEtagHeader = (res: ServerResponse, eventId: number): void => {
+  res.setHeader('ETag', `W/"${ORGANISATION_JOB_AGGREGATE_NAME}:${eventId}"`);
 };

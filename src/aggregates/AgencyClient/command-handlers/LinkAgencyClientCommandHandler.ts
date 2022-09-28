@@ -16,22 +16,23 @@ export class LinkAgencyClientCommandHandler implements AgencyClientCommandHandle
   /**
    * Build and save event caused by linkAgencyClient command
    */
-  async execute(command: LinkAgencyClientCommandInterface): Promise<void> {
+  async execute(command: LinkAgencyClientCommandInterface): Promise<number> {
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     const isNotLinked = !aggregate.isLinked();
 
     if (isNotLinked) {
-      const eventId = aggregate.getLastSequenceId();
+      let eventId = aggregate.getLastSequenceId();
 
       await this.agencyClientRepository.save([
         {
           type: EventsEnum.AGENCY_CLIENT_LINKED,
           aggregate_id: aggregate.getId(),
           data: {...command.data} as AgencyClientLinkedEventStoreDataInterface,
-          sequence_id: eventId + 1
+          sequence_id: ++eventId
         }
       ]);
+      return eventId;
     }
   }
 }

@@ -21,7 +21,7 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
    *
    * If The command is transfer from A to B and consultant B is already assigned, we only unassign A
    */
-  async execute(command: TransferAgencyClientConsultantCommandInterface): Promise<void> {
+  async execute(command: TransferAgencyClientConsultantCommandInterface): Promise<number> {
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     await aggregate.validateTransferClientConsultant(command.data);
@@ -52,5 +52,6 @@ export class TransferAgencyClientConsultantCommandHandler implements AgencyClien
     }
 
     await this.agencyClientRepository.save(events);
+    return eventId;
   }
 }

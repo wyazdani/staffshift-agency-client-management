@@ -10,7 +10,7 @@ export class SetRequiresUniquePONumberCommandHandler implements BookingPreferenc
 
   constructor(private repository: BookingPreferenceRepository) {}
 
-  async execute(command: SetRequiresUniquePONumberCommandInterface): Promise<void> {
+  async execute(command: SetRequiresUniquePONumberCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     aggregate.validateSetRequiresUniquePONumber();
@@ -24,5 +24,6 @@ export class SetRequiresUniquePONumberCommandHandler implements BookingPreferenc
         sequence_id: ++eventId
       } as AgencyClientRequiresUniquePONumberSetEventInterface
     ]);
+    return eventId;
   }
 }

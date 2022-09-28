@@ -2,5 +2,5 @@ import {BookingPreferenceCommandInterface} from './BookingPreferenceCommandInter
 
 export interface BookingPreferenceCommandHandlerInterface {
   commandType: string;
-  execute(command: BookingPreferenceCommandInterface): Promise<void>;
+  execute(command: BookingPreferenceCommandInterface): Promise<number>;
 }

@@ -10,7 +10,7 @@ export class CompleteUnassignConsultantCommandHandler implements ConsultantJobCo
 
   constructor(private repository: ConsultantJobRepository) {}
 
-  async execute(command: CompleteUnassignConsultantCommandInterface): Promise<void> {
+  async execute(command: CompleteUnassignConsultantCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     if (aggregate.validateCompleteJob(command.data._id)) {
@@ -24,6 +24,7 @@ export class CompleteUnassignConsultantCommandHandler implements ConsultantJobCo
           sequence_id: ++eventId
         } as ConsultantJobUnassignCompletedEventInterface
       ]);
+      return eventId;
     }
   }
 }

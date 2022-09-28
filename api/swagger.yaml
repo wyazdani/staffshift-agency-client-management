@@ -428,8 +428,8 @@ paths:
         default:
           $ref: "#/responses/server_error_model"
       summary: "Unassign a consultant from multiple clients.
-      If consultant role is not specified we unassign without filtering on role.
-      If client_ids is not specified we unassign all clients for that consultant"
+        If consultant role is not specified we unassign without filtering on role.
+        If client_ids is not specified we unassign all clients for that consultant"
       tags:
         - "Consultant Bulk"
   /agency/{agency_id}/consultant-transfer:
@@ -456,8 +456,8 @@ paths:
         default:
           $ref: "#/responses/server_error_model"
       summary: "transfer clients from a consultant to another consultant.
-      If consultant role is not specified we transfer without filtering on role.
-      If client_ids is not specified we transfer all clients for that consultant"
+        If consultant role is not specified we transfer without filtering on role.
+        If client_ids is not specified we transfer all clients for that consultant"
       tags:
         - "Consultant Bulk"
   /agency/{agency_id}/client/{client_id}/payment-term:
@@ -476,6 +476,10 @@ paths:
       responses:
         202:
           description: "Initiate Apply payment term to client"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
@@ -530,6 +534,10 @@ paths:
       responses:
         202:
           description: "Initiate Inherit Apply payment term to client"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
@@ -1386,6 +1394,7 @@ definitions:
       - payment_term
       - updated_at
       - created_at
+      - _etags
       - __v
     properties:
       _id:
@@ -1405,6 +1414,16 @@ definitions:
           - not_set
       inherited:
         type: boolean
+      _etags:
+        type: object
+        properties:
+          payment_term:
+            type: number
+          organisation_job:
+            type: number
+        required:
+          - payment_term
+          - organisation_job
       updated_at:
         type: string
         format: date-time

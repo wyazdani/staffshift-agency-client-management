@@ -18,7 +18,7 @@ export class SetInheritedFinancialHoldCommandHandler implements FinancialHoldCom
 
   constructor(private repository: FinancialHoldRepository) {}
 
-  async execute(command: SetInheritedFinancialHoldCommandInterface): Promise<void> {
+  async execute(command: SetInheritedFinancialHoldCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     if (!command.data.force) {
@@ -53,5 +53,6 @@ export class SetInheritedFinancialHoldCommandHandler implements FinancialHoldCom
         | AgencyClientClearFinancialHoldInheritedEventInterface
         | AgencyClientEmptyFinancialHoldInheritedEventInterface
     ]);
+    return eventId;
   }
 }

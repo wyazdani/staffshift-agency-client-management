@@ -22,7 +22,7 @@ export class AgencyClientLinkStatus {
    *
    * @param {Object} message  - The PubSub Triage Domain Event Message
    */
-  public async apply(message: DomainEventMessageInterface<AgencyClientLinkDomainEventDataInterface>): Promise<void> {
+  public async apply(message: DomainEventMessageInterface<AgencyClientLinkDomainEventDataInterface>): Promise<number> {
     const command = await this.convertTriageEventToCommand(message.event.name, message.event_data);
 
     return this.commandBus.execute(command);

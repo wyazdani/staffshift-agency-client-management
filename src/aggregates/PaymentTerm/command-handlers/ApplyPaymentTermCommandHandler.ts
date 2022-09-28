@@ -12,7 +12,7 @@ export class ApplyPaymentTermCommandHandler implements PaymentTermCommandHandler
 
   constructor(private repository: PaymentTermRepository) {}
 
-  async execute(command: ApplyPaymentTermCommandInterface): Promise<void> {
+  async execute(command: ApplyPaymentTermCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
     let eventId = aggregate.getLastSequenceId();
 
@@ -27,5 +27,6 @@ export class ApplyPaymentTermCommandHandler implements PaymentTermCommandHandler
         sequence_id: ++eventId
       } as AgencyClientCreditPaymentTermAppliedEventInterface | AgencyClientPayInAdvancePaymentTermAppliedEventInterface
     ]);
+    return eventId;
   }
 }
