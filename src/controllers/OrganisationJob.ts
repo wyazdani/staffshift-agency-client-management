@@ -47,7 +47,7 @@ export const initiateApplyPaymentTerm = async (
     }
     const command: InitiateApplyPaymentTermCommandInterface = {
       aggregateId: {
-        name: 'organisation_job',
+        name: ORGANISATION_JOB_AGGREGATE_NAME,
         agency_id: agencyId,
         organisation_id: clientInformation.organisation_id
       },
@@ -109,7 +109,7 @@ export const initiateInheritApplyPaymentTerm = async (
 
     const command: InitiateInheritPaymentTermCommandInterface = {
       aggregateId: {
-        name: 'organisation_job',
+        name: ORGANISATION_JOB_AGGREGATE_NAME,
         agency_id: agencyId,
         organisation_id: clientInformation.organisation_id
       },
@@ -159,7 +159,7 @@ export const applyFinancialHold = async (
     }
     const command: InitiateApplyFinancialHoldCommandInterface = {
       aggregateId: {
-        name: 'organisation_job',
+        name: ORGANISATION_JOB_AGGREGATE_NAME,
         agency_id: agencyId,
         organisation_id: clientInformation.organisation_id
       },
@@ -209,7 +209,7 @@ export const clearFinancialHold = async (
     }
     const command: InitiateClearFinancialHoldCommandInterface = {
       aggregateId: {
-        name: 'organisation_job',
+        name: ORGANISATION_JOB_AGGREGATE_NAME,
         agency_id: agencyId,
         organisation_id: clientInformation.organisation_id
       },
@@ -269,7 +269,7 @@ export const inheritFinancialHold = async (
     }
     const command: InitiateInheritFinancialHoldCommandInterface = {
       aggregateId: {
-        name: 'organisation_job',
+        name: ORGANISATION_JOB_AGGREGATE_NAME,
         agency_id: agencyId,
         organisation_id: clientInformation.organisation_id
       },
