@@ -10,7 +10,11 @@ export class AgencyClientFinancialHoldsProjectionScenarios {
           client_id: '62dfe8e3fa8604b62d000001',
           inherited: true,
           financial_hold: 'applied',
-          note: 'sample'
+          note: 'sample',
+          _etags: {
+            financial_hold: 101,
+            organisation_job: 101
+          }
         },
         opts
       )

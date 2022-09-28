@@ -54,7 +54,17 @@ describe('agency-{agency_id}-client-{client_id}-financial-hold', () => {
     it('should respond with 200 Retrieves a single Agency Client financial hold', async () => {
       const schema = {
         type: 'object',
-        required: ['_id', 'agency_id', 'client_id', 'inherited', 'financial_hold', 'updated_at', 'created_at', '__v'],
+        required: [
+          '_id',
+          'agency_id',
+          'client_id',
+          'inherited',
+          'financial_hold',
+          'updated_at',
+          'created_at',
+          '__v',
+          '_etags'
+        ],
         properties: {
           _id: {
             type: 'string',
@@ -77,6 +87,18 @@ describe('agency-{agency_id}-client-{client_id}-financial-hold', () => {
           },
           note: {
             type: 'string'
+          },
+          _etags: {
+            type: 'object',
+            properties: {
+              financial_hold: {
+                type: 'number'
+              },
+              organisation_job: {
+                type: 'number'
+              }
+            },
+            required: ['financial_hold', 'organisation_job']
           },
           updated_at: {
             type: 'string',

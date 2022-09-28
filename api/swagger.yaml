@@ -567,6 +567,10 @@ paths:
       responses:
         202:
           description: "Initiate Clear financial hold to client"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
@@ -596,6 +600,10 @@ paths:
       responses:
         202:
           description: "Initiate Apply financial hold to client"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
@@ -656,6 +664,10 @@ paths:
       responses:
         202:
           description: "Initiate Inherit financial hold to client"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
@@ -1441,6 +1453,7 @@ definitions:
       - client_id
       - inherited
       - financial_hold
+      - _etags
       - updated_at
       - created_at
       - __v
@@ -1464,6 +1477,16 @@ definitions:
         type: boolean
       note:
         type: string
+      _etags:
+        type: object
+        properties:
+          financial_hold:
+            type: number
+          organisation_job:
+            type: number
+        required:
+          - financial_hold
+          - organisation_job
       updated_at:
         type: string
         format: date-time
