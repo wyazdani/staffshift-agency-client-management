@@ -11,7 +11,7 @@ export class UnsetRequiresBookingPasswordCommandHandler implements BookingPrefer
   constructor(private repository: BookingPreferenceRepository) {}
 
   async execute(command: UnsetRequiresBookingPasswordCommandInterface): Promise<number> {
-    const aggregate = await this.repository.getAggregate(command.aggregateId);
+    const aggregate = await this.repository.getCommandAggregate(command);
 
     aggregate.validateUnsetRequiresBookingPassword();
     let eventId = aggregate.getLastSequenceId();
