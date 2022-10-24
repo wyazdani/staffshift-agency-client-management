@@ -7,7 +7,8 @@ import {AbstractRepository} from '../AbstractRepository';
 /**
  * Class responsible for interacting with aggregate data source
  */
-export class FinancialHoldRepository extends AbstractRepository {
+export class FinancialHoldRepository extends AbstractRepository<FinancialHoldAggregate> {
+  private static readonly AGGREGATE_ID_NAME = 'financial_hold';
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: FinancialHoldWriteProjectionHandler

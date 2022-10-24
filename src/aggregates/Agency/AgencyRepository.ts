@@ -7,7 +7,7 @@ import {AgencyWriteProjectionHandler} from './AgencyWriteProjectionHandler';
 /**
  * Class responsible for interacting with agency aggregate data source
  */
-export class AgencyRepository extends AbstractRepository {
+export class AgencyRepository extends AbstractRepository<AgencyAggregate> {
   constructor(
     protected eventRepository: EventRepository,
     private writeProjectionHandler: AgencyWriteProjectionHandler

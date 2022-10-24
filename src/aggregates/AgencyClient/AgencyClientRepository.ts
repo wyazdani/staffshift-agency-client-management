@@ -8,7 +8,7 @@ import {AbstractRepository} from '../AbstractRepository';
 /**
  * Class responsible for interacting with agency client aggregate data source
  */
-export class AgencyClientRepository extends AbstractRepository {
+export class AgencyClientRepository extends AbstractRepository<AgencyClientAggregate> {
   constructor(
     protected eventRepository: EventRepository,
     private agencyClientWriteProjectionHandler: AgencyClientWriteProjectionHandler,

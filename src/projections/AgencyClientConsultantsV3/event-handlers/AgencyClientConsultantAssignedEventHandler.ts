@@ -23,7 +23,10 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientConsultant
    * Create a new agency client consultant record
    */
   async handle(event: EventStoreModelInterface<AgencyClientConsultantAssignedEventStoreDataInterface>): Promise<void> {
-    const agencyAggregate = await this.agencyRepository.getAggregate({agency_id: event.aggregate_id.agency_id});
+    const agencyAggregate = await this.agencyRepository.getAggregate({
+      name: event.aggregate_id.name,
+      agency_id: event.aggregate_id.agency_id
+    });
     const role = agencyAggregate.getConsultantRole(event.data.consultant_role_id);
     const agencyClientConsultant = new AgencyClientConsultantsProjectionV3({
       _id: event.data._id,

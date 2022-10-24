@@ -1,4 +1,3 @@
-import {AgencyRepository} from '../Agency/AgencyRepository';
 import {EventRepository, EventPointInTimeType} from '../../EventRepository';
 import {OrganisationJobAggregateIdInterface, OrganisationJobAggregateRecordInterface} from './types';
 import {AbstractRepository} from '../AbstractRepository';
@@ -8,7 +7,8 @@ import {OrganisationJobAggregate} from './OrganisationJobAggregate';
 /**
  * Class responsible for interacting with aggregate data source
  */
-export class OrganisationJobRepository extends AbstractRepository {
+export class OrganisationJobRepository extends AbstractRepository<OrganisationJobAggregate> {
+  private static readonly AGGREGATE_ID_NAME = 'organisation_job';
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: OrganisationJobWriteProjectionHandler

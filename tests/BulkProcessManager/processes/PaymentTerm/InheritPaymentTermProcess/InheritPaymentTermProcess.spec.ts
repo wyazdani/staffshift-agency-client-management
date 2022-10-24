@@ -101,6 +101,7 @@ describe('InheritPaymentTermProcess', () => {
         job_id: jobId
       });
       getAgencyClientAggregate.should.have.been.calledOnceWith({
+        name: 'aggregate type name',
         agency_id: agencyId,
         client_id: clientId
       });
@@ -174,6 +175,7 @@ describe('InheritPaymentTermProcess', () => {
         job_id: jobId
       });
       getAgencyClientAggregate.should.have.been.calledOnceWith({
+        name: 'aggregate type name',
         agency_id: agencyId,
         client_id: clientId
       });
@@ -267,6 +269,7 @@ describe('InheritPaymentTermProcess', () => {
         job_id: jobId
       });
       getAgencyClientAggregate.should.have.been.calledOnceWith({
+        name: 'aggregate type name',
         agency_id: agencyId,
         client_id: clientId
       });
@@ -319,6 +322,7 @@ describe('InheritPaymentTermProcess', () => {
         job_id: jobId
       });
       getAgencyClientAggregate.should.have.been.calledOnceWith({
+        name: 'aggregate type name',
         agency_id: agencyId,
         client_id: clientId
       });
@@ -380,6 +384,7 @@ describe('InheritPaymentTermProcess', () => {
         job_id: jobId
       });
       getAgencyClientAggregate.should.have.been.calledOnceWith({
+        name: 'aggregate type name',
         agency_id: agencyId,
         client_id: clientId
       });
@@ -448,6 +453,7 @@ describe('InheritPaymentTermProcess', () => {
         job_id: jobId
       });
       getAgencyClientAggregate.should.have.been.calledOnceWith({
+        name: 'aggregate type name',
         agency_id: agencyId,
         client_id: clientId
       });

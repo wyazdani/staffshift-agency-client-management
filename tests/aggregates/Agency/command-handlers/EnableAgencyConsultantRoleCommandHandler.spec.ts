@@ -18,6 +18,7 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
     const roleId = 'some-id';
     const command: EnableAgencyConsultantRoleCommandInterface = {
       aggregateId: {
+        name: 'agency',
         agency_id: agencyId
       },
       type: AgencyCommandEnum.ENABLE_AGENCY_CONSULTANT_ROLE,
@@ -33,7 +34,7 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.save.resolves();
       agencyRepository.getAggregate.resolves(aggregate);
       aggregate.getLastSequenceId.returns(100);
-      aggregate.getId.returns({agency_id: agencyId});
+      aggregate.getId.returns({name: 'agency', agency_id: agencyId});
       aggregate.canEnableConsultantRole.returns(true);
       const handler = new EnableAgencyConsultantRoleCommandHandler(agencyRepository);
 
@@ -47,7 +48,7 @@ describe('EnableAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.save.should.have.been.calledOnceWith([
         {
           type: EventsEnum.AGENCY_CONSULTANT_ROLE_ENABLED,
-          aggregate_id: {agency_id: agencyId},
+          aggregate_id: {name: 'agency', agency_id: agencyId},
           data: command.data,
           sequence_id: 101
         }

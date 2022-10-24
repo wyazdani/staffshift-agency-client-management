@@ -9,13 +9,14 @@ import {AgencyClientConsultantInterface} from '../../../src/aggregates/AgencyCli
 import {TransferAgencyClientConsultantCommandDataInterface} from '../../../src/aggregates/AgencyClient/types/CommandDataTypes';
 
 describe('AgencyClientAggregate', () => {
+  const aggregateId = {
+    agency_id: '45',
+    client_id: '12'
+  };
+
   describe('validateAddClientConsultant()', () => {
-    const agencyId = '333';
+    const agencyId = '45';
     const roleId = '2020';
-    const aggregateId = {
-      agency_id: agencyId,
-      client_id: '12'
-    };
     const agencyAggregateId = {
       agency_id: agencyId
     };
@@ -210,10 +211,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('validateRemoveClientConsultant()', () => {
     it('should throw resource not found error when the consultant to be removed is not found', async () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const consultant = {
         _id: '1010',
         consultant_role_id: '2020',
@@ -236,10 +233,6 @@ describe('AgencyClientAggregate', () => {
     });
 
     it('should resolve successfully when the consultant to be removed is found', async () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const consultant = {
         _id: '1010',
         consultant_role_id: '2020',
@@ -262,10 +255,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('getConsultants()', () => {
     it('should return all consultants', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const consultant = {
         _id: '1010',
         consultant_role_id: '2020',
@@ -288,11 +277,7 @@ describe('AgencyClientAggregate', () => {
   });
 
   describe('validateTransferClientConsultant', () => {
-    const agencyId = '333';
-    const aggregateId = {
-      agency_id: agencyId,
-      client_id: '12'
-    };
+    const agencyId = '45';
 
     const consultant = {
       _id: 'from id',
@@ -397,11 +382,6 @@ describe('AgencyClientAggregate', () => {
   describe('isConsultantAlreadyAssigned()', () => {
     const consultantRoleId = 'consultant role id';
     const consultantId = 'consultant id';
-    const agencyId = '333';
-    const aggregateId = {
-      agency_id: agencyId,
-      client_id: '12'
-    };
 
     it('should return true when client is already assign to consultant with that role', async () => {
       const aggregate = {
@@ -447,10 +427,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('getId()', () => {
     it('should return aggregate id', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const consultant = {
         _id: '1010',
         consultant_role_id: '2020',
@@ -474,10 +450,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('getLastSequenceId()', () => {
     it('should return aggregate last event id', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const consultant = {
         _id: '1010',
         consultant_role_id: '2020',
@@ -501,10 +473,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('toJSON()', () => {
     it('should return the aggregate', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const consultant = {
         _id: '1010',
         consultant_role_id: '2020',
@@ -528,10 +496,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('getClientType()', () => {
     it('should return the type', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const aggregate = {
         last_sequence_id: 1,
         linked: true,
@@ -546,10 +510,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('getParentClientId()', () => {
     it('should return parent client id', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const aggregate = {
         last_sequence_id: 1,
         linked: true,
@@ -563,10 +523,6 @@ describe('AgencyClientAggregate', () => {
     });
 
     it('should return null when node does not have parent', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const aggregate = {
         last_sequence_id: 1,
         linked: true,
@@ -581,10 +537,6 @@ describe('AgencyClientAggregate', () => {
 
   describe('getLinkedDate()', () => {
     it('should return linked date', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const date = new Date();
       const aggregate = {
         last_sequence_id: 1,
@@ -599,10 +551,6 @@ describe('AgencyClientAggregate', () => {
     });
 
     it('should return null when not linked', () => {
-      const aggregateId = {
-        agency_id: '45',
-        client_id: '12'
-      };
       const aggregate = {
         last_sequence_id: 1,
         linked: false,

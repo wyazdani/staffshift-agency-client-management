@@ -1601,6 +1601,20 @@ definitions:
       message:
         type: string
     additionalProperties: false
+  precondition_failed:
+    description: "Request precondition failed"
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PRECONDITION_FAILED
+      message:
+        type: string
+    additionalProperties: false
   add_consultant_roles_validation_error_model:
     type: object
     required:
@@ -2537,6 +2551,10 @@ responses:
     description: "Server error occurred"
     schema:
       $ref: "#/definitions/server_error_def"
+  precondition_failed:
+    description: "Request precondition failed"
+    schema:
+      $ref: "#/definitions/precondition_failed"
 securityDefinitions:
   jwt:
     type: apiKey

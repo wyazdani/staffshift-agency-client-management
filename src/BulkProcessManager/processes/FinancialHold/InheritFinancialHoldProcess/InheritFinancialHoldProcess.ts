@@ -201,6 +201,7 @@ export class InheritFinancialHoldProcess implements ProcessInterface {
 
   private async getAgencyClient(clientId: string): Promise<AgencyClientAggregate> {
     return await this.agencyClientRepository.getAggregate({
+      name: this.initiateEvent.aggregate_id.name,
       agency_id: this.initiateEvent.aggregate_id.agency_id,
       client_id: clientId
     });

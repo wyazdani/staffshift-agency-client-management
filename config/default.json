@@ -29,6 +29,10 @@
     "406": {
       "error_code": "CONTENT_TYPE_NOT_SUPPORTED",
       "log_level": "notice"
+    },
+    "412": {
+      "error_code": "PRECONDITION_FAILED",
+      "log_level": "notice"
     }
   },
   "server_errors": [

@@ -26,7 +26,7 @@ describe('AgencyRepository class', () => {
 
       const leftFoldEvents = sinon.stub(eventRepository, 'leftFoldEvents').resolves(projection);
 
-      const aggregate = await agencyRepository.getAggregate({agency_id: agencyId}, pointInTime);
+      const aggregate = await agencyRepository.getAggregate({name: 'agency', agency_id: agencyId}, pointInTime);
 
       leftFoldEvents.should.have.been.calledWith(writeProjectionHandler, {agency_id: agencyId}, pointInTime);
       aggregate.getId().agency_id.should.equal(agencyId);
