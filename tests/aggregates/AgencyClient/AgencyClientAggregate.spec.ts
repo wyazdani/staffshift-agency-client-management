@@ -293,6 +293,7 @@ describe('AgencyClientAggregate', () => {
       agency_id: agencyId,
       client_id: '12'
     };
+
     const consultant = {
       _id: 'from id',
       consultant_role_id: 'consultant role id',
