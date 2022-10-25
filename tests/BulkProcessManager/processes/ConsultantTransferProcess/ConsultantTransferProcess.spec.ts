@@ -62,10 +62,6 @@ describe('ConsultantTransferProcess', () => {
     agency_id: agencyId,
     job_id: initiateEvent.data._id
   };
-  const transferAgencyClientConsultantAggregateId = {
-    agency_id: agencyId,
-    client_id: clientId
-  };
   const jobAggregateId = {
     name: 'consultant_job',
     agency_id: agencyId
@@ -119,12 +115,18 @@ describe('ConsultantTransferProcess', () => {
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
-      transferAgencyClientConsultant.should.have.been.calledOnceWith(transferAgencyClientConsultantAggregateId, {
-        from_id: assignmentId.toString(),
-        to_consultant_id: initiateEvent.data.to_consultant_id,
-        to_consultant_role_id: initiateEvent.data.consultant_role_id,
-        to_id: objectIdString
-      });
+      transferAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        {
+          from_id: assignmentId.toString(),
+          to_consultant_id: initiateEvent.data.to_consultant_id,
+          to_consultant_role_id: initiateEvent.data.consultant_role_id,
+          to_id: objectIdString
+        }
+      );
       succeedItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId
@@ -202,12 +204,18 @@ describe('ConsultantTransferProcess', () => {
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
-      transferAgencyClientConsultant.should.have.been.calledOnceWith(transferAgencyClientConsultantAggregateId, {
-        from_id: assignmentId.toString(),
-        to_consultant_id: initiateEvent.data.to_consultant_id,
-        to_consultant_role_id: initiateEvent.data.consultant_role_id,
-        to_id: objectIdString
-      });
+      transferAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        {
+          from_id: assignmentId.toString(),
+          to_consultant_id: initiateEvent.data.to_consultant_id,
+          to_consultant_role_id: initiateEvent.data.consultant_role_id,
+          to_id: objectIdString
+        }
+      );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,
@@ -266,12 +274,18 @@ describe('ConsultantTransferProcess', () => {
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
-      transferAgencyClientConsultant.should.have.been.calledOnceWith(transferAgencyClientConsultantAggregateId, {
-        from_id: assignmentId.toString(),
-        to_consultant_id: initiateEvent.data.to_consultant_id,
-        to_consultant_role_id: initiateEvent.data.consultant_role_id,
-        to_id: objectIdString
-      });
+      transferAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        {
+          from_id: assignmentId.toString(),
+          to_consultant_id: initiateEvent.data.to_consultant_id,
+          to_consultant_role_id: initiateEvent.data.consultant_role_id,
+          to_id: objectIdString
+        }
+      );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,
@@ -330,12 +344,18 @@ describe('ConsultantTransferProcess', () => {
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
-      transferAgencyClientConsultant.should.have.been.calledOnceWith(transferAgencyClientConsultantAggregateId, {
-        from_id: assignmentId.toString(),
-        to_consultant_id: initiateEvent.data.to_consultant_id,
-        to_consultant_role_id: initiateEvent.data.consultant_role_id,
-        to_id: objectIdString
-      });
+      transferAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        {
+          from_id: assignmentId.toString(),
+          to_consultant_id: initiateEvent.data.to_consultant_id,
+          to_consultant_role_id: initiateEvent.data.consultant_role_id,
+          to_id: objectIdString
+        }
+      );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,
@@ -394,12 +414,18 @@ describe('ConsultantTransferProcess', () => {
       execRetryService.should.have.been.calledOnce;
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
-      transferAgencyClientConsultant.should.have.been.calledOnceWith(transferAgencyClientConsultantAggregateId, {
-        from_id: assignmentId.toString(),
-        to_consultant_id: initiateEvent.data.to_consultant_id,
-        to_consultant_role_id: initiateEvent.data.consultant_role_id,
-        to_id: objectIdString
-      });
+      transferAgencyClientConsultant.should.have.been.calledOnceWith(
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
+        {
+          from_id: assignmentId.toString(),
+          to_consultant_id: initiateEvent.data.to_consultant_id,
+          to_consultant_role_id: initiateEvent.data.consultant_role_id,
+          to_id: objectIdString
+        }
+      );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
         client_id: clientId,
         consultant_role_id: consultantRoleId,

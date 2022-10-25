@@ -7,7 +7,7 @@ describe('AgencyAggregate class', () => {
   describe('validateUpdateConsultantRole()', () => {
     it('Test success scenario', () => {
       const aggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [
             {
@@ -26,7 +26,7 @@ describe('AgencyAggregate class', () => {
 
     it('Test failure scenario', () => {
       const aggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [
             {
@@ -58,7 +58,7 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate({name: 'agency', agency_id: 'id'}, projection);
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isTrue(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to enable');
     });
@@ -76,14 +76,14 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate({name: 'agency', agency_id: 'id'}, projection);
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isFalse(aggregate.canEnableConsultantRole('61948046abd55b1a8ec55671'), 'Expected not to enable');
     });
 
     it('Test failure scenario', () => {
       const aggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [
             {
@@ -116,7 +116,7 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate({name: 'agency', agency_id: 'id'}, projection);
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isTrue(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to disable');
     });
@@ -134,14 +134,14 @@ describe('AgencyAggregate class', () => {
           }
         ]
       };
-      const aggregate = new AgencyAggregate({name: 'agency', agency_id: 'id'}, projection);
+      const aggregate = new AgencyAggregate({agency_id: 'id'}, projection);
 
       assert.isFalse(aggregate.canDisableConsultantRole('61948046abd55b1a8ec55671'), 'Expected to not to disabled');
     });
 
     it('Test failure scenario', () => {
       const aggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [
             {
@@ -163,7 +163,7 @@ describe('AgencyAggregate class', () => {
   describe('getConsultantRole()', function () {
     it('should return undefined when role is not found', function () {
       const agencyAggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [],
           last_sequence_id: 10
@@ -183,7 +183,7 @@ describe('AgencyAggregate class', () => {
         max_consultants: 1
       };
       const agencyAggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [role],
           last_sequence_id: 10
@@ -209,7 +209,7 @@ describe('AgencyAggregate class', () => {
         max_consultants: 1
       };
       const agencyAggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [role1, role2],
           last_sequence_id: 10
@@ -223,21 +223,21 @@ describe('AgencyAggregate class', () => {
   describe('getId()', function () {
     it('should return aggregate id', function () {
       const agencyAggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [],
           last_sequence_id: 10
         }
       );
 
-      assert.deepEqual(agencyAggregate.getId(), {name: 'agency', agency_id: 'id'}, 'incorrect aggregate id returned');
+      assert.deepEqual(agencyAggregate.getId(), {agency_id: 'id'}, 'incorrect aggregate id returned');
     });
   });
 
   describe('getLastSequenceId()', function () {
     it('should return last event id', function () {
       const agencyAggregate = new AgencyAggregate(
-        {name: 'agency', agency_id: 'id'},
+        {agency_id: 'id'},
         {
           consultant_roles: [],
           last_sequence_id: 10
@@ -261,7 +261,7 @@ describe('AgencyAggregate class', () => {
         ],
         last_sequence_id: 10
       };
-      const agencyAggregate = new AgencyAggregate({name: 'agency', agency_id: 'id'}, aggregate);
+      const agencyAggregate = new AgencyAggregate({agency_id: 'id'}, aggregate);
 
       assert.deepEqual(agencyAggregate.toJSON(), aggregate, 'Incorrect aggregate returned');
     });

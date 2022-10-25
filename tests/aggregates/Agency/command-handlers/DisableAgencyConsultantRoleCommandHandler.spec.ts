@@ -17,7 +17,6 @@ describe('DisableAgencyConsultantRoleCommandHandler', () => {
     const roleId = 'some-id';
     const command: DisableAgencyConsultantRoleCommandInterface = {
       aggregateId: {
-        name: 'agency',
         agency_id: agencyId
       },
       type: AgencyCommandEnum.DISABLE_AGENCY_CONSULTANT_ROLE,
@@ -33,7 +32,7 @@ describe('DisableAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.save.resolves();
       agencyRepository.getAggregate.resolves(aggregate);
       aggregate.getLastSequenceId.returns(100);
-      aggregate.getId.returns({name: 'agency', agency_id: agencyId});
+      aggregate.getId.returns({agency_id: agencyId});
       aggregate.canDisableConsultantRole.returns(true);
       const handler = new DisableAgencyConsultantRoleCommandHandler(agencyRepository);
 
@@ -47,7 +46,7 @@ describe('DisableAgencyConsultantRoleCommandHandler', () => {
       agencyRepository.save.should.have.been.calledOnceWith([
         {
           type: EventsEnum.AGENCY_CONSULTANT_ROLE_DISABLED,
-          aggregate_id: {name: 'agency', agency_id: agencyId},
+          aggregate_id: {agency_id: agencyId},
           data: command.data,
           sequence_id: 101
         }

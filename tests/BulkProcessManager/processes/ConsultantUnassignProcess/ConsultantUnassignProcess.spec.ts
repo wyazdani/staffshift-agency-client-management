@@ -59,10 +59,6 @@ describe('ConsultantUnassignProcess', () => {
     agency_id: agencyId,
     job_id: initiateEvent.data._id
   };
-  const removeAgencyClientConsultantAggregateId = {
-    agency_id: agencyId,
-    client_id: clientId
-  };
   const jobAggregateId = {
     name: 'consultant_job',
     agency_id: agencyId
@@ -115,7 +111,10 @@ describe('ConsultantUnassignProcess', () => {
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
-        removeAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         assignmentId.toString()
       );
       succeedItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
@@ -196,7 +195,10 @@ describe('ConsultantUnassignProcess', () => {
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
-        removeAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         assignmentId.toString()
       );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
@@ -258,7 +260,10 @@ describe('ConsultantUnassignProcess', () => {
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
-        removeAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         assignmentId.toString()
       );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
@@ -320,7 +325,10 @@ describe('ConsultantUnassignProcess', () => {
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
-        removeAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         assignmentId.toString()
       );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {
@@ -382,7 +390,10 @@ describe('ConsultantUnassignProcess', () => {
       getAggregate.should.have.been.calledOnceWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, 2);
       removeAgencyClientConsultant.should.have.been.calledOnceWith(
-        removeAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         assignmentId.toString()
       );
       failItemConsultantJobProcess.should.have.been.calledOnceWith(aggregateId, {

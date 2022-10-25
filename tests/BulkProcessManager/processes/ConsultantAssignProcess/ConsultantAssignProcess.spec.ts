@@ -56,10 +56,6 @@ describe('ConsultantAssignProcess', () => {
     agency_id: agencyId,
     job_id: initiateEvent.data._id
   };
-  const addAgencyClientConsultantAggregateId = {
-    agency_id: agencyId,
-    client_id: clientId
-  };
   const jobAggregateId = {
     name: 'consultant_job',
     agency_id: agencyId
@@ -96,7 +92,10 @@ describe('ConsultantAssignProcess', () => {
       getAggregate.should.have.been.calledWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
-        addAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         initiateEvent.data.consultant_role_id,
         initiateEvent.data.consultant_id
       );
@@ -147,7 +146,10 @@ describe('ConsultantAssignProcess', () => {
       getAggregate.should.have.been.calledWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
-        addAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         initiateEvent.data.consultant_role_id,
         initiateEvent.data.consultant_id
       );
@@ -185,7 +187,10 @@ describe('ConsultantAssignProcess', () => {
       getAggregate.should.have.been.calledWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
-        addAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         initiateEvent.data.consultant_role_id,
         initiateEvent.data.consultant_id
       );
@@ -223,7 +228,10 @@ describe('ConsultantAssignProcess', () => {
       getAggregate.should.have.been.calledWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
-        addAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         initiateEvent.data.consultant_role_id,
         initiateEvent.data.consultant_id
       );
@@ -261,7 +269,10 @@ describe('ConsultantAssignProcess', () => {
       getAggregate.should.have.been.calledWith(aggregateId);
       startConsultantJobProcess.should.have.been.calledWith(aggregateId, 2);
       addAgencyClientConsultant.should.have.been.calledOnceWith(
-        addAgencyClientConsultantAggregateId,
+        {
+          agency_id: agencyId,
+          client_id: clientId
+        },
         initiateEvent.data.consultant_role_id,
         initiateEvent.data.consultant_id
       );
