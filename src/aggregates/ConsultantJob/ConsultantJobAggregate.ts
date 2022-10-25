@@ -29,7 +29,6 @@ export class ConsultantJobAggregate extends AbstractAggregate<
    */
   async validateAssignConsultant(command: AssignConsultantCommandDataInterface): Promise<void> {
     const agencyAggregate = await this.agencyRepository.getAggregate({
-      name: this.id.name,
       agency_id: this.id.agency_id
     });
     const consultantRole = agencyAggregate.getConsultantRole(command.consultant_role_id);

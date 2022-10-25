@@ -8,7 +8,6 @@ import {AbstractRepository} from '../AbstractRepository';
  * Class responsible for interacting with aggregate data source
  */
 export class BookingPreferenceRepository extends AbstractRepository<BookingPreferenceAggregate> {
-  private static readonly AGGREGATE_ID_NAME = 'booking_preference';
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: BookingPreferenceWriteProjectionHandler

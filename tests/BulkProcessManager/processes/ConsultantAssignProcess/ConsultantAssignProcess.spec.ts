@@ -57,7 +57,6 @@ describe('ConsultantAssignProcess', () => {
     job_id: initiateEvent.data._id
   };
   const addAgencyClientConsultantAggregateId = {
-    name: 'aggregate name',
     agency_id: agencyId,
     client_id: clientId
   };

@@ -8,7 +8,6 @@ import {OrganisationJobAggregate} from './OrganisationJobAggregate';
  * Class responsible for interacting with aggregate data source
  */
 export class OrganisationJobRepository extends AbstractRepository<OrganisationJobAggregate> {
-  private static readonly AGGREGATE_ID_NAME = 'organisation_job';
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: OrganisationJobWriteProjectionHandler

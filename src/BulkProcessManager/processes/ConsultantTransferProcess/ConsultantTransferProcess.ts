@@ -141,7 +141,6 @@ export class ConsultantTransferProcess implements ProcessInterface {
       });
       await this.commandBus.transferAgencyClientConsultant(
         {
-          name: this.initiateEvent.aggregate_id.name,
           agency_id: this.initiateEvent.aggregate_id.agency_id,
           client_id: assignment.client_id
         },

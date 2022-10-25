@@ -60,7 +60,6 @@ describe('ConsultantUnassignProcess', () => {
     job_id: initiateEvent.data._id
   };
   const removeAgencyClientConsultantAggregateId = {
-    name: 'aggregate name',
     agency_id: agencyId,
     client_id: clientId
   };

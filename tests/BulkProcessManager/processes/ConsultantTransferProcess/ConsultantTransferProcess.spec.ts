@@ -63,7 +63,6 @@ describe('ConsultantTransferProcess', () => {
     job_id: initiateEvent.data._id
   };
   const transferAgencyClientConsultantAggregateId = {
-    name: 'aggregate name',
     agency_id: agencyId,
     client_id: clientId
   };

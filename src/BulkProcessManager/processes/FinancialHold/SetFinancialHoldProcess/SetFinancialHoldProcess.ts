@@ -134,7 +134,6 @@ export class SetFinancialHoldProcess implements ProcessInterface {
 
     this.processAggregate = await this.processRepository.getAggregate(this.processAggregateId);
     const agencyClient = await this.agencyClientRepository.getAggregate({
-      name: this.initiateEvent.aggregate_id.name,
       agency_id: this.initiateEvent.aggregate_id.agency_id,
       client_id: this.initiateEvent.data.client_id
     });
