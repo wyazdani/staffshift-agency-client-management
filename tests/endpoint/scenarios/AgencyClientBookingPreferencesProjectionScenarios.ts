@@ -10,7 +10,8 @@ export class AgencyClientBookingPreferencesProjectionScenarios {
   }): Promise<AgencyClientBookingPreferencesProjectionV1DocumentType> {
     return await AgencyClientBookingPreferencesProjection.create({
       agency_id: get(document, 'agency_id', '6141d5be5863dc2202000001'),
-      client_id: get(document, 'client_id', '6141d64365e0e52381000001')
+      client_id: get(document, 'client_id', '6141d64365e0e52381000001'),
+      _etags: {booking_preference: 101}
     });
   }
 
@@ -24,7 +25,8 @@ export class AgencyClientBookingPreferencesProjectionScenarios {
       requires_unique_po_number: get(document, 'requires_unique_po_number', false),
       requires_booking_password: get(document, 'requires_booking_password', false),
       booking_passwords: get(document, 'booking_passwords', ['oops']),
-      requires_shift_ref_number: get(document, 'requires_shift_ref_number', false)
+      requires_shift_ref_number: get(document, 'requires_shift_ref_number', false),
+      _etags: {booking_preference: 101}
     });
   }
 

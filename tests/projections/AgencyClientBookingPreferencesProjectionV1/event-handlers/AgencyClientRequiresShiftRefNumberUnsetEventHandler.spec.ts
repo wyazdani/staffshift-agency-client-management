@@ -14,9 +14,11 @@ describe('AgencyClientRequiresShiftRefNumberUnsetEventHandler', () => {
       const event: any = {
         aggregate_id: {
           agency_id: agencyId,
-          client_id: clientId
+          client_id: clientId,
+          name: 'booking_preference'
         },
-        data: {}
+        data: {},
+        sequence_id: 1
       };
       const updateOne = sinon.stub(AgencyClientBookingPreferencesProjection, 'updateOne').resolves();
       const handler = new AgencyClientRequiresShiftRefNumberUnsetEventHandler();
@@ -29,7 +31,8 @@ describe('AgencyClientRequiresShiftRefNumberUnsetEventHandler', () => {
         },
         {
           $set: {
-            requires_shift_ref_number: false
+            requires_shift_ref_number: false,
+            _etags: {[event.aggregate_id.name]: event.sequence_id}
           }
         },
         {

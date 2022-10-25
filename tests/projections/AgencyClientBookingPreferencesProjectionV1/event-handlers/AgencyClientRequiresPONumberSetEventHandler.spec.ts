@@ -14,9 +14,11 @@ describe('AgencyClientRequiresPONumberSetEventHandler', () => {
       const event: any = {
         aggregate_id: {
           agency_id: agencyId,
-          client_id: clientId
+          client_id: clientId,
+          name: 'booking_preference'
         },
-        data: {}
+        data: {},
+        sequence_id: 1
       };
       const updateOne = sinon.stub(AgencyClientBookingPreferencesProjection, 'updateOne').resolves();
       const handler = new AgencyClientRequiresPONumberSetEventHandler();
@@ -29,7 +31,8 @@ describe('AgencyClientRequiresPONumberSetEventHandler', () => {
         },
         {
           $set: {
-            requires_po_number: true
+            requires_po_number: true,
+            _etags: {[event.aggregate_id.name]: event.sequence_id}
           }
         },
         {
