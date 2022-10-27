@@ -11,7 +11,7 @@ export class UpdateBookingPasswordsCommandHandler implements BookingPreferenceCo
   constructor(private repository: BookingPreferenceRepository) {}
 
   async execute(command: UpdateBookingPasswordsCommandInterface): Promise<number> {
-    const aggregate = await this.repository.getAggregate(command.aggregateId);
+    const aggregate = await this.repository.getCommandAggregate(command);
 
     aggregate.validateUpdateBookingPasswords();
     let eventId = aggregate.getLastSequenceId();

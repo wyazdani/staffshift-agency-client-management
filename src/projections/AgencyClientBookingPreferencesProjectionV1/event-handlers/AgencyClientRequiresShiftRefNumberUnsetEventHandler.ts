@@ -16,7 +16,10 @@ implements
       },
       {
         $set: {
-          requires_shift_ref_number: false
+          requires_shift_ref_number: false,
+          _etags: {
+            [event.aggregate_id.name]: event.sequence_id
+          }
         }
       },
       {

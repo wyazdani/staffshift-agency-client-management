@@ -29,13 +29,13 @@ describe('SetRequiresShiftRefNumberCommandHandler class', () => {
       const repository = stubInterface<BookingPreferenceRepository>();
       const aggregate = stubInterface<BookingPreferenceAggregate>();
 
-      repository.getAggregate.resolves(aggregate);
+      repository.getCommandAggregate.resolves(aggregate);
       aggregate.getLastSequenceId.returns(1);
       repository.save.resolves();
       const handler = new SetRequiresShiftRefNumberCommandHandler(repository);
 
       await handler.execute(command);
-      repository.getAggregate.should.have.been.calledOnceWith(command.aggregateId);
+      repository.getCommandAggregate.should.have.been.calledOnceWith(command);
       repository.save.should.have.been.calledOnceWith([
         {
           type: EventsEnum.AGENCY_CLIENT_REQUIRES_SHIFT_REF_NUMBER_SET,
@@ -59,14 +59,14 @@ describe('SetRequiresShiftRefNumberCommandHandler class', () => {
       const repository = stubInterface<BookingPreferenceRepository>();
       const aggregate = stubInterface<BookingPreferenceAggregate>();
 
-      repository.getAggregate.resolves(aggregate);
+      repository.getCommandAggregate.resolves(aggregate);
       aggregate.validateSetRequiresShiftRefNumber.throws(new ValidationError('sample'));
       aggregate.getLastSequenceId.returns(1);
       repository.save.resolves();
       const handler = new SetRequiresShiftRefNumberCommandHandler(repository);
 
       await handler.execute(command).should.have.been.rejectedWith(ValidationError);
-      repository.getAggregate.should.have.been.calledOnceWith(command.aggregateId);
+      repository.getCommandAggregate.should.have.been.calledOnceWith(command);
       aggregate.validateSetRequiresShiftRefNumber.should.have.been.calledOnce;
       repository.save.should.not.have.been.called;
     });

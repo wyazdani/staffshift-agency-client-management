@@ -10,6 +10,9 @@ export type AgencyClientBookingPreferencesProjectionV1DocumentType = Document & 
   requires_shift_ref_number?: boolean;
   created_at: Date;
   updated_at: Date;
+  _etags: {
+    booking_preference: number;
+  };
 };
 
 const bookingPreferences = new Schema<AgencyClientBookingPreferencesProjectionV1DocumentType>(
@@ -48,6 +51,13 @@ const bookingPreferences = new Schema<AgencyClientBookingPreferencesProjectionV1
       type: Boolean,
       required: false,
       description: 'Requires shift ref number'
+    },
+    _etags: {
+      booking_preference: {
+        type: Number,
+        required: true,
+        description: 'Last aggregate sequence identifier processed'
+      }
     }
   },
   {

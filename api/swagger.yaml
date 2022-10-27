@@ -687,6 +687,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
+      - $ref: "#/parameters/booking_preference_weak_if_match"
     post:
       x-swagger-router-controller: "BookingPreference"
       operationId: "setRequiresPONumber"
@@ -697,6 +698,10 @@ paths:
       responses:
         202:
           description: "Will Set requires PO Number"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
           schema:
             $ref: "#/definitions/empty_payload_def"
         400:
@@ -705,6 +710,8 @@ paths:
             $ref: "#/definitions/set_requires_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set requires PO Number"
@@ -720,6 +727,10 @@ paths:
       responses:
         202:
           description: "Will Unset requires PO Number"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
           schema:
             $ref: "#/definitions/empty_payload_def"
         400:
@@ -728,6 +739,8 @@ paths:
             $ref: "#/definitions/unset_requires_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset requires PO Number"
@@ -739,6 +752,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
+      - $ref: "#/parameters/booking_preference_weak_if_match"
     post:
       x-swagger-router-controller: "BookingPreference"
       operationId: "setRequiresUniquePONumber"
@@ -749,6 +763,10 @@ paths:
       responses:
         202:
           description: "Will Set requires Unique PO Number"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
           schema:
             $ref: "#/definitions/empty_payload_def"
         400:
@@ -757,6 +775,8 @@ paths:
             $ref: "#/definitions/set_requires_unique_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set requires Unique PO Number"
@@ -772,6 +792,10 @@ paths:
       responses:
         202:
           description: "Will Unset requires Unique PO Number"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
           schema:
             $ref: "#/definitions/empty_payload_def"
         400:
@@ -780,6 +804,8 @@ paths:
             $ref: "#/definitions/unset_requires_unique_po_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset requires Unique PO Number"
@@ -791,6 +817,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
+      - $ref: "#/parameters/booking_preference_weak_if_match"
     post:
       x-swagger-router-controller: "BookingPreference"
       operationId: "setRequiresBookingPassword"
@@ -801,12 +828,18 @@ paths:
       responses:
         202:
           description: "Will Set Requires Booking Password"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
             $ref: "#/definitions/set_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set Requires Booking Password"
@@ -822,12 +855,18 @@ paths:
       responses:
         202:
           description: "Will Unset Require Booking Password"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
             $ref: "#/definitions/unset_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset Require Booking Password"
@@ -839,6 +878,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
+      - $ref: "#/parameters/booking_preference_weak_if_match"
     put:
       x-swagger-router-controller: "BookingPreference"
       operationId: "updateBookingPassword"
@@ -849,12 +889,18 @@ paths:
       responses:
         202:
           description: "Will Update Booking Passwords"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
         400:
           description: "Validation error. Usually caused by a missing or invalid parameter."
           schema:
             $ref: "#/definitions/update_booking_password_validation_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Update Booking Passwords"
@@ -866,6 +912,7 @@ paths:
       - $ref: "#/parameters/x_request_jwt"
       - $ref: "#/parameters/agency_id"
       - $ref: "#/parameters/client_id"
+      - $ref: "#/parameters/booking_preference_weak_if_match"
     post:
       x-swagger-router-controller: "BookingPreference"
       operationId: "setRequiresShiftRefNumber"
@@ -876,6 +923,10 @@ paths:
       responses:
         202:
           description: "Will Set requires Shift Ref Number"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
           schema:
             $ref: "#/definitions/empty_payload_def"
         400:
@@ -884,6 +935,8 @@ paths:
             $ref: "#/definitions/set_requires_shift_ref_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Set requires Shift Ref Number"
@@ -899,6 +952,10 @@ paths:
       responses:
         202:
           description: "Will Unset requires Shift Ref Number"
+          headers:
+            ETag:
+              description: "Weak ETag contains the current revision of the aggregate"
+              type: string
           schema:
             $ref: "#/definitions/empty_payload_def"
         400:
@@ -907,6 +964,8 @@ paths:
             $ref: "#/definitions/unset_requires_shift_ref_number_error_model"
         401:
           $ref: "#/responses/unauthorize_error_model"
+        412:
+          $ref: "#/responses/precondition_failed"
         default:
           $ref: "#/responses/server_error_model"
       summary: "Will Unset requires Shift Ref Number"
@@ -1114,6 +1173,12 @@ parameters:
     pattern: ^[0-9a-fA-F]{24}$
     description: "Consultant Role ID"
     type: string
+  booking_preference_weak_if_match:
+    name: If-Match
+    in: header
+    type: string
+    pattern: '^(W/"booking_preference:)[0-9]\d*"$'
+    description: "The weak revision of the related aggregate"
   page_filter:
     name: page
     in: query
@@ -1504,6 +1569,7 @@ definitions:
       - client_id
       - updated_at
       - created_at
+      - _etags
       - __v
     properties:
       _id:
@@ -1527,6 +1593,13 @@ definitions:
             type: "string"
       requires_shift_ref_number:
         type: boolean
+      _etags:
+        type: object
+        properties:
+          booking_preference:
+            type: number
+        required:
+          - booking_preference
       updated_at:
         type: string
         format: date-time
@@ -1598,6 +1671,20 @@ definitions:
         type: string
         enum:
           - RESOURCE_NOT_FOUND
+      message:
+        type: string
+    additionalProperties: false
+  precondition_failed:
+    description: "Request precondition failed"
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        enum:
+          - PRECONDITION_FAILED
       message:
         type: string
     additionalProperties: false
@@ -2537,6 +2624,10 @@ responses:
     description: "Server error occurred"
     schema:
       $ref: "#/definitions/server_error_def"
+  precondition_failed:
+    description: "Request precondition failed"
+    schema:
+      $ref: "#/definitions/precondition_failed"
 securityDefinitions:
   jwt:
     type: apiKey

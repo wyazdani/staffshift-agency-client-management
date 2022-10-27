@@ -7,7 +7,7 @@ import {AbstractRepository} from '../AbstractRepository';
 /**
  * Class responsible for interacting with aggregate data source
  */
-export class PaymentTermRepository extends AbstractRepository {
+export class PaymentTermRepository extends AbstractRepository<PaymentTermAggregate> {
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: PaymentTermWriteProjectionHandler

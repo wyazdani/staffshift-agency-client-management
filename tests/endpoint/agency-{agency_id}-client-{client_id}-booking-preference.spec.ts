@@ -37,7 +37,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference', () => {
     it('should respond with 200 Retrieves a single Agency Client booking preference', async () => {
       const schema = {
         type: 'object',
-        required: ['_id', 'agency_id', 'client_id', 'updated_at', 'created_at', '__v'],
+        required: ['_id', 'agency_id', 'client_id', 'updated_at', 'created_at', '__v', '_etags'],
         properties: {
           _id: {
             type: 'string',
@@ -79,6 +79,15 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference', () => {
           },
           __v: {
             type: 'integer'
+          },
+          _etags: {
+            type: 'object',
+            properties: {
+              booking_preference: {
+                type: 'number'
+              }
+            },
+            required: ['booking_preference']
           }
         },
         additionalProperties: false
@@ -98,7 +107,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference', () => {
     it('should respond with 200 Retrieves a single Agency Client booking preference with Optional Properties', async () => {
       const schema = {
         type: 'object',
-        required: ['_id', 'agency_id', 'client_id', 'updated_at', 'created_at', '__v'],
+        required: ['_id', 'agency_id', 'client_id', 'updated_at', 'created_at', '__v', '_etags'],
         properties: {
           _id: {
             type: 'string',
@@ -140,6 +149,15 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference', () => {
           },
           __v: {
             type: 'integer'
+          },
+          _etags: {
+            type: 'object',
+            properties: {
+              booking_preference: {
+                type: 'number'
+              }
+            },
+            required: ['booking_preference']
           }
         },
         additionalProperties: false

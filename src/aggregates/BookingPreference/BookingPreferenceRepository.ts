@@ -7,7 +7,7 @@ import {AbstractRepository} from '../AbstractRepository';
 /**
  * Class responsible for interacting with aggregate data source
  */
-export class BookingPreferenceRepository extends AbstractRepository {
+export class BookingPreferenceRepository extends AbstractRepository<BookingPreferenceAggregate> {
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: BookingPreferenceWriteProjectionHandler

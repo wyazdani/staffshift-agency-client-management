@@ -47,6 +47,9 @@ Description: A short description of the event
   "properties": {
     "agency_id": {
       "type": "string"
+    },
+    "name": {
+      "type": "string"
     }
   },
   "required": [
@@ -84,6 +87,9 @@ Description: A short description of the event
   "properties": {
     "agency_id": {
       "type": "string"
+    },
+    "name": {
+      "type": "string"
     }
   },
   "required": [
@@ -120,6 +126,9 @@ Description: A short description of the event
   },
   "properties": {
     "agency_id": {
+      "type": "string"
+    },
+    "name": {
       "type": "string"
     }
   },
@@ -167,6 +176,9 @@ Description: A short description of the event
   "properties": {
     "agency_id": {
       "type": "string"
+    },
+    "name": {
+      "type": "string"
     }
   },
   "required": [
@@ -210,6 +222,9 @@ Description: A short description of the event
     "agency_id": {
       "type": "string"
     },
+    "name": {
+      "type": "string"
+    },
     "client_id": {
       "type": "string"
     }
@@ -249,6 +264,9 @@ Description: A short description of the event
   "type": "object",
   "properties": {
     "agency_id": {
+      "type": "string"
+    },
+    "name": {
       "type": "string"
     },
     "client_id": {
@@ -298,6 +316,9 @@ Description: A short description of the event
     "agency_id": {
       "type": "string"
     },
+    "name": {
+      "type": "string"
+    },
     "client_id": {
       "type": "string"
     }
@@ -343,6 +364,9 @@ Description: A short description of the event
   "type": "object",
   "properties": {
     "agency_id": {
+      "type": "string"
+    },
+    "name": {
       "type": "string"
     },
     "client_id": {
@@ -399,6 +423,9 @@ Description: A short description of the event
   "type": "object",
   "properties": {
     "agency_id": {
+      "type": "string"
+    },
+    "name": {
       "type": "string"
     },
     "client_id": {

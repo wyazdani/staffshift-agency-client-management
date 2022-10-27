@@ -13,7 +13,10 @@ implements EventHandlerInterface<EventStoreModelInterface<AgencyClientRequiresPO
       },
       {
         $set: {
-          requires_po_number: true
+          requires_po_number: true,
+          _etags: {
+            [event.aggregate_id.name]: event.sequence_id
+          }
         }
       },
       {
