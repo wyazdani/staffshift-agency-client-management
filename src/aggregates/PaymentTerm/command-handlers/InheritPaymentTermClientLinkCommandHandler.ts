@@ -22,7 +22,7 @@ export class InheritPaymentTermClientLinkCommandHandler implements PaymentTermCo
    *
    * issue: https://github.com/A24Group/staffshift-agency-client-management/issues/257
    */
-  async execute(command: InheritPaymentTermClientLinkCommandInterface): Promise<void> {
+  async execute(command: InheritPaymentTermClientLinkCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let type: string;
@@ -55,5 +55,6 @@ export class InheritPaymentTermClientLinkCommandHandler implements PaymentTermCo
         | AgencyClientPayInAdvancePaymentTermInheritedEventInterface
         | AgencyClientEmptyPaymentTermInheritedEventInterface
     ]);
+    return eventId;
   }
 }

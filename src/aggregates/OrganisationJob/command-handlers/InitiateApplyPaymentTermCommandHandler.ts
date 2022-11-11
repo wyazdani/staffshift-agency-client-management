@@ -9,7 +9,7 @@ export class InitiateApplyPaymentTermCommandHandler implements OrganisationJobCo
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.INITIATE_APPLY_PAYMENT_TERM;
 
-  async execute(command: InitiateApplyPaymentTermCommandInterface): Promise<void> {
+  async execute(command: InitiateApplyPaymentTermCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateInitiateApplyPaymentTerm(command.data);
@@ -24,5 +24,6 @@ export class InitiateApplyPaymentTermCommandHandler implements OrganisationJobCo
         sequence_id: ++eventId
       } as AgencyClientApplyPaymentTermInitiatedEventInterface
     ]);
+    return eventId;
   }
 }

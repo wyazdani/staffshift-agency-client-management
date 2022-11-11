@@ -40,6 +40,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
         .send(payload);
 
       res.statusCode.should.equal(202);
+      assert.match(res.get('ETag'), /W\/"booking_preference:\d*"/, 'FAILED');
     });
 
     it('should respond with 401 Failed to authenticate', async () => {
@@ -68,6 +69,34 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
       assert.equal(res.statusCode, 401);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
+
+    it('should respond with 412 Precondition Failed', async () => {
+      const schema = {
+        description: 'Request precondition failed',
+        type: 'object',
+        required: ['code', 'message'],
+        properties: {
+          code: {
+            type: 'string',
+            enum: ['PRECONDITION_FAILED']
+          },
+          message: {
+            type: 'string'
+          }
+        },
+        additionalProperties: false
+      };
+
+      await bookingPreferenceScenario.setRequiresBookingPassword(agencyId, clientId);
+      const ifMatchHeaders = {...headers, 'If-Match': 'W/"booking_preference:101"'};
+      const res = await api
+        .post(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
+        .set(ifMatchHeaders)
+        .send(payload);
+
+      res.statusCode.should.be.equal(412);
+      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
+    });
   });
 
   describe('delete', () => {
@@ -79,6 +108,7 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
         .send({});
 
       res.statusCode.should.equal(202);
+      assert.match(res.get('ETag'), /W\/"booking_preference:\d*"/, 'FAILED');
     });
 
     it('should respond with 401 Failed to authenticate', async () => {
@@ -105,6 +135,34 @@ describe('agency-{agency_id}-client-{client_id}-booking-preference-requires-book
         .send({});
 
       assert.equal(res.statusCode, 401);
+      assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
+    });
+
+    it('should respond with 412 Precondition Failed', async () => {
+      const schema = {
+        description: 'Request precondition failed',
+        type: 'object',
+        required: ['code', 'message'],
+        properties: {
+          code: {
+            type: 'string',
+            enum: ['PRECONDITION_FAILED']
+          },
+          message: {
+            type: 'string'
+          }
+        },
+        additionalProperties: false
+      };
+
+      await bookingPreferenceScenario.setRequiresBookingPassword(agencyId, clientId);
+      const ifMatchHeaders = {...headers, 'If-Match': 'W/"booking_preference:101"'};
+      const res = await api
+        .delete(`/agency/${agencyId}/client/${clientId}/booking-preference/requires-booking-password`)
+        .set(ifMatchHeaders)
+        .send({});
+
+      res.statusCode.should.be.equal(412);
       assert.isTrue(validator.validate(res.body, schema), 'response schema expected to be valid');
     });
   });

@@ -1,9 +1,13 @@
 import sinon from 'ts-sinon';
+import {EventStoreCacheHelper} from '../../../../src/helpers/EventStoreCacheHelper';
 import {
   AgencyClientPaymentTermsProjection,
   PAYMENT_TERM_PROJECTION_ENUM
 } from '../../../../src/models/AgencyClientPaymentTermsProjectionV1';
+import {EventStore} from '../../../../src/models/EventStore';
 import {AgencyClientCreditPaymentTermAppliedEventHandler} from '../../../../src/projections/AgencyClientPaymentTermsProjectionV1/event-handlers/AgencyClientCreditPaymentTermAppliedEventHandler';
+import {EventsEnum} from '../../../../src/Events';
+import {TestUtilsLogger} from '../../../tools/TestUtilsLogger';
 
 describe('AgencyClientCreditPaymentTermAppliedEventHandler', () => {
   afterEach(() => {
@@ -12,18 +16,35 @@ describe('AgencyClientCreditPaymentTermAppliedEventHandler', () => {
   describe('handle()', () => {
     const agencyId = 'agency id';
     const clientId = 'client id';
+    const logger = TestUtilsLogger.getLogger(sinon.spy());
 
     it('Test success scenario', async () => {
       const event: any = {
         aggregate_id: {
           agency_id: agencyId,
-          client_id: clientId
-        }
+          client_id: clientId,
+          name: 'payment_term'
+        },
+        causation_id: 'test',
+        sequence_id: 1
       };
+      const eventStore = new EventStore({
+        type: EventsEnum.AGENCY_CLIENT_APPLY_PAYMENT_TERM_INITIATED,
+        aggregate_id: {},
+        data: {},
+        sequence_id: 1,
+        meta_data: {
+          user_id: 'test'
+        },
+        correlation_id: '123'
+      });
+      const eventStoreCacheHelper = new EventStoreCacheHelper('1m', 10);
+      const findEventById = sinon.stub(eventStoreCacheHelper, 'findEventById').resolves(eventStore);
       const updateOne = sinon.stub(AgencyClientPaymentTermsProjection, 'updateOne').resolves();
-      const handler = new AgencyClientCreditPaymentTermAppliedEventHandler();
+      const handler = new AgencyClientCreditPaymentTermAppliedEventHandler(logger, eventStoreCacheHelper);
 
       await handler.handle(event);
+      findEventById.should.have.been.calledOnceWith(event.causation_id, logger);
       updateOne.should.have.been.calledOnceWith(
         {
           agency_id: event.aggregate_id.agency_id,
@@ -32,7 +53,11 @@ describe('AgencyClientCreditPaymentTermAppliedEventHandler', () => {
         {
           $set: {
             payment_term: PAYMENT_TERM_PROJECTION_ENUM.CREDIT,
-            inherited: false
+            inherited: false,
+            _etags: {
+              [event.aggregate_id.name]: event.sequence_id,
+              organisation_job: eventStore.sequence_id
+            }
           }
         },
         {

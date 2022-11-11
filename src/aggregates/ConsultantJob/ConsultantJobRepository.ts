@@ -8,7 +8,7 @@ import {AbstractRepository} from '../AbstractRepository';
 /**
  * Class responsible for interacting with aggregate data source
  */
-export class ConsultantJobRepository extends AbstractRepository {
+export class ConsultantJobRepository extends AbstractRepository<ConsultantJobAggregate> {
   constructor(
     protected eventRepository: EventRepository,
     private projectionHandler: ConsultantJobWriteProjectionHandler,

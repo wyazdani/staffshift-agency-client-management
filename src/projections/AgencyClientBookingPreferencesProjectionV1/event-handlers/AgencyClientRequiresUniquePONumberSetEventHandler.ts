@@ -16,7 +16,10 @@ implements
       },
       {
         $set: {
-          requires_unique_po_number: true
+          requires_unique_po_number: true,
+          _etags: {
+            [event.aggregate_id.name]: event.sequence_id
+          }
         }
       },
       {

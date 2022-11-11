@@ -13,6 +13,10 @@ export type AgencyClientPaymentTermsProjectionV1DocumentType = Document & {
   inherited: boolean;
   created_at: Date;
   updated_at: Date;
+  _etags: {
+    payment_term: number;
+    organisation_job: number;
+  };
 };
 
 const agencyClients = new Schema<AgencyClientPaymentTermsProjectionV1DocumentType>(
@@ -37,6 +41,18 @@ const agencyClients = new Schema<AgencyClientPaymentTermsProjectionV1DocumentTyp
       type: Boolean,
       required: true,
       description: 'Shows if the payment term is inherited or not'
+    },
+    _etags: {
+      payment_term: {
+        type: Number,
+        required: true,
+        description: 'Last aggregate sequence identifier processed'
+      },
+      organisation_job: {
+        type: Number,
+        required: true,
+        description: 'Sequence identifier of the last organistation job update processed'
+      }
     }
   },
   {

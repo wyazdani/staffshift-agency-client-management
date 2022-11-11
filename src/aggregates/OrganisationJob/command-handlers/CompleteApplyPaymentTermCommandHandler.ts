@@ -9,7 +9,7 @@ export class CompleteApplyPaymentTermCommandHandler implements OrganisationJobCo
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.COMPLETE_APPLY_PAYMENT_TERM;
 
-  async execute(command: CompleteApplyPaymentTermCommandInterface): Promise<void> {
+  async execute(command: CompleteApplyPaymentTermCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateCompleteApplyPaymentTerm(command.data);
@@ -24,5 +24,6 @@ export class CompleteApplyPaymentTermCommandHandler implements OrganisationJobCo
         sequence_id: ++eventId
       } as AgencyClientApplyPaymentTermCompletedEventInterface
     ]);
+    return eventId;
   }
 }

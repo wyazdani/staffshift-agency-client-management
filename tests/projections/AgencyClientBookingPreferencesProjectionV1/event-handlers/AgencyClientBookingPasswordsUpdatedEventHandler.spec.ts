@@ -14,11 +14,13 @@ describe('AgencyClientBookingPasswordsUpdatedEventHandler', () => {
       const event: any = {
         aggregate_id: {
           agency_id: agencyId,
-          client_id: clientId
+          client_id: clientId,
+          name: 'booking_preference'
         },
         data: {
           booking_passwords: ['oops']
-        }
+        },
+        sequence_id: 1
       };
       const updateOne = sinon.stub(AgencyClientBookingPreferencesProjection, 'updateOne').resolves();
       const handler = new AgencyClientBookingPasswordsUpdatedEventHandler();
@@ -31,7 +33,8 @@ describe('AgencyClientBookingPasswordsUpdatedEventHandler', () => {
         },
         {
           $set: {
-            booking_passwords: ['oops']
+            booking_passwords: ['oops'],
+            _etags: {[event.aggregate_id.name]: event.sequence_id}
           }
         },
         {

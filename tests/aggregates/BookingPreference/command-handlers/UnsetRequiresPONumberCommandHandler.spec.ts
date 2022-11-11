@@ -28,13 +28,13 @@ describe('UnsetRequiresPONumberCommandHandler class', () => {
       const repository = stubInterface<BookingPreferenceRepository>();
       const aggregate = stubInterface<BookingPreferenceAggregate>();
 
-      repository.getAggregate.resolves(aggregate);
+      repository.getCommandAggregate.resolves(aggregate);
       aggregate.getLastSequenceId.returns(1);
       repository.save.resolves();
       const handler = new UnsetRequiresPONumberCommandHandler(repository);
 
       await handler.execute(command);
-      repository.getAggregate.should.have.been.calledOnceWith(command.aggregateId);
+      repository.getCommandAggregate.should.have.been.calledOnceWith(command);
       repository.save.should.have.been.calledOnceWith([
         {
           type: EventsEnum.AGENCY_CLIENT_REQUIRES_PO_NUMBER_UNSET,
@@ -58,14 +58,14 @@ describe('UnsetRequiresPONumberCommandHandler class', () => {
       const repository = stubInterface<BookingPreferenceRepository>();
       const aggregate = stubInterface<BookingPreferenceAggregate>();
 
-      repository.getAggregate.resolves(aggregate);
+      repository.getCommandAggregate.resolves(aggregate);
       aggregate.validateUnsetRequiresPONumber.throws(new ValidationError('sample'));
       aggregate.getLastSequenceId.returns(1);
       repository.save.resolves();
       const handler = new UnsetRequiresPONumberCommandHandler(repository);
 
       await handler.execute(command).should.have.been.rejectedWith(ValidationError);
-      repository.getAggregate.should.have.been.calledOnceWith(command.aggregateId);
+      repository.getCommandAggregate.should.have.been.calledOnceWith(command);
       aggregate.validateUnsetRequiresPONumber.should.have.been.calledOnce;
       repository.save.should.not.have.been.called;
     });

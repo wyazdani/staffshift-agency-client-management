@@ -10,8 +10,8 @@ export class SetRequiresBookingPasswordCommandHandler implements BookingPreferen
 
   constructor(private repository: BookingPreferenceRepository) {}
 
-  async execute(command: SetRequiresBookingPasswordCommandInterface): Promise<void> {
-    const aggregate = await this.repository.getAggregate(command.aggregateId);
+  async execute(command: SetRequiresBookingPasswordCommandInterface): Promise<number> {
+    const aggregate = await this.repository.getCommandAggregate(command);
 
     aggregate.validateSetRequiresBookingPassword();
     let eventId = aggregate.getLastSequenceId();
@@ -26,5 +26,6 @@ export class SetRequiresBookingPasswordCommandHandler implements BookingPreferen
         sequence_id: ++eventId
       } as AgencyClientRequiresBookingPasswordSetEventInterface
     ]);
+    return eventId;
   }
 }

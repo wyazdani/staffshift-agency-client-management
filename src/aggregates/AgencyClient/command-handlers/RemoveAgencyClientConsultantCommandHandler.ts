@@ -16,11 +16,11 @@ export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientC
   /**
    * Build and save event caused by removeAgencyClientConsultant command
    */
-  async execute(command: RemoveAgencyClientConsultantCommandInterface): Promise<void> {
+  async execute(command: RemoveAgencyClientConsultantCommandInterface): Promise<number> {
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     await aggregate.validateRemoveClientConsultant(command.data);
-    const eventId = aggregate.getLastSequenceId();
+    let eventId = aggregate.getLastSequenceId();
 
     await this.agencyClientRepository.save([
       {
@@ -29,8 +29,9 @@ export class RemoveAgencyClientConsultantCommandHandler implements AgencyClientC
         data: {
           _id: command.data._id
         } as AgencyClientConsultantUnassignedEventStoreDataInterface,
-        sequence_id: eventId + 1
+        sequence_id: ++eventId
       }
     ]);
+    return eventId;
   }
 }

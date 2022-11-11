@@ -16,7 +16,7 @@ export class SyncAgencyClientCommandHandler implements AgencyClientCommandHandle
   /**
    * Build and save event caused by syncAgencyClient command
    */
-  async execute(command: SyncAgencyClientCommandInterface): Promise<void> {
+  async execute(command: SyncAgencyClientCommandInterface): Promise<number> {
     const aggregate = await this.agencyClientRepository.getAggregate(command.aggregateId);
 
     // Only create the event if we are not aware of this aggregate
@@ -31,6 +31,7 @@ export class SyncAgencyClientCommandHandler implements AgencyClientCommandHandle
           sequence_id: ++eventId
         }
       ]);
+      return eventId;
     }
   }
 }

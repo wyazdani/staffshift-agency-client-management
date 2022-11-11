@@ -10,8 +10,8 @@ export class UnsetRequiresPONumberCommandHandler implements BookingPreferenceCom
 
   constructor(private repository: BookingPreferenceRepository) {}
 
-  async execute(command: UnsetRequiresPONumberCommandInterface): Promise<void> {
-    const aggregate = await this.repository.getAggregate(command.aggregateId);
+  async execute(command: UnsetRequiresPONumberCommandInterface): Promise<number> {
+    const aggregate = await this.repository.getCommandAggregate(command);
 
     aggregate.validateUnsetRequiresPONumber();
     let eventId = aggregate.getLastSequenceId();
@@ -24,5 +24,6 @@ export class UnsetRequiresPONumberCommandHandler implements BookingPreferenceCom
         sequence_id: ++eventId
       } as AgencyClientRequiresPONumberUnsetEventInterface
     ]);
+    return eventId;
   }
 }

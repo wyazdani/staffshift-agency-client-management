@@ -10,7 +10,7 @@ export class CompleteClientInheritanceProcessCommandHandler implements ClientInh
 
   constructor(private repository: ClientInheritanceProcessRepository) {}
 
-  async execute(command: CompleteClientInheritanceProcessCommandInterface): Promise<void> {
+  async execute(command: CompleteClientInheritanceProcessCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let eventId = aggregate.getLastSequenceId();
@@ -23,5 +23,6 @@ export class CompleteClientInheritanceProcessCommandHandler implements ClientInh
         sequence_id: ++eventId
       } as AgencyClientInheritanceProcessCompletedEventInterface
     ]);
+    return eventId;
   }
 }

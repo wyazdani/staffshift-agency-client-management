@@ -19,6 +19,9 @@ import {
   AgencyClientBookingPreferencesProjection
 } from '../models/AgencyClientBookingPreferencesProjectionV1';
 import {GenericRepository} from '../GenericRepository';
+import {IfMatchHelper} from './../helpers/IfMatchHelper';
+
+const BOOKING_PREFERENCE_AGGREGATE_NAME = 'booking_preference';
 
 export const setRequiresPONumber = async (
   req: SwaggerRequestInterface,
@@ -28,18 +31,23 @@ export const setRequiresPONumber = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: SetRequiresPONumberCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.SET_REQUIRES_PO_NUMBER,
-      data: {}
+      data: {},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -54,18 +62,23 @@ export const unsetRequiresPONumber = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: UnsetRequiresPONumberCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.UNSET_REQUIRES_PO_NUMBER,
-      data: {}
+      data: {},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -80,18 +93,23 @@ export const setRequiresUniquePONumber = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: SetRequiresUniquePONumberCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.SET_REQUIRES_UNIQUE_PO_NUMBER,
-      data: {}
+      data: {},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -106,18 +124,23 @@ export const unsetRequiresUniquePONumber = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: UnsetRequiresUniquePONumberCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.UNSET_REQUIRES_UNIQUE_PO_NUMBER,
-      data: {}
+      data: {},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -133,18 +156,23 @@ export const setRequiresBookingPassword = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const payload = get(req, 'swagger.params.set_requires_booking_password_payload.value', {});
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: SetRequiresBookingPasswordCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.SET_REQUIRES_BOOKING_PASSWORD,
-      data: {...payload}
+      data: {...payload},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -159,18 +187,23 @@ export const unsetRequiresBookingPassword = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: UnsetRequiresBookingPasswordCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.UNSET_REQUIRES_BOOKING_PASSWORD,
-      data: {}
+      data: {},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -186,18 +219,23 @@ export const updateBookingPassword = async (
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
     const payload = get(req, 'swagger.params.update_booking_password_payload.value', {});
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: UpdateBookingPasswordsCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.UPDATE_BOOKING_PASSWORDS,
-      data: {...payload}
+      data: {...payload},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -212,18 +250,23 @@ export const setRequiresShiftRefNumber = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: SetRequiresShiftRefNumberCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.SET_REQUIRES_SHIFT_REF_NUMBER,
-      data: {}
+      data: {},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -238,18 +281,23 @@ export const unsetRequiresShiftRefNumber = async (
   try {
     const agencyId = get(req, 'swagger.params.agency_id.value', '');
     const clientId = get(req, 'swagger.params.client_id.value', '');
+    const ifMatch = get(req, 'swagger.params.If-Match.value', '');
+    const lock = IfMatchHelper.getAggregateVersion(ifMatch, BOOKING_PREFERENCE_AGGREGATE_NAME);
     const command: UnsetRequiresShiftRefNumberCommandInterface = {
       aggregateId: {
-        name: 'booking_preference',
+        name: BOOKING_PREFERENCE_AGGREGATE_NAME,
         agency_id: agencyId,
         client_id: clientId
       },
       type: BookingPreferenceCommandEnum.UNSET_REQUIRES_SHIFT_REF_NUMBER,
-      data: {}
+      data: {},
+      optimistic_lock: lock
     };
 
-    await req.commandBus.execute(command);
+    const eventId = await req.commandBus.execute(command);
+
     res.statusCode = 202;
+    setAggregateEtagHeader(res, eventId);
     res.end();
   } catch (err) {
     next(err);
@@ -285,4 +333,8 @@ export const getBookingPreference = async (
   } catch (err) {
     next(err);
   }
+};
+
+const setAggregateEtagHeader = (res: ServerResponse, eventId: number): void => {
+  res.setHeader('ETag', `W/"${BOOKING_PREFERENCE_AGGREGATE_NAME}:${eventId}"`);
 };

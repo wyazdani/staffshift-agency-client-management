@@ -16,20 +16,21 @@ export class UpdateAgencyConsultantRoleCommandHandler implements AgencyCommandHa
   /**
    * Build and save event caused by updateAgencyConsultantRole command
    */
-  async execute(command: UpdateAgencyConsultantRoleCommandInterface): Promise<void> {
+  async execute(command: UpdateAgencyConsultantRoleCommandInterface): Promise<number> {
     const aggregate = await this.agencyRepository.getAggregate(command.aggregateId);
 
     aggregate.validateUpdateConsultantRole(command.data._id);
 
-    const eventId = aggregate.getLastSequenceId();
+    let eventId = aggregate.getLastSequenceId();
 
     await this.agencyRepository.save([
       {
         type: EventsEnum.AGENCY_CONSULTANT_ROLE_DETAILS_UPDATED,
         aggregate_id: aggregate.getId(),
         data: {...command.data} as AgencyConsultantRoleDetailsUpdatedEventStoreDataInterface,
-        sequence_id: eventId + 1
+        sequence_id: ++eventId
       }
     ]);
+    return eventId;
   }
 }

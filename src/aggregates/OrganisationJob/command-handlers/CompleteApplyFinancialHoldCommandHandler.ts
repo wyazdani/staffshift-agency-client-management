@@ -9,7 +9,7 @@ export class CompleteApplyFinancialHoldCommandHandler implements OrganisationJob
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.COMPLETE_APPLY_FINANCIAL_HOLD;
 
-  async execute(command: CompleteApplyFinancialHoldCommandInterface): Promise<void> {
+  async execute(command: CompleteApplyFinancialHoldCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateCompleteApplyFinancialHold(command.data);
@@ -24,5 +24,6 @@ export class CompleteApplyFinancialHoldCommandHandler implements OrganisationJob
         sequence_id: ++eventId
       } as AgencyClientApplyFinancialHoldCompletedEventInterface
     ]);
+    return eventId;
   }
 }

@@ -9,7 +9,11 @@ export class AgencyClientPaymentTermsProjectionScenarios {
           agency_id: '62dfe8dcf9fe8decf9000001',
           client_id: '62dfe8e3fa8604b62d000001',
           inherited: true,
-          payment_term: 'credit'
+          payment_term: 'credit',
+          _etags: {
+            payment_term: 101,
+            organisation_job: 101
+          }
         },
         opts
       )

@@ -9,7 +9,7 @@ export class CompleteInheritFinancialHoldCommandHandler implements OrganisationJ
   constructor(private repository: OrganisationJobRepository) {}
   commandType = OrganisationJobCommandEnum.COMPLETE_INHERIT_FINANCIAL_HOLD;
 
-  async execute(command: CompleteInheritFinancialHoldCommandInterface): Promise<void> {
+  async execute(command: CompleteInheritFinancialHoldCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     await aggregate.validateCompleteInheritFinancialHold(command.data);
@@ -24,5 +24,6 @@ export class CompleteInheritFinancialHoldCommandHandler implements OrganisationJ
         sequence_id: ++eventId
       } as AgencyClientApplyFinancialHoldInheritanceCompletedEventInterface
     ]);
+    return eventId;
   }
 }

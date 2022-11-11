@@ -17,7 +17,7 @@ export class SetFinancialHoldCommandHandler implements FinancialHoldCommandHandl
 
   constructor(private repository: FinancialHoldRepository) {}
 
-  async execute(command: SetFinancialHoldCommandInterface): Promise<void> {
+  async execute(command: SetFinancialHoldCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
     let eventId = aggregate.getLastSequenceId();
 
@@ -33,5 +33,6 @@ export class SetFinancialHoldCommandHandler implements FinancialHoldCommandHandl
         sequence_id: ++eventId
       } as AgencyClientFinancialHoldAppliedEventInterface | AgencyClientFinancialHoldClearedEventInterface
     ]);
+    return eventId;
   }
 }

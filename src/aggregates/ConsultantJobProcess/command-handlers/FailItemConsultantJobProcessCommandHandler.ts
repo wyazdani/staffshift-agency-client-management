@@ -10,7 +10,7 @@ export class FailItemConsultantJobProcessCommandHandler implements ConsultantJob
 
   constructor(private repository: ConsultantJobProcessRepository) {}
 
-  async execute(command: FailItemConsultantJobProcessCommandInterface): Promise<void> {
+  async execute(command: FailItemConsultantJobProcessCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     let eventId = aggregate.getLastSequenceId();
@@ -23,5 +23,6 @@ export class FailItemConsultantJobProcessCommandHandler implements ConsultantJob
         sequence_id: ++eventId
       } as ConsultantJobProcessItemFailedEventInterface
     ]);
+    return eventId;
   }
 }

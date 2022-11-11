@@ -10,7 +10,7 @@ export class TransferConsultantCommandHandler implements ConsultantJobCommandHan
 
   constructor(private repository: ConsultantJobRepository) {}
 
-  async execute(command: TransferConsultantCommandInterface): Promise<void> {
+  async execute(command: TransferConsultantCommandInterface): Promise<number> {
     const aggregate = await this.repository.getAggregate(command.aggregateId);
 
     aggregate.validateTransferConsultant(command.data);
@@ -24,5 +24,6 @@ export class TransferConsultantCommandHandler implements ConsultantJobCommandHan
         sequence_id: ++eventId
       } as ConsultantJobTransferInitiatedEventInterface
     ]);
+    return eventId;
   }
 }

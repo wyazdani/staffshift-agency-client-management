@@ -44,14 +44,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await setRequiresPONumber(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -61,7 +63,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -89,7 +92,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -114,14 +118,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await unsetRequiresPONumber(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -131,7 +137,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -159,7 +166,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -184,14 +192,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await setRequiresShiftRefNumber(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -201,7 +211,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_SHIFT_REF_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -229,7 +240,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_SHIFT_REF_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -254,14 +266,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await setRequiresUniquePONumber(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -271,7 +285,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_UNIQUE_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -299,7 +314,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_UNIQUE_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -324,14 +340,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await unsetRequiresUniquePONumber(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -341,7 +359,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_UNIQUE_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -369,7 +388,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_UNIQUE_PO_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -397,14 +417,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await setRequiresBookingPassword(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -414,7 +436,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_BOOKING_PASSWORD,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -442,7 +465,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.SET_REQUIRES_BOOKING_PASSWORD,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -467,14 +491,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await unsetRequiresBookingPassword(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -484,7 +510,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_BOOKING_PASSWORD,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -512,7 +539,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_BOOKING_PASSWORD,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -540,14 +568,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await updateBookingPassword(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -557,7 +587,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UPDATE_BOOKING_PASSWORDS,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -585,7 +616,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UPDATE_BOOKING_PASSWORDS,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });
@@ -610,14 +642,16 @@ describe('BookingPreference Controller', () => {
         commandBus
       });
       const res = fakeResponse();
+      const setHeader = sinon.stub(res, 'setHeader');
       const next = sinon.spy();
       const end = sinon.stub(res, 'end');
 
       sinon.stub(ObjectId.prototype, 'toString').returns(id);
-      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves();
+      const execute = sinon.stub(CommandBus.prototype, 'execute').resolves(1);
 
       await unsetRequiresShiftRefNumber(req, res, next);
       assert.equal(res.statusCode, 202, 'incorrect status code returned');
+      assert.deepEqual(setHeader.getCall(0).args, ['ETag', 'W/"booking_preference:1"'], 'Expected header to be set');
       assert.equal(end.callCount, 1, 'Expected end to be called once');
       assert.equal(next.callCount, 0, 'Expected next to not be called');
       execute.should.have.been.calledOnceWith({
@@ -627,7 +661,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_SHIFT_REF_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
 
@@ -655,7 +690,8 @@ describe('BookingPreference Controller', () => {
           client_id: clientId
         },
         type: BookingPreferenceCommandEnum.UNSET_REQUIRES_SHIFT_REF_NUMBER,
-        data: {}
+        data: {},
+        optimistic_lock: undefined
       });
     });
   });

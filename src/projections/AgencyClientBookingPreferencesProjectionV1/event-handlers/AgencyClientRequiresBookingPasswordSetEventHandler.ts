@@ -17,7 +17,10 @@ implements
       {
         $set: {
           requires_booking_password: true,
-          booking_passwords: event.data.booking_passwords
+          booking_passwords: event.data.booking_passwords,
+          _etags: {
+            [event.aggregate_id.name]: event.sequence_id
+          }
         }
       },
       {
