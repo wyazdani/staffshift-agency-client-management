@@ -223,6 +223,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
           "additionalProperties": false
         }
       };
+      /*eslint-enable*/
 
       await AgencyClientConsultantsProjectionScenarios.createRecord({
         agency_id: agencyId,
@@ -290,6 +291,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
             "additionalProperties": false
           }
         };
+        /*eslint-enable*/
 
         await AgencyClientConsultantsProjectionScenarios.createRecord({
           agency_id: agencyId,
@@ -334,7 +336,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
         },
         "additionalProperties": false
       };
-
       /*eslint-enable*/
       const res = await api.get(`/agency/${agencyId}/clients/123/consultants`).set(headers);
 
