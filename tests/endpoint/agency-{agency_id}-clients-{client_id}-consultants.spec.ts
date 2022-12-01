@@ -168,6 +168,8 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   });
 
   describe('get', () => {
+    const sortByCriteria = ['_id', '-_id'];
+
     it('should respond with 200 List Agency Client...', async () => {
       /*eslint-disable*/
       const schema = {
@@ -221,6 +223,7 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
           "additionalProperties": false
         }
       };
+      /*eslint-enable*/
 
       await AgencyClientConsultantsProjectionScenarios.createRecord({
         agency_id: agencyId,
@@ -233,6 +236,75 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
       assert.equal(res.body[0].agency_id, agencyId);
       assert.equal(res.body[0].client_id, clientId);
     });
+
+    for (const criteria of sortByCriteria) {
+      it(`should respond with 200 List Agency Client with sort criteria: ${criteria}`, async () => {
+        /*eslint-disable*/
+        const schema = {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "_id",
+              "agency_id",
+              "client_id",
+              "consultant_role_id",
+              "consultant_role_name",
+              "consultant_id",
+              "consultant_name",
+              "created_at",
+              "updated_at",
+              "__v"
+            ],
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "agency_id": {
+                "type": "string"
+              },
+              "client_id": {
+                "type": "string"
+              },
+              "consultant_role_id": {
+                "type": "string"
+              },
+              "consultant_role_name": {
+                "type": "string"
+              },
+              "consultant_id": {
+                "type": "string"
+              },
+              "consultant_name": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "updated_at": {
+                "type": "string"
+              },
+              "__v": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          }
+        };
+        /*eslint-enable*/
+
+        await AgencyClientConsultantsProjectionScenarios.createRecord({
+          agency_id: agencyId,
+          client_id: clientId
+        });
+        const res = await api.get(`/agency/${agencyId}/clients/${clientId}/consultants?sortBy=${criteria}`).set(headers);
+
+        res.statusCode.should.equal(200);
+        validator.validate(res.body, schema);
+        assert.equal(res.body[0].agency_id, agencyId);
+        assert.equal(res.body[0].client_id, clientId);
+      });
+    }
 
     it('should respond with 204 No Content. There were no...', async () => {
       await AgencyClientConsultantsProjectionScenarios.removeAll();
@@ -264,7 +336,6 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
         },
         "additionalProperties": false
       };
-
       /*eslint-enable*/
       const res = await api.get(`/agency/${agencyId}/clients/123/consultants`).set(headers);
 

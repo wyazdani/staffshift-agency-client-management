@@ -146,6 +146,7 @@ paths:
         - $ref: "#/parameters/items_per_page_filter"
         - $ref: "#/parameters/query_consultant_role_id"
         - $ref: "#/parameters/query_consultant_id"
+        - $ref: "#/parameters/consultant_sorting"
       responses:
         200:
           description: "List Agency Client Consultants"
@@ -905,7 +906,7 @@ paths:
           $ref: "#/responses/server_error_model"
       summary: "Will Update Booking Passwords"
       tags:
-        - "Booking Preferences"  
+        - "Booking Preferences"
   /agency/{agency_id}/client/{client_id}/booking-preference/requires-shift-ref-number:
     parameters:
       - $ref: "#/parameters/x_request_id"
@@ -1046,6 +1047,17 @@ parameters:
     enum:
       - enabled
       - disabled
+  consultant_sorting:
+    name: sortBy
+    in: query
+    required: false
+    type: array
+    default: ["_id"]
+    items:
+      type: "string"
+      enum:
+        - "_id"
+        - "-_id"
   list_consultant_role_sorting:
     name: sortBy
     in: query
