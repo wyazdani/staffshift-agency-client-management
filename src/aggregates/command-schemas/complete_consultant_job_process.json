@@ -1,0 +1,9 @@
+{
+  "$ref": "#/definitions/CompleteConsultantJobProcessCommandDataInterface",
+  "definitions": {
+    "CompleteConsultantJobProcessCommandDataInterface": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  }
+}

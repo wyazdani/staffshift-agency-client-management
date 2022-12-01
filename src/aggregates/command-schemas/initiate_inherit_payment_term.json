@@ -1,0 +1,21 @@
+{
+  "$ref": "#/definitions/InitiateInheritPaymentTermCommandDataInterface",
+  "definitions": {
+    "InitiateInheritPaymentTermCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "client_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

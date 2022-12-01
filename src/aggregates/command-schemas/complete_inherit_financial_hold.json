@@ -1,0 +1,17 @@
+{
+  "$ref": "#/definitions/CompleteInheritFinancialHoldCommandDataInterface",
+  "definitions": {
+    "CompleteInheritFinancialHoldCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

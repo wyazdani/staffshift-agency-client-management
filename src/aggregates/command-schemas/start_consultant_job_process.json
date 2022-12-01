@@ -1,0 +1,17 @@
+{
+  "$ref": "#/definitions/StartConsultantJobProcessCommandDataInterface",
+  "definitions": {
+    "StartConsultantJobProcessCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "estimated_count": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "estimated_count"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

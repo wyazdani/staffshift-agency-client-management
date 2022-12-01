@@ -1,0 +1,27 @@
+{
+  "$ref": "#/definitions/SetInheritedFinancialHoldCommandDataInterface",
+  "definitions": {
+    "SetInheritedFinancialHoldCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "financial_hold": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "force": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "financial_hold",
+        "force"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$ref": "#/definitions/InheritFinancialHoldClientLinkCommandDataInterface",
+  "definitions": {
+    "InheritFinancialHoldClientLinkCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "financial_hold": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "financial_hold"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

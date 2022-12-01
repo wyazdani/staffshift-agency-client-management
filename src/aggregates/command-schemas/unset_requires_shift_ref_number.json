@@ -1,0 +1,9 @@
+{
+  "$ref": "#/definitions/UnsetRequiresShiftRefNumberCommandDataInterface",
+  "definitions": {
+    "UnsetRequiresShiftRefNumberCommandDataInterface": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  }
+}

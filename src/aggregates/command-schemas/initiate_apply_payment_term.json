@@ -1,0 +1,25 @@
+{
+  "$ref": "#/definitions/InitiateApplyPaymentTermCommandDataInterface",
+  "definitions": {
+    "InitiateApplyPaymentTermCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "term": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "term",
+        "client_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

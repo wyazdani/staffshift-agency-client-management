@@ -1,0 +1,9 @@
+{
+  "$ref": "#/definitions/SetRequiresShiftRefNumberCommandDataInterface",
+  "definitions": {
+    "SetRequiresShiftRefNumberCommandDataInterface": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  }
+}
