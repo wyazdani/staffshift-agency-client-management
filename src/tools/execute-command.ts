@@ -50,7 +50,7 @@ mongoose.connect(mongoConfig.database_host, mongoConfig.options, async (error) =
   }
 
   const eventRepository = new EventRepository(EventStore, 'sample-request-id');
-  const commandBus = new CommandBus(eventRepository);
+  const commandBus = new CommandBus(eventRepository, loggerContext);
 
   loggerContext.info('starting');
   await executeCommand(loggerContext, commandBus);

@@ -6,6 +6,7 @@ import {CommandBus} from '../../src/aggregates/CommandBus';
 import {ConsultantJobCommandEnum} from '../../src/aggregates/ConsultantJob/types';
 import {ConsultantJobProcessCommandEnum} from '../../src/aggregates/ConsultantJobProcess/types';
 import {EventRepository} from '../../src/EventRepository';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 
 describe('CommandBus', () => {
   /**
@@ -18,7 +19,7 @@ describe('CommandBus', () => {
   beforeEach(() => {
     const eventRepository = stubInterface<EventRepository>();
 
-    commandBus = new CommandBus(eventRepository);
+    commandBus = new CommandBus(eventRepository, TestUtilsLogger.getLogger(sinon.spy()));
 
     execute = sinon.stub(commandBus, 'execute').resolves();
   });

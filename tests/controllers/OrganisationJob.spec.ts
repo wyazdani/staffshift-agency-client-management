@@ -17,9 +17,13 @@ import {EventStore} from '../../src/models/EventStore';
 import {OrganisationJobCommandEnum} from '../../src/aggregates/OrganisationJob/types';
 import {GenericRepository} from '../../src/GenericRepository';
 import {ValidationError, ResourceNotFoundError} from 'a24-node-error-utils';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 
 describe('OrganisationJob Controller', () => {
-  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+  const commandBus = new CommandBus(
+    new EventRepository(EventStore, 'test-cases'),
+    TestUtilsLogger.getLogger(sinon.spy())
+  );
 
   describe('initiateApplyPaymentTerm()', () => {
     const agencyId = 'agency id';

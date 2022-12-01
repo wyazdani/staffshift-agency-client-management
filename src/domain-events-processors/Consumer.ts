@@ -36,7 +36,7 @@ const process = async (
   const correlationId = uuidv4();
   const eventMeta = await getEventMeta(logger, message.application_jwt);
   const eventRepository = new EventRepository(EventStore, correlationId, eventMeta);
-  const commandBus = new CommandBus(eventRepository);
+  const commandBus = new CommandBus(eventRepository, logger);
 
   logger.info('Handling incoming domain event', {correlation_id: correlationId, event_id: message.event.id});
 

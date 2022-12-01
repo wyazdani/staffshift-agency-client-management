@@ -6,6 +6,8 @@ import {getJWT} from '../tools/TestUtilsJwt';
 import _ from 'lodash';
 import {AgencyClientScenario} from './scenarios/AgencyClientScenario';
 import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScenario';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
+import sinon from 'sinon';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
@@ -22,8 +24,8 @@ describe('agency-{agency_id}-clients-{client_id}-consultants-{consultant_id}', (
     'Content-Type': 'application/json',
     'X-Request-Id': '123'
   };
-  const agencyClientScenario = new AgencyClientScenario();
-  const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario();
+  const agencyClientScenario = new AgencyClientScenario(TestUtilsLogger.getLogger(sinon.spy()));
+  const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario(TestUtilsLogger.getLogger(sinon.spy()));
 
   afterEach(async () => {
     await agencyClientScenario.deleteAllEvents();

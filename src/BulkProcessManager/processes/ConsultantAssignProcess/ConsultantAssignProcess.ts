@@ -58,7 +58,7 @@ export class ConsultantAssignProcess implements ProcessInterface {
       eventId
     );
 
-    this.commandBus = new CommandBus(eventRepository);
+    this.commandBus = new CommandBus(eventRepository, this.logger);
     this.consultantJobProcessRepository = new ConsultantJobProcessRepository(
       eventRepository,
       new ConsultantJobProcessWriteProjectionHandler()

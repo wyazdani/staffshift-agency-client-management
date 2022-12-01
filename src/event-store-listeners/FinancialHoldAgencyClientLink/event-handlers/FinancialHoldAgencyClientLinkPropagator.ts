@@ -52,7 +52,7 @@ export class FinancialHoldAgencyClientLinkPropagator {
       this.eventRepository,
       new FinancialHoldWriteProjectionHandler()
     );
-    const commandBus = new CommandBus(this.eventRepository);
+    const commandBus = new CommandBus(this.eventRepository, this.logger);
 
     if (payload.client_type === 'site') {
       // load parent's financial hold and then apply on the node

@@ -4,13 +4,14 @@ import {assert} from 'chai';
 import {api} from '../tools/TestUtilsApi';
 import {getJWT} from '../tools/TestUtilsJwt';
 import {cloneDeep} from 'lodash';
-import {AgencyClientFinancialHoldsProjectionScenarios} from './scenarios/AgencyClientFinancialHoldsProjectionScenarios';
 import {AgencyClientsProjectionScenarios} from './scenarios/AgencyClientsProjectionScenarios';
 import {OrganisationJobScenario} from './scenarios/OrganisationJobScenario';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
+import sinon from 'sinon';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
-const organisationJobScenario = new OrganisationJobScenario();
+const organisationJobScenario = new OrganisationJobScenario(TestUtilsLogger.getLogger(sinon.spy()));
 
 describe('agency-{agency_id}-client-{client_id}-apply-financial-hold', () => {
   const jwtToken = getJWT({

@@ -1,8 +1,8 @@
 export enum ConsultantJobCommandEnum {
-  ASSIGN_CONSULTANT = 'assignConsultant',
-  COMPLETE_ASSIGN_CONSULTANT = 'completeAssignConsultant',
-  UNASSIGN_CONSULTANT = 'unassignConsultant',
-  COMPLETE_UNASSIGN_CONSULTANT = 'completeUnassignConsultant',
-  TRANSFER_CONSULTANT = 'transferConsultant',
-  COMPLETE_TRANSFER_CONSULTANT = 'completeTransferConsultant'
+  ASSIGN_CONSULTANT = 'assign_consultant',
+  COMPLETE_ASSIGN_CONSULTANT = 'complete_assign_consultant',
+  UNASSIGN_CONSULTANT = 'unassign_consultant',
+  COMPLETE_UNASSIGN_CONSULTANT = 'complete_unassign_consultant',
+  TRANSFER_CONSULTANT = 'transfer_consultant',
+  COMPLETE_TRANSFER_CONSULTANT = 'complete_transfer_consultant'
 }

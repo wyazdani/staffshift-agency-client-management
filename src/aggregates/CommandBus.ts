@@ -34,11 +34,15 @@ import {FinancialHoldCommandBus} from './FinancialHold/FinancialHoldCommandBus';
 import {OrganisationJobCommandBus} from './OrganisationJob/OrganisationJobCommandBus';
 import {PaymentTermCommandBus} from './PaymentTerm/PaymentTermCommandBus';
 import {AggregateCommandInterface, AggregateCommandHandlerInterface} from './types';
+import CommandSchemas from './command-schemas';
+import ZSchema from 'z-schema';
+import {CommandValidationError} from '../errors/CommandValidationError';
+import {LoggerContext} from 'a24-logzio-winston';
 
 export class CommandBus {
   private _commandRegistry: {[key: string]: AggregateCommandHandlerInterface} = {};
 
-  constructor(eventRepository: EventRepository) {
+  constructor(eventRepository: EventRepository, private logger: LoggerContext) {
     this.registerAggregateCommandHandlers(AgencyCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(AgencyClientCommandBus.getCommandHandlers(eventRepository));
     this.registerAggregateCommandHandlers(ConsultantJobCommandBus.getCommandHandlers(eventRepository));
@@ -63,6 +67,22 @@ export class CommandBus {
     if (!this._commandRegistry[cmd.type]) {
       throw new Error(`Command type: ${cmd.type} has not been registered`);
     }
+
+    const schema = CommandSchemas[cmd.type];
+
+    if (!schema) {
+      throw new Error(`Could not find json schema to validate command ${cmd.type}`);
+    }
+    const zSchema = new ZSchema({});
+    const valid = zSchema.validate(cmd.data, schema);
+
+    if (!valid) {
+      this.logger.debug('Error from Command Validator', {errors: JSON.stringify(zSchema.getLastErrors())});
+      throw new CommandValidationError(`Command Schema Validation Failed: ${cmd.type}`).setSchemaErrors(
+        zSchema.getLastErrors()
+      );
+    }
+
     return this._commandRegistry[cmd.type].execute(cmd);
   }
 
