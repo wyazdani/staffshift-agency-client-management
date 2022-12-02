@@ -11,8 +11,7 @@
           "type": "boolean"
         },
         "linked_at": {
-          "type": "string",
-          "format": "date-time"
+          "type": "object"
         },
         "organisation_id": {
           "type": "string"

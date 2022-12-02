@@ -1,6 +1,6 @@
 export enum ConsultantJobProcessCommandEnum {
-  START = 'start',
-  SUCCEED_ITEM = 'succeed_item',
-  FAIL_ITEM = 'fail_item',
-  COMPLETE = 'complete'
+  START = 'start_consultant_job_process',
+  SUCCEED_ITEM = 'succeed_item_consultant_job_process',
+  FAIL_ITEM = 'fail_item_consultant_job_process',
+  COMPLETE = 'complete_consultant_job_process'
 }

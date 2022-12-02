@@ -10,113 +10,90 @@ import {CommandSchemaGenerator} from '../../generate-command-schemas/CommandSche
  * These assertions are randomly picked, if you want to assert a specific case you can add it to the array
  */
 const assertions: {[key in string]: unknown} = {
-  add_client_contact_person: {
-    type: 'object',
-    properties: {
-      title: {
-        type: 'string'
-      },
-      first_name: {
-        type: 'string'
-      },
-      last_name: {
-        type: 'string'
-      },
-      designation_type_id: {
-        type: 'string'
-      },
-      email: {
-        type: 'string'
-      },
-      contact_numbers: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            type_id: {
-              type: 'string'
-            },
-            contact_number: {
-              type: 'string'
+  add_agency_client_consultant: {
+    $ref: '#/definitions/AddAgencyClientConsultantCommandDataInterface',
+    definitions: {
+      AddAgencyClientConsultantCommandDataInterface: {
+        type: 'object',
+        properties: {
+          _id: {
+            type: 'string'
+          },
+          consultant_role_id: {
+            type: 'string'
+          },
+          consultant_id: {
+            type: 'string'
+          }
+        },
+        required: ['_id', 'consultant_role_id', 'consultant_id'],
+        additionalProperties: false
+      }
+    }
+  },
+  fail_item_client_inheritance_process: {
+    $ref: '#/definitions/FailItemClientInheritanceProcessCommandDataInterface',
+    definitions: {
+      FailItemClientInheritanceProcessCommandDataInterface: {
+        type: 'object',
+        properties: {
+          client_id: {
+            type: 'string'
+          },
+          errors: {
+            type: 'array',
+            items: {
+              $ref: '#/definitions/EventStoreEncodedErrorInterface'
             }
-          },
-          required: ['type_id', 'contact_number'],
-          additionalProperties: false
-        }
-      },
-      type_ids: {
-        type: 'array',
-        items: {
-          type: 'string'
-        }
-      }
-    },
-    required: ['last_name'],
-    additionalProperties: false
-  },
-  change_client_shift_time_pattern: {
-    // This is a special case where the start_time and end_time are Entities
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string'
-      },
-      start_time: {
-        type: 'object',
-        properties: {
-          hour: {
-            type: 'number'
-          },
-          minute: {
-            type: 'number'
           }
         },
-        required: ['hour', 'minute'],
+        required: ['client_id', 'errors'],
         additionalProperties: false
       },
-      end_time: {
+      EventStoreEncodedErrorInterface: {
         type: 'object',
         properties: {
-          hour: {
+          code: {
+            type: 'string'
+          },
+          message: {
+            type: 'string'
+          },
+          status: {
             type: 'number'
           },
-          minute: {
-            type: 'number'
+          original_error: {
+            $ref: '#/definitions/EventStoreEncodedErrorInterface'
+          },
+          errors: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                code: {
+                  type: 'string'
+                },
+                message: {
+                  type: 'string'
+                },
+                path: {
+                  type: 'array',
+                  items: {
+                    type: 'string'
+                  }
+                }
+              },
+              required: ['code', 'message', 'path'],
+              additionalProperties: false
+            },
+            minItems: 1,
+            maxItems: 1
           }
         },
-        required: ['hour', 'minute'],
+        required: ['code', 'message'],
         additionalProperties: false
       }
-    },
-    required: ['name', 'start_time', 'end_time'],
-    additionalProperties: false
-  },
-  synchronise_organisation_initialisation: {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'string',
-        minLength: 1
-      },
-      industry_id: {
-        type: 'string',
-        pattern: '^[0-9a-fA-F]{24}$'
-      },
-      country_code: {
-        type: 'string',
-        minLength: 1
-      },
-      locale_id: {
-        type: 'string',
-        minLength: 1
-      },
-      timezone: {
-        type: 'string',
-        minLength: 1
-      }
-    },
-    required: ['name', 'industry_id', 'country_code'],
-    additionalProperties: false
+    }
   }
 };
 
