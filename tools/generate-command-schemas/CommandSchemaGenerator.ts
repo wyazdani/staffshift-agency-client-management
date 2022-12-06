@@ -1,4 +1,3 @@
-import $RefParser from '@apidevtools/json-schema-ref-parser';
 import {readdir, writeFile, rm, mkdir, access} from 'fs/promises';
 import {keys, filter, endsWith, snakeCase, replace} from 'lodash';
 import path from 'path';
