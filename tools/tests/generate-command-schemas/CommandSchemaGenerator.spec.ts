@@ -83,7 +83,7 @@ const assertions: {[key in string]: unknown} = {
                   }
                 }
               },
-              required: ['code', 'message', 'path'],
+              required: ['code', 'message'],
               additionalProperties: false
             },
             minItems: 1,

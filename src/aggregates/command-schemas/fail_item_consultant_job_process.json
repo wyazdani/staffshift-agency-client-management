@@ -58,8 +58,7 @@
             },
             "required": [
               "code",
-              "message",
-              "path"
+              "message"
             ],
             "additionalProperties": false
           },
