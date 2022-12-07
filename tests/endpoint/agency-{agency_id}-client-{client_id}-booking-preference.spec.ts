@@ -6,10 +6,12 @@ import {getJWT} from '../tools/TestUtilsJwt';
 import {cloneDeep} from 'lodash';
 import {BookingPreferenceScenario} from './scenarios/BookingPreferenceScenario';
 import {AgencyClientBookingPreferencesProjectionScenarios} from './scenarios/AgencyClientBookingPreferencesProjectionScenarios';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
+import sinon from 'sinon';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
-const bookingPreferenceScenario = new BookingPreferenceScenario();
+const bookingPreferenceScenario = new BookingPreferenceScenario(TestUtilsLogger.getLogger(sinon.spy()));
 
 describe('agency-{agency_id}-client-{client_id}-booking-preference', () => {
   afterEach(async () => {

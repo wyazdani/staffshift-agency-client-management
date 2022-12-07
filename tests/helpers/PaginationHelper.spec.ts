@@ -10,7 +10,10 @@ import {CommandBus} from '../../src/aggregates/CommandBus';
 import {EventStore} from '../../src/models/EventStore';
 
 describe('PaginationHelper', () => {
-  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+  const commandBus = new CommandBus(
+    new EventRepository(EventStore, 'test-cases'),
+    TestUtilsLogger.getLogger(sinon.spy())
+  );
 
   beforeEach(() => {
     sinon.restore();

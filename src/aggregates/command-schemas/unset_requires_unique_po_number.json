@@ -1,0 +1,9 @@
+{
+  "$ref": "#/definitions/UnsetRequiresUniquePONumberCommandDataInterface",
+  "definitions": {
+    "UnsetRequiresUniquePONumberCommandDataInterface": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  }
+}

@@ -43,7 +43,7 @@ describe('AgencyClientLinkStatus', () => {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: 'unlinkAgencyClient',
+        type: 'unlink_agency_client',
         data: {
           client_type: 'organisation'
         }
@@ -76,7 +76,7 @@ describe('AgencyClientLinkStatus', () => {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: 'unlinkAgencyClient',
+        type: 'unlink_agency_client',
         data: {
           organisation_id: '12345',
           client_type: 'site'
@@ -111,7 +111,7 @@ describe('AgencyClientLinkStatus', () => {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: 'unlinkAgencyClient',
+        type: 'unlink_agency_client',
         data: {
           organisation_id: '12345',
           site_id: '57689',
@@ -145,7 +145,7 @@ describe('AgencyClientLinkStatus', () => {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: 'unlinkAgencyClient',
+        type: 'unlink_agency_client',
         data: {
           client_type: 'organisation'
         }
@@ -188,7 +188,7 @@ describe('AgencyClientLinkStatus', () => {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: 'linkAgencyClient',
+        type: 'link_agency_client',
         data: {
           client_type: 'organisation'
         }
@@ -231,7 +231,7 @@ describe('AgencyClientLinkStatus', () => {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: 'linkAgencyClient',
+        type: 'link_agency_client',
         data: {
           organisation_id: '12345',
           client_type: 'site'
@@ -276,7 +276,7 @@ describe('AgencyClientLinkStatus', () => {
           agency_id: agencyId,
           client_id: clientId
         },
-        type: 'linkAgencyClient',
+        type: 'link_agency_client',
         data: {
           organisation_id: '12345',
           site_id: '57689',

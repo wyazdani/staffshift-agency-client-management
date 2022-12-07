@@ -1,6 +1,6 @@
 {
   "name": "staffshift-agency-client-management",
-  "version": "1.55.1",
+  "version": "1.56.1",
   "description": "Micro service for managing staffshift agency clients",
   "main": "src/http_server.ts",
   "scripts": {
@@ -8,6 +8,7 @@
     "start": "node dist/http_server",
     "start-tracing": "node -r ./tracing.js dist/http_server",
     "test": "node ./testfile-drop-database.js && npm run migrate && npx nyc npx mocha",
+    "test-tools": "npx nyc npx mocha --config tools/tests/mocharc.js",
     "test-local": "npx tsc --noEmit && TS_NODE_TRANSPILE_ONLY=true npm run test",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore .",
     "migrate": "node_modules/.bin/mongration -f ./migrations -c config/migration-config.js",
@@ -17,6 +18,7 @@
     "start-event-store-http-server": "node dist/event_store_http_server",
     "start-bulk-process-manager": "node dist/bulk_process_manager",
     "dev-generate-event-docs": "ts-node src/tools/generate_events_docs.ts",
+    "dev-generate-command-schemas": "ts-node tools/generate-command-schemas",
     "dev": "npm-run-all -l --parallel start start-event-store-publisher start-event-store-http-server start-event-store-subscriber start-bulk-process-manager start-domain-event-consumer",
     "seed-projection-agency-consultant-roles-v2": "node dist/projections/AgencyConsultantRolesV2/seed_job",
     "seed-projection-agency-clients-v2": "node dist/projections/AgencyClientsV2/seed_job",
@@ -112,7 +114,7 @@
     "supertest": "6.1.4",
     "swagger-parser": "10.0.3",
     "swagger-test-templates": "1.6.0",
-    "ts-json-schema-generator": "^1.0.0",
+    "ts-json-schema-generator": "1.1.2",
     "ts-node": "10.9.1",
     "ts-sinon": "^2.0.2",
     "typescript": "4.7.4",

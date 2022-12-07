@@ -1,0 +1,20 @@
+{
+  "$ref": "#/definitions/InheritPaymentTermClientLinkCommandDataInterface",
+  "definitions": {
+    "InheritPaymentTermClientLinkCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "term": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "term"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

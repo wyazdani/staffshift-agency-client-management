@@ -7,7 +7,7 @@ export interface EventStoreEncodedErrorInterface {
     {
       code: string;
       message: string;
-      path: string[];
+      path?: string[];
     }
   ];
 }

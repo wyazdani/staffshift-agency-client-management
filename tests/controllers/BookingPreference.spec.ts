@@ -20,9 +20,13 @@ import {EventStore} from '../../src/models/EventStore';
 import {BookingPreferenceCommandEnum} from '../../src/aggregates/BookingPreference/types';
 import {GenericRepository} from '../../src/GenericRepository';
 import {ResourceNotFoundError} from 'a24-node-error-utils';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 
 describe('BookingPreference Controller', () => {
-  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+  const commandBus = new CommandBus(
+    new EventRepository(EventStore, 'test-cases'),
+    TestUtilsLogger.getLogger(sinon.spy())
+  );
 
   describe('setRequiresPONumber()', () => {
     const agencyId = 'agency id';

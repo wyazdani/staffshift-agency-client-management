@@ -14,7 +14,7 @@ Logger.setup(config.get('logger'));
 const loggerContext = Logger.getContext();
 const client = new FacadeClientHelper(loggerContext);
 const eventRepository = new EventRepository(EventStore, loggerContext.requestId, {user_id: 'system'});
-const commandBus = new CommandBus(eventRepository);
+const commandBus = new CommandBus(eventRepository, loggerContext);
 
 const itemsPerPage = 100;
 

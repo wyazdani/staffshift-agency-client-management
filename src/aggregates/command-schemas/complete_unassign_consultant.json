@@ -1,0 +1,17 @@
+{
+  "$ref": "#/definitions/CompleteUnassignConsultantCommandDataInterface",
+  "definitions": {
+    "CompleteUnassignConsultantCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

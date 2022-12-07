@@ -6,10 +6,12 @@ import {getJWT} from '../tools/TestUtilsJwt';
 import _ from 'lodash';
 import {AgencyClientsProjectionScenarios} from './scenarios/AgencyClientsProjectionScenarios';
 import {OrganisationJobScenario} from './scenarios/OrganisationJobScenario';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
+import sinon from 'sinon';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new ZSchema({});
-const organisationJobScenario = new OrganisationJobScenario();
+const organisationJobScenario = new OrganisationJobScenario(TestUtilsLogger.getLogger(sinon.spy()));
 
 describe('agency-{agency_id}-client-{client_id}-inherit-payment-term', () => {
   const jwtToken = getJWT({

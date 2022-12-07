@@ -7,6 +7,8 @@ import {getJWT} from '../tools/TestUtilsJwt';
 import {AgencyClientScenario} from './scenarios/AgencyClientScenario';
 import {AgencyConsultantRoleScenario} from './scenarios/AgencyConsultantRoleScenario';
 import {AgencyClientConsultantsProjectionScenarios} from './scenarios/AgencyClientConsultantsProjectionScenarios';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
+import sinon from 'sinon';
 
 TestUtilsZSchemaFormatter.format();
 const validator = new Zschema({});
@@ -26,8 +28,8 @@ describe('/agency/{agency_id}/clients/{client_id}/consultants', () => {
   const agencyId = '6141caa0d51653b8f4000001';
   const clientId = '6141d9cb9fb4b44d53469159';
   const roleId = '6151ada2ff873ad464bdd33c';
-  const agencyClientScenario = new AgencyClientScenario();
-  const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario();
+  const agencyClientScenario = new AgencyClientScenario(TestUtilsLogger.getLogger(sinon.spy()));
+  const agencyConsultantRoleScenario = new AgencyConsultantRoleScenario(TestUtilsLogger.getLogger(sinon.spy()));
 
   beforeEach(async () => {
     await Promise.all([

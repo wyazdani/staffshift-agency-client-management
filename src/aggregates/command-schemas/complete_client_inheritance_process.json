@@ -1,0 +1,9 @@
+{
+  "$ref": "#/definitions/CompleteClientInheritanceProcessCommandDataInterface",
+  "definitions": {
+    "CompleteClientInheritanceProcessCommandDataInterface": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  }
+}

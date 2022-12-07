@@ -145,7 +145,7 @@ export const startServer = new Promise<void>((resolve) => {
               client_id: response.decoded.client_id,
               context: response.decoded.context
             });
-            const commandBus = new CommandBus(eventRepository);
+            const commandBus = new CommandBus(eventRepository, req.Logger);
 
             set(req, 'commandBus', commandBus);
             next();

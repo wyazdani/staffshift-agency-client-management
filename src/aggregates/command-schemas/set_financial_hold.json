@@ -1,0 +1,21 @@
+{
+  "$ref": "#/definitions/SetFinancialHoldCommandDataInterface",
+  "definitions": {
+    "SetFinancialHoldCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "financial_hold": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "financial_hold",
+        "note"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

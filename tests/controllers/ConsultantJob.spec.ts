@@ -7,9 +7,13 @@ import {ObjectId} from 'mongodb';
 import {CommandBus} from '../../src/aggregates/CommandBus';
 import {EventRepository} from '../../src/EventRepository';
 import {EventStore} from '../../src/models/EventStore';
+import {TestUtilsLogger} from '../tools/TestUtilsLogger';
 
 describe('ConsultantJob Controller', () => {
-  const commandBus = new CommandBus(new EventRepository(EventStore, 'test-cases'));
+  const commandBus = new CommandBus(
+    new EventRepository(EventStore, 'test-cases'),
+    TestUtilsLogger.getLogger(sinon.spy())
+  );
 
   describe('assignConsultant()', () => {
     const agencyId = 'agency id';

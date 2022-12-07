@@ -1,0 +1,30 @@
+{
+  "$ref": "#/definitions/UnassignConsultantCommandDataInterface",
+  "definitions": {
+    "UnassignConsultantCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "consultant_id": {
+          "type": "string"
+        },
+        "consultant_role_id": {
+          "type": "string"
+        },
+        "client_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "_id",
+        "consultant_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

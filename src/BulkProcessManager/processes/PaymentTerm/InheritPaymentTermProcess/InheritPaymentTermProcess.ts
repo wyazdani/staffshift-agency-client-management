@@ -60,7 +60,7 @@ export class InheritPaymentTermProcess implements ProcessInterface {
       this.initiateEvent._id
     );
 
-    this.commandBus = new CommandBus(eventRepository);
+    this.commandBus = new CommandBus(eventRepository, this.logger);
     this.commandBusHelper = new CommandBusHelper(
       this.commandBus,
       this.initiateEvent.aggregate_id.agency_id,

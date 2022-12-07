@@ -1,0 +1,25 @@
+{
+  "$ref": "#/definitions/InitiateClearFinancialHoldCommandDataInterface",
+  "definitions": {
+    "InitiateClearFinancialHoldCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "client_id",
+        "note"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

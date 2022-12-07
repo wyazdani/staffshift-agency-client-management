@@ -1,0 +1,23 @@
+{
+  "$ref": "#/definitions/UnlinkAgencyClientCommandDataInterface",
+  "definitions": {
+    "UnlinkAgencyClientCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "client_type": {
+          "type": "string"
+        },
+        "organisation_id": {
+          "type": "string"
+        },
+        "site_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_type"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

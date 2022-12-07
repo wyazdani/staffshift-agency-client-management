@@ -1,0 +1,31 @@
+{
+  "$ref": "#/definitions/SyncAgencyClientCommandDataInterface",
+  "definitions": {
+    "SyncAgencyClientCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "client_type": {
+          "type": "string"
+        },
+        "linked": {
+          "type": "boolean"
+        },
+        "linked_at": {
+          "type": "object"
+        },
+        "organisation_id": {
+          "type": "string"
+        },
+        "site_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_type",
+        "linked",
+        "linked_at"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

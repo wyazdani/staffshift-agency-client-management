@@ -1,0 +1,73 @@
+{
+  "$ref": "#/definitions/FailItemClientInheritanceProcessCommandDataInterface",
+  "definitions": {
+    "FailItemClientInheritanceProcessCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventStoreEncodedErrorInterface"
+          }
+        }
+      },
+      "required": [
+        "client_id",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "EventStoreEncodedErrorInterface": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "number"
+        },
+        "original_error": {
+          "$ref": "#/definitions/EventStoreEncodedErrorInterface"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "path": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 1
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

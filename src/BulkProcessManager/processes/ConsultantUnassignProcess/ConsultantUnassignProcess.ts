@@ -60,7 +60,7 @@ export class ConsultantUnassignProcess implements ProcessInterface {
     );
     const clientAssignments = ClientConsultantAssignments.createInstance(this.initiateEvent);
 
-    this.commandBus = new CommandBus(eventRepository);
+    this.commandBus = new CommandBus(eventRepository, this.logger);
     this.consultantJobProcessRepository = new ConsultantJobProcessRepository(
       eventRepository,
       new ConsultantJobProcessWriteProjectionHandler()

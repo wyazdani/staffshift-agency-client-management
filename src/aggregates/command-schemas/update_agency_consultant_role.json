@@ -1,0 +1,26 @@
+{
+  "$ref": "#/definitions/UpdateAgencyConsultantRoleCommandDataInterface",
+  "definitions": {
+    "UpdateAgencyConsultantRoleCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "max_consultants": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

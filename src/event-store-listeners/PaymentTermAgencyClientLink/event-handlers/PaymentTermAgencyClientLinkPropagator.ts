@@ -52,7 +52,7 @@ export class PaymentTermAgencyClientLinkPropagator {
       this.eventRepository,
       new PaymentTermWriteProjectionHandler()
     );
-    const commandBus = new CommandBus(this.eventRepository);
+    const commandBus = new CommandBus(this.eventRepository, this.logger);
 
     if (payload.client_type === 'site') {
       // load parent's payment term and then apply on the node

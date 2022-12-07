@@ -1,0 +1,20 @@
+{
+  "$ref": "#/definitions/SucceedItemConsultantJobProcessCommandDataInterface",
+  "definitions": {
+    "SucceedItemConsultantJobProcessCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string"
+        },
+        "consultant_role_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "client_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

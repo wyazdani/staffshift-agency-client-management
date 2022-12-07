@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "prefer-arrow-callback": "off",
+    "func-names": "off",
+    "arrow-body-style": ["error", "as-needed"],
+    "prefer-arrow/prefer-arrow-functions": [
+      "off"
+    ],
+    "@typescript-eslint/no-explicit-any": 0
+  }
+}

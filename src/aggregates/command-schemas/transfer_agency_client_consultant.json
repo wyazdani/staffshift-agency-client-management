@@ -1,0 +1,29 @@
+{
+  "$ref": "#/definitions/TransferAgencyClientConsultantCommandDataInterface",
+  "definitions": {
+    "TransferAgencyClientConsultantCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "from_id": {
+          "type": "string"
+        },
+        "to_id": {
+          "type": "string"
+        },
+        "to_consultant_role_id": {
+          "type": "string"
+        },
+        "to_consultant_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "from_id",
+        "to_id",
+        "to_consultant_role_id",
+        "to_consultant_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -52,7 +52,7 @@ export class FinancialHoldAgencyClientLinkPropagator {
       this.eventRepository,
       new FinancialHoldWriteProjectionHandler()
     );
-    const commandBus = new CommandBus(this.eventRepository);
+    const commandBus = new CommandBus(this.eventRepository, this.logger);
 
     if (payload.client_type === 'site') {
       // load parent's financial hold and then apply on the node
@@ -61,6 +61,7 @@ export class FinancialHoldAgencyClientLinkPropagator {
         agency_id: agencyId,
         client_id: payload.organisation_id
       });
+      const note = parentAggregate.getNote();
 
       await commandBus.execute({
         aggregateId: {
@@ -71,7 +72,7 @@ export class FinancialHoldAgencyClientLinkPropagator {
         type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
         data: {
           financial_hold: parentAggregate.getFinancialHold(),
-          note: parentAggregate.getNote()
+          ...(note && {note})
         }
       } as InheritFinancialHoldClientLinkCommandInterface);
     } else {
@@ -112,6 +113,7 @@ export class FinancialHoldAgencyClientLinkPropagator {
           agency_id: agencyId,
           client_id: payload.organisation_id
         });
+        const note = orgFinancialHold.getNote();
 
         await commandBus.execute({
           aggregateId: {
@@ -122,10 +124,12 @@ export class FinancialHoldAgencyClientLinkPropagator {
           type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
           data: {
             financial_hold: orgFinancialHold.getFinancialHold(),
-            note: orgFinancialHold.getNote()
+            ...(note && {note})
           }
         } as InheritFinancialHoldClientLinkCommandInterface);
       } else {
+        const note = siteFinancialHold.getNote();
+
         await commandBus.execute({
           aggregateId: {
             name: 'financial_hold',
@@ -135,7 +139,7 @@ export class FinancialHoldAgencyClientLinkPropagator {
           type: FinancialHoldCommandEnum.INHERIT_FINANCIAL_HOLD_CLIENT_LINK,
           data: {
             financial_hold: siteFinancialHold.getFinancialHold(),
-            note: siteFinancialHold.getNote()
+            ...(note && {note})
           }
         } as InheritFinancialHoldClientLinkCommandInterface);
       }

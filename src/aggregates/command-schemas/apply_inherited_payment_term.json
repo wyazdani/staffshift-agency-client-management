@@ -1,0 +1,24 @@
+{
+  "$ref": "#/definitions/ApplyInheritedPaymentTermCommandDataInterface",
+  "definitions": {
+    "ApplyInheritedPaymentTermCommandDataInterface": {
+      "type": "object",
+      "properties": {
+        "term": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "force": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "term",
+        "force"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
